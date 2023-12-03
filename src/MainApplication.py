@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-def print_hi(name):
-    # 在下面的代码行中使用断点来调试脚本。
-    print(f'Hi, {name}')  # 按 Ctrl+F8 切换断点。
+from PySide6.QtWidgets import QApplication
+
+from src.AppImplement.FormFiles.EditCardPlacingConfigForm import WidgetEditCardPlacingConfig
 
 
-# 按装订区域中的绿色按钮以运行脚本。
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    app = QApplication([])
+    myMainWindow = WidgetEditCardPlacingConfig()
+    myMainWindow.show()
+    app.exec()
