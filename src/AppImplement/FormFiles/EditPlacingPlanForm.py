@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : Linfeng_Bingyi
 # @Contact : linfengbingyi@qq.com
-# @File    : EditCardPlacingConfigForm.py
+# @File    : EditPlacingPlanForm.py
 # @Time    : 2023/12/2 22:28
 # @Dsc     : 实现编辑卡片放置方案的界面功能
 from PySide6.QtGui import QFont
@@ -12,15 +12,15 @@ from PySide6.QtCore import Qt
 
 import os
 
-from src.AppImplement.FormFiles.EditCardPlacingConfig import Ui_EditCardPlacingConfig
+from src.AppImplement.FormFiles.EditPlacingPlan import Ui_EditPlacingPlan
 from src.AppImplement.Business.RWPlacingPlan import PlacingFileProcessor
 from src.AppImplement.Business.RWPlayerDeck import PlayerDeckProcessor
 
 
-class WidgetEditCardPlacingConfig(QWidget, Ui_EditCardPlacingConfig):
+class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
 
     def __init__(self):
-        super(WidgetEditCardPlacingConfig, self).__init__()
+        super(WidgetEditPlacingPlan, self).__init__()
         self.setupUi(self)
         self.tableWidget_1p_placing_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
         self.tableWidget_2p_placing_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'EditCardPlacingConfig.ui'
+## Form generated from reading UI file 'EditPlacingPlan.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -22,16 +22,16 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComb
     QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
     QWidget)
 
-class Ui_EditCardPlacingConfig(object):
-    def setupUi(self, EditCardPlacingConfig):
-        if not EditCardPlacingConfig.objectName():
-            EditCardPlacingConfig.setObjectName(u"EditCardPlacingConfig")
-        EditCardPlacingConfig.resize(753, 450)
-        self.gridLayout_top = QGridLayout(EditCardPlacingConfig)
+class Ui_EditPlacingPlan(object):
+    def setupUi(self, EditPlacingPlan):
+        if not EditPlacingPlan.objectName():
+            EditPlacingPlan.setObjectName(u"EditPlacingPlan")
+        EditPlacingPlan.resize(753, 450)
+        self.gridLayout_top = QGridLayout(EditPlacingPlan)
         self.gridLayout_top.setSpacing(0)
         self.gridLayout_top.setObjectName(u"gridLayout_top")
         self.gridLayout_top.setContentsMargins(0, 0, 0, 0)
-        self.widget_general = QWidget(EditCardPlacingConfig)
+        self.widget_general = QWidget(EditPlacingPlan)
         self.widget_general.setObjectName(u"widget_general")
         self.verticalLayout_general = QVBoxLayout(self.widget_general)
         self.verticalLayout_general.setSpacing(10)
@@ -314,50 +314,50 @@ class Ui_EditCardPlacingConfig(object):
         self.gridLayout_top.addWidget(self.widget_general, 0, 0, 1, 1)
 
 
-        self.retranslateUi(EditCardPlacingConfig)
+        self.retranslateUi(EditPlacingPlan)
 
         self.tabWidget_placing_config.setCurrentIndex(0)
 
 
-        QMetaObject.connectSlotsByName(EditCardPlacingConfig)
+        QMetaObject.connectSlotsByName(EditPlacingPlan)
     # setupUi
 
-    def retranslateUi(self, EditCardPlacingConfig):
-        EditCardPlacingConfig.setWindowTitle(QCoreApplication.translate("EditCardPlacingConfig", u"\u5361\u7247\u653e\u7f6e\u65b9\u6848\u7f16\u8f91", None))
-        self.label_file_path.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u6587\u4ef6\u8def\u5f84\uff1a", None))
-        self.pushButton_file_path.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u6d4f\u89c8", None))
-        self.checkBox_is_team_mode.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u7ec4\u961f\u6a21\u5f0f", None))
-        self.label_choose_section.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u9009\u62e9\u65b9\u6848\uff1a", None))
-        self.pushButton_new_config.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u65b0\u5efa\u65b9\u6848", None))
-        self.pushButton_modify_config.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u4fee\u6539\u65b9\u6848", None))
-        self.pushButton_delete_config.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u5220\u9664\u65b9\u6848", None))
-        self.label_1p_pos.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u623f\u4e3b\u653e\u7f6e\u4f4d\u7f6e", None))
-        self.label_1p_deck.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u9009\u62e9\u5361\u7ec4\uff1a", None))
-        self.groupBox_1p_placing_table.setTitle(QCoreApplication.translate("EditCardPlacingConfig", u"\u623f\u4e3b\u5361\u7247\u653e\u7f6e\u4fe1\u606f", None))
+    def retranslateUi(self, EditPlacingPlan):
+        EditPlacingPlan.setWindowTitle(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u7247\u653e\u7f6e\u65b9\u6848\u7f16\u8f91", None))
+        self.label_file_path.setText(QCoreApplication.translate("EditPlacingPlan", u"\u6587\u4ef6\u8def\u5f84\uff1a", None))
+        self.pushButton_file_path.setText(QCoreApplication.translate("EditPlacingPlan", u"\u6d4f\u89c8", None))
+        self.checkBox_is_team_mode.setText(QCoreApplication.translate("EditPlacingPlan", u"\u7ec4\u961f\u6a21\u5f0f", None))
+        self.label_choose_section.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9009\u62e9\u65b9\u6848\uff1a", None))
+        self.pushButton_new_config.setText(QCoreApplication.translate("EditPlacingPlan", u"\u65b0\u5efa\u65b9\u6848", None))
+        self.pushButton_modify_config.setText(QCoreApplication.translate("EditPlacingPlan", u"\u4fee\u6539\u65b9\u6848", None))
+        self.pushButton_delete_config.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5220\u9664\u65b9\u6848", None))
+        self.label_1p_pos.setText(QCoreApplication.translate("EditPlacingPlan", u"\u623f\u4e3b\u653e\u7f6e\u4f4d\u7f6e", None))
+        self.label_1p_deck.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9009\u62e9\u5361\u7ec4\uff1a", None))
+        self.groupBox_1p_placing_table.setTitle(QCoreApplication.translate("EditPlacingPlan", u"\u623f\u4e3b\u5361\u7247\u653e\u7f6e\u4fe1\u606f", None))
         ___qtablewidgetitem = self.tableWidget_1p_placing_table.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u5361\u7247\u540d\u79f0", None));
+        ___qtablewidgetitem.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u7247\u540d\u79f0", None));
         ___qtablewidgetitem1 = self.tableWidget_1p_placing_table.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u5361\u69fd\u4f4d\u7f6e", None));
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u69fd\u4f4d\u7f6e", None));
         ___qtablewidgetitem2 = self.tableWidget_1p_placing_table.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u653e\u7f6e\u4f4d\u7f6e", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("EditPlacingPlan", u"\u653e\u7f6e\u4f4d\u7f6e", None));
         ___qtablewidgetitem3 = self.tableWidget_1p_placing_table.horizontalHeaderItem(3)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u9ed8\u8ba4CD", None));
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9ed8\u8ba4CD", None));
         ___qtablewidgetitem4 = self.tableWidget_1p_placing_table.horizontalHeaderItem(4)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u64cd\u4f5c", None));
-        self.tabWidget_placing_config.setTabText(self.tabWidget_placing_config.indexOf(self.tab_1p_placing_config), QCoreApplication.translate("EditCardPlacingConfig", u"\u623f\u4e3b\u5361\u7247\u653e\u7f6e\u65b9\u6848", None))
-        self.label_2p_pos.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u623f\u5ba2\u653e\u7f6e\u4f4d\u7f6e", None))
-        self.label_2p_deck.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u9009\u62e9\u5361\u7ec4\uff1a", None))
-        self.groupBox_2p_placing_table.setTitle(QCoreApplication.translate("EditCardPlacingConfig", u"\u623f\u5ba2\u5361\u7247\u653e\u7f6e\u4fe1\u606f", None))
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("EditPlacingPlan", u"\u64cd\u4f5c", None));
+        self.tabWidget_placing_config.setTabText(self.tabWidget_placing_config.indexOf(self.tab_1p_placing_config), QCoreApplication.translate("EditPlacingPlan", u"\u623f\u4e3b\u5361\u7247\u653e\u7f6e\u65b9\u6848", None))
+        self.label_2p_pos.setText(QCoreApplication.translate("EditPlacingPlan", u"\u623f\u5ba2\u653e\u7f6e\u4f4d\u7f6e", None))
+        self.label_2p_deck.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9009\u62e9\u5361\u7ec4\uff1a", None))
+        self.groupBox_2p_placing_table.setTitle(QCoreApplication.translate("EditPlacingPlan", u"\u623f\u5ba2\u5361\u7247\u653e\u7f6e\u4fe1\u606f", None))
         ___qtablewidgetitem5 = self.tableWidget_2p_placing_table.horizontalHeaderItem(0)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u5361\u7247\u540d\u79f0", None));
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u7247\u540d\u79f0", None));
         ___qtablewidgetitem6 = self.tableWidget_2p_placing_table.horizontalHeaderItem(1)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u5361\u69fd\u4f4d\u7f6e", None));
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u69fd\u4f4d\u7f6e", None));
         ___qtablewidgetitem7 = self.tableWidget_2p_placing_table.horizontalHeaderItem(2)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u653e\u7f6e\u4f4d\u7f6e", None));
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("EditPlacingPlan", u"\u653e\u7f6e\u4f4d\u7f6e", None));
         ___qtablewidgetitem8 = self.tableWidget_2p_placing_table.horizontalHeaderItem(3)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u9ed8\u8ba4CD", None));
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9ed8\u8ba4CD", None));
         ___qtablewidgetitem9 = self.tableWidget_2p_placing_table.horizontalHeaderItem(4)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("EditCardPlacingConfig", u"\u64cd\u4f5c", None));
-        self.tabWidget_placing_config.setTabText(self.tabWidget_placing_config.indexOf(self.tab_2p_placing_config), QCoreApplication.translate("EditCardPlacingConfig", u"\u623f\u5ba2\u5361\u7247\u653e\u7f6e\u65b9\u6848", None))
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("EditPlacingPlan", u"\u64cd\u4f5c", None));
+        self.tabWidget_placing_config.setTabText(self.tabWidget_placing_config.indexOf(self.tab_2p_placing_config), QCoreApplication.translate("EditPlacingPlan", u"\u623f\u5ba2\u5361\u7247\u653e\u7f6e\u65b9\u6848", None))
     # retranslateUi
 

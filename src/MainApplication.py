@@ -2,11 +2,11 @@
 
 from PySide6.QtWidgets import QApplication
 
-from src.AppImplement.FormFiles.EditCardPlacingConfigForm import WidgetEditCardPlacingConfig
+from src.AppImplement.FormFiles.MyMainWindowForm import MainMyMainWindow
 
 
 if __name__ == '__main__':
     app = QApplication([])
-    myMainWindow = WidgetEditCardPlacingConfig()
+    myMainWindow = MainMyMainWindow()
     myMainWindow.show()
     app.exec()
