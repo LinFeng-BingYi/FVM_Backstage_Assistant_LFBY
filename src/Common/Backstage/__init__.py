@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from MouseAndKey import *
-from Others import *
-from PicAndColor import *
+from src.Common.Backstage.MouseAndKey import *
+from src.Common.Backstage.Others import *
+from src.Common.Backstage.PicAndColor import *
 
 if __name__ == "__main__":
     # 获取美食游戏窗口句柄

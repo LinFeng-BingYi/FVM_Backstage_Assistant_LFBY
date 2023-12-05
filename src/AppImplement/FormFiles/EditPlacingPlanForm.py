@@ -6,15 +6,16 @@
 # @Time    : 2023/12/2 22:28
 # @Dsc     : 实现编辑卡片放置方案的界面功能
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QWidget, QFileDialog, QTableWidget, QComboBox, QTableWidgetItem, QPlainTextEdit, \
-    QLineEdit, QHeaderView, QMessageBox
+from PySide6.QtWidgets import QWidget, QFileDialog, QTableWidget, QComboBox, QTableWidgetItem, QLineEdit, QHeaderView, QMessageBox
 from PySide6.QtCore import Qt
 
 import os
 
 from src.AppImplement.FormFiles.EditPlacingPlan import Ui_EditPlacingPlan
-from src.AppImplement.Business.RWPlacingPlan import PlacingFileProcessor
-from src.AppImplement.Business.RWPlayerDeck import PlayerDeckProcessor
+from src.AppImplement.RWConfigFile.RWPlacingPlan import PlacingFileProcessor
+from src.AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
+
+from src.AppImplement.GlobalValue.StaticValue import ROOT_PATH
 
 
 class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
@@ -25,9 +26,9 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         self.tableWidget_1p_placing_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
         self.tableWidget_2p_placing_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
 
-        self.cwd = os.getcwd()                              # 程序当前工作目录
+        self.cwd = ROOT_PATH                                # 程序当前工作目录
         self.file_processor: PlacingFileProcessor = None    # 收支记录文件读写器
-        self.player_deck_procs = PlayerDeckProcessor(r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\config\账号预设卡片组.ini")
+        self.player_deck_procs = PlayerDeckProcessor(ROOT_PATH + r"\config\账号预设卡片组.ini")
         self.edit_enable = False
 
         self.initWidgets()
@@ -40,7 +41,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         self.checkBox_is_team_mode.setEnabled(False)
         self.tab_1p_placing_config.setEnabled(self.edit_enable)
         self.tab_2p_placing_config.setEnabled(self.edit_enable)
-        init_file_path = r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\config\卡片放置方案\升级版组队常用方案_V1.00.ini"
+        init_file_path = ROOT_PATH + r"\config\卡片放置方案\升级版组队常用方案_V1.00.ini"
         # 初始化本窗口的文件处理器
         self.file_processor = PlacingFileProcessor(init_file_path)
         # 默认路径
@@ -62,7 +63,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         self.pushButton_modify_config.clicked.connect(self.changeEditStatus)
 
     def chooseFile(self):
-        chosen_file, file_type = QFileDialog.getOpenFileName(self, "选择文件", self.cwd + "\\..\\config\\卡片放置方案",
+        chosen_file, file_type = QFileDialog.getOpenFileName(self, "选择文件", self.cwd + "\\config\\卡片放置方案",
                                                              "All Files(*);;XML Files(*.xml)")
         norm_file_path = os.path.normpath(chosen_file)
         if norm_file_path == '.':

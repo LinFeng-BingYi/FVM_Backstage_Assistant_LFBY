@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # @Author  : Linfeng_Bingyi
 # @Contact : linfengbingyi@qq.com
-# @File    : __init__.py
+# @File    : StaticValue.py
 # @Time    : 2023/11/26 22:10
 # @Dsc     : 游戏中的固定值
+
+# 软件相关
+ROOT_PATH = "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY"
 
 
 # 地图相关 -------------------------------------------------------------------------
