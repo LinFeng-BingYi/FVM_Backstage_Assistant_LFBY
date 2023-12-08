@@ -5,14 +5,14 @@ import win32api
 from time import sleep
 
 
-def delay(duration):
+def delay(duration: int):
     """使进程睡眠
 
     Args:
-        duration: float
-            睡眠时长，单位秒(s)，最多三个小数位
+        duration: int
+            睡眠时长，单位毫秒(ms)，必须为整数
     """
-    sleep(duration)
+    sleep(duration / 1000)
 
 
 def waitClick():

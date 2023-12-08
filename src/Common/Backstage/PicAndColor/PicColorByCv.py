@@ -12,6 +12,7 @@ import win32ui
 import cv2
 import numpy
 import math
+from time import time
 
 
 # 找图 -----------------------------------------------------------------------------------------------
@@ -94,7 +95,7 @@ def save_captured_pic(pic_path, hwnd=0, cap_range=None):
 
 
 def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.9):
-    """在指定窗口中，指定范围内，寻找模板图像，相似度大于等于threshold则表示找到了
+    """在指定窗口中，指定范围内，寻找模板图像，相似度大于等于threshold则表示找到了. 失败返回 False
 
     Args:
         hwnd: int
@@ -106,7 +107,7 @@ def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: 
         threshold: float
             判断图像是否找到的阈值
 
-    Returns: tuple[float, float, float, float, float, float]
+    Returns: tuple[float, float, float, float, float, float] | False
         窗口中与模板图像相似度最高的位置信息。包含6个元素：
             - 匹配成功区域中心x坐标
             - 匹配成功区域中心y坐标
@@ -121,17 +122,83 @@ def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: 
         result = cv2.matchTemplate(target_pic, template_pic, cv2.TM_SQDIFF_NORMED)
     except cv2.error:
         print('文件错误! 模板图片路径：', template_path)
-        return None
+        return False
     height, width = target_pic.shape[:2]
     # 获取模板匹配结果矩阵中 最小值、最大值、最小值左上角、最大值左上角
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-    print(min_val)
-    if min_val >= 1 - threshold:
-        return None
+    # print(min_val)
+    if min_val > 1 - threshold:
+        return False
     coordinate = (min_loc[0] + width / 2, min_loc[1] + height / 2, min_loc[0], min_loc[1], min_loc[0] + width, min_loc[1] + height)
-    print(template_path, min_val, min_loc)
-    print(min_loc[0], min_loc[1])
+    # print(template_path, min_val, min_loc)
+    # print(min_loc[0], min_loc[1])
     return coordinate
+
+
+def find_pic_loop(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.9, max_time=600):
+    # 截图准备 -------------------------------------------------
+    # 获取句柄窗口的大小信息
+    rect = win32gui.GetWindowRect(hwnd)
+    # print("客户区", rect)
+    left = 0
+    top = 0
+    width = rect[2] - rect[0]
+    height = rect[3] - rect[1]
+    # print("客户区宽高", width, height)
+    if find_range is not None:
+        left = find_range[0]
+        top = find_range[1]
+        width = find_range[2] - find_range[0]
+        height = find_range[3] - find_range[1]
+    # print("截取区域", left, top)
+    # print("截取区域宽高", width, height)
+    # 根据窗口句柄获取窗口的设备上下文DC（Device Context）
+    hwndDC = win32gui.GetWindowDC(hwnd)
+    # 根据窗口的DC获取mfcDC
+    mfcDC = win32ui.CreateDCFromHandle(hwndDC)
+    # mfcDC创建可兼容的DC
+    saveDC = mfcDC.CreateCompatibleDC()
+    # 创建bitmap准备保存图片
+    saveBitMap = win32ui.CreateBitmap()
+    # 为bitmap开辟空间
+    saveBitMap.CreateCompatibleBitmap(mfcDC, width, height)
+    # 高度saveDC，将截图保存到saveBitmap中
+    saveDC.SelectObject(saveBitMap)
+    # 开始截图 -------------------------------------------------
+    try:
+        start_time = time()
+        while True:
+            # 从坐标（left，top）作为左上角，截取长宽为（w，h）的图片
+            saveDC.BitBlt((0, 0), (width, height), mfcDC, (left, top), win32con.SRCCOPY)
+            # 保存图片 ---------------------------------------
+            signedIntsArray = saveBitMap.GetBitmapBits(True)  # 获取位图信息，
+            # 返回图片
+            im_opencv = numpy.frombuffer(signedIntsArray, dtype='uint8')
+            im_opencv.shape = (height, width, 4)
+            # 待对比图片
+            target_pic = cv2.cvtColor(im_opencv, cv2.COLOR_BGRA2BGR)
+            # 模板图片
+            template_pic = cv2.imdecode(numpy.fromfile(template_path, dtype=numpy.uint8), -1)
+            result = cv2.matchTemplate(target_pic, template_pic, cv2.TM_SQDIFF_NORMED)
+            # 对比图像 ---------------------------------------
+            # 获取模板匹配结果矩阵中 最小值、最大值、最小值左上角、最大值左上角
+            min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+            # print(min_val)
+            if min_val <= 1 - threshold:
+                coordinate = (min_loc[0] + width / 2, min_loc[1] + height / 2, min_loc[0], min_loc[1],
+                              min_loc[0] + width, min_loc[1] + height)
+                return coordinate
+            if (time() - start_time) >= max_time:
+                return False
+    except cv2.error:
+        print('文件错误! 模板图片路径：', template_path)
+        return False
+    finally:
+        # 清除图片数据，防止内存泄露 ------------------------------
+        win32gui.DeleteObject(saveBitMap.GetHandle())
+        saveDC.DeleteDC()
+        mfcDC.DeleteDC()
+        win32gui.ReleaseDC(hwnd, hwndDC)
 
 
 # 找色 -----------------------------------------------------------------------------------------------
@@ -197,6 +264,40 @@ def find_color(hwnd: int, find_range: list, color: hex, threshold: float = 1):
     # 释放
     win32gui.ReleaseDC(hwnd, hwndDC)
     return False
+
+
+def find_color_loop(hwnd: int, find_range: list, color: hex, threshold: float = 1, max_time=600):
+    """在指定窗口，指定范围内循环寻找与目标颜色相似度大于阈值的坐标点，超过 max_time 还未找到则返回False
+
+    Args:
+        hwnd: int
+            指定的窗口句柄
+        find_range: list[int]
+            指定的寻找范围，包含4个元素：[左上角x坐标, 左上角y坐标, 右下角x坐标, 右下角y坐标]
+        color: hex
+            目标颜色，格式为BGR形式的16进制hex值，如：0xcaf3fc
+        threshold: float
+            判断颜色是否找到的阈值
+        max_time: int
+            寻找时间限制，单位为秒(s)
+
+    Returns: tuple[int, int] | bool[False]
+        查找成功则返回位置坐标；失败则返回False
+    """
+    hwndDC = win32gui.GetWindowDC(hwnd)
+    start_time = time()
+    while True:
+        for x in range(find_range[0], find_range[2] + 1):
+            for y in range(find_range[1], find_range[3] + 1):
+                pixel = win32gui.GetPixel(hwndDC, x, y)
+                if computeBGRColorSimilar(color, pixel) <= 1 - threshold:
+                    # print("当前坐标:", x, y, "\t颜色:", hex(pixel))
+                    # 释放
+                    win32gui.ReleaseDC(hwnd, hwndDC)
+                    return x, y
+        if (time() - start_time) >= max_time:
+            win32gui.ReleaseDC(hwnd, hwndDC)
+            return False
 
 
 def computeBGRColorSimilar(color1, color2):

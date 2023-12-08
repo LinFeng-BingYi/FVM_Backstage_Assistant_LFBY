@@ -18,6 +18,9 @@ class StartListWidget(BaseListWidget):
 
         self.func_widget = StartParamWidget()
 
+    def getFormParam(self):
+        return self.func_widget.getAllParam()
+
 
 class StartParamWidget(Ui_StartParam, QWidget):
     def __init__(self):
@@ -54,8 +57,10 @@ class StartParamWidget(Ui_StartParam, QWidget):
         hwnd_1p = self.lineEdit_1p_hwnd.text()
         hwnd_2p = self.lineEdit_2p_hwnd.text()
         global_info = {
-            "1P_hwnd": int(hwnd_1p) if hwnd_1p != '' else None,
+            "1p_hwnd": int(hwnd_1p) if hwnd_1p != '' else None,
+            "1p_zoom": 1,
             "2p_hwnd": int(hwnd_2p) if hwnd_2p != '' else None,
+            "2p_zoom": 1,
             "2p_name_pic_path": self.lineEdit_2p_name_pic.text()
         }
         return global_info

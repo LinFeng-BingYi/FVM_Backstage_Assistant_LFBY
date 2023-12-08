@@ -91,7 +91,6 @@ class BaseListWidget(QWidget):
         return self.status
 
     def getFuncWidget(self):
-        print("返回了关联控件")
         return self.func_widget
 
     @abstractmethod
@@ -100,8 +99,8 @@ class BaseListWidget(QWidget):
         """
         pass
 
-    @abstractmethod
-    def executeFunc(self):
-        """执行该功能
-        """
-        pass
+    # @abstractmethod
+    # def executeFunc(self):
+    #     """执行该功能
+    #     """
+    #     pass
