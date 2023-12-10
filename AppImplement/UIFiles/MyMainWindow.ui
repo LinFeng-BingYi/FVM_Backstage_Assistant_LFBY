@@ -754,7 +754,7 @@
   <customwidget>
    <class>FuncFlowListWidget</class>
    <extends>QListWidget</extends>
-   <header>src.AppImplement.FormFiles.CustomWidgets.ListWidget</header>
+   <header>AppImplement.FormFiles.CustomWidgets.ListWidget</header>
   </customwidget>
  </customwidgets>
  <resources/>

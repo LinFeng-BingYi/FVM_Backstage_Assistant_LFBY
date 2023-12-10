@@ -49,8 +49,8 @@ def switchWorldZone(hwnd: int, zone_name, zoom=1):
         delay(500)
         # 点击分区
         # 一区纵坐标82，每个区间隔25
-        print("换区坐标：", 782 * zoom, (82 + 25 * (need_switch_server[zone_name] - 1)) * zoom)
-        print("100%坐标：", 782, (82 + 25 * (need_switch_server[zone_name] - 1)))
+        # print("换区坐标：", 782 * zoom, (82 + 25 * (need_switch_server[zone_name] - 1)) * zoom)
+        # print("100%坐标：", 782, (82 + 25 * (need_switch_server[zone_name] - 1)))
         mouseClick(hwnd, 782 * zoom, (82 + 25 * (need_switch_server[zone_name] - 1)) * zoom)
         delay(2000)
 
@@ -227,6 +227,11 @@ def executeFlop(hwnd, flop_pos: str, zoom=1):
     delay(200)
     mouseClick(hwnd, 708 * zoom, 505 * zoom)
     delay(200)
+
+
+def exitRoom(hwnd, zoom=1):
+    mouseClick(hwnd, 920 * zoom, 560 * zoom)
+    delay(1000)
 
 
 # 游戏内放卡相关 --------------------------------------------------------------------------------

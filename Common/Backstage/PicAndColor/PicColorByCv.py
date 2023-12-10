@@ -264,6 +264,13 @@ def find_color(hwnd: int, find_range: list, color: hex, threshold: float = 1):
     for x in range(find_range[0], find_range[2]+1):
         for y in range(find_range[1], find_range[3] + 1):
             pixel = win32gui.GetPixel(hwndDC, x, y)
+            if threshold == 1:
+                # 完全匹配时直接对比数值
+                # print(pixel, color)
+                if pixel == color:
+                    return x, y
+                else:
+                    return False
             if computeBGRColorSimilar(color, pixel) <= 1 - threshold:
                 # print("当前坐标:", x, y, "\t颜色:", hex(pixel))
                 # 释放
@@ -299,6 +306,9 @@ def find_color_loop(hwnd: int, find_range: list, color: hex, threshold: float = 
         for x in range(find_range[0], find_range[2] + 1):
             for y in range(find_range[1], find_range[3] + 1):
                 pixel = win32gui.GetPixel(hwndDC, x, y)
+                if threshold == 1:
+                    # 完全匹配时直接对比数值
+                    return hex(pixel) == color
                 if computeBGRColorSimilar(color, pixel) <= 1 - threshold:
                     # print("当前坐标:", x, y, "\t颜色:", hex(pixel))
                     # 释放

@@ -175,7 +175,47 @@ MULTI_HIERARCHY_ZONE = {
     "雷城探险": LCTX_LEVEL_POS
 }
 
-#
+# 日常签到领奖相关 ---------------------------------------------------------------------
+# VIP签到
+VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\VIP签到.bmp"
+# 进入VIP
+OPEN_VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入VIP.bmp"
+# 每日签到
+DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\每日签到.bmp"
+# 进入每日签到
+OPEN_DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入每日签到.bmp"
+# 每日签到按钮
+DAILY_SIGNIN_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\每日签到按钮.bmp"
+# 美食活动
+FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\美食活动.bmp"
+# 进入美食活动
+OPEN_FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入美食活动.bmp"
+# 法老宝藏
+PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\法老宝藏.bmp"
+# 进入法老宝藏
+OPEN_PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入法老宝藏.bmp"
+# 法老宝藏免费
+PHARAOH_FREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\法老宝藏免费.bmp"
+# 塔罗寻宝
+TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\塔罗寻宝.bmp"
+# 进入塔罗寻宝
+OPEN_TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入塔罗寻宝.bmp"
+# 塔罗寻宝免费
+TAROT_FREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\塔罗寻宝免费.bmp"
+# 换线，用来判断活动界面是否关闭成功
+SWITCH_LINE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\换线.bmp"
+# 进入底部任务
+OPEN_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入底部任务.bmp"
+# 底部任务收起
+FOLD_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\底部任务收起.bmp"
+# 底部任务完成
+COMPLETE_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\底部任务完成.bmp"
+# 进入公会
+OPEN_UNION_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入公会.bmp"
+# 进入公会花园
+OPEN_UNION_GARDEN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入公会花园.bmp"
+# 公会花园成长值满
+UNION_GARDEN_MAX_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\公会花园成长值满.bmp"
 
 # 通关相关 -------------------------------------------------------------------------
 # 创房勾选密码

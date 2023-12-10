@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 # @Author  : Linfeng_Bingyi
 # @Contact : linfengbingyi@qq.com
-# @File    : BaseBusiness.py
+# @File    : BusBusiness.py
 # @Time    : 2023/12/7 1:24
-# @Dsc     : 基本业务线程类
+# @Dsc     : 总线业务线程类，需要在执行过程中输出信息，能够接受中断的业务
 import ctypes
 
 from PySide6.QtCore import QThread, QThreadPool, QRunnable, Signal, QDateTime
@@ -12,6 +12,7 @@ from PySide6.QtCore import QThread, QThreadPool, QRunnable, Signal, QDateTime
 from AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
 from AppImplement.RWConfigFile.RWPlacingPlan import PlacingPlanProcessor
 from AppImplement.Business.Foundation import *
+from AppImplement.Business.OrdinaryBusiness import *
 
 import threading
 
@@ -51,6 +52,7 @@ class BusinessBus(QThread):
         # 业务流程字典
         self.func_flow = []
 
+    # 业务总线的参数相关 ----------------------------------------------------------------
     def setGlobalFlowInfo(self, global_flow_info: dict):
         """设置整个流程的全局信息
 
@@ -109,6 +111,7 @@ class BusinessBus(QThread):
         self.func_flow = func_flow
         print("设置了内部参数：\n", self.func_flow)
 
+    # 最基本的 从 准备/开始 到结束翻牌 方法 ----------------------------------------------------
     def teamFromStartToFlop(self):
         """组队, 从点击 (准备/开始) 到 (结算完成翻牌)
         """
@@ -248,6 +251,7 @@ class BusinessBus(QThread):
         executeFlop(hwnd_1p, self.player1_info["flop_pos"], zoom1)
         self.formatBusinessMessage(f"翻取了第{self.player1_info['flop_pos']}张牌")
 
+    # 最关键的 启用翻牌 或 结束翻牌 ---------------------------------------------------------
     def startPlacingCard(self, cards_plan, player=1):
         """...
 
@@ -277,6 +281,7 @@ class BusinessBus(QThread):
         self.card_place_thread_pool.waitForDone(wait_time)
         print("花费时间：", time() - start_time)
 
+    # 功能：循环刷指定关卡 ---------------------------------------------------------------
     def loopSpecificLevel(self, zone, level, loop_count):
         self.formatBusinessMessage("启动[刷指定关卡]功能")
         # 切换地图
@@ -305,12 +310,21 @@ class BusinessBus(QThread):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
                 self.teamFromStartToFlop()
                 self.formatBusinessMessage(f"结束第{i + 1}局")
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
+            exitRoom(hwnd_2p, zoom2)
         else:
             for i in range(loop_count):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
                 self.singleFromStartToFlop()
                 self.formatBusinessMessage(f"结束第{i + 1}局")
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
         self.formatBusinessMessage("完成[刷指定关卡]功能")
+
+    # 功能：一键签到 ------------------------------------------------------------------
+    def signinAndActivity(self, activity_list: list):
+        pass
 
     def run(self) -> None:
         self.formatBusinessMessage("开始依次执行流程列表中可用功能")
@@ -451,47 +465,57 @@ class CardPlaceThread(QThread):
 
 
 if __name__ == "__main__":
-    cards_plan_1p = [{
-        "card_pos_series": "3,9,18000;5,9;1,9",
-        "card_slot": 7,
-        "card_cd": 15000
-    }, {
-        "card_pos_series": "2,9,25000;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9",
-        "card_slot": 3,
-        "card_cd": 7000
-    }, {
-        "card_pos_series": "1,9,29500;6,9",
-        "card_slot": 6,
-        "card_cd": 10000
-    }, {
-        "card_pos_series": "2,8,30000;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8",
-        "card_slot": 14,
-        "card_cd": 29000
-    }]
-    cards_plan_2p = [{
-        "card_pos_series": "2,9,5500;4,9;6,9",
-        "card_slot": 7,
-        "card_cd": 15000
-    }, {
-        "card_pos_series": "2,8,41500;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8",
-        "card_slot": 13,
-        "card_cd": 29000,
-        "shovel": True
-    }]
-    player1_info = {"hwnd": 1640472,
-                    "zoom": 1,
-                    "player_pos": "4,4",
-                    "cards_plan": cards_plan_1p,
-                    "flop_pos": "1"}
-    player2_info = {"hwnd": 1247762,
-                    "zoom": 1,
-                    "player_pos": "6,4",
-                    "cards_plan": cards_plan_2p,
-                    "flop_pos": "1"}
-    level_info = {"has_stage2": True,
-                  "shall_continue": False,
-                  "max_check_time": 10}
-    business_bus = BusinessBus()
-    business_bus.setPlayerInfo(player1_info, player2_info)
-    business_bus.setLevelInfo(level_info)
-    business_bus.teamFromStartToFlop()
+    # cards_plan_1p = [{
+    #     "card_pos_series": "3,9,18000;5,9;1,9",
+    #     "card_slot": 7,
+    #     "card_cd": 15000
+    # }, {
+    #     "card_pos_series": "2,9,25000;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9",
+    #     "card_slot": 3,
+    #     "card_cd": 7000
+    # }, {
+    #     "card_pos_series": "1,9,29500;6,9",
+    #     "card_slot": 6,
+    #     "card_cd": 10000
+    # }, {
+    #     "card_pos_series": "2,8,30000;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8",
+    #     "card_slot": 14,
+    #     "card_cd": 29000
+    # }]
+    # cards_plan_2p = [{
+    #     "card_pos_series": "2,9,5500;4,9;6,9",
+    #     "card_slot": 7,
+    #     "card_cd": 15000
+    # }, {
+    #     "card_pos_series": "2,8,41500;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8",
+    #     "card_slot": 13,
+    #     "card_cd": 29000,
+    #     "shovel": True
+    # }]
+    # player1_info = {"hwnd": 1640472,
+    #                 "zoom": 1,
+    #                 "player_pos": "4,4",
+    #                 "cards_plan": cards_plan_1p,
+    #                 "flop_pos": "1"}
+    # player2_info = {"hwnd": 1247762,
+    #                 "zoom": 1,
+    #                 "player_pos": "6,4",
+    #                 "cards_plan": cards_plan_2p,
+    #                 "flop_pos": "1"}
+    # level_info = {"has_stage2": True,
+    #               "shall_continue": False,
+    #               "max_check_time": 10}
+    # business_bus = BusinessBus()
+    # business_bus.setPlayerInfo(player1_info, player2_info)
+    # business_bus.setLevelInfo(level_info)
+    # business_bus.teamFromStartToFlop()
+
+    hwnd1 = 22218732
+    hwnd1 = 1709372
+    executeVipSignin(hwnd1)
+    executeDailySignin(hwnd1)
+    executeFreeWish(hwnd1)
+    executePharaohTreasure(hwnd1, 1)
+    executeTarotTreasure(hwnd1)
+    executeReceiveBottomQuest(hwnd1)
+    executeUnionGarden(hwnd1, True)

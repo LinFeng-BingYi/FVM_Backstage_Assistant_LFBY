@@ -4,7 +4,7 @@
 from Common.FileProcess.INIProcess import INIProcessor
 
 
-global_ini_procs = INIProcessor(r"config\AppGlobalSetting.ini")
+global_ini_procs = INIProcessor(r"..\..\config\AppGlobalSetting.ini")
 # 软件相关
 ROOT_PATH = global_ini_procs.getSpecificValue("path", "ROOT_DIR")
 DEFAULT_PLACING_PLAN_INI = global_ini_procs.getSpecificValue("path", "DEFAULT_PLACING_PLAN_INI")

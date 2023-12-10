@@ -1,13 +1,13 @@
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, QSize
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox
-from PySide6.QtGui import QTextCursor
+from PySide6.QtGui import QTextCursor, QIcon
 
 from AppImplement.FormFiles.MyMainWindow import Ui_MyMainWindow
 from AppImplement.FormFiles.EditPlacingPlanForm import WidgetEditPlacingPlan
 from AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
 from AppImplement.FormFiles.CustomWidgets.Dialog import AddFuncFlowDialog
 
-from AppImplement.Business.BaseBusiness import BusinessBus
+from AppImplement.Business.BusBusiness import BusinessBus
 
 
 class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
@@ -16,6 +16,10 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
     def __init__(self):
         super(MainMyMainWindow, self).__init__()
         self.setupUi(self)
+        # 窗口图标
+        icon = QIcon()
+        icon.addFile(u"resources/images/application/\u8f6f\u4ef6\u56fe\u6807/icon_nobkg.ico", QSize(), QIcon.Normal, QIcon.Off)
+        self.setWindowIcon(icon)
         # 补加控件
         self.verticalLayout_business_param_area = QVBoxLayout(self.widget_business_param_area)
         self.verticalLayout_business_param_area.setObjectName("verticalLayout_business_param_area")
