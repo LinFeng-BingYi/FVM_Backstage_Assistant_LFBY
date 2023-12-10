@@ -4,9 +4,9 @@ from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QListWidget, QListWidgetItem, QMenu, QMessageBox
 from PySide6.QtCore import Qt, Signal
 
-from src.AppImplement.FlowFunction.StartListItem import StartListWidget
-from src.AppImplement.FlowFunction.EndListItem import EndListWidget
-from src.AppImplement.FlowFunction.LoopLevelListItem import LoopLevelListWidget
+from AppImplement.FlowFunction.StartListItem import StartListWidget
+from AppImplement.FlowFunction.EndListItem import EndListWidget
+from AppImplement.FlowFunction.LoopLevelListItem import LoopLevelListWidget
 
 SUPPORT_FUNC = {"开始": StartListWidget, "结束": EndListWidget, "刷指定关卡": LoopLevelListWidget}
 

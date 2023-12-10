@@ -6,9 +6,9 @@
 # @Time    : 2023/11/26 22:03
 # @Dsc     : 基础操作
 
-from src.Common.Backstage import *
+from Common.Backstage import *
 
-from src.AppImplement.GlobalValue.StaticValue import *
+from AppImplement.GlobalValue.StaticValue import *
 
 
 # 选择 对应地图 对应关卡 ---------------------------------------------------------------------------

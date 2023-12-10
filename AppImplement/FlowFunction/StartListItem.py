@@ -4,14 +4,14 @@
 from PySide6.QtWidgets import QFileDialog
 from PySide6.QtCore import QThread
 
-from src.AppImplement.FlowFunction.BaseListItem import BaseListWidget, BaseParamWidget
-from src.AppImplement.FormFiles.StartParam import Ui_StartParam
-from src.Common.Backstage.Others import waitClick, mousePosHwnd
+from AppImplement.FlowFunction.BaseListItem import BaseListWidget, BaseParamWidget
+from AppImplement.FormFiles.StartParam import Ui_StartParam
+from Common.Backstage.Others import waitClick, mousePosHwnd
 
 import os
 from re import match
 
-from src.AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH, ZOOM
+from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH, ZOOM
 
 
 class StartListWidget(BaseListWidget):

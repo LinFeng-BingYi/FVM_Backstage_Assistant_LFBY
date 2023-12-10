@@ -11,11 +11,11 @@ from PySide6.QtCore import Qt
 
 import os
 
-from src.AppImplement.FormFiles.EditPlacingPlan import Ui_EditPlacingPlan
-from src.AppImplement.RWConfigFile.RWPlacingPlan import PlacingPlanProcessor
-from src.AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
+from AppImplement.FormFiles.EditPlacingPlan import Ui_EditPlacingPlan
+from AppImplement.RWConfigFile.RWPlacingPlan import PlacingPlanProcessor
+from AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
 
-from src.AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH, DEFAULT_PLACING_PLAN_INI, DEFAULT_DECK_INI
+from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH, DEFAULT_PLACING_PLAN_INI, DEFAULT_DECK_INI
 
 
 class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):

@@ -2,12 +2,12 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox
 from PySide6.QtGui import QTextCursor
 
-from src.AppImplement.FormFiles.MyMainWindow import Ui_MyMainWindow
-from src.AppImplement.FormFiles.EditPlacingPlanForm import WidgetEditPlacingPlan
-from src.AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
-from src.AppImplement.FormFiles.CustomWidgets.Dialog import AddFuncFlowDialog
+from AppImplement.FormFiles.MyMainWindow import Ui_MyMainWindow
+from AppImplement.FormFiles.EditPlacingPlanForm import WidgetEditPlacingPlan
+from AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
+from AppImplement.FormFiles.CustomWidgets.Dialog import AddFuncFlowDialog
 
-from src.AppImplement.Business.BaseBusiness import BusinessBus
+from AppImplement.Business.BaseBusiness import BusinessBus
 
 
 class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):

@@ -3,10 +3,10 @@
 
 from PySide6.QtWidgets import QWidget
 
-from src.AppImplement.FlowFunction.BaseListItem import BaseListWidget, BaseParamWidget
-from src.AppImplement.FormFiles.EndParam import Ui_EndParam
+from AppImplement.FlowFunction.BaseListItem import BaseListWidget, BaseParamWidget
+from AppImplement.FormFiles.EndParam import Ui_EndParam
 
-from src.AppImplement.GlobalValue.StaticValue import ROOT_PATH
+from AppImplement.GlobalValue.StaticValue import ROOT_PATH
 
 
 class EndListWidget(BaseListWidget):

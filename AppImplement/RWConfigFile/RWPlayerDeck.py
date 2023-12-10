@@ -6,7 +6,7 @@
 # @Time    : 2023/12/3 16:22
 # @Dsc     : 实现对账号预设卡组信息的读写
 
-from src.Common.FileProcess.INIProcess import INIProcessor
+from Common.FileProcess.INIProcess import INIProcessor
 
 EXCLUDE_SECTION = ['Default', 'CD配置']
 DECK_COMMON_KEY = ["描述", "卡片组编号", "卡片CD配置"]

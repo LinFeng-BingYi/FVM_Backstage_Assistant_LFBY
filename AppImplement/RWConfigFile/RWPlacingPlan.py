@@ -6,7 +6,7 @@
 # @Time    : 2023/12/3 2:01
 # @Dsc     : 实现对卡片放置方案文件的读写
 
-from src.Common.FileProcess.INIProcess import INIProcessor
+from Common.FileProcess.INIProcess import INIProcessor
 
 COMMON_1P_KEY = ["描述", "1P放置位置", "1P所用卡片组"]
 COMMON_2P_KEY = ["描述", "1P放置位置", "2P放置位置", "1P所用卡片组", "2P所用卡片组"]

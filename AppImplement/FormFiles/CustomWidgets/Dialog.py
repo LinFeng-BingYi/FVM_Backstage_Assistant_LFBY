@@ -4,7 +4,7 @@
 from PySide6.QtWidgets import QDialog, QWidget, QComboBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt, Signal
 
-from src.AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
+from AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
 
 
 class AddFuncFlowDialog(QDialog):

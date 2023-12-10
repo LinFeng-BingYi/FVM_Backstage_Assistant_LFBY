@@ -9,9 +9,9 @@ import ctypes
 
 from PySide6.QtCore import QThread, QThreadPool, QRunnable, Signal, QDateTime
 
-from src.AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
-from src.AppImplement.RWConfigFile.RWPlacingPlan import PlacingPlanProcessor
-from src.AppImplement.Business.Foundation import *
+from AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
+from AppImplement.RWConfigFile.RWPlacingPlan import PlacingPlanProcessor
+from AppImplement.Business.Foundation import *
 
 import threading
 

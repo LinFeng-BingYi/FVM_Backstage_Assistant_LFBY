@@ -5,7 +5,7 @@
 # @File    : StaticValue.py
 # @Time    : 2023/11/26 22:10
 # @Dsc     : 游戏中的固定值
-from src.AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
+from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
 # 地图相关 -------------------------------------------------------------------------
 # 世界地图坐标

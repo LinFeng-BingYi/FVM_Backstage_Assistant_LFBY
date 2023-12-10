@@ -22,7 +22,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QFram
     QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
     QTabWidget, QToolBar, QVBoxLayout, QWidget)
 
-from src.AppImplement.FormFiles.CustomWidgets.ListWidget import FuncFlowListWidget
+from AppImplement.FormFiles.CustomWidgets.ListWidget import FuncFlowListWidget
 
 class Ui_MyMainWindow(object):
     def setupUi(self, MyMainWindow):

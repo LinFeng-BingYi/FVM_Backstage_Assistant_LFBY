@@ -4,7 +4,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
-from src.AppImplement.FormFiles.MyMainWindowForm import MainMyMainWindow
+from AppImplement.FormFiles.MyMainWindowForm import MainMyMainWindow
 
 
 if __name__ == '__main__':
