@@ -11,6 +11,7 @@ from src.Common.Backstage import *
 from src.AppImplement.GlobalValue.StaticValue import *
 
 
+# 选择 对应地图 对应关卡 ---------------------------------------------------------------------------
 def switchWorldZone(hwnd: int, zone_name, zoom=1):
     """在世界地图中切换地区，地区名必须与世界地图中显示的保持一致
     """
@@ -41,26 +42,20 @@ def switchWorldZone(hwnd: int, zone_name, zoom=1):
             return
     # 点击对应的地图
     mouseClick(hwnd, WORLD_MAP_ZONE_POS[zone_name][0] * zoom, WORLD_MAP_ZONE_POS[zone_name][0] * zoom)
+    delay(1000)
     if zone_name in need_switch_server:
         # 点击”换线“
         mouseClick(hwnd, 820 * zoom, 85 * zoom)
         delay(500)
         # 点击分区
         # 一区纵坐标82，每个区间隔25
+        print("换区坐标：", 782 * zoom, (82 + 25 * (need_switch_server[zone_name] - 1)) * zoom)
+        print("100%坐标：", 782, (82 + 25 * (need_switch_server[zone_name] - 1)))
         mouseClick(hwnd, 782 * zoom, (82 + 25 * (need_switch_server[zone_name] - 1)) * zoom)
         delay(2000)
 
 
 def singleLayerChooseLevel(hwnd, zone_name, level_name, zoom=1):
-    hierarchy_dict = {
-        "美味岛": MWD_LEVEL_POS,
-        "火山岛": HSD_LEVEL_POS,
-        "浮空岛": FKD_LEVEL_POS,
-        "火山遗迹": HSYJ_LEVEL_POS,
-        "海底漩涡": HDXW_LEVEL_POS,
-        "竞技岛": JJD_LEVEL_POS,
-        "探险营地": TXYD_LEVEL_POS,
-    }
     # 切换地图
     switchWorldZone(hwnd, zone_name, zoom)
     # 选择关卡
@@ -70,11 +65,40 @@ def singleLayerChooseLevel(hwnd, zone_name, level_name, zoom=1):
             # 如果被遮挡，则点击切换上方活动页
             mouseClick(hwnd, 790 * zoom, 27 * zoom)
             delay(500)
-    # 选择关卡
-    mouseClick(hwnd, hierarchy_dict[zone_name][level_name][0], hierarchy_dict[zone_name][level_name][1])
+    # 选择 单层级地图 关卡
+    mouseClick(hwnd,
+               SINGLE_HIERARCHY_ZONE[zone_name][level_name][0] * zoom,
+               SINGLE_HIERARCHY_ZONE[zone_name][level_name][1] * zoom)
     delay(2000)
 
 
+def multiLayerChooseLevel(hwnd, zone_name, level_name, zoom=1):
+    """写死的方法
+    """
+    # 切换到探险营地-探险港口
+    singleLayerChooseLevel(hwnd, "探险营地", "探险港口", zoom)
+    # 选择副本地图
+    mouseClick(hwnd,
+               TXGK_ZONE_POS[zone_name][0] * zoom,
+               TXGK_ZONE_POS[zone_name][1] * zoom)
+    delay(2000)
+    # 选择 副本地图 关卡
+    mouseClick(hwnd,
+               MULTI_HIERARCHY_ZONE[zone_name][level_name][0] * zoom,
+               MULTI_HIERARCHY_ZONE[zone_name][level_name][1] * zoom)
+    delay(2000)
+
+
+def chooseSingleOrMultiZone(hwnd, zone_name, level_name, zoom=1):
+    if zone_name in SINGLE_HIERARCHY_ZONE:
+        singleLayerChooseLevel(hwnd, zone_name, level_name, zoom)
+    elif zone_name in MULTI_HIERARCHY_ZONE:
+        multiLayerChooseLevel(hwnd, zone_name, level_name, zoom)
+    else:
+        raise KeyError
+
+
+# 创建房间 -----------------------------------------------------------------------------------
 def createPwdRoom(hwnd, pwd: str = "0000", zoom=1):
     # 查看是否已勾选使用密码
     if not find_pic(hwnd, CREATE_ROOM_PSW_PATH, [470, 430, 510, 470]):
@@ -93,27 +117,28 @@ def createPwdRoom(hwnd, pwd: str = "0000", zoom=1):
     delay(2000)
 
 
-def teamInvite(hwnd_1p, hwnd_2p, player2_name_path, zoom=1):
+def teamInvite(hwnd_1p, hwnd_2p, player2_name_path, zoom1=1, zoom2=1):
     # 打开"邀请"
-    mouseClick(hwnd_1p, 410 * zoom, 550 * zoom)
+    mouseClick(hwnd_1p, 410 * zoom1, 550 * zoom1)
     delay(300)
     # 选择"好友"分页
-    mouseClick(hwnd_1p, 530 * zoom, 130 * zoom)
+    mouseClick(hwnd_1p, 530 * zoom1, 130 * zoom1)
     delay(1000)
 
     player2_result = find_pic(hwnd_1p, player2_name_path, [418, 133, 638, 448])
+    print(player2_result)
     if player2_result:
         # 2P先拒绝其他邀请
-        mouseClick(hwnd_2p, 610 * zoom, 400 * zoom)
+        mouseClick(hwnd_2p, 610 * zoom2, 400 * zoom2)
         delay(50)
         # 1P点击"邀请"
-        mouseClick(hwnd_1p, 600 * zoom, (player2_result[1] + 14) * zoom)
+        mouseClick(hwnd_1p, 600 * zoom1, player2_result[1] * zoom1)
         delay(1000)
         # 2P接受邀请
-        mouseClick(hwnd_2p, 450 * zoom, 400 * zoom)
+        mouseClick(hwnd_2p, 450 * zoom2, 400 * zoom2)
         delay(100)
         # 1P退出邀请界面
-        mouseClick(hwnd_1p, 590 * zoom, 490 * zoom)
+        mouseClick(hwnd_1p, 590 * zoom1, 490 * zoom1)
         delay(1000)
         return True
     return False
@@ -127,6 +152,7 @@ def roomChooseDeck(hwnd, deck_no, zoom=1):
     delay(1000)
 
 
+# 游戏内循环检测 --------------------------------------------------------------------------------
 def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom=1):
     """循环检测进入游戏
 
@@ -151,7 +177,7 @@ def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom=1):
             mouseClick(hwnd_1p, 872 * zoom, 480 * zoom)
         elif (time_sum % 1500) == 750:
             if hwnd_2p > 0:
-                mouseClick(hwnd_2p, 872 * zoom, 480 * zoom)
+                mouseClick(hwnd_2p, 879 * zoom, 481 * zoom)
         # 判断结束
         time_sum += 50
         if time_sum >= 120000:
@@ -203,7 +229,8 @@ def executeFlop(hwnd, flop_pos: str, zoom=1):
     delay(200)
 
 
-def placeCard(hwnd, pos_tuple: str, zoom):
+# 游戏内放卡相关 --------------------------------------------------------------------------------
+def placeCard(hwnd, pos_tuple: str, zoom=1):
     # 关卡内左上角(1, 1)格子坐标
     left_top_pos = (332, 144)
     grid_width = 60
@@ -220,7 +247,7 @@ def placeCard(hwnd, pos_tuple: str, zoom):
     mouseClick(hwnd, (left_top_pos[0] + (pos_y - 1) * grid_width) * zoom, (left_top_pos[1] + (pos_x - 1) * grid_height) * zoom)
 
 
-def loopPlaceCard(hwnd, pos_series: str, card_slot: int, card_cd: int, zoom):
+def loopPlaceCard(hwnd, pos_series: str, card_slot: int, card_cd: int, zoom=1):
     # 卡槽坐标列表
     card_slot_x_list = [225, 277, 330, 383, 437, 490, 542, 595, 649, 702, 754, 807, 861, 914, 914, 914, 914, 914, 914, 914, 914]
     card_slot_y_list = [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 83, 151, 219, 287, 355, 423, 491]
@@ -264,7 +291,7 @@ def loopPlaceCard(hwnd, pos_series: str, card_slot: int, card_cd: int, zoom):
             mouseClick(hwnd, 80 * zoom, 130 * zoom)
 
 
-def loopPlaceCardUpgrade(hwnd, pos_series: str, card_slot: int, card_cd: int, zoom):
+def loopPlaceCardUpgrade(hwnd, pos_series: str, card_slot: int, card_cd: int, zoom=1):
     # 卡槽坐标列表
     card_slot_x_list = [225, 277, 330, 383, 437, 490, 542, 595, 649, 702, 754, 807, 861, 914, 914, 914, 914, 914, 914, 914, 914]
     card_slot_y_list = [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 83, 151, 219, 287, 355, 423, 491]
@@ -277,6 +304,7 @@ def loopPlaceCardUpgrade(hwnd, pos_series: str, card_slot: int, card_cd: int, zo
     # 所选的卡槽坐标
     card_slot_x = card_slot_x_list[card_slot - 1]
     card_slot_y = card_slot_y_list[card_slot - 1]
+    card_cd = int(card_cd)
     # 卡片放置序列
     pos_series = pos_series.split(';')
 
@@ -332,3 +360,53 @@ def loopPlaceCardUpgrade(hwnd, pos_series: str, card_slot: int, card_cd: int, zo
                 # 放回失败的卡
                 mouseClick(hwnd, 80 * zoom, 130 * zoom)
 
+
+def loopPlaceCardForThread(hwnd, pos_series: str, card_slot: int, card_cd: int, stop_flag: list, zoom=1):
+    # 卡槽坐标列表
+    card_slot_x_list = [225, 277, 330, 383, 437, 490, 542, 595, 649, 702, 754, 807, 861, 914, 914, 914, 914, 914, 914, 914, 914]
+    card_slot_y_list = [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 83, 151, 219, 287, 355, 423, 491]
+
+    # 关卡内左上角(1, 1)格子坐标
+    left_top_pos = (332, 144)
+    grid_width = 60
+    grid_height = 64
+
+    # 所选的卡槽坐标
+    card_slot_x = card_slot_x_list[card_slot - 1]
+    card_slot_y = card_slot_y_list[card_slot - 1]
+    # 卡片放置序列
+    pos_series = pos_series.split(';')
+
+    for pos_tuple in pos_series:
+        if stop_flag[0]:
+            print("结束了")
+            return
+        # 延时
+        if pos_tuple == '-':
+            delay(card_cd)
+        elif pos_tuple == '1':
+            delay(1000)
+        elif pos_tuple == '10':
+            delay(10000)
+        else:
+            pos_info = pos_tuple.split(',')
+
+            pos_x, pos_y = int(pos_info[0]), int(pos_info[1])
+            if len(pos_info) == 3:
+                place_delay = int(pos_info[2])
+                delay(place_delay)
+            else:
+                delay(card_cd)
+
+            if stop_flag[0]:
+                print("结束了")
+                return
+
+            if card_slot == 3:
+                print(f"放置位置：({pos_x}, {pos_y})")
+            # 取卡
+            mouseClick(hwnd, card_slot_x * zoom, card_slot_y * zoom)
+            # 放卡
+            mouseClick(hwnd, (left_top_pos[0] + (pos_y - 1) * grid_width) * zoom, (left_top_pos[1] + (pos_x - 1) * grid_height) * zoom)
+            # 放回失败的卡
+            mouseClick(hwnd, 80 * zoom, 130 * zoom)

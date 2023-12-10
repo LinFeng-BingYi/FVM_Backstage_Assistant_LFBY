@@ -12,10 +12,10 @@ from PySide6.QtCore import Qt
 import os
 
 from src.AppImplement.FormFiles.EditPlacingPlan import Ui_EditPlacingPlan
-from src.AppImplement.RWConfigFile.RWPlacingPlan import PlacingFileProcessor
+from src.AppImplement.RWConfigFile.RWPlacingPlan import PlacingPlanProcessor
 from src.AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
 
-from src.AppImplement.GlobalValue.StaticValue import ROOT_PATH
+from src.AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH, DEFAULT_PLACING_PLAN_INI, DEFAULT_DECK_INI
 
 
 class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
@@ -27,8 +27,9 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         self.tableWidget_2p_placing_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
 
         self.cwd = ROOT_PATH                                # 程序当前工作目录
-        self.file_processor: PlacingFileProcessor = None    # 收支记录文件读写器
-        self.player_deck_procs = PlayerDeckProcessor(ROOT_PATH + r"\config\账号预设卡片组.ini")
+        self.place_plan_procs: PlacingPlanProcessor = None    # 放卡方案文件读写器
+        print(DEFAULT_PLACING_PLAN_INI)
+        self.player_deck_procs = PlayerDeckProcessor(DEFAULT_DECK_INI)
         self.edit_enable = False
 
         self.initWidgets()
@@ -41,9 +42,9 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         self.checkBox_is_team_mode.setEnabled(False)
         self.tab_1p_placing_config.setEnabled(self.edit_enable)
         self.tab_2p_placing_config.setEnabled(self.edit_enable)
-        init_file_path = ROOT_PATH + r"\config\卡片放置方案\升级版组队常用方案_V1.00.ini"
+        init_file_path = DEFAULT_PLACING_PLAN_INI
         # 初始化本窗口的文件处理器
-        self.file_processor = PlacingFileProcessor(init_file_path)
+        self.place_plan_procs = PlacingPlanProcessor(init_file_path)
         # 默认路径
         self.lineEdit_file_path.setText(init_file_path)
         # 填充卡片组comboBox
@@ -121,10 +122,10 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
     def responseFilePathChange(self):
         self.clearWidgets()
         # 更新文件处理器存储的文件路径
-        self.file_processor.setFilePath(self.lineEdit_file_path.text())
+        self.place_plan_procs.setFilePath(self.lineEdit_file_path.text())
         # 填充放卡方案comboBox
-        print(self.file_processor.getAllSection())
-        self.comboBox_choose_section.addItems(self.file_processor.getAllSection())
+        print(self.place_plan_procs.getAllSection())
+        self.comboBox_choose_section.addItems(self.place_plan_procs.getAllSection())
 
         self.displayPlan()
 
@@ -133,7 +134,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         if plan_name == '':     # 表示文件中没有方案
             return
         # 解析当前的卡片放置方案
-        plan_content = self.file_processor.readPlan(plan_name)
+        plan_content = self.place_plan_procs.readPlan(plan_name)
         print(plan_content)
         # 设置单人/组队模式
         self.checkBox_is_team_mode.setChecked(True if plan_content['player_num'] == 2 else False)

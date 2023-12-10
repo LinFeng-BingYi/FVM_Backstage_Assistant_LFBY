@@ -123,12 +123,16 @@ def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: 
     except cv2.error:
         print('文件错误! 模板图片路径：', template_path)
         return False
-    height, width = target_pic.shape[:2]
+    height, width = template_pic.shape[:2]
     # 获取模板匹配结果矩阵中 最小值、最大值、最小值左上角、最大值左上角
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
     # print(min_val)
     if min_val > 1 - threshold:
         return False
+
+    # 若指定了找图范围，则匹配位置的真实左上角需要加回找图范围的左上角的偏移值
+    if find_range is not None:
+        min_loc = (min_loc[0] + find_range[0], min_loc[1] + find_range[1])
     coordinate = (min_loc[0] + width / 2, min_loc[1] + height / 2, min_loc[0], min_loc[1], min_loc[0] + width, min_loc[1] + height)
     # print(template_path, min_val, min_loc)
     # print(min_loc[0], min_loc[1])
@@ -185,8 +189,12 @@ def find_pic_loop(hwnd: int, template_path: str, find_range: list = None, thresh
             min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
             # print(min_val)
             if min_val <= 1 - threshold:
-                coordinate = (min_loc[0] + width / 2, min_loc[1] + height / 2, min_loc[0], min_loc[1],
-                              min_loc[0] + width, min_loc[1] + height)
+                # 若指定了找图范围，则匹配位置的真实左上角需要加回找图范围的左上角的偏移值
+                if find_range is not None:
+                    min_loc = (min_loc[0] + find_range[0], min_loc[1] + find_range[1])
+                template_height, template_width = template_pic.shape[:2]
+                coordinate = (min_loc[0] + template_width / 2, min_loc[1] + template_height / 2, min_loc[0], min_loc[1],
+                              min_loc[0] + template_width, min_loc[1] + template_height)
                 return coordinate
             if (time() - start_time) >= max_time:
                 return False
@@ -285,6 +293,7 @@ def find_color_loop(hwnd: int, find_range: list, color: hex, threshold: float = 
         查找成功则返回位置坐标；失败则返回False
     """
     hwndDC = win32gui.GetWindowDC(hwnd)
+    print(hwnd, "设备上下文：", hwndDC)
     start_time = time()
     while True:
         for x in range(find_range[0], find_range[2] + 1):
@@ -294,9 +303,11 @@ def find_color_loop(hwnd: int, find_range: list, color: hex, threshold: float = 
                     # print("当前坐标:", x, y, "\t颜色:", hex(pixel))
                     # 释放
                     win32gui.ReleaseDC(hwnd, hwndDC)
+                    print("设备上下文释放：", hwndDC)
                     return x, y
         if (time() - start_time) >= max_time:
             win32gui.ReleaseDC(hwnd, hwndDC)
+            print("设备上下文释放：", hwndDC)
             return False
 
 

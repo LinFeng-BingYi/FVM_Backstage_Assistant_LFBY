@@ -29,7 +29,7 @@ class BaseListWidget(QWidget):
         self.status = "hanging"
 
         # item关联的widget，用于在右侧“功能参数配置”tab页展示
-        self.func_widget = None
+        self.func_widget = BaseParamWidget()
 
         # 初始化
         self.changeStatus(self.status)
@@ -79,13 +79,16 @@ class BaseListWidget(QWidget):
 
         Args:
             status: str
-                改变的状态, 取值范围为 ["hanging", "waiting", "executing", "completed", "banned"]
-                分别表示：挂起、等待、执行、完成、禁用
+                改变的状态, 取值范围为 ["hanging", "waiting", "executing", "completed", "banned", "wrong"]
+                分别表示：挂起、等待、执行、完成、禁用、错误
         """
         if status not in self.status_color_dict:
             raise ValueError
         self.status = status
         self.label_status.setStyleSheet(self.status_color_dict[self.status])
+
+    def getFuncName(self):
+        return self.label_function_name.text()
 
     def getStatus(self):
         return self.status
@@ -94,7 +97,7 @@ class BaseListWidget(QWidget):
         return self.func_widget
 
     @abstractmethod
-    def getFormParam(self):
+    def getFuncParam(self):
         """获取属性 self.func_widget 的界面参数
         """
         pass
@@ -104,3 +107,16 @@ class BaseListWidget(QWidget):
     #     """执行该功能
     #     """
     #     pass
+
+
+class BaseParamWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+
+    @abstractmethod
+    def getAllParam(self):
+        pass
+
+    @abstractmethod
+    def checkInputValidity(self):
+        pass

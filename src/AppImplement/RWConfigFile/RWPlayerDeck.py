@@ -30,6 +30,8 @@ class PlayerDeckProcessor:
             encoding: str
                 文件编码. 默认为 'utf-8'
         """
+        if file_path is None:
+            return
         # 文件没改变则直接退出
         if file_path == self.file_path:
             return
@@ -116,10 +118,10 @@ class PlayerDeckProcessor:
         card_name_list = self.ini_procs.getAllKey(deck_name)
         card_name_list = [card_name for card_name in card_name_list if card_name not in DECK_COMMON_KEY]
         for key in card_name_list:
-            slot_info = self.ini_procs.getSpecificValue(deck_name, key)
-            deck_slot_info[key] = slot_info
+            slot_no = self.ini_procs.getSpecificValue(deck_name, key)
+            deck_slot_info[key] = int(slot_no)
             # 添加到卡组内CD字典
-            deck_cd_info[key] = card_cd_dict[key] if key in list(card_cd_dict) else card_cd_dict["默认"]
+            deck_cd_info[key] = int(card_cd_dict[key]) if key in list(card_cd_dict) else int(card_cd_dict["默认"])
         deck_dict['deck_slot_info'] = deck_slot_info
         deck_dict['deck_cd_info'] = deck_cd_info
         # print("卡片组信息：\n", deck_dict)

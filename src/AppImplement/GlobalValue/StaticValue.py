@@ -5,10 +5,7 @@
 # @File    : StaticValue.py
 # @Time    : 2023/11/26 22:10
 # @Dsc     : 游戏中的固定值
-
-# 软件相关
-ROOT_PATH = "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY"
-
+from src.AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
 # 地图相关 -------------------------------------------------------------------------
 # 世界地图坐标
@@ -160,6 +157,25 @@ LCTX_LEVEL_POS = {
     "冰巨人雪芭夜": (700, 256),
     "艾莎星冰乐": (616, 325)
 }
+
+# 单层级地图
+SINGLE_HIERARCHY_ZONE = {
+    "美味岛": MWD_LEVEL_POS,
+    "火山岛": HSD_LEVEL_POS,
+    "浮空岛": FKD_LEVEL_POS,
+    "火山遗迹": HSYJ_LEVEL_POS,
+    "海底漩涡": HDXW_LEVEL_POS,
+    "竞技岛": JJD_LEVEL_POS,
+    "探险营地": TXYD_LEVEL_POS,
+}
+
+# 多层级地图
+MULTI_HIERARCHY_ZONE = {
+    "雪山探险": XSTX_LEVEL_POS,
+    "雷城探险": LCTX_LEVEL_POS
+}
+
+#
 
 # 通关相关 -------------------------------------------------------------------------
 # 创房勾选密码

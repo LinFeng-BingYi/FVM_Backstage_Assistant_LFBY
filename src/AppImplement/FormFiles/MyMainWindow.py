@@ -16,11 +16,11 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QHBoxLayout,
-    QLabel, QLineEdit, QListWidgetItem, QMainWindow,
-    QMenu, QMenuBar, QPlainTextEdit, QProgressBar,
-    QPushButton, QSizePolicy, QSpacerItem, QTabWidget,
-    QToolBar, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QFrame,
+    QHBoxLayout, QLabel, QLineEdit, QListWidgetItem,
+    QMainWindow, QMenu, QMenuBar, QPlainTextEdit,
+    QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
+    QTabWidget, QToolBar, QVBoxLayout, QWidget)
 
 from src.AppImplement.FormFiles.CustomWidgets.ListWidget import FuncFlowListWidget
 
@@ -93,6 +93,8 @@ class Ui_MyMainWindow(object):
 
         self.listWidget_flow = FuncFlowListWidget(self.widget_edit_flow)
         self.listWidget_flow.setObjectName(u"listWidget_flow")
+        self.listWidget_flow.setDragEnabled(True)
+        self.listWidget_flow.setDragDropMode(QAbstractItemView.InternalMove)
 
         self.verticalLayout_edit_flow.addWidget(self.listWidget_flow)
 
@@ -364,6 +366,9 @@ class Ui_MyMainWindow(object):
         self.action_about.setText(QCoreApplication.translate("MyMainWindow", u"\u5173\u4e8e", None))
         self.label_main_tittle.setText(QCoreApplication.translate("MyMainWindow", u"<html><head/><body><p align=\"center\"><span style=\" color:#55aaff;\">\u6b22\u8fce\u4f7f\u7528\u3010FVM\u4e00\u952e\u65e5\u5e38\u52a9\u624b\u3011\uff01</span><span style=\" font-size:10pt;\">\u95ee\u9898\u53cd\u9988Q\u7fa4\uff1a51865331 B\u7ad9\u89c6\u9891\u6559\u7a0b\uff1a\u6797\u98ce\u51b0\u7ffc</span></p></body></html>", None))
         self.label_edit_flow.setText(QCoreApplication.translate("MyMainWindow", u"<html><head/><body><p><span style=\" font-size:11pt; font-weight:700;\">\u6d41\u7a0b\u7f16\u8f91\u533a</span></p></body></html>", None))
+#if QT_CONFIG(tooltip)
+        self.listWidget_flow.setToolTip(QCoreApplication.translate("MyMainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">\u529f\u80fd\u6d41\u7a0b\u5217\u8868</span></p><p>\u53cc\u51fb\u9009\u4e2d\uff0c\u53f3\u4fa7\u663e\u793a\u53c2\u6570\u754c\u9762</p><p>\u53f3\u952e\u53ef\u5220\u9664\u3001\u7981\u7528\u3001\u89e3\u7981</p><p>\u6d41\u7a0b\u72b6\u6001\uff1a</p><p><span style=\" font-size:12pt; color:#5f9ea0;\">\u25cf</span>\u6302\u8d77</p><p><span style=\" font-size:12pt; color:green;\">\u25cf</span>\u7b49\u5f85</p><p><span style=\" font-size:12pt; color:blue;\">\u25cf</span><span style=\" font-size:12pt;\"/>\u6267\u884c</p><p><span style=\" font-size:12pt; color:yellow;\">\u25cf</span><span style=\" font-size:12pt;\"/>\u5b8c\u6210</p><p><span style=\" font-size:12pt; color:red;\">\u25cf</span><span style=\" font-size:12pt;\"/>\u9519\u8bef</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.pushButton_add_flow.setToolTip(QCoreApplication.translate("MyMainWindow", u"\u5411\u6d41\u7a0b\u5217\u8868\u4e2d\u6dfb\u52a0\u529f\u80fd", None))
 #endif // QT_CONFIG(tooltip)

@@ -13,11 +13,11 @@ COMMON_2P_KEY = ["描述", "1P放置位置", "2P放置位置", "1P所用卡片�
 CARD_KEY = ["{}P卡{}名称", "{}P卡{}放置位置", "{}P卡{}CD"]
 
 
-class PlacingFileProcessor:
+class PlacingPlanProcessor:
 
     def __init__(self, file_path, encoding='utf-8'):
-        self.ini_procs: INIProcessor = INIProcessor(file_path, encoding)
-        self.file_path = file_path
+        self.ini_procs: INIProcessor = None
+        self.file_path = None
         self.encoding = encoding
 
         self.setFilePath(file_path, encoding)
@@ -31,6 +31,8 @@ class PlacingFileProcessor:
             encoding: str
                 文件编码. 默认为 'utf-8'
         """
+        if file_path is None:
+            return
         # 文件没改变则直接退出
         if file_path == self.file_path:
             return
@@ -87,6 +89,7 @@ class PlacingFileProcessor:
                 plan_dict[key] = self.ini_procs.getSpecificValue(plan_name, key)
             plan_dict['1p_card_plan'] = self.readPlayerCardPlan(plan_name, 1)
             plan_dict['2p_card_plan'] = self.readPlayerCardPlan(plan_name, 2)
+        print(plan_dict)
         return plan_dict
 
     def readPlayerCardPlan(self, plan_name, player):
@@ -175,7 +178,7 @@ class PlacingFileProcessor:
 
 if __name__ == '__main__':
     file_name = r"D:\Softwares\按键精灵\美食组队脚本\TeamConfig-V6.04-utf8.ini"
-    procs = PlacingFileProcessor(file_name)
+    procs = PlacingPlanProcessor(file_name)
     result = procs.readPlan("曲奇岛")
     print(result)
     procs.writePlan(result)

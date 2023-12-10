@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>523</width>
+    <height>364</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@
       </size>
      </property>
      <property name="text">
-      <string>设置整个流程中所需的全局信息</string>
+      <string>  设置整个流程中所需的全局信息</string>
      </property>
     </widget>
    </item>
@@ -54,23 +54,23 @@
       <string>账号句柄</string>
      </property>
      <property name="flat">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_player_hwnd">
       <property name="spacing">
        <number>5</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>9</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>9</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>5</number>
       </property>
       <item>
        <widget class="QLabel" name="label_1p_hwnd">
@@ -105,13 +105,16 @@
           <height>30</height>
          </size>
         </property>
+        <property name="text">
+         <string>0</string>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_1p_hwnd">
         <property name="minimumSize">
          <size>
-          <width>40</width>
+          <width>80</width>
           <height>30</height>
          </size>
         </property>
@@ -159,13 +162,16 @@
           <height>30</height>
          </size>
         </property>
+        <property name="text">
+         <string>0</string>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_2p_hwnd">
         <property name="minimumSize">
          <size>
-          <width>40</width>
+          <width>80</width>
           <height>30</height>
          </size>
         </property>
@@ -185,6 +191,12 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_necessity_pic">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
@@ -195,26 +207,32 @@
       <string>必要图片</string>
      </property>
      <property name="flat">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_necessity_pic">
       <property name="spacing">
        <number>5</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>9</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>9</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>5</number>
       </property>
       <item>
        <widget class="QLabel" name="label_2p_name_pic">
+        <property name="minimumSize">
+         <size>
+          <width>65</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>65</width>
@@ -222,7 +240,7 @@
          </size>
         </property>
         <property name="text">
-         <string>2P昵称路径</string>
+         <string>2P昵称：</string>
         </property>
        </widget>
       </item>
@@ -240,7 +258,7 @@
        <widget class="QPushButton" name="pushButton_2p_name_pic">
         <property name="minimumSize">
          <size>
-          <width>40</width>
+          <width>80</width>
           <height>30</height>
          </size>
         </property>
@@ -254,6 +272,174 @@
          <string>浏览</string>
         </property>
        </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_flow_file_path">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>90</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>配置文件路径</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_flow_file_path">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_deck_file">
+        <property name="minimumSize">
+         <size>
+          <width>65</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>卡片组：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEdit_deck_file">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="pushButton_deck_file">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>浏览</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_plan_file">
+        <property name="minimumSize">
+         <size>
+          <width>65</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>放卡方案：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEdit_plan_file">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="pushButton_plan_file">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>浏览</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_other_setting" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>40</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_other_setting" stretch="0,2,7">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_max_check_time">
+        <property name="minimumSize">
+         <size>
+          <width>65</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style='line-height:0'&gt;多久提醒对&lt;/p&gt;&lt;p&gt;局时间过长&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_max_check_time">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>15</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>330</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
