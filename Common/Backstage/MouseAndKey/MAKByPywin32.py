@@ -17,7 +17,7 @@ VALUE_KEY = {
     "0": "48", "1": "49", "2": "50", "3": "51", "4": "52", "5": "53", "6": "54", "7": "55", "8": "56", "9": "57",
     "F1": "112", "F2": "113", "F3": "114", "F4": "115", "F5": "116", "F6": "117", "F7": "118", "F8": "119",
     "F9": "120", "F10": "121", "F11": "122", "F12": "123",
-    "TAB": "9", "ENTER": "13", "SHIFT": "16", "CTRL": "17", "ALT": "18"
+    "TAB": "9", "ENTER": "13", "SHIFT": "16", "CTRL": "17", "ALT": "18", "BACKSPACE": "8"
 }
 
 
@@ -145,10 +145,14 @@ def keyPress(hwnd, key: str, interval=0.05, times=1):
     """
     key = key.upper()
     key_num = int(VALUE_KEY[key])
+    num = win32api.MapVirtualKey(key_num, 0)
+    dparam = 1 | (num << 16)
+    uparam = 1 | (num << 16) | (1 << 30) | (1 << 31)
     for i in range(times):
-        win32api.keybd_event(key_num, 0, 0, 0)
+        win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, key_num, dparam)
         sleep(interval)
-        win32api.keybd_event(key_num, 0, win32con.KEYEVENTF_KEYUP, 0)
+        win32api.PostMessage(hwnd, win32con.WM_KEYUP, key_num, uparam)
+        sleep(0.3)
 
 
 def keyDown(hwnd, key: str):
@@ -162,7 +166,9 @@ def keyDown(hwnd, key: str):
     """
     key = key.upper()
     key_num = int(VALUE_KEY[key])
-    win32api.keybd_event(key_num, 0, 0, 0)
+    num = win32api.MapVirtualKey(key_num, 0)
+    dparam = 1 | (num << 16)
+    win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, key_num, dparam)
 
 
 def keyUp(hwnd, key: str):
@@ -176,4 +182,6 @@ def keyUp(hwnd, key: str):
     """
     key = key.upper()
     key_num = int(VALUE_KEY[key])
-    win32api.keybd_event(key_num, 0, win32con.KEYEVENTF_KEYUP, 0)
+    num = win32api.MapVirtualKey(key_num, 0)
+    uparam = 1 | (num << 16) | (1 << 30) | (1 << 31)
+    win32api.PostMessage(hwnd, win32con.WM_KEYUP, key_num, uparam)
