@@ -9,6 +9,7 @@
 from Common.Backstage import *
 from AppImplement.GlobalValue.StaticValue import *
 from AppImplement.Business.CustomException import BusinessError
+from AppImplement.Business.Foundation import switchWorldZone, singleLayerChooseLevel
 
 from math import floor
 
@@ -162,8 +163,11 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
         if not find_pic(hwnd, FOLD_BOTTOM_QUEST_PATH, [100, 130 + i * 30, 125, 165 + i * 30]):
             mouseClick(hwnd, (110 + i * 30) * zoom, (146 + i * 30) * zoom)
             delay(100)
+    # 先重置滑动条
+    mouseClick(hwnd, 414 * zoom, 150 * zoom)
+    delay(500)
     # 查找已完成的任务
-    complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [342, 124, 410, 540])
+    complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
     while complete_quest_pos:
         mouseClick(hwnd, complete_quest_pos[0] * zoom, complete_quest_pos[1] * zoom)
         delay(100)
@@ -171,14 +175,14 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
         mouseClick(hwnd, 640 * zoom, 530 * zoom)
         delay(100)
         # 继续找其他已完成的任务
-        complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [342, 124, 410, 540])
+        complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
     # 通过在滑动条的横坐标414这一列，遍历每个像素点，从上往下查找滑动条的底部，然后点击这个位置，实现全面覆盖所有任务
     for bar_y_pixel in range(152, 512):
         if find_color(hwnd, [414, bar_y_pixel, 414, bar_y_pixel], 0x724705):
             mouseClick(hwnd, 414 * zoom, (bar_y_pixel + 10) * zoom)
             delay(100)
             # 查找已完成的任务
-            complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [342, 124, 410, 540])
+            complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
             while complete_quest_pos:
                 mouseClick(hwnd, complete_quest_pos[0] * zoom, complete_quest_pos[1] * zoom)
                 delay(100)
@@ -186,7 +190,7 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
                 mouseClick(hwnd, 640 * zoom, 530 * zoom)
                 delay(100)
                 # 继续找其他已完成的任务
-                complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [342, 124, 410, 540])
+                complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
     # 关闭底部任务界面
     mouseClick(hwnd, 640 * zoom, 585 * zoom)
     delay(1000)
@@ -195,21 +199,27 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
         delay(1000)
 
 
-def executeUnionGarden(hwnd, need_fertilize: bool, zoom=1):
+def executeUnionGarden(hwnd, need_fertilize: bool, plant_type, zoom=1):
+    # 点击底部“公会”
     mouseClick(hwnd, 777 * zoom, 585 * zoom)
     if not find_pic_loop(hwnd, OPEN_UNION_PATH, [218, 95, 292, 111], max_time=120):
         mouseClick(hwnd, 909 * zoom, 70 * zoom)
         delay(100)
         raise BusinessError("超过2min还未打开公会界面！也许该账号没有加入公会！")
     delay(1000)
-    # 点击公会活动
-    mouseMove(hwnd, 748 * zoom, 419 * zoom)
-    delay(200)
-    # 点击公会花园
-    mouseClick(hwnd, 777 * zoom, 346 * zoom)
 
-    if not find_pic_loop(hwnd, OPEN_UNION_GARDEN_PATH, [416, 44, 563, 69], max_time=120):
-        raise BusinessError("超过2min还未打开公会界面！也许该账号没有加入公会！")
+    try_click_garden_time = 5
+    while try_click_garden_time > 0:
+        # 点击公会活动
+        mouseKeepPlace(hwnd, 748 * zoom, 429 * zoom, 30)
+        # 点击公会花园
+        mouseClick(hwnd, 777 * zoom, 346 * zoom)
+        if find_pic_loop(hwnd, OPEN_UNION_GARDEN_PATH, [416, 44, 563, 69], max_time=5):
+            break
+        try_click_garden_time -= 1
+    if try_click_garden_time == 0:
+        raise BusinessError("尝试打开公会花园界面超过5次，均失败！请手动执行！")
+
     delay(1000)
     # 打开全部公会
     mouseClick(hwnd, 800 * zoom, 125 * zoom)
@@ -219,10 +229,12 @@ def executeUnionGarden(hwnd, need_fertilize: bool, zoom=1):
     delay(500)
     # 查看下方进度条颜色，最左侧是绿色 同时 最右侧是灰色，则满足浇水施肥条件
     try_num = 1  # 跳转公会 寻找适合浇水 的 尝试次数
-    fertilize_time = 3 if need_fertilize else 0
+    fertilize_time = 3 if need_fertilize else 0     # 需要施肥的次数
+    # 是否刚种下（刚种下是指 try_num=1 且本公会不满足施肥条件，且可以种植时，选择了种植），如果是，则不再判断下方进度条，直接进入施肥
+    just_plant = False
     while True:
-        if find_color(hwnd, [255, 550, 255, 550], 0x40A77D) and find_color(
-                hwnd, [690, 550, 690, 550], 0x7E6A4A):
+        if just_plant or (find_color(hwnd, [255, 550, 255, 550], 0x40A77D) and find_color(
+                hwnd, [690, 550, 690, 550], 0x7E6A4A)):
             # 点击浇水
             mouseClick(hwnd, 784 * zoom, 360 * zoom)
             delay(500)
@@ -247,13 +259,28 @@ def executeUnionGarden(hwnd, need_fertilize: bool, zoom=1):
                     break
 
         print("本公会不满足可浇水条件！")
-        if try_num >= 120:
-            # 如果尝试次数超过了120次（假设最多30页，每页4个公会），则宣告失败
-            break
         if try_num > 4 and (try_num - 1) % 4 == 0:
             # 当尝试次数为4的倍数+1时，需要往上翻一页
             mouseClick(hwnd, 840 * zoom, 194 * zoom)
             delay(1000)
+        elif try_num == 1 and False:  # TODO need_fertilize:
+            plant_pos = find_pic(hwnd, UNION_GARDEN_PLANT_PATH, [326, 303, 628, 486])
+            if plant_pos:
+                # 点击种植
+                mouseClick(hwnd, plant_pos[0] * zoom, plant_pos[1] * zoom)
+                delay(500)
+                # TODO 选择树苗
+                mouseClick(hwnd, 0, 0)
+                delay(500)
+                # TODO 确认种植
+                mouseClick(hwnd, 0, 0)
+                delay(500)
+                # 设置“刚种植”标志，并直接继续下一次循环，避免点击“前往”导致离开本公会
+                just_plant = True
+                continue
+        elif try_num >= 120:
+            # 如果尝试次数超过了120次（假设最多30页，每页4个公会），则宣告失败
+            break
         click_y_pos = 300 - (try_num - 1) % 4 * 30
         # 点击”前往“
         mouseClick(hwnd, 810 * zoom, click_y_pos * zoom)
@@ -269,5 +296,135 @@ def executeUnionGarden(hwnd, need_fertilize: bool, zoom=1):
         raise BusinessError("已尝试过120个公会，均超过成长上限，无法正常完成浇水施肥！")
 
 
+def executeReceiveCampsiteKey(hwnd, zoom=1):
+    singleLayerChooseLevel(hwnd, "探险营地", "营地钥匙", zoom)
+
+
+def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
+    """领取公会任务，若有权限，可以选择发布会长任务
+    """
+    # 点击“跳转”
+    mouseClick(hwnd, 870 * zoom, 585 * zoom)
+    delay(500)
+    # 点击“公会任务”
+    mouseClick(hwnd, 900 * zoom, 260 * zoom)
+    delay(2000)
+    # 查找已完成的任务
+    complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
+    while complete_quest_pos:
+        # 点击找到的任务
+        mouseClick(hwnd, complete_quest_pos[0] * zoom, complete_quest_pos[1] * zoom)
+        delay(100)
+        # 点击领取奖励
+        mouseClick(hwnd, 640 * zoom, 530 * zoom)
+        delay(100)
+        # 继续找其他已完成的任务
+        complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
+    if release_quest and find_color(hwnd, [75, 36, 174, 75], 0x78E4F4):
+        print("抽取")
+        # 点击“发布任务”
+        mouseClick(hwnd, 127 * zoom, 57 * zoom)
+        delay(500)
+        # 点击“抽取并发布”
+        mouseClick(hwnd, 486 * zoom, 439 * zoom)
+        delay(500)
+    # 关闭界面
+    mouseClick(hwnd, 855 * zoom, 55 * zoom)
+    delay(1000)
+    if not checkCloseActivity(hwnd):
+        mouseClick(hwnd, 855 * zoom, 55 * zoom)
+        delay(1000)
+
+
+def executeReceiveTeamMagicTower(hwnd, zoom=1):
+    """领取双人魔塔奖励"""
+    switchWorldZone(hwnd, "魔塔蛋糕", zoom)
+    # 点击双人tab页
+    mouseClick(hwnd, 117 * zoom, 70 * zoom)
+    delay(500)
+    # 点击“领取”
+    mouseClick(hwnd, 907 * zoom, 470 * zoom)
+    delay(1000)
+    # 退出界面
+    mouseClick(hwnd, 930 * zoom, 30 * zoom)
+    delay(1000)
+    if not checkCloseActivity(hwnd):
+        mouseClick(hwnd, 930 * zoom, 30 * zoom)
+        delay(1000)
+
+
+def executeGiveFlowers(hwnd, receiver_name_path: str, use_coupon: bool = False, use_times: int = 0, zoom=1):
+    """赠送免费鲜花，可选择使用礼券
+    """
+    # 点击“好友”
+    mouseClick(hwnd, 40 * zoom, 105 * zoom)
+    if not find_pic_loop(hwnd, OPEN_FRIEND_PATH, [434, 87, 543, 122], max_time=120):
+        raise BusinessError("超过2min还未打开好友签到界面！")
+    delay(500)
+    # 先重置滑动条
+    if not find_color(hwnd, [758, 195, 758, 210], 0xFCE683):
+        mouseClick(hwnd, 758 * zoom, 200 * zoom)
+        delay(500)
+    # 找一次目标好友
+    receiver_pos = find_pic(hwnd, receiver_name_path, [247, 170, 372, 486])
+    for bar_y_pixel in range(203, 457):
+        if not receiver_pos:
+            # 对于滑动条纵向范围，若本次没找到，就更新一次滑动条位置，再找图，直到成功找到或遍历完滑动条范围
+            if find_color(hwnd, [758, bar_y_pixel, 758, bar_y_pixel], 0x724705):
+                mouseClick(hwnd, 758 * zoom, (bar_y_pixel + 10) * zoom)
+                delay(100)
+                receiver_pos = find_pic(hwnd, receiver_name_path, [247, 170, 372, 486])
+    # 若结束循环时仍没找到
+    if not receiver_pos:
+        raise BusinessError("未能找到目标好友！")
+    # 否则，点击目标好友
+    mouseClick(hwnd, receiver_pos[0] * zoom, receiver_pos[1] * zoom)
+    delay(100)
+    # 点击“给他送花”
+    mouseClick(hwnd, (receiver_pos[0] + 70) * zoom, (receiver_pos[1] + 203) * zoom)
+    delay(500)
+    # 选择免费鲜花
+    mouseClick(hwnd, 350 * zoom, 308 * zoom)
+    delay(500)
+    # 点击”送出“
+    mouseClick(hwnd, 500 * zoom, 400 * zoom)
+    delay(500)
+    if use_coupon:
+        # 选择礼券鲜花
+        mouseClick(hwnd, 500 * zoom, 308 * zoom)
+        delay(500)
+        for i in range(use_times):
+            # 点击”送出“
+            mouseClick(hwnd, 500 * zoom, 400 * zoom)
+            delay(500)
+    # 关闭鲜花界面
+    mouseClick(hwnd, 715 * zoom, 150 * zoom)
+    delay(500)
+    # 关闭好友界面
+    mouseClick(hwnd, 760 * zoom, 100 * zoom)
+    delay(500)
+
+
+def executeReceiveDestinyTree(hwnd, zoom=1):
+    """领取缘分树奖励
+    """
+    # 点击“跳转”
+    mouseClick(hwnd, 870 * zoom, 585 * zoom)
+    delay(500)
+    # 点击“缘分树”
+    mouseClick(hwnd, 900 * zoom, 340 * zoom)
+    delay(2000)
+    # 点击”领取“
+    mouseClick(hwnd, 315 * zoom, 505 * zoom)
+    delay(500)
+    # 关闭界面
+    mouseClick(hwnd, 930 * zoom, 30 * zoom)
+    delay(1000)
+    if not checkCloseActivity(hwnd):
+        mouseClick(hwnd, 930 * zoom, 30 * zoom)
+        delay(1000)
+
+
 def checkCloseActivity(hwnd):
+    delay(500)
     return find_pic(hwnd, SWITCH_LINE_PATH, [791, 70, 840, 98])

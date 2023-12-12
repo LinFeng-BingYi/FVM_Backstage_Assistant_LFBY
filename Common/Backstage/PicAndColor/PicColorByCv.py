@@ -140,6 +140,30 @@ def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: 
 
 
 def find_pic_loop(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.9, max_time=600):
+    """在指定窗口中，指定范围内，寻找模板图像，相似度大于等于threshold则表示找到了. 失败返回 False
+       超过 max_time 后仍未找到则直接返回 False，其单位为秒(s)
+
+    Args:
+        hwnd: int
+            指定的窗口句柄
+        template_path: str
+            模板图像的绝对路径
+        find_range: list[int]
+            指定的寻找范围，包含4个元素：[左上角x坐标, 左上角y坐标, 右下角x坐标, 右下角y坐标]
+        threshold: float
+            判断图像是否找到的阈值
+        max_time: int
+            寻找时间限制，单位为秒(s)
+
+    Returns: tuple[float, float, float, float, float, float] | False
+        窗口中与模板图像相似度最高的位置信息。包含6个元素：
+            - 匹配成功区域中心x坐标
+            - 匹配成功区域中心y坐标
+            - 匹配成功区域左上角x坐标
+            - 匹配成功区域左上角y坐标
+            - 匹配成功区域右下角x坐标
+            - 右匹配成功区域下角y坐标
+    """
     # 截图准备 -------------------------------------------------
     # 获取句柄窗口的大小信息
     rect = win32gui.GetWindowRect(hwnd)
@@ -268,9 +292,8 @@ def find_color(hwnd: int, find_range: list, color: hex, threshold: float = 1):
                 # 完全匹配时直接对比数值
                 # print(pixel, color)
                 if pixel == color:
+                    win32gui.ReleaseDC(hwnd, hwndDC)
                     return x, y
-                else:
-                    return False
             if computeBGRColorSimilar(color, pixel) <= 1 - threshold:
                 # print("当前坐标:", x, y, "\t颜色:", hex(pixel))
                 # 释放
@@ -308,7 +331,9 @@ def find_color_loop(hwnd: int, find_range: list, color: hex, threshold: float = 
                 pixel = win32gui.GetPixel(hwndDC, x, y)
                 if threshold == 1:
                     # 完全匹配时直接对比数值
-                    return hex(pixel) == color
+                    if pixel == color:
+                        win32gui.ReleaseDC(hwnd, hwndDC)
+                        return x, y
                 if computeBGRColorSimilar(color, pixel) <= 1 - threshold:
                     # print("当前坐标:", x, y, "\t颜色:", hex(pixel))
                     # 释放

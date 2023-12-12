@@ -17,11 +17,11 @@ WORLD_MAP_ZONE_POS = {
     "浮空岛": (700, 200),
     "火山遗迹": (750, 460),
     "海底漩涡": (700, 270),
-    "竞技岛": (204, 355),
+    "竞技岛": (211, 391),
     "魔塔蛋糕": (318, 452),
     "勇士挑战": (493, 402),
     "跨服远征": (425, 332),
-    "探险营地": (566, 316)
+    "探险营地": (578, 338)
 }
 
 # 美味岛关卡坐标
@@ -117,7 +117,8 @@ TXYD_LEVEL_POS = {
     "冰啤酒吧夜": (500, 133),
     "坚果高台日": (609, 122),
     "坚果高台夜": (690, 140),
-    "探险港口": (621, 369)
+    "探险港口": (621, 369),
+    "营地钥匙": (400, 444)
 }
 
 # 探险营地港口坐标
@@ -216,6 +217,10 @@ OPEN_UNION_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日�
 OPEN_UNION_GARDEN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入公会花园.bmp"
 # 公会花园成长值满
 UNION_GARDEN_MAX_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\公会花园成长值满.bmp"
+# 公会花园待种植
+UNION_GARDEN_PLANT_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\公会花园待种植.bmp"
+# 进入好友
+OPEN_FRIEND_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入好友.bmp"
 
 # 通关相关 -------------------------------------------------------------------------
 # 创房勾选密码

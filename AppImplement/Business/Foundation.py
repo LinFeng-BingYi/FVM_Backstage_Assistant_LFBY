@@ -40,17 +40,16 @@ def switchWorldZone(hwnd: int, zone_name, zoom=1):
         if not find_result:
             print("打开世界地图失败！！！")
             return
-    # 点击对应的地图
-    mouseClick(hwnd, WORLD_MAP_ZONE_POS[zone_name][0] * zoom, WORLD_MAP_ZONE_POS[zone_name][0] * zoom)
     delay(1000)
+    # 点击对应的地图
+    mouseClick(hwnd, WORLD_MAP_ZONE_POS[zone_name][0] * zoom, WORLD_MAP_ZONE_POS[zone_name][1] * zoom)
+    delay(2000)
     if zone_name in need_switch_server:
         # 点击”换线“
         mouseClick(hwnd, 820 * zoom, 85 * zoom)
         delay(500)
         # 点击分区
         # 一区纵坐标82，每个区间隔25
-        # print("换区坐标：", 782 * zoom, (82 + 25 * (need_switch_server[zone_name] - 1)) * zoom)
-        # print("100%坐标：", 782, (82 + 25 * (need_switch_server[zone_name] - 1)))
         mouseClick(hwnd, 782 * zoom, (82 + 25 * (need_switch_server[zone_name] - 1)) * zoom)
         delay(2000)
 

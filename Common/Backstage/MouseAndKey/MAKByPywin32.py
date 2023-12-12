@@ -129,6 +129,26 @@ def mouseMove(hwnd, x: float, y: float):
     win32api.PostMessage(hwnd, win32con.WM_MOUSEMOVE, None, point)
 
 
+def mouseKeepPlace(hwnd, x: float, y: float, times=30):
+    """保持鼠标放置在某个位置
+
+    Args:
+        hwnd: int
+            目标窗口句柄
+        x: int
+            操作位置x坐标
+        y: int
+            操作位置y坐标
+        times: int
+            保持次数(保持时间取决于系统每秒能处理多少次)，建议30起步
+    """
+    x = int(x)
+    y = int(y)
+    point = win32api.MAKELONG(x, y)
+    for i in range(times):
+        win32api.PostMessage(hwnd, win32con.WM_MOUSEMOVE, None, point)
+
+
 # 键盘 -----------------------------------------------------------------------------------------------
 def keyPress(hwnd, key: str, interval=0.05, times=1):
     """键盘单次输入

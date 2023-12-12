@@ -510,12 +510,26 @@ if __name__ == "__main__":
     # business_bus.setLevelInfo(level_info)
     # business_bus.teamFromStartToFlop()
 
-    hwnd1 = 22218732
-    hwnd1 = 1709372
-    executeVipSignin(hwnd1)
-    executeDailySignin(hwnd1)
-    executeFreeWish(hwnd1)
-    executePharaohTreasure(hwnd1, 1)
-    executeTarotTreasure(hwnd1)
-    executeReceiveBottomQuest(hwnd1)
-    executeUnionGarden(hwnd1, True)
+    # waitClick()
+    # x, y = getCursorPos()
+    # hwnd = mousePosHwnd(x, y)
+    # print(hwnd)
+    hwnd1 = 2361992
+    hwnd2 = 723572
+    # executeVipSignin(hwnd1)
+    # executeDailySignin(hwnd1)
+    # executeFreeWish(hwnd1)
+    # executePharaohTreasure(hwnd1, 1)
+    # executeTarotTreasure(hwnd1)
+    # executeReceiveBottomQuest(hwnd1)
+    # executeUnionGarden(hwnd1, True)
+    # executeReceiveCampsiteKey(hwnd1)
+    # executeReceivePresidentQuest(hwnd1, True)
+    # executeReceiveTeamMagicTower(hwnd1)
+    # executeGiveFlowers(
+    #     hwnd1,
+    #     r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\组队房间2P截图示例.bmp",
+    #     True,
+    #     1
+    # )
+    executeReceiveDestinyTree(hwnd1)
