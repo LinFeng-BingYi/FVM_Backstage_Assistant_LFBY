@@ -7,8 +7,15 @@ from PySide6.QtCore import Qt, Signal
 from AppImplement.FlowFunction.StartListItem import StartListWidget
 from AppImplement.FlowFunction.EndListItem import EndListWidget
 from AppImplement.FlowFunction.LoopLevelListItem import LoopLevelListWidget
+from AppImplement.FlowFunction.DailyAwardListItem import DailyAwardListWidget
 
-SUPPORT_FUNC = {"开始": StartListWidget, "结束": EndListWidget, "刷指定关卡": LoopLevelListWidget}
+# 若需要修改键名，BusinessBus类的run函数中也要做相应的修改
+SUPPORT_FUNC = {
+    "开始": StartListWidget,
+    "结束": EndListWidget,
+    "日常领取": DailyAwardListWidget,
+    "刷指定关卡": LoopLevelListWidget
+}
 
 
 class FuncFlowListWidget(QListWidget):
@@ -174,6 +181,10 @@ class FuncFlowListWidget(QListWidget):
 
     def updateFlowFuncStatus(self, func_no, status):
         self.active_item_widget_list[func_no].changeStatus(status)
+
+    def flowFinished(self):
+        for item_widget in self.active_item_widget_list:
+            item_widget.changeStatus("hanging")
 
     def dropEvent(self, event):
         # 设置其他item不能排在“开始”item之前

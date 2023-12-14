@@ -28,9 +28,9 @@ class Ui_MyMainWindow(object):
     def setupUi(self, MyMainWindow):
         if not MyMainWindow.objectName():
             MyMainWindow.setObjectName(u"MyMainWindow")
-        MyMainWindow.resize(900, 600)
-        MyMainWindow.setMinimumSize(QSize(900, 600))
-        MyMainWindow.setMaximumSize(QSize(900, 600))
+        MyMainWindow.resize(960, 600)
+        MyMainWindow.setMinimumSize(QSize(960, 600))
+        MyMainWindow.setMaximumSize(QSize(960, 600))
         MyMainWindow.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.action_edit_placing_plan = QAction(MyMainWindow)
         self.action_edit_placing_plan.setObjectName(u"action_edit_placing_plan")
@@ -100,7 +100,7 @@ class Ui_MyMainWindow(object):
 
         self.pushButton_add_flow = QPushButton(self.widget_edit_flow)
         self.pushButton_add_flow.setObjectName(u"pushButton_add_flow")
-        self.pushButton_add_flow.setMinimumSize(QSize(0, 30))
+        self.pushButton_add_flow.setMinimumSize(QSize(174, 30))
         self.pushButton_add_flow.setMaximumSize(QSize(174, 16777215))
 
         self.verticalLayout_edit_flow.addWidget(self.pushButton_add_flow)
@@ -119,6 +119,7 @@ class Ui_MyMainWindow(object):
         self.verticalLayout_home.setContentsMargins(0, 0, 0, 0)
         self.plainTextEdit_changelog = QPlainTextEdit(self.tab_home)
         self.plainTextEdit_changelog.setObjectName(u"plainTextEdit_changelog")
+        self.plainTextEdit_changelog.setMinimumSize(QSize(560, 0))
 
         self.verticalLayout_home.addWidget(self.plainTextEdit_changelog)
 
@@ -142,6 +143,7 @@ class Ui_MyMainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.widget_business_param_area = QWidget(self.widget_business_config)
         self.widget_business_param_area.setObjectName(u"widget_business_param_area")
+        self.widget_business_param_area.setMinimumSize(QSize(530, 0))
 
         self.horizontalLayout_2.addWidget(self.widget_business_param_area)
 
@@ -219,6 +221,9 @@ class Ui_MyMainWindow(object):
 
         self.plainTextEdit_log = QPlainTextEdit(self.widget_log)
         self.plainTextEdit_log.setObjectName(u"plainTextEdit_log")
+        font1 = QFont()
+        font1.setPointSize(7)
+        self.plainTextEdit_log.setFont(font1)
         self.plainTextEdit_log.setReadOnly(True)
 
         self.verticalLayout_log.addWidget(self.plainTextEdit_log)
@@ -317,7 +322,7 @@ class Ui_MyMainWindow(object):
         MyMainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MyMainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 900, 22))
+        self.menubar.setGeometry(QRect(0, 0, 960, 22))
         self.menu_function = QMenu(self.menubar)
         self.menu_function.setObjectName(u"menu_function")
         self.menu_function.setMinimumSize(QSize(120, 0))
@@ -390,6 +395,7 @@ class Ui_MyMainWindow(object):
         self.pushButton_browser_business_config_file.setText(QCoreApplication.translate("MyMainWindow", u"\u6d4f\u89c8", None))
         self.tabWidget_config_business.setTabText(self.tabWidget_config_business.indexOf(self.tab_config_business), QCoreApplication.translate("MyMainWindow", u"\u529f\u80fd\u53c2\u6570\u914d\u7f6e", None))
         self.label_log.setText(QCoreApplication.translate("MyMainWindow", u"<html><head/><body><p><span style=\" font-size:11pt; font-weight:700;\">\u65e5\u5fd7\u8f93\u51fa\u533a</span></p></body></html>", None))
+        self.plainTextEdit_log.setPlainText("")
         self.pushButton_save_log.setText(QCoreApplication.translate("MyMainWindow", u"\u4fdd\u5b58\u65e5\u5fd7", None))
         self.pushButton_clear_log.setText(QCoreApplication.translate("MyMainWindow", u"\u6e05\u7a7a\u65e5\u5fd7", None))
 #if QT_CONFIG(tooltip)

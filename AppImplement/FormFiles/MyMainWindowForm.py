@@ -8,6 +8,7 @@ from AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
 from AppImplement.FormFiles.CustomWidgets.Dialog import AddFuncFlowDialog
 
 from AppImplement.Business.BusBusiness import BusinessBus
+from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
 
 class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
@@ -18,7 +19,8 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.setupUi(self)
         # 窗口图标
         icon = QIcon()
-        icon.addFile(u"resources/images/application/\u8f6f\u4ef6\u56fe\u6807/icon_nobkg.ico", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(ROOT_PATH + u"resources/images/application/\u8f6f\u4ef6\u56fe\u6807/icon_nobkg.ico",
+                     QSize(), QIcon.Normal, QIcon.Off)
         self.setWindowIcon(icon)
         # 补加控件
         self.verticalLayout_business_param_area = QVBoxLayout(self.widget_business_param_area)
@@ -48,6 +50,11 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.bindSignal()
 
     def initWidget(self):
+        if ROOT_PATH is None or ROOT_PATH == "":
+            self.tip_message_box.setWindowTitle("错误")
+            self.tip_message_box.setText("未找到配置文件[AppGlobalSetting.ini]！\n请务必将其放在与exe同级目录下的config文件夹中，"
+                                         "否则无法正常使用！\n\n完成以上操作后需要重启软件")
+            self.tip_message_box.show()
         # 初始化时，向流程列表中添加”开始“、”结束“item
         self.addListWidget("开始")
         self.addListWidget("结束")
@@ -60,14 +67,21 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         # 启动/结束流程
         self.pushButton_start_flow.clicked.connect(self.startBusinessBus)
         self.pushButton_end_flow.clicked.connect(self.stopBusinessBus)
+
         # 双击流程显示”功能参数“tab页
         self.listWidget_flow.signal_show_func_param_tab.connect(
             lambda: self.tabWidget_config_business.setCurrentIndex(1))
+
         # 线程业务消息打印在日志中
         self.thread_business_bus.signal_send_business_message.connect(self.printLog)
+        # 线程业务错误通过提示框警告
+        self.thread_business_bus.signal_send_business_error.connect(self.popupError)
         # 线程更新流程中功能的状态
         self.thread_business_bus.signal_send_func_status.connect(self.signal_update_flow_func_status)
         self.signal_update_flow_func_status.connect(self.listWidget_flow.updateFlowFuncStatus)
+        # 完成流程后将所有状态置为“挂起”
+        self.thread_business_bus.signal_flow_finished.connect(self.listWidget_flow.flowFinished)
+
         # 清除日志
         self.pushButton_clear_log.clicked.connect(self.plainTextEdit_log.clear)
 
@@ -121,3 +135,8 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         )
         # 设置光标到文本末尾，方便查看最新消息
         self.plainTextEdit_log.moveCursor(QTextCursor.MoveOperation.End)
+
+    def popupError(self, error_str):
+        self.tip_message_box.setWindowTitle("错误")
+        self.tip_message_box.setText(error_str)
+        self.tip_message_box.show()

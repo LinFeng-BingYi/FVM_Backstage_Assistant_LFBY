@@ -66,7 +66,7 @@ def capture_pic(hwnd=0, cap_range=None):
     # 返回图片
     im_opencv = numpy.frombuffer(signedIntsArray, dtype='uint8')
     im_opencv.shape = (height, width, 4)
-    # cv2.imwrite("D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\temp\\im_opencv.jpg", im_opencv, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+    # cv2.imwrite("D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\temp\\im_opencv.jpg", im_opencv)
     # 清除图片数据，防止内存泄露 ------------------------------
     win32gui.DeleteObject(saveBitMap.GetHandle())
     saveDC.DeleteDC()

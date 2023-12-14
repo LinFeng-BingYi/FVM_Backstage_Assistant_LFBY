@@ -72,6 +72,7 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
         hwnd_1p = self.lineEdit_1p_hwnd.text()
         hwnd_2p = self.lineEdit_2p_hwnd.text()
         global_info = {
+            "enable_2p": self.checkBox_enable_2p.isChecked(),
             "1p_hwnd": int(hwnd_1p) if hwnd_1p != '' else None,
             "1p_zoom": float(ZOOM),
             "2p_hwnd": int(hwnd_2p) if hwnd_2p != '' else None,
@@ -84,14 +85,15 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
         return global_info
 
     def checkInputValidity(self):
-        if not match("^[0-9]+$", self.lineEdit_1p_hwnd.text()) or \
-                not match("^[0-9]+$", self.lineEdit_2p_hwnd.text()):
-            return False, "未获取正确的窗口句柄！"
+        if not match("^[0-9]+$", self.lineEdit_1p_hwnd.text()):
+            return False, "未获取正确的1P窗口句柄！"
+        if self.checkBox_enable_2p.isChecked() and not match("^[0-9]+$", self.lineEdit_2p_hwnd.text()):
+            return False, "未获取正确的2P窗口句柄！"
         if not os.path.exists(self.lineEdit_deck_file.text()):
             return False, "未找到预设卡片组ini文件！"
         if not os.path.exists(self.lineEdit_plan_file.text()):
             return False, "未找到放卡方案ini文件！"
-        if not os.path.exists(self.lineEdit_2p_name_pic.text()):
+        if self.checkBox_enable_2p.isChecked() and not os.path.exists(self.lineEdit_2p_name_pic.text()):
             return False, "未找到2P昵称截图！"
         if not match("^[0-9]+$", self.lineEdit_max_check_time.text()):
             return False, "请输入正确的提醒时间，单位为分钟(min)！"

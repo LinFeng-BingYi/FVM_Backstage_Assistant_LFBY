@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QGroupBox, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_StartParam(object):
     def setupUi(self, StartParam):
@@ -33,6 +33,41 @@ class Ui_StartParam(object):
         self.label_dsc.setMaximumSize(QSize(16777215, 30))
 
         self.verticalLayout_general.addWidget(self.label_dsc)
+
+        self.widget_other_setting = QWidget(StartParam)
+        self.widget_other_setting.setObjectName(u"widget_other_setting")
+        self.widget_other_setting.setMinimumSize(QSize(0, 40))
+        self.horizontalLayout_other_setting = QHBoxLayout(self.widget_other_setting)
+        self.horizontalLayout_other_setting.setObjectName(u"horizontalLayout_other_setting")
+        self.horizontalLayout_other_setting.setContentsMargins(-1, 0, -1, 0)
+        self.checkBox_enable_2p = QCheckBox(self.widget_other_setting)
+        self.checkBox_enable_2p.setObjectName(u"checkBox_enable_2p")
+        self.checkBox_enable_2p.setMinimumSize(QSize(65, 0))
+        self.checkBox_enable_2p.setChecked(True)
+
+        self.horizontalLayout_other_setting.addWidget(self.checkBox_enable_2p)
+
+        self.label_max_check_time = QLabel(self.widget_other_setting)
+        self.label_max_check_time.setObjectName(u"label_max_check_time")
+        self.label_max_check_time.setMinimumSize(QSize(65, 0))
+        self.label_max_check_time.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_other_setting.addWidget(self.label_max_check_time)
+
+        self.lineEdit_max_check_time = QLineEdit(self.widget_other_setting)
+        self.lineEdit_max_check_time.setObjectName(u"lineEdit_max_check_time")
+        self.lineEdit_max_check_time.setMinimumSize(QSize(0, 30))
+
+        self.horizontalLayout_other_setting.addWidget(self.lineEdit_max_check_time)
+
+        self.horizontalSpacer = QSpacerItem(330, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_other_setting.addItem(self.horizontalSpacer)
+
+        self.horizontalLayout_other_setting.setStretch(2, 2)
+        self.horizontalLayout_other_setting.setStretch(3, 7)
+
+        self.verticalLayout_general.addWidget(self.widget_other_setting)
 
         self.groupBox_player_hwnd = QGroupBox(StartParam)
         self.groupBox_player_hwnd.setObjectName(u"groupBox_player_hwnd")
@@ -167,34 +202,6 @@ class Ui_StartParam(object):
 
         self.verticalLayout_general.addWidget(self.groupBox_flow_file_path)
 
-        self.widget_other_setting = QWidget(StartParam)
-        self.widget_other_setting.setObjectName(u"widget_other_setting")
-        self.widget_other_setting.setMinimumSize(QSize(0, 40))
-        self.horizontalLayout_other_setting = QHBoxLayout(self.widget_other_setting)
-        self.horizontalLayout_other_setting.setObjectName(u"horizontalLayout_other_setting")
-        self.horizontalLayout_other_setting.setContentsMargins(-1, 0, -1, 0)
-        self.label_max_check_time = QLabel(self.widget_other_setting)
-        self.label_max_check_time.setObjectName(u"label_max_check_time")
-        self.label_max_check_time.setMinimumSize(QSize(65, 0))
-        self.label_max_check_time.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_other_setting.addWidget(self.label_max_check_time)
-
-        self.lineEdit_max_check_time = QLineEdit(self.widget_other_setting)
-        self.lineEdit_max_check_time.setObjectName(u"lineEdit_max_check_time")
-        self.lineEdit_max_check_time.setMinimumSize(QSize(0, 30))
-
-        self.horizontalLayout_other_setting.addWidget(self.lineEdit_max_check_time)
-
-        self.horizontalSpacer = QSpacerItem(330, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_other_setting.addItem(self.horizontalSpacer)
-
-        self.horizontalLayout_other_setting.setStretch(1, 2)
-        self.horizontalLayout_other_setting.setStretch(2, 7)
-
-        self.verticalLayout_general.addWidget(self.widget_other_setting)
-
         self.verticalSpacer_bottom = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_general.addItem(self.verticalSpacer_bottom)
@@ -208,6 +215,9 @@ class Ui_StartParam(object):
     def retranslateUi(self, StartParam):
         StartParam.setWindowTitle(QCoreApplication.translate("StartParam", u"Form", None))
         self.label_dsc.setText(QCoreApplication.translate("StartParam", u"  \u8bbe\u7f6e\u6574\u4e2a\u6d41\u7a0b\u4e2d\u6240\u9700\u7684\u5168\u5c40\u4fe1\u606f", None))
+        self.checkBox_enable_2p.setText(QCoreApplication.translate("StartParam", u"\u542f\u75282P", None))
+        self.label_max_check_time.setText(QCoreApplication.translate("StartParam", u"<html><head/><body><p style='line-height:0'>\u591a\u4e45\u63d0\u9192\u5bf9</p><p>\u5c40\u65f6\u95f4\u8fc7\u957f</p></body></html>", None))
+        self.lineEdit_max_check_time.setText(QCoreApplication.translate("StartParam", u"15", None))
         self.groupBox_player_hwnd.setTitle(QCoreApplication.translate("StartParam", u"\u8d26\u53f7\u53e5\u67c4", None))
         self.label_1p_hwnd.setText(QCoreApplication.translate("StartParam", u"\u623f\u4e3b\u53e5\u67c4\uff1a", None))
         self.lineEdit_1p_hwnd.setText(QCoreApplication.translate("StartParam", u"0", None))
@@ -223,7 +233,5 @@ class Ui_StartParam(object):
         self.pushButton_deck_file.setText(QCoreApplication.translate("StartParam", u"\u6d4f\u89c8", None))
         self.label_plan_file.setText(QCoreApplication.translate("StartParam", u"\u653e\u5361\u65b9\u6848\uff1a", None))
         self.pushButton_plan_file.setText(QCoreApplication.translate("StartParam", u"\u6d4f\u89c8", None))
-        self.label_max_check_time.setText(QCoreApplication.translate("StartParam", u"<html><head/><body><p style='line-height:0'>\u591a\u4e45\u63d0\u9192\u5bf9</p><p>\u5c40\u65f6\u95f4\u8fc7\u957f</p></body></html>", None))
-        self.lineEdit_max_check_time.setText(QCoreApplication.translate("StartParam", u"15", None))
     # retranslateUi
 

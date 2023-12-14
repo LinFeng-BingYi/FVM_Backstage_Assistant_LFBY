@@ -5,8 +5,8 @@
 # @File    : BusBusiness.py
 # @Time    : 2023/12/7 1:24
 # @Dsc     : 总线业务线程类，需要在执行过程中输出信息，能够接受中断的业务
-import ctypes
 
+from PySide6.QtWidgets import QMessageBox
 from PySide6.QtCore import QThread, QThreadPool, QRunnable, Signal, QDateTime
 
 from AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
@@ -14,15 +14,34 @@ from AppImplement.RWConfigFile.RWPlacingPlan import PlacingPlanProcessor
 from AppImplement.Business.Foundation import *
 from AppImplement.Business.OrdinaryBusiness import *
 
-import threading
+DAILY_AWARD_FUNC_DICT = {
+    "VIP签到": executeVipSignin,
+    "每日签到": executeDailySignin,
+    "免费许愿": executeFreeWish,
+    "法老宝藏": executePharaohTreasure,
+    "塔罗寻宝": executeTarotTreasure,
+    "底部任务": executeReceiveBottomQuest,
+    "公会花园": executeUnionGarden,
+    "营地钥匙": executeReceiveCampsiteKey,
+    "公会任务": executeReceiveUnionQuest,
+    "打开美食大赛": executeOpenFoodContest,
+    "打开背包": executeOpenBackpack,
+    "领取双人魔塔奖励": executeReceiveTeamMagicTower,
+    "赠送鲜花": executeGiveFlowers,
+    "领取缘分树奖励": executeReceiveDestinyTree
+}
 
 
 class BusinessBus(QThread):
     # 向主窗口发送待打印日志
     signal_send_business_message = Signal(str)
+    # 向主窗口报告异常
+    signal_send_business_error = Signal(str)
     # 向主窗口发送功能执行情况（功能在流程中的序号，功能的状态）
     # 状态：['hanging'(挂起)、'waiting'(等待)、'executing'(执行)、'completed'(完成)、'banned'(禁用)、'wrong'(错误)]
     signal_send_func_status = Signal(int, str)
+    # 告诉主窗口完成整个流程
+    signal_flow_finished = Signal()
     # 关闭所有子放卡线程
     signal_terminate_sub_thread = Signal()
 
@@ -330,6 +349,7 @@ class BusinessBus(QThread):
         self.formatBusinessMessage("开始依次执行流程列表中可用功能")
         # 先从“开始”功能获取流程全局变量
         start_param = self.func_flow[0]
+        enable_2p = start_param["enable_2p"]
         player2_name_pic_path = start_param["2p_name_pic_path"]
         deck_path = start_param["deck_path"]
         plan_path = start_param["plan_path"]
@@ -348,14 +368,38 @@ class BusinessBus(QThread):
         for func_param in self.func_flow[1:]:
             self.formatBusinessMessage(f"开始功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, "executing")
-            if func_param["func_name"] == "刷指定关卡":
+            if func_param["func_name"] == "日常领取":
+                # 获取操作目标 窗口句柄 和 缩放比例
+                hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
+                zoom = start_param[f"{func_param['player'] + 1}p_zoom"]
+                # 去除干扰项
+                del func_param["func_name"]
+                del func_param["player"]
+                # 对于每个任务，调用对应的方法
+                for key, value in func_param.items():
+                    self.formatBusinessMessage(f"开始[{key}]...")
+                    try:
+                        if isinstance(value, list) and value[0]:
+                            result_str = DAILY_AWARD_FUNC_DICT[key](hwnd=hwnd, zoom=zoom, **value[1])
+                            self.formatBusinessMessage(result_str)
+                        elif isinstance(value, bool) and value:
+                            result_str = DAILY_AWARD_FUNC_DICT[key](hwnd=hwnd, zoom=zoom)
+                            self.formatBusinessMessage(result_str)
+                        else:
+                            self.formatBusinessMessage(f"跳过[{key}]")
+                    except BusinessError as business_error:
+                        business_error_str = f"执行[{key}]功能时出错！\n\n{business_error.error_info}"
+                        self.signal_send_business_error.emit(business_error_str)
+                # 加回该键值对，便于之后的输出
+                func_param["func_name"] = "日常领取"
+            elif func_param["func_name"] == "刷指定关卡":
                 # 获取放卡方案信息
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
                     start_param, plan_info, func_param["flop_pos"], 1)
                 player2_info_dict = None
-                if plan_info["player_num"] == 2:
+                if enable_2p and plan_info["player_num"] == 2:
                     player2_info_dict = self.convertToExecute(
                         start_param, plan_info, func_param["flop_pos"], 2)
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
@@ -373,6 +417,7 @@ class BusinessBus(QThread):
             self.formatBusinessMessage(f"结束功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, "completed")
         self.formatBusinessMessage("流程执行完成")
+        self.signal_flow_finished.emit()
 
     def convertToExecute(self, start_param, plan_info, flop_pos, player):
         # 获取该账号使用的 卡片组名称
@@ -514,22 +559,39 @@ if __name__ == "__main__":
     # x, y = getCursorPos()
     # hwnd = mousePosHwnd(x, y)
     # print(hwnd)
-    hwnd1 = 2361992
-    hwnd2 = 723572
-    # executeVipSignin(hwnd1)
-    # executeDailySignin(hwnd1)
-    # executeFreeWish(hwnd1)
-    # executePharaohTreasure(hwnd1, 1)
-    # executeTarotTreasure(hwnd1)
-    # executeReceiveBottomQuest(hwnd1)
-    # executeUnionGarden(hwnd1, True)
-    # executeReceiveCampsiteKey(hwnd1)
-    # executeReceivePresidentQuest(hwnd1, True)
-    # executeReceiveTeamMagicTower(hwnd1)
-    # executeGiveFlowers(
-    #     hwnd1,
-    #     r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\组队房间2P截图示例.bmp",
-    #     True,
-    #     1
-    # )
+    hwnd1 = 986252
+    executeVipSignin(hwnd1)
+    executeDailySignin(hwnd1)
+    executeFreeWish(hwnd1)
+    executePharaohTreasure(hwnd1, 1)
+    executeTarotTreasure(hwnd1)
+    executeReceiveBottomQuest(hwnd1)
+    executeUnionGarden(hwnd1, True, 1)
+    executeReceiveCampsiteKey(hwnd1)
+    executeReceiveUnionQuest(hwnd1, True)
+    executeReceiveTeamMagicTower(hwnd1)
+    executeGiveFlowers(
+        hwnd1,
+        r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\好友界面小号昵称.bmp",
+        True,
+        5
+    )
     executeReceiveDestinyTree(hwnd1)
+    hwnd2 = 2296822
+    executeVipSignin(hwnd2)
+    executeDailySignin(hwnd2)
+    executeFreeWish(hwnd2)
+    executePharaohTreasure(hwnd2, 1)
+    executeTarotTreasure(hwnd2)
+    executeReceiveBottomQuest(hwnd2)
+    executeUnionGarden(hwnd2, True)
+    executeReceiveCampsiteKey(hwnd2)
+    executeReceiveUnionQuest(hwnd2, False)
+    executeReceiveTeamMagicTower(hwnd2)
+    executeGiveFlowers(
+        hwnd2,
+        r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\好友界面大号昵称.bmp",
+        True,
+        5
+    )
+    executeReceiveDestinyTree(hwnd2)

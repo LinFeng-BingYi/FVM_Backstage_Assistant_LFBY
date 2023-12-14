@@ -36,9 +36,10 @@ def executeVipSignin(hwnd, zoom=1):
     # 点击”关闭“
     mouseClick(hwnd, 821 * zoom, 54 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 821 * zoom, 54 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 821 * zoom, 54 * zoom)
+    #     delay(1000)
+    return "完成[VIP签到]"
 
 
 def executeDailySignin(hwnd, zoom=1):
@@ -66,9 +67,10 @@ def executeDailySignin(hwnd, zoom=1):
     # 点击”关闭“
     mouseClick(hwnd, 855 * zoom, 50 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 855 * zoom, 50 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 855 * zoom, 50 * zoom)
+    #     delay(1000)
+    return "完成[每日签到]"
 
 
 def executeFreeWish(hwnd, zoom=1):
@@ -89,12 +91,14 @@ def executeFreeWish(hwnd, zoom=1):
     # 点击”关闭“
     mouseClick(hwnd, 780 * zoom, 60 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 780 * zoom, 60 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 780 * zoom, 60 * zoom)
+    #     delay(1000)
+    return "完成[免费许愿]"
 
 
 def executePharaohTreasure(hwnd, flop_pos: int, zoom=1):
+    result_str = "完成[法老宝藏]。没有执行翻牌操作"
     pharaoh_pos = find_pic(hwnd, PHARAOH_TREASURE_PATH, [247, 17, 778, 112])
     if not pharaoh_pos:
         # 若没找到，则点击切换上方活动按钮
@@ -115,15 +119,18 @@ def executePharaohTreasure(hwnd, flop_pos: int, zoom=1):
         # 点击选择的宝藏位置：第一个宝藏位置正中心是(300, 257)，左右两个相隔120，上下两个相隔140
         mouseClick(hwnd, (301 + ((flop_pos - 1) % 4) * 120) * zoom, (257 + floor((flop_pos - 1) / 4) * 140) * zoom)
         delay(100)
+        result_str = f"完成[法老宝藏]。翻取了第{flop_pos}张牌"
     # 点击”关闭“
     mouseClick(hwnd, 790 * zoom, 97 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 790 * zoom, 97 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 790 * zoom, 97 * zoom)
+    #     delay(1000)
+    return result_str
 
 
 def executeTarotTreasure(hwnd, zoom=1):
+    result_str = "完成[塔罗寻宝]。没有执行翻牌操作"
     tarot_pos = find_pic(hwnd, TAROT_TREASURE_PATH, [247, 17, 778, 112])
     if not tarot_pos:
         # 若没找到，则点击切换上方活动按钮
@@ -143,12 +150,14 @@ def executeTarotTreasure(hwnd, zoom=1):
     if free_pos:
         mouseClick(hwnd, free_pos[0] * zoom, free_pos[1] * zoom)
         delay(100)
+        result_str = f"完成[塔罗寻宝]"
     # 点击”关闭“
     mouseClick(hwnd, 830 * zoom, 80 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 830 * zoom, 80 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 830 * zoom, 80 * zoom)
+    #     delay(1000)
+    return result_str
 
 
 def executeReceiveBottomQuest(hwnd, zoom=1):
@@ -194,12 +203,26 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
     # 关闭底部任务界面
     mouseClick(hwnd, 640 * zoom, 585 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 640 * zoom, 585 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 640 * zoom, 585 * zoom)
+    #     delay(1000)
+    return "完成[底部任务]"
 
 
-def executeUnionGarden(hwnd, need_fertilize: bool, plant_type, zoom=1):
+def executeUnionGarden(hwnd, need_fertilize: bool, plant_type=0, zoom=1):
+    """执行公会花园浇水、施肥
+
+    Args:
+        hwnd: int
+            窗口句柄
+        need_fertilize: bool
+            是否需要施肥
+        plant_type: int[0 | 1 | 2 | 3]
+            当本公会的公会树需要种植时生效。0表示无种植权限，1、2、3表示种植初级、中级、高级公会树
+        zoom: float
+            缩放比例
+    """
+    result_str = "完成[公会花园]。已浇水，但未施肥"
     # 点击底部“公会”
     mouseClick(hwnd, 777 * zoom, 585 * zoom)
     if not find_pic_loop(hwnd, OPEN_UNION_PATH, [218, 95, 292, 111], max_time=120):
@@ -218,6 +241,9 @@ def executeUnionGarden(hwnd, need_fertilize: bool, plant_type, zoom=1):
             break
         try_click_garden_time -= 1
     if try_click_garden_time == 0:
+        # 关闭公会
+        mouseClick(hwnd, 909 * zoom, 70 * zoom)
+        delay(1000)
         raise BusinessError("尝试打开公会花园界面超过5次，均失败！请手动执行！")
 
     delay(1000)
@@ -240,9 +266,11 @@ def executeUnionGarden(hwnd, need_fertilize: bool, plant_type, zoom=1):
             delay(500)
             # 寻找是否提示”超过成长上限“
             if not find_pic(hwnd, UNION_GARDEN_MAX_PATH, [350, 180, 450, 400]):
-                delay(5000)
+                # 等待完成浇水任务的报幕结束
+                delay(4000)
                 # 如果需要施肥，则点击 剩余需要施肥次数 次施肥
                 if need_fertilize and fertilize_time > 0:
+                    result_str = "完成[公会花园]。已浇水，且施肥3次"
                     for i in range(fertilize_time):
                         mouseClick(hwnd, 784 * zoom, 420 * zoom)
                         delay(500)
@@ -263,7 +291,7 @@ def executeUnionGarden(hwnd, need_fertilize: bool, plant_type, zoom=1):
             # 当尝试次数为4的倍数+1时，需要往上翻一页
             mouseClick(hwnd, 840 * zoom, 194 * zoom)
             delay(1000)
-        elif try_num == 1 and False:  # TODO need_fertilize:
+        elif try_num == 1 and False:  # TODO plant_type != 0:
             plant_pos = find_pic(hwnd, UNION_GARDEN_PLANT_PATH, [326, 303, 628, 486])
             if plant_pos:
                 # 点击种植
@@ -286,23 +314,29 @@ def executeUnionGarden(hwnd, need_fertilize: bool, plant_type, zoom=1):
         mouseClick(hwnd, 810 * zoom, click_y_pos * zoom)
         delay(700)
         try_num += 1
-    delay(5000)
+    # 等待完成施肥3次任务的报幕结束
+    if need_fertilize:
+        delay(4000)
     # 关闭公会花园
     mouseClick(hwnd, 854 * zoom, 54 * zoom)
     delay(500)
+    # 关闭公会
     mouseClick(hwnd, 909 * zoom, 70 * zoom)
     delay(1000)
     if try_num >= 120:
         raise BusinessError("已尝试过120个公会，均超过成长上限，无法正常完成浇水施肥！")
+    return result_str
 
 
 def executeReceiveCampsiteKey(hwnd, zoom=1):
     singleLayerChooseLevel(hwnd, "探险营地", "营地钥匙", zoom)
+    return "完成[营地钥匙]"
 
 
 def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
     """领取公会任务，若有权限，可以选择发布会长任务
     """
+    result_str = "完成[公会任务]"
     # 点击“跳转”
     mouseClick(hwnd, 870 * zoom, 585 * zoom)
     delay(500)
@@ -328,12 +362,36 @@ def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
         # 点击“抽取并发布”
         mouseClick(hwnd, 486 * zoom, 439 * zoom)
         delay(500)
+        result_str = "完成[公会任务]。且发布会长任务"
     # 关闭界面
     mouseClick(hwnd, 855 * zoom, 55 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 855 * zoom, 55 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 855 * zoom, 55 * zoom)
+    #     delay(1000)
+    return result_str
+
+
+def executeOpenFoodContest(hwnd, zoom=1):
+    return "目前暂未实现[打开美食大赛]"
+
+
+def executeOpenBackpack(hwnd, zoom=1):
+    # 点击界面下方”背包“
+    mouseClick(hwnd, 595 * zoom, 585 * zoom)
+    if not find_pic_loop(hwnd, OPEN_BACKPACK_PATH, [33, 123, 122, 184], max_time=120):
+        raise BusinessError("超过2min还未打开背包界面！")
+    delay(1000)
+    # 点击“道具”
+    mouseClick(hwnd, 780 * zoom, 70 * zoom)
+    delay(500)
+    # 关闭界面
+    mouseClick(hwnd, 917 * zoom, 60 * zoom)
+    delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 917 * zoom, 60 * zoom)
+    #     delay(1000)
+    return "完成[打开背包]"
 
 
 def executeReceiveTeamMagicTower(hwnd, zoom=1):
@@ -348,14 +406,16 @@ def executeReceiveTeamMagicTower(hwnd, zoom=1):
     # 退出界面
     mouseClick(hwnd, 930 * zoom, 30 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 930 * zoom, 30 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 930 * zoom, 30 * zoom)
+    #     delay(1000)
+    return "完成[领取双人魔塔奖励]"
 
 
-def executeGiveFlowers(hwnd, receiver_name_path: str, use_coupon: bool = False, use_times: int = 0, zoom=1):
+def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = False, use_times: int = 0, zoom=1):
     """赠送免费鲜花，可选择使用礼券
     """
+    result_str = "完成[赠送鲜花]"
     # 点击“好友”
     mouseClick(hwnd, 40 * zoom, 105 * zoom)
     if not find_pic_loop(hwnd, OPEN_FRIEND_PATH, [434, 87, 543, 122], max_time=120):
@@ -366,14 +426,14 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_coupon: bool = False, 
         mouseClick(hwnd, 758 * zoom, 200 * zoom)
         delay(500)
     # 找一次目标好友
-    receiver_pos = find_pic(hwnd, receiver_name_path, [247, 170, 372, 486])
+    receiver_pos = find_pic(hwnd, receiver_name_path, [247, 170, 372, 486], 0.95)
     for bar_y_pixel in range(203, 457):
         if not receiver_pos:
             # 对于滑动条纵向范围，若本次没找到，就更新一次滑动条位置，再找图，直到成功找到或遍历完滑动条范围
             if find_color(hwnd, [758, bar_y_pixel, 758, bar_y_pixel], 0x724705):
                 mouseClick(hwnd, 758 * zoom, (bar_y_pixel + 10) * zoom)
                 delay(100)
-                receiver_pos = find_pic(hwnd, receiver_name_path, [247, 170, 372, 486])
+                receiver_pos = find_pic(hwnd, receiver_name_path, [247, 170, 372, 486], 0.95)
     # 若结束循环时仍没找到
     if not receiver_pos:
         raise BusinessError("未能找到目标好友！")
@@ -389,7 +449,18 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_coupon: bool = False, 
     # 点击”送出“
     mouseClick(hwnd, 500 * zoom, 400 * zoom)
     delay(500)
-    if use_coupon:
+    if find_pic(hwnd, SECONDARY_PASSWORD, [360, 170, 510, 220]):
+        # 关闭二级密码框
+        mouseClick(hwnd, 570 * zoom, 200 * zoom)
+        delay(500)
+        # 关闭鲜花界面
+        mouseClick(hwnd, 715 * zoom, 150 * zoom)
+        delay(500)
+        # 关闭好友界面
+        mouseClick(hwnd, 760 * zoom, 100 * zoom)
+        delay(500)
+        raise BusinessError("未解锁二级密码，送花失败！")
+    if use_gift_coupon:
         # 选择礼券鲜花
         mouseClick(hwnd, 500 * zoom, 308 * zoom)
         delay(500)
@@ -397,12 +468,14 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_coupon: bool = False, 
             # 点击”送出“
             mouseClick(hwnd, 500 * zoom, 400 * zoom)
             delay(500)
+        result_str = f"完成[赠送鲜花]。并使用了{use_times}次礼券赠送"
     # 关闭鲜花界面
     mouseClick(hwnd, 715 * zoom, 150 * zoom)
     delay(500)
     # 关闭好友界面
     mouseClick(hwnd, 760 * zoom, 100 * zoom)
     delay(500)
+    return result_str
 
 
 def executeReceiveDestinyTree(hwnd, zoom=1):
@@ -420,9 +493,10 @@ def executeReceiveDestinyTree(hwnd, zoom=1):
     # 关闭界面
     mouseClick(hwnd, 930 * zoom, 30 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 930 * zoom, 30 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 930 * zoom, 30 * zoom)
+    #     delay(1000)
+    return "完成[领取缘分树奖励]"
 
 
 def checkCloseActivity(hwnd):

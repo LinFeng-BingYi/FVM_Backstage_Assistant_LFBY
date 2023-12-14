@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
+    <width>960</width>
     <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
+    <width>960</width>
     <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>900</width>
+    <width>960</width>
     <height>600</height>
    </size>
   </property>
@@ -166,7 +166,7 @@
            <widget class="QPushButton" name="pushButton_add_flow">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>174</width>
               <height>30</height>
              </size>
             </property>
@@ -216,7 +216,14 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QPlainTextEdit" name="plainTextEdit_changelog"/>
+            <widget class="QPlainTextEdit" name="plainTextEdit_changelog">
+             <property name="minimumSize">
+              <size>
+               <width>560</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QProgressBar" name="progressBar">
@@ -257,7 +264,14 @@
             <widget class="QWidget" name="widget_business_config" native="true">
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
-               <widget class="QWidget" name="widget_business_param_area" native="true"/>
+               <widget class="QWidget" name="widget_business_param_area" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>530</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QWidget" name="widget_business_button_area" native="true">
@@ -443,8 +457,16 @@
           </item>
           <item>
            <widget class="QPlainTextEdit" name="plainTextEdit_log">
+            <property name="font">
+             <font>
+              <pointsize>7</pointsize>
+             </font>
+            </property>
             <property name="readOnly">
              <bool>true</bool>
+            </property>
+            <property name="plainText">
+             <string/>
             </property>
            </widget>
           </item>
@@ -665,7 +687,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
+     <width>960</width>
      <height>22</height>
     </rect>
    </property>
