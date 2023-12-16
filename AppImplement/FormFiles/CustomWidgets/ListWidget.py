@@ -184,7 +184,8 @@ class FuncFlowListWidget(QListWidget):
 
     def flowFinished(self):
         for item_widget in self.active_item_widget_list:
-            item_widget.changeStatus("hanging")
+            if item_widget.getStatus() != "wrong":
+                item_widget.changeStatus("hanging")
 
     def dropEvent(self, event):
         # 设置其他item不能排在“开始”item之前

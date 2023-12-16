@@ -12,6 +12,7 @@ from AppImplement.Business.CustomException import BusinessError
 from AppImplement.Business.Foundation import switchWorldZone, singleLayerChooseLevel
 
 from math import floor
+from os import listdir
 
 
 # 一键签到相关 -----------------------------------------------------------------------
@@ -182,7 +183,7 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
         delay(100)
         # 点击领取奖励
         mouseClick(hwnd, 640 * zoom, 530 * zoom)
-        delay(100)
+        delay(500)
         # 继续找其他已完成的任务
         complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
     # 通过在滑动条的横坐标414这一列，遍历每个像素点，从上往下查找滑动条的底部，然后点击这个位置，实现全面覆盖所有任务
@@ -351,7 +352,7 @@ def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
         delay(100)
         # 点击领取奖励
         mouseClick(hwnd, 640 * zoom, 530 * zoom)
-        delay(100)
+        delay(500)
         # 继续找其他已完成的任务
         complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
     if release_quest and find_color(hwnd, [75, 36, 174, 75], 0x78E4F4):
@@ -502,3 +503,48 @@ def executeReceiveDestinyTree(hwnd, zoom=1):
 def checkCloseActivity(hwnd):
     delay(500)
     return find_pic(hwnd, SWITCH_LINE_PATH, [791, 70, 840, 98])
+
+
+# 会长任务相关 -----------------------------------------------------------------------
+def findUnionPresidentQuest(hwnd, zoom=1):
+    """在已打开公会任务面板的前提下，开始遍历查找公会任务，将任务查找结果存入列表
+
+    Args:
+        hwnd: int
+            ...
+        zoom: float
+            ...
+
+    Returns: list
+        任务查找结果列表，查找成功则返回任务截图文件名，没找到则返回”没找到“，已完成则返回”已完成“
+        example:
+            ["浮空岛-卤料花园-继续挑战", "浮空岛-十三香中心岛-跳过", "没找到", "已完成"]
+    """
+    # 先检查两种任务是否被收起
+    for i in range(2):
+        check_quest_folded = find_pic(hwnd, FOLD_BOTTOM_QUEST_PATH, [100, 130, 125, 315])
+        if check_quest_folded:
+            mouseClick(hwnd, check_quest_folded[0] * zoom, check_quest_folded[1] * zoom)
+            delay(500)
+    quest_result_list = []
+    # 逐个检查
+    for i in [0, 1, 2]:
+        # 点击对应任务
+        mouseClick(hwnd, 160 * zoom, (205 + 30 * i) * zoom)
+        delay(500)
+        # 若发现已完成，则跳过
+        if find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [355, 190 + 30 * i, 400, 220 + 30 * i]):
+            quest_result_list.append("已完成")
+            continue
+        # 否则，查找任务结果，默认值为”没找到“
+        quest_find_result = "没找到"
+        quest_pic_dir_path = ROOT_PATH + r"\resources\images\application\任务图片\公会任务\任务" + f"{i + 1}"
+        for quest_pic in listdir(quest_pic_dir_path):
+            quest_pic_abstract_path = quest_pic_dir_path + "\\" + quest_pic
+            if find_pic(hwnd, quest_pic_abstract_path, [432, 90, 855, 367]):
+                # 若找到了，则将 任务结果 改为 纯文件名
+                quest_find_result = quest_pic.rsplit('.', 1)[0]
+                break
+        quest_result_list.append(quest_find_result)
+    print(quest_result_list)
+    return quest_result_list

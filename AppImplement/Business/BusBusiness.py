@@ -146,8 +146,7 @@ class BusinessBus(QThread):
         mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
         # 检测进入关卡
         if not loopCheckStartGame(hwnd_1p, hwnd_2p, zoom1):
-            self.formatBusinessMessage("2min未检测到进入关卡！", "ERROR")
-            return
+            raise BusinessError("2min未检测到进入关卡！")
         self.formatBusinessMessage("检测到进入关卡")
         # 放置1P
         delay(100)
@@ -163,17 +162,14 @@ class BusinessBus(QThread):
         if self.level_info["has_stage2"]:
             self.formatBusinessMessage("开始检测进度")
             # 等待检测到"继续挑战"
-            if not loopCheckContinue(hwnd_1p):
+            if not loopCheckContinue(hwnd_1p, self.level_info["max_check_time"]):
                 # 超过容忍时间 还未检测到“继续挑战”
-                self.formatBusinessMessage(
-                    f"超过{self.level_info['max_check_time']}分钟还未检测到“继续挑战”！！！",
-                    "ERROR")
-                return
+                raise BusinessError(f"超过{self.level_info['max_check_time']}分钟还未检测到“继续挑战”！！！")
             # 成功检测到“继续挑战”
             if self.level_info["shall_continue"]:
                 # 1P、2P先后点击“继续挑战”
                 mouseClick(hwnd_1p, 424 * zoom1, 344 * zoom1)
-                delay(500)
+                delay(100)
                 mouseClick(hwnd_2p, 424 * zoom2, 344 * zoom2)
                 self.formatBusinessMessage("选择继续挑战")
 
@@ -183,9 +179,9 @@ class BusinessBus(QThread):
                 if find_color(hwnd_1p, [60, 20, 80, 40], 0x3D4A4C):
                     self.formatBusinessMessage("继续挑战点击失效，正在重新尝试", "WARN")
                     mouseClick(hwnd_1p, 424 * zoom1, 344 * zoom1)
-                    delay(500)
+                    delay(100)
                     mouseClick(hwnd_2p, 424 * zoom2, 344 * zoom2)
-                    delay(20000)
+                    delay(2000)
             else:
                 # 1P、2P先后点击“领取奖励”
                 mouseClick(hwnd_1p, 512 * zoom1, 344 * zoom1)
@@ -195,10 +191,7 @@ class BusinessBus(QThread):
 
         self.formatBusinessMessage("开始检测结算")
         if not loopCheckEndGame(hwnd_1p, self.level_info["max_check_time"]):
-            self.formatBusinessMessage(
-                f"超过{self.level_info['max_check_time']}分钟还未检测到“结算翻牌”！！！"
-                "ERROR")
-            return
+            raise BusinessError(f"超过{self.level_info['max_check_time']}分钟还未检测到“结算翻牌”！！！")
         # 关闭所有放卡线程
         self.endAllPlacingWorker()
         delay(8200)
@@ -209,17 +202,14 @@ class BusinessBus(QThread):
         self.formatBusinessMessage(f"翻取了第{self.player1_info['flop_pos']}张牌")
 
     def singleFromStartToFlop(self):
-        """单人, 从点击 (准备/开始) 到 (结算完成翻牌)
-        """
         hwnd_1p = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
         # 1P开始
         delay(500)
         mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
         # 检测进入关卡
-        if not loopCheckStartGame(hwnd_1p, zoom1):
-            self.formatBusinessMessage("2min未检测到进入关卡！", "ERROR")
-            return
+        if not loopCheckStartGame(hwnd_1p, zoom=zoom1):
+            raise BusinessError("2min未检测到进入关卡！")
         self.formatBusinessMessage("检测到进入关卡")
         # 放置1P
         delay(100)
@@ -232,12 +222,9 @@ class BusinessBus(QThread):
         if self.level_info["has_stage2"]:
             self.formatBusinessMessage("开始检测进度")
             # 等待检测到"继续挑战"
-            if not loopCheckContinue(hwnd_1p):
+            if not loopCheckContinue(hwnd_1p, self.level_info["max_check_time"]):
                 # 超过容忍时间 还未检测到“继续挑战”
-                self.formatBusinessMessage(
-                    f"超过{self.level_info['max_check_time']}分钟还未检测到“继续挑战”！！！",
-                    "ERROR")
-                return
+                raise BusinessError(f"超过{self.level_info['max_check_time']}分钟还未检测到“继续挑战”！！！")
             # 成功检测到“继续挑战”
             if self.level_info["shall_continue"]:
                 # 1P点击“继续挑战”
@@ -250,7 +237,7 @@ class BusinessBus(QThread):
                 if find_color(hwnd_1p, [60, 20, 80, 40], 0x3D4A4C):
                     self.formatBusinessMessage("继续挑战点击失效，正在重新尝试", "WARN")
                     mouseClick(hwnd_1p, 424 * zoom1, 344 * zoom1)
-                    delay(20000)
+                    delay(2000)
             else:
                 # 1P点击“领取奖励”
                 mouseClick(hwnd_1p, 512 * zoom1, 344 * zoom1)
@@ -258,10 +245,7 @@ class BusinessBus(QThread):
 
         self.formatBusinessMessage("开始检测结算")
         if not loopCheckEndGame(hwnd_1p, self.level_info["max_check_time"]):
-            self.formatBusinessMessage(
-                f"超过{self.level_info['max_check_time']}分钟还未检测到“结算翻牌”！！！",
-                "ERROR")
-            return
+            raise BusinessError(f"超过{self.level_info['max_check_time']}分钟还未检测到“结算翻牌”！！！")
         # 关闭所有放卡线程
         self.endAllPlacingWorker()
         delay(8200)
@@ -270,7 +254,7 @@ class BusinessBus(QThread):
         executeFlop(hwnd_1p, self.player1_info["flop_pos"], zoom1)
         self.formatBusinessMessage(f"翻取了第{self.player1_info['flop_pos']}张牌")
 
-    # 最关键的 启用翻牌 或 结束翻牌 ---------------------------------------------------------
+    # 最关键的 启用放卡 或 结束放卡 ---------------------------------------------------------
     def startPlacingCard(self, cards_plan, player=1):
         """...
 
@@ -302,7 +286,6 @@ class BusinessBus(QThread):
 
     # 功能：循环刷指定关卡 ---------------------------------------------------------------
     def loopSpecificLevel(self, zone, level, loop_count):
-        self.formatBusinessMessage("启动[刷指定关卡]功能")
         # 切换地图
         self.formatBusinessMessage("正在切换到关卡")
         hwnd_1p = self.player1_info["hwnd"]
@@ -339,12 +322,81 @@ class BusinessBus(QThread):
                 self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
             exitRoom(hwnd_1p, zoom1)
-        self.formatBusinessMessage("完成[刷指定关卡]功能")
 
     # 功能：一键签到 ------------------------------------------------------------------
     def signinAndActivity(self, activity_list: list):
         pass
 
+    # 功能：公会任务 ------------------------------------------------------------------
+    def startUnionQuest(self, placing_plan_file_path):
+        hwnd1 = self.player1_info["hwnd"]
+        zoom1 = self.player1_info["zoom"]
+        # 点击“跳转”
+        mouseClick(hwnd1, 870 * zoom1, 585 * zoom1)
+        delay(500)
+        # 点击“公会任务”
+        mouseClick(hwnd1, 900 * zoom1, 260 * zoom1)
+        delay(2000)
+        # 获取会长任务结果列表
+        quest_result_list = findUnionPresidentQuest(hwnd1, zoom1)
+        # 关闭公会任务界面
+        mouseClick(hwnd1, 855 * zoom1, 55 * zoom1)
+        delay(500)
+
+        quest_no = 0
+        for quest_result in quest_result_list:
+            quest_no += 1
+            self.formatBusinessMessage(f"开始公会任务{quest_no}...")
+            if self.player2_info is None and quest_no in [3]:
+                self.formatBusinessMessage("该任务属于组队任务，单人模式自动跳过")
+            if quest_result in ["已完成", "没找到"]:
+                self.formatBusinessMessage(f"{quest_result}公会任务{quest_no}")
+                continue
+            if quest_result.rsplit('-', 1)[1] == "跳过":
+                self.formatBusinessMessage(f"跳过公会任务{quest_no}")
+                continue
+            self.formatBusinessMessage(f"公会任务{quest_no}: {quest_result}")
+            # 执行
+            self.executeUnionQuest(quest_result, placing_plan_file_path)
+
+    def executeUnionQuest(self, quest_result, placing_plan_file_path):
+        zone, level, strategy = quest_result.split('-')
+
+        # 设置关卡信息
+        if strategy == "无二阶段":
+            self.level_info["has_stage2"] = False
+        elif strategy == "继续挑战":
+            self.level_info["has_stage2"] = True
+            self.level_info["shall_continue"] = True
+        elif strategy == "领取奖励":
+            self.level_info["has_stage2"] = True
+            self.level_info["shall_continue"] = False
+        else:
+            # 默认作为”无二阶段“处理
+            self.level_info["has_stage2"] = False
+
+        # 获取放卡方案信息：所用方案名称 与 关卡名称 相同
+        union_placing_plan_procs = PlacingPlanProcessor(placing_plan_file_path)
+        plan_info = union_placing_plan_procs.readPlan(level)
+        if isinstance(plan_info, tuple):
+            self.formatBusinessMessage("未找到目标放卡方案，将使用”默认方案“作为通关配置", "WARN")
+            plan_info = union_placing_plan_procs.readPlan("默认方案")
+            if isinstance(plan_info, tuple):
+                raise BusinessError("未找到目标放卡方案，且不存在”默认方案“，无法正常通关！")
+        # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+        player1_info_dict = self.convertToExecute(
+            {"1p_hwnd": self.player1_info["hwnd"], "1p_zoom": self.player1_info["zoom"]},
+            plan_info, "1;2", 1)
+        player2_info_dict = None
+        if self.player2_info is not None and plan_info["player_num"] == 2:
+            player2_info_dict = self.convertToExecute(
+                {"2p_hwnd": self.player2_info["hwnd"], "2p_zoom": self.player2_info["zoom"]},
+                plan_info, "1;2", 2)
+        self.setPlayerInfo(player1_info_dict, player2_info_dict)
+
+        self.loopSpecificLevel(zone, level, 1)
+
+    # 线程执行相关 -------------------------------------------------------------------
     def run(self) -> None:
         self.formatBusinessMessage("开始依次执行流程列表中可用功能")
         # 先从“开始”功能获取流程全局变量
@@ -358,6 +410,7 @@ class BusinessBus(QThread):
             "deck_path": deck_path,
             "plan_path": plan_path
         })
+        self.level_info["max_check_time"] = start_param["max_check_time"]
         self.player_deck_procs.setFilePath(deck_path)
         self.place_plan_procs.setFilePath(plan_path)
         # 完成”开始“功能
@@ -368,6 +421,8 @@ class BusinessBus(QThread):
         for func_param in self.func_flow[1:]:
             self.formatBusinessMessage(f"开始功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, "executing")
+            # 当前功能执行结果，默认为“完成”，当捕捉到异常后改为“错误”
+            func_final_status = "completed"
             if func_param["func_name"] == "日常领取":
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
@@ -389,7 +444,9 @@ class BusinessBus(QThread):
                             self.formatBusinessMessage(f"跳过[{key}]")
                     except BusinessError as business_error:
                         business_error_str = f"执行[{key}]功能时出错！\n\n{business_error.error_info}"
+                        func_final_status = "wrong"
                         self.signal_send_business_error.emit(business_error_str)
+                        self.formatBusinessMessage(business_error_str, "ERROR")
                 # 加回该键值对，便于之后的输出
                 func_param["func_name"] = "日常领取"
             elif func_param["func_name"] == "刷指定关卡":
@@ -408,14 +465,21 @@ class BusinessBus(QThread):
                     "shall_continue": func_param["shall_continue"],
                     "max_check_time": start_param["max_check_time"]
                 })
-                # 启动 循环刷指定关卡 的功能
-                self.loopSpecificLevel(
-                    func_param["zone_name"],
-                    func_param["level_name"],
-                    func_param["loop_count"])
+                try:
+                    # 启动 循环刷指定关卡 的功能
+                    self.loopSpecificLevel(
+                        func_param["zone_name"],
+                        func_param["level_name"],
+                        func_param["loop_count"])
+                except BusinessError as business_error:
+                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
+                    func_final_status = "wrong"
+                    self.signal_send_business_error.emit(business_error_str)
+                    self.formatBusinessMessage(business_error_str, "ERROR")
 
             self.formatBusinessMessage(f"结束功能[{func_param['func_name']}]")
-            self.signal_send_func_status.emit(func_no, "completed")
+            self.signal_send_func_status.emit(func_no, func_final_status)
+            func_no += 1
         self.formatBusinessMessage("流程执行完成")
         self.signal_flow_finished.emit()
 
@@ -510,88 +574,96 @@ class CardPlaceThread(QThread):
 
 
 if __name__ == "__main__":
-    # cards_plan_1p = [{
-    #     "card_pos_series": "3,9,18000;5,9;1,9",
-    #     "card_slot": 7,
-    #     "card_cd": 15000
-    # }, {
-    #     "card_pos_series": "2,9,25000;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9",
-    #     "card_slot": 3,
-    #     "card_cd": 7000
-    # }, {
-    #     "card_pos_series": "1,9,29500;6,9",
-    #     "card_slot": 6,
-    #     "card_cd": 10000
-    # }, {
-    #     "card_pos_series": "2,8,30000;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8",
-    #     "card_slot": 14,
-    #     "card_cd": 29000
-    # }]
-    # cards_plan_2p = [{
-    #     "card_pos_series": "2,9,5500;4,9;6,9",
-    #     "card_slot": 7,
-    #     "card_cd": 15000
-    # }, {
-    #     "card_pos_series": "2,8,41500;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8",
-    #     "card_slot": 13,
-    #     "card_cd": 29000,
-    #     "shovel": True
-    # }]
-    # player1_info = {"hwnd": 1640472,
-    #                 "zoom": 1,
-    #                 "player_pos": "4,4",
-    #                 "cards_plan": cards_plan_1p,
-    #                 "flop_pos": "1"}
-    # player2_info = {"hwnd": 1247762,
-    #                 "zoom": 1,
-    #                 "player_pos": "6,4",
-    #                 "cards_plan": cards_plan_2p,
-    #                 "flop_pos": "1"}
-    # level_info = {"has_stage2": True,
-    #               "shall_continue": False,
-    #               "max_check_time": 10}
-    # business_bus = BusinessBus()
-    # business_bus.setPlayerInfo(player1_info, player2_info)
-    # business_bus.setLevelInfo(level_info)
-    # business_bus.teamFromStartToFlop()
+    cards_plan_1p = [{
+        "card_pos_series": "3,9,18000;5,9;1,9",
+        "card_slot": 7,
+        "card_cd": 15000
+    }, {
+        "card_pos_series": "2,9,25000;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9;2,9;3,9;4,9;5,9",
+        "card_slot": 3,
+        "card_cd": 7000
+    }, {
+        "card_pos_series": "1,9,29500;6,9",
+        "card_slot": 6,
+        "card_cd": 10000
+    }, {
+        "card_pos_series": "2,8,30000;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8",
+        "card_slot": 14,
+        "card_cd": 29000
+    }]
+    cards_plan_2p = [{
+        "card_pos_series": "2,9,5500;4,9;6,9",
+        "card_slot": 7,
+        "card_cd": 15000
+    }, {
+        "card_pos_series": "2,8,41500;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8;2,8",
+        "card_slot": 13,
+        "card_cd": 29000,
+        "shovel": True
+    }]
+    player1_info = {"hwnd": 983764,
+                    "zoom": 1,
+                    "player_pos": "4,4",
+                    "cards_plan": cards_plan_1p,
+                    "flop_pos": "1"}
+    player2_info = {"hwnd": 590300,
+                    "zoom": 1,
+                    "player_pos": "6,4",
+                    "cards_plan": cards_plan_2p,
+                    "flop_pos": "1"}
+    level_info = {"has_stage2": True,
+                  "shall_continue": False,
+                  "max_check_time": 10}
+    business_bus = BusinessBus()
+    business_bus.setPlayerInfo(player1_info, player2_info)
+    business_bus.setLevelInfo(level_info)
+    business_bus.setGlobalFlowInfo({
+            "2p_name_pic_path": r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\组队房间2P截图示例.bmp",
+            "deck_path": r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\config\卡片放置方案\账号预设卡片组.ini",
+            "plan_path": ""
+        })
+    business_bus.player_deck_procs.setFilePath(business_bus.global_flow_info["deck_path"])
+    business_bus.startUnionQuest(r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\config\卡片放置方案\升级版组队常用方案_V1.00.ini")
 
+    # # 测试一键日常领取
     # waitClick()
     # x, y = getCursorPos()
     # hwnd = mousePosHwnd(x, y)
     # print(hwnd)
-    hwnd1 = 986252
-    executeVipSignin(hwnd1)
-    executeDailySignin(hwnd1)
-    executeFreeWish(hwnd1)
-    executePharaohTreasure(hwnd1, 1)
-    executeTarotTreasure(hwnd1)
-    executeReceiveBottomQuest(hwnd1)
-    executeUnionGarden(hwnd1, True, 1)
-    executeReceiveCampsiteKey(hwnd1)
-    executeReceiveUnionQuest(hwnd1, True)
-    executeReceiveTeamMagicTower(hwnd1)
-    executeGiveFlowers(
-        hwnd1,
-        r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\好友界面小号昵称.bmp",
-        True,
-        5
-    )
-    executeReceiveDestinyTree(hwnd1)
-    hwnd2 = 2296822
-    executeVipSignin(hwnd2)
-    executeDailySignin(hwnd2)
-    executeFreeWish(hwnd2)
-    executePharaohTreasure(hwnd2, 1)
-    executeTarotTreasure(hwnd2)
-    executeReceiveBottomQuest(hwnd2)
-    executeUnionGarden(hwnd2, True)
-    executeReceiveCampsiteKey(hwnd2)
-    executeReceiveUnionQuest(hwnd2, False)
-    executeReceiveTeamMagicTower(hwnd2)
-    executeGiveFlowers(
-        hwnd2,
-        r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\好友界面大号昵称.bmp",
-        True,
-        5
-    )
-    executeReceiveDestinyTree(hwnd2)
+
+    # hwnd1 = 986252
+    # executeVipSignin(hwnd1)
+    # executeDailySignin(hwnd1)
+    # executeFreeWish(hwnd1)
+    # executePharaohTreasure(hwnd1, 1)
+    # executeTarotTreasure(hwnd1)
+    # executeReceiveBottomQuest(hwnd1)
+    # executeUnionGarden(hwnd1, True, 1)
+    # executeReceiveCampsiteKey(hwnd1)
+    # executeReceiveUnionQuest(hwnd1, True)
+    # executeReceiveTeamMagicTower(hwnd1)
+    # executeGiveFlowers(
+    #     hwnd1,
+    #     r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\好友界面小号昵称.bmp",
+    #     True,
+    #     5
+    # )
+    # executeReceiveDestinyTree(hwnd1)
+    # hwnd2 = 2296822
+    # executeVipSignin(hwnd2)
+    # executeDailySignin(hwnd2)
+    # executeFreeWish(hwnd2)
+    # executePharaohTreasure(hwnd2, 1)
+    # executeTarotTreasure(hwnd2)
+    # executeReceiveBottomQuest(hwnd2)
+    # executeUnionGarden(hwnd2, True)
+    # executeReceiveCampsiteKey(hwnd2)
+    # executeReceiveUnionQuest(hwnd2, False)
+    # executeReceiveTeamMagicTower(hwnd2)
+    # executeGiveFlowers(
+    #     hwnd2,
+    #     r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\好友界面大号昵称.bmp",
+    #     True,
+    #     5
+    # )
+    # executeReceiveDestinyTree(hwnd2)
