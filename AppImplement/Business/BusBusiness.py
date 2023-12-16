@@ -396,6 +396,152 @@ class BusinessBus(QThread):
 
         self.loopSpecificLevel(zone, level, 1)
 
+    # 功能：情侣任务 ------------------------------------------------------------------
+    def startLoversQuest(self, placing_plan_file_path):
+        hwnd1 = self.player1_info["hwnd"]
+        zoom1 = self.player1_info["zoom"]
+        # 点击“跳转”
+        mouseClick(hwnd1, 870 * zoom1, 585 * zoom1)
+        delay(500)
+        # 点击“情侣任务”
+        mouseClick(hwnd1, 900 * zoom1, 300 * zoom1)
+        delay(2000)
+        # 获取情侣任务结果列表
+        quest_result_list = findLoversQuest(hwnd1, zoom1)
+        # 关闭情侣任务界面
+        mouseClick(hwnd1, 850 * zoom1, 55 * zoom1)
+        delay(500)
+
+        quest_no = 0
+        for quest_result in quest_result_list:
+            quest_no += 1
+            self.formatBusinessMessage(f"开始情侣任务{quest_no}...")
+            if quest_result in ["已完成", "没找到"]:
+                self.formatBusinessMessage(f"{quest_result}情侣任务{quest_no}")
+                continue
+            if quest_result.rsplit('-', 1)[1] == "跳过":
+                self.formatBusinessMessage(f"跳过情侣任务{quest_no}")
+                continue
+            self.formatBusinessMessage(f"情侣任务{quest_no}: {quest_result}")
+            # 执行
+            self.executeUnionQuest(quest_result, placing_plan_file_path)
+
+    # 功能：火山遗迹 ------------------------------------------------------------------
+    def startVolcanicRelic(self, level, loop_count):
+        zone = "火山遗迹"
+        # 切换地图
+        self.formatBusinessMessage("正在切换到关卡")
+        hwnd_1p = self.player1_info["hwnd"]
+        zoom1 = self.player1_info["zoom"]
+        chooseSingleOrMultiZone(hwnd_1p, zone, level, zoom1)
+        if self.player2_info is not None:
+            hwnd_2p = self.player2_info["hwnd"]
+            zoom2 = self.player2_info["zoom"]
+            chooseSingleOrMultiZone(hwnd_2p, zone, level, zoom2)
+        # 创建房间
+        self.formatBusinessMessage("正在创建房间")
+        createPwdRoom(hwnd_1p, zoom=zoom1)
+        # 应用卡片组
+        self.formatBusinessMessage("应用1P卡片组")
+        roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
+        if self.player2_info is not None:
+            # 邀请队友
+            self.formatBusinessMessage("邀请2P")
+            teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2)
+            self.formatBusinessMessage("应用2P卡片组")
+            roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
+            # 从点击 准备/开始 到完成翻牌
+            try:
+                for i in range(loop_count):
+                    self.formatBusinessMessage(f"开始第{i + 1}局")
+                    self.teamFromStartToFlop()
+                    self.formatBusinessMessage(f"结束第{i + 1}局")
+            except BusinessError as business_error:
+                business_error_str = business_error.error_info
+                if business_error_str.find("超过"):
+                    business_error_str = business_error_str + "\n可能是剩余次数不足！"
+                    self.formatBusinessMessage(business_error_str, "WARN")
+                else:
+                    raise business_error
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
+            exitRoom(hwnd_2p, zoom2)
+        else:
+            try:
+                for i in range(loop_count):
+                    self.formatBusinessMessage(f"开始第{i + 1}局")
+                    self.singleFromStartToFlop()
+                    self.formatBusinessMessage(f"结束第{i + 1}局")
+            except BusinessError as business_error:
+                business_error_str = business_error.error_info
+                if business_error_str.find("超过"):
+                    business_error_str = business_error_str + "\n可能是剩余次数不足！"
+                    self.formatBusinessMessage(business_error_str, "WARN")
+                else:
+                    raise business_error
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
+
+    def startMagicTower(self, level_num, loop_count):
+        # 切换地图
+        self.formatBusinessMessage("正在切换到关卡")
+        hwnd_1p = self.player1_info["hwnd"]
+        zoom1 = self.player1_info["zoom"]
+        switchWorldZone(hwnd_1p, "美味岛", zoom1)
+
+        tab_num = 0
+        if self.player2_info is not None:
+            hwnd_2p = self.player2_info["hwnd"]
+            zoom2 = self.player2_info["zoom"]
+            switchWorldZone(hwnd_2p, "美味岛", zoom2)
+
+            tab_num = 1
+        switchWorldZone(hwnd_1p, "魔塔蛋糕", zoom1)
+
+        # 选择tab页
+        mouseClick(hwnd_1p, (45 + 73 * tab_num) * zoom1, 70 * zoom1)
+        delay(500)
+        for loop_time in range(loop_count):
+            self.formatBusinessMessage(f"开始第{loop_time + 1}局")
+            # 选择魔塔关卡，并进入房间
+            chooseMagicTowerLevel(hwnd_1p, level_num, zoom1)
+
+            # 应用卡片组
+            self.formatBusinessMessage("应用1P卡片组")
+            roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
+            if self.player2_info is not None:
+                # 邀请队友
+                self.formatBusinessMessage("邀请2P")
+                teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2)
+                self.formatBusinessMessage("应用2P卡片组")
+                roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
+                # 从点击 准备/开始 到完成翻牌
+                try:
+                    self.teamFromStartToFlop()
+                except BusinessError as business_error:
+                    business_error_str = business_error.error_info
+                    if business_error_str.find("超过"):
+                        business_error_str = business_error_str + "\n可能是剩余次数不足！"
+                        self.formatBusinessMessage(business_error_str, "WARN")
+                    else:
+                        raise business_error
+                # 2P退出房间
+                exitRoom(hwnd_2p, zoom2)
+            else:
+                try:
+                    self.singleFromStartToFlop()
+                except BusinessError as business_error:
+                    business_error_str = business_error.error_info
+                    if business_error_str.find("超过"):
+                        business_error_str = business_error_str + "\n可能是剩余次数不足！"
+                        self.formatBusinessMessage(business_error_str, "WARN")
+                    else:
+                        raise business_error
+            self.formatBusinessMessage(f"结束第{loop_time + 1}局")
+        # 1P关闭魔塔界面
+        mouseClick(hwnd_1p, 925 * zoom1, 32 * zoom1)
+        delay(500)
+
     # 线程执行相关 -------------------------------------------------------------------
     def run(self) -> None:
         self.formatBusinessMessage("开始依次执行流程列表中可用功能")
@@ -476,10 +622,136 @@ class BusinessBus(QThread):
                     func_final_status = "wrong"
                     self.signal_send_business_error.emit(business_error_str)
                     self.formatBusinessMessage(business_error_str, "ERROR")
+            elif func_param["func_name"] == "公会任务":
+                placing_plan_file_path = func_param["placing_plan_file_path"]
+                # 使用该文件路径初始化放卡方案处理器
+                self.place_plan_procs.setFilePath(plan_path)
+
+                # 获取"默认方案"放卡方案信息
+                plan_info = self.place_plan_procs.readPlan("默认方案")
+                if isinstance(plan_info, tuple):
+                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n放卡方案ini文件中不存在“默认方案”"
+                    func_final_status = "wrong"
+                    self.signal_send_business_error.emit(business_error_str)
+                    self.formatBusinessMessage(business_error_str, "ERROR")
+                else:
+                    # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+                    player1_info_dict = self.convertToExecute(
+                        start_param, plan_info, "1;2", 1)
+                    player2_info_dict = None
+                    if enable_2p and plan_info["player_num"] == 2:
+                        player2_info_dict = self.convertToExecute(
+                            start_param, plan_info, "1;2", 2)
+                    self.setPlayerInfo(player1_info_dict, player2_info_dict)
+                    self.setLevelInfo({
+                        "has_stage2": False,
+                        "shall_continue": False,
+                        "max_check_time": start_param["max_check_time"]
+                    })
+                    try:
+                        self.startUnionQuest(placing_plan_file_path)
+                    except BusinessError as business_error:
+                        business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
+                        func_final_status = "wrong"
+                        self.signal_send_business_error.emit(business_error_str)
+                        self.formatBusinessMessage(business_error_str, "ERROR")
+            elif func_param["func_name"] == "情侣任务":
+                if not enable_2p:
+                    business_message_str = f"单人模式不支持[{func_param['func_name']}]功能！"
+                    self.formatBusinessMessage(business_message_str, "WARN")
+                    self.formatBusinessMessage(f"结束功能[{func_param['func_name']}]")
+                    self.signal_send_func_status.emit(func_no, func_final_status)
+                    func_no += 1
+                    continue
+                placing_plan_file_path = func_param["placing_plan_file_path"]
+                # 使用该文件路径初始化放卡方案处理器
+                self.place_plan_procs.setFilePath(plan_path)
+
+                # 获取"默认方案"放卡方案信息
+                plan_info = self.place_plan_procs.readPlan("默认方案")
+                if isinstance(plan_info, tuple):
+                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n放卡方案ini文件中不存在“默认方案”"
+                    func_final_status = "wrong"
+                    self.signal_send_business_error.emit(business_error_str)
+                    self.formatBusinessMessage(business_error_str, "ERROR")
+                else:
+                    # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+                    player1_info_dict = self.convertToExecute(
+                        start_param, plan_info, "1;2", 1)
+                    player2_info_dict = None
+                    if enable_2p and plan_info["player_num"] == 2:
+                        player2_info_dict = self.convertToExecute(
+                            start_param, plan_info, "1;2", 2)
+                    self.setPlayerInfo(player1_info_dict, player2_info_dict)
+                    self.setLevelInfo({
+                        "has_stage2": False,
+                        "shall_continue": False,
+                        "max_check_time": start_param["max_check_time"]
+                    })
+                    try:
+                        self.startLoversQuest(placing_plan_file_path)
+                    except BusinessError as business_error:
+                        business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
+                        func_final_status = "wrong"
+                        self.signal_send_business_error.emit(business_error_str)
+                        self.formatBusinessMessage(business_error_str, "ERROR")
+            elif func_param["func_name"] == "火山遗迹":
+                # 获取放卡方案信息
+                plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
+                # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+                player1_info_dict = self.convertToExecute(
+                    start_param, plan_info, func_param["flop_pos"], 1)
+                player2_info_dict = None
+                if enable_2p and plan_info["player_num"] == 2:
+                    player2_info_dict = self.convertToExecute(
+                        start_param, plan_info, func_param["flop_pos"], 2)
+                self.setPlayerInfo(player1_info_dict, player2_info_dict)
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"]
+                })
+                try:
+                    # 启动 循环刷指定关卡 的功能
+                    self.startVolcanicRelic(
+                        func_param["level_name"],
+                        func_param["loop_count"])
+                except BusinessError as business_error:
+                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
+                    func_final_status = "wrong"
+                    self.signal_send_business_error.emit(business_error_str)
+                    self.formatBusinessMessage(business_error_str, "ERROR")
+            elif func_param["func_name"] == "魔塔蛋糕":
+                # 获取放卡方案信息
+                plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
+                # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+                player1_info_dict = self.convertToExecute(
+                    start_param, plan_info, func_param["flop_pos"], 1)
+                player2_info_dict = None
+                if enable_2p and plan_info["player_num"] == 2:
+                    player2_info_dict = self.convertToExecute(
+                        start_param, plan_info, func_param["flop_pos"], 2)
+                self.setPlayerInfo(player1_info_dict, player2_info_dict)
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"]
+                })
+                try:
+                    # 启动 循环刷指定关卡 的功能
+                    self.startMagicTower(
+                        func_param["level_num"],
+                        func_param["loop_count"])
+                except BusinessError as business_error:
+                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
+                    func_final_status = "wrong"
+                    self.signal_send_business_error.emit(business_error_str)
+                    self.formatBusinessMessage(business_error_str, "ERROR")
 
             self.formatBusinessMessage(f"结束功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, func_final_status)
             func_no += 1
+            self.place_plan_procs.setFilePath(plan_path)
         self.formatBusinessMessage("流程执行完成")
         self.signal_flow_finished.emit()
 
@@ -605,11 +877,13 @@ if __name__ == "__main__":
                     "zoom": 1,
                     "player_pos": "4,4",
                     "cards_plan": cards_plan_1p,
+                    "deck_no": 2,
                     "flop_pos": "1"}
     player2_info = {"hwnd": 590300,
                     "zoom": 1,
                     "player_pos": "6,4",
                     "cards_plan": cards_plan_2p,
+                    "deck_no": 2,
                     "flop_pos": "1"}
     level_info = {"has_stage2": True,
                   "shall_continue": False,
@@ -623,7 +897,7 @@ if __name__ == "__main__":
             "plan_path": ""
         })
     business_bus.player_deck_procs.setFilePath(business_bus.global_flow_info["deck_path"])
-    business_bus.startUnionQuest(r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\config\卡片放置方案\升级版组队常用方案_V1.00.ini")
+    business_bus.startMagicTower(99, 2)
 
     # # 测试一键日常领取
     # waitClick()

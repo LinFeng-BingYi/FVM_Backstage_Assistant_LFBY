@@ -548,3 +548,47 @@ def findUnionPresidentQuest(hwnd, zoom=1):
         quest_result_list.append(quest_find_result)
     print(quest_result_list)
     return quest_result_list
+
+
+# 情侣任务相关 -----------------------------------------------------------------------
+def findLoversQuest(hwnd, zoom=1):
+    """在已打开情侣任务面板的前提下，开始遍历查找情侣任务，将任务查找结果存入列表
+
+    Args:
+        hwnd: int
+            ...
+        zoom: float
+            ...
+
+    Returns: list
+        任务查找结果列表，查找成功则返回任务截图文件名，没找到则返回”没找到“，已完成则返回”已完成“
+        example:
+            ["浮空岛-卤料花园-继续挑战", "浮空岛-十三香中心岛-跳过", "没找到", "已完成"]
+    """
+    quest_result_list = []
+    # 逐个检查
+    for i in [0, 1, 2]:
+        # 若发现已完成，则跳过
+        if find_color(hwnd, [100 + 250 * i, 155, 170 + 250 * i, 190], 0x53C967):
+            quest_result_list.append("已完成")
+            continue
+        if find_color(hwnd, [175 + 250 * i, 410, 280 + 250 * i, 440], 0x2B95FF):
+            quest_result_list.append("已完成")
+            continue
+        # 否则，查找任务结果，默认值为”没找到“
+        quest_find_result = "没找到"
+        quest_pic_dir_path = ROOT_PATH + r"\resources\images\application\任务图片\情侣任务\任务" + f"{i + 1}"
+        for quest_pic in listdir(quest_pic_dir_path):
+            quest_pic_abstract_path = quest_pic_dir_path + "\\" + quest_pic
+            if find_pic(hwnd, quest_pic_abstract_path, [432, 90, 855, 367]):
+                # 若找到了，则将 任务结果 改为 纯文件名
+                quest_find_result = quest_pic.rsplit('.', 1)[0]
+                break
+        quest_result_list.append(quest_find_result)
+    print(quest_result_list)
+    return quest_result_list
+
+
+# 魔塔蛋糕相关
+
+

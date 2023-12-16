@@ -8,13 +8,21 @@ from AppImplement.FlowFunction.StartListItem import StartListWidget
 from AppImplement.FlowFunction.EndListItem import EndListWidget
 from AppImplement.FlowFunction.LoopLevelListItem import LoopLevelListWidget
 from AppImplement.FlowFunction.DailyAwardListItem import DailyAwardListWidget
+from AppImplement.FlowFunction.UnionQuestListItem import UnionQuestListWidget
+from AppImplement.FlowFunction.LoversQuestListItem import LoversQuestListWidget
+from AppImplement.FlowFunction.VolcanicRelicListItem import VolcanicRelicListWidget
+from AppImplement.FlowFunction.MagicTowerListItem import MagicTowerListWidget
 
 # 若需要修改键名，BusinessBus类的run函数中也要做相应的修改
 SUPPORT_FUNC = {
     "开始": StartListWidget,
     "结束": EndListWidget,
     "日常领取": DailyAwardListWidget,
-    "刷指定关卡": LoopLevelListWidget
+    "刷指定关卡": LoopLevelListWidget,
+    "公会任务": UnionQuestListWidget,
+    "情侣任务": LoversQuestListWidget,
+    "火山遗迹": VolcanicRelicListWidget,
+    "魔塔蛋糕": MagicTowerListWidget
 }
 
 

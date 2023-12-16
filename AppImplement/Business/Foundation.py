@@ -7,8 +7,9 @@
 # @Dsc     : 基础操作
 
 from Common.Backstage import *
-
 from AppImplement.GlobalValue.StaticValue import *
+
+from math import floor
 
 
 # 选择 对应地图 对应关卡 ---------------------------------------------------------------------------
@@ -95,6 +96,25 @@ def chooseSingleOrMultiZone(hwnd, zone_name, level_name, zoom=1):
         multiLayerChooseLevel(hwnd, zone_name, level_name, zoom)
     else:
         raise KeyError
+
+
+def chooseMagicTowerLevel(hwnd, level_num: int, zoom=1):
+    """在已打开魔塔界面的情况下，根据魔塔层数 level_num 选择对应的魔塔关卡，并创建进入房间"""
+    right_num = floor((level_num - 1) / 15)
+    down_to_up_num = (level_num - 1) % 15 + 1
+    # 点击跳转到第一页
+    mouseClick(hwnd, 46 * zoom, 576 * zoom)
+    delay(100)
+    # 向右翻页，跳转到目标页
+    for i in range(right_num):
+        mouseClick(hwnd, 149 * zoom, 576 * zoom)
+        delay(100)
+    # 选择层数
+    mouseClick(hwnd, 113 * zoom, (542 - 30 * (down_to_up_num - 1)) * zoom)
+    delay(500)
+    # 点击创建
+    mouseClick(hwnd, 588 * zoom, 560 * zoom)
+    delay(500)
 
 
 # 创建房间 -----------------------------------------------------------------------------------
@@ -222,9 +242,9 @@ def executeFlop(hwnd, flop_pos: str, zoom=1):
         delay(30)
     # 返回房间
     delay(200)
-    mouseClick(hwnd, 708 * zoom, 505 * zoom)
+    mouseClick(hwnd, 708 * zoom, 498 * zoom)
     delay(200)
-    mouseClick(hwnd, 708 * zoom, 505 * zoom)
+    mouseClick(hwnd, 708 * zoom, 498 * zoom)
     delay(200)
 
 
