@@ -117,6 +117,96 @@ def chooseMagicTowerLevel(hwnd, level_num: int, zoom=1):
     delay(500)
 
 
+def chooseCrossServiceLevel(hwnd, level_type: str, level_num: int, zoom=1):
+    """在已打开跨服界面的情况下，选择跨服关卡
+
+    Args:
+        hwnd: int
+            ...
+        level_type: str
+            关卡类型
+        level_num: str
+            关卡难度，表示关卡星级(8星到15星)
+        zoom: float
+            ...
+
+    Returns:
+        ...
+        example:
+        ...
+    """
+    level_type_no_dict = {
+        "深渊古堡": 0,
+        "梦魇天空": 1,
+        "灼热地狱": 2,
+        "水火之间": 3,
+        "巫毒研究所": 4,
+        "冰封遗迹": 5
+    }
+    level_num_dict = {
+        "8星": 1, "9星": 2, "10星": 3, "11星": 4, "12星": 5, "13星": 6, "14星": 7, "15星": 8
+    }
+    level_num = level_num_dict[level_num]
+    level_type_no = level_type_no_dict[level_type]
+    # 点击”创建房间“
+    mouseClick(hwnd, 850 * zoom, 550 * zoom)
+    delay(500)
+    # 选择关卡类型
+    mouseClick(hwnd, (60 + 100 * level_type_no) * zoom, 70 * zoom)
+    delay(500)
+    # 启用对应难度序号的密码框: 第一个密码坐标位置是(123, 244)，左右两个相隔226，上下两个相隔220
+    mouseClick(hwnd, (123 + ((level_num - 1) % 4) * 226) * zoom, (244 + floor((level_num - 1) / 4) * 220) * zoom)
+    delay(500)
+    # 点击密码框
+    mouseClick(hwnd, (123 + ((level_num - 1) % 4) * 226 + 80) * zoom, (244 + floor((level_num - 1) / 4) * 220) * zoom)
+    delay(500)
+    # 输入密码
+    keyPress(hwnd, "0", times=4)
+    # 点击”创建“
+    mouseClick(hwnd, (123 + ((level_num - 1) % 4) * 226 + 50) * zoom, (244 + floor((level_num - 1) / 4) * 220 + 40) * zoom)
+    delay(1000)
+
+
+def searchAndEnter1pRoom(hwnd, player1_room_name_pic_path, level_type, zoom=1):
+    level_type_no_dict = {
+        "深渊古堡": 0,
+        "梦魇天空": 1,
+        "灼热地狱": 2,
+        "水火之间": 3,
+        "巫毒研究所": 4,
+        "冰封遗迹": 5
+    }
+    level_type_no = level_type_no_dict[level_type]
+    # 打开右上角关卡类型下拉框
+    mouseClick(hwnd, 620 * zoom, 80 * zoom)
+    delay(500)
+    # 选择关卡类型
+    mouseClick(hwnd, 630 * zoom, (135 + 25 * level_type_no) * zoom)
+    delay(1000)
+    # 找1P房间
+    result_1p_room = find_pic(hwnd, player1_room_name_pic_path, [400, 100, 925, 470])
+    search_limit = 15       # 查找时，最大翻页次数，超过后则查找失败
+    while not result_1p_room:
+        # 点击“下一页”
+        mouseClick(hwnd, 699 * zoom, 488 * zoom)
+        delay(500)
+        if search_limit <= 0:
+            return False
+        search_limit -= 1
+        result_1p_room = find_pic(hwnd, player1_room_name_pic_path, [400, 100, 925, 470])
+    # 点击房间
+    mouseClick(hwnd, result_1p_room[0] * zoom, result_1p_room[1] * zoom)
+    delay(500)
+    # 点击密码框
+    mouseClick(hwnd, 480 * zoom, 300 * zoom)
+    delay(500)
+    # 输入密码
+    keyPress(hwnd, "0", times=4)
+    # 点击“确认”
+    mouseClick(hwnd, 490 * zoom, 360 * zoom)
+    delay(500)
+
+
 # 创建房间 -----------------------------------------------------------------------------------
 def createPwdRoom(hwnd, pwd: str = "0000", zoom=1):
     # 查看是否已勾选使用密码

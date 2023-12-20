@@ -138,7 +138,7 @@ class Ui_MagicTowerParam(object):
         self.groupBox_select_level.setTitle(QCoreApplication.translate("MagicTowerParam", u"\u9009\u62e9\u5173\u5361", None))
         self.label_level_num.setText(QCoreApplication.translate("MagicTowerParam", u"\u5c42\u6570\uff1a", None))
         self.lineEdit_level_num.setText(QCoreApplication.translate("MagicTowerParam", u"99", None))
-        self.groupBox_1p_deck.setTitle(QCoreApplication.translate("MagicTowerParam", u"\u623f\u4e3b\u5361\u7ec4\u914d\u7f6e", None))
+        self.groupBox_1p_deck.setTitle(QCoreApplication.translate("MagicTowerParam", u"\u4fe1\u606f\u914d\u7f6e", None))
         self.label_1p_plan.setText(QCoreApplication.translate("MagicTowerParam", u"\u653e\u5361\u65b9\u6848\uff1a", None))
         self.pushButton_view_plan.setText(QCoreApplication.translate("MagicTowerParam", u"\u67e5\u770b\u65b9\u6848", None))
         self.groupBox_level_setting.setTitle(QCoreApplication.translate("MagicTowerParam", u"\u901a\u5173\u8bbe\u7f6e", None))

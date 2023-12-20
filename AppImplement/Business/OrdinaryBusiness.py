@@ -204,9 +204,9 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
     # 关闭底部任务界面
     mouseClick(hwnd, 640 * zoom, 585 * zoom)
     delay(1000)
-    # if not checkCloseActivity(hwnd):
-    #     mouseClick(hwnd, 640 * zoom, 585 * zoom)
-    #     delay(1000)
+    if not checkCloseActivity(hwnd):
+        mouseClick(hwnd, 640 * zoom, 585 * zoom)
+        delay(1000)
     return "完成[底部任务]"
 
 
@@ -363,6 +363,9 @@ def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
         # 点击“抽取并发布”
         mouseClick(hwnd, 486 * zoom, 439 * zoom)
         delay(500)
+        # 点击关闭抽取任务界面
+        mouseClick(hwnd, 650 * zoom, 200 * zoom)
+        delay(500)
         result_str = "完成[公会任务]。且发布会长任务"
     # 关闭界面
     mouseClick(hwnd, 855 * zoom, 55 * zoom)
@@ -489,7 +492,7 @@ def executeReceiveDestinyTree(hwnd, zoom=1):
     mouseClick(hwnd, 900 * zoom, 340 * zoom)
     delay(2000)
     # 点击”领取“
-    mouseClick(hwnd, 315 * zoom, 505 * zoom)
+    mouseClick(hwnd, 375 * zoom, 505 * zoom)
     delay(500)
     # 关闭界面
     mouseClick(hwnd, 930 * zoom, 30 * zoom)

@@ -102,6 +102,7 @@ class Ui_VolcanicRelicParam(object):
         self.horizontalLayout.setContentsMargins(-1, 0, -1, 5)
         self.label_loop_count = QLabel(self.groupBox_level_setting)
         self.label_loop_count.setObjectName(u"label_loop_count")
+        self.label_loop_count.setMinimumSize(QSize(67, 0))
 
         self.horizontalLayout.addWidget(self.label_loop_count)
 
@@ -113,6 +114,7 @@ class Ui_VolcanicRelicParam(object):
 
         self.label_flop_pos = QLabel(self.groupBox_level_setting)
         self.label_flop_pos.setObjectName(u"label_flop_pos")
+        self.label_flop_pos.setMinimumSize(QSize(67, 0))
 
         self.horizontalLayout.addWidget(self.label_flop_pos)
 
@@ -153,7 +155,7 @@ class Ui_VolcanicRelicParam(object):
         self.comboBox_level.setItemText(4, QCoreApplication.translate("VolcanicRelicParam", u"\u5976\u6614\u57fa\u5730", None))
         self.comboBox_level.setItemText(5, QCoreApplication.translate("VolcanicRelicParam", u"\u5723\u4ee3\u57fa\u5730", None))
 
-        self.groupBox_1p_deck.setTitle(QCoreApplication.translate("VolcanicRelicParam", u"\u623f\u4e3b\u5361\u7ec4\u914d\u7f6e", None))
+        self.groupBox_1p_deck.setTitle(QCoreApplication.translate("VolcanicRelicParam", u"\u4fe1\u606f\u914d\u7f6e", None))
         self.label_1p_plan.setText(QCoreApplication.translate("VolcanicRelicParam", u"\u653e\u5361\u65b9\u6848\uff1a", None))
         self.pushButton_view_plan.setText(QCoreApplication.translate("VolcanicRelicParam", u"\u67e5\u770b\u65b9\u6848", None))
         self.groupBox_level_setting.setTitle(QCoreApplication.translate("VolcanicRelicParam", u"\u901a\u5173\u8bbe\u7f6e", None))

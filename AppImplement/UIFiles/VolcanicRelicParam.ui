@@ -134,7 +134,7 @@
       </size>
      </property>
      <property name="title">
-      <string>房主卡组配置</string>
+      <string>信息配置</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_1p_deck" stretch="1,2,0">
       <property name="spacing">
@@ -214,6 +214,12 @@
       </property>
       <item>
        <widget class="QLabel" name="label_loop_count">
+        <property name="minimumSize">
+         <size>
+          <width>67</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
          <string>循环次数：</string>
         </property>
@@ -234,6 +240,12 @@
       </item>
       <item>
        <widget class="QLabel" name="label_flop_pos">
+        <property name="minimumSize">
+         <size>
+          <width>67</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
          <string>翻牌位置：</string>
         </property>

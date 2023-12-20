@@ -146,7 +146,7 @@ class BusinessBus(QThread):
         mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
         # 检测进入关卡
         if not loopCheckStartGame(hwnd_1p, hwnd_2p, zoom1):
-            raise BusinessError("2min未检测到进入关卡！")
+            raise BusinessError("超过2min未检测到进入关卡！")
         self.formatBusinessMessage("检测到进入关卡")
         # 放置1P
         delay(100)
@@ -209,7 +209,7 @@ class BusinessBus(QThread):
         mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
         # 检测进入关卡
         if not loopCheckStartGame(hwnd_1p, zoom=zoom1):
-            raise BusinessError("2min未检测到进入关卡！")
+            raise BusinessError("超过2min未检测到进入关卡！")
         self.formatBusinessMessage("检测到进入关卡")
         # 放置1P
         delay(100)
@@ -304,7 +304,9 @@ class BusinessBus(QThread):
         if self.player2_info is not None:
             # 邀请队友
             self.formatBusinessMessage("邀请2P")
-            teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2)
+            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                # 若没找到2P
+                raise BusinessError("")
             self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
         # 从点击 准备/开始 到完成翻牌
@@ -388,11 +390,13 @@ class BusinessBus(QThread):
             {"1p_hwnd": self.player1_info["hwnd"], "1p_zoom": self.player1_info["zoom"]},
             plan_info, "1;2", 1)
         player2_info_dict = None
+        self.formatBusinessMessage(f"2P信息: {self.player2_info}\n玩家数量: {plan_info['player_num']}")
         if self.player2_info is not None and plan_info["player_num"] == 2:
             player2_info_dict = self.convertToExecute(
                 {"2p_hwnd": self.player2_info["hwnd"], "2p_zoom": self.player2_info["zoom"]},
                 plan_info, "1;2", 2)
         self.setPlayerInfo(player1_info_dict, player2_info_dict)
+        self.formatBusinessMessage(f"设置后2P信息: {self.player2_info}\n玩家数量: {plan_info['player_num']}")
 
         self.loopSpecificLevel(zone, level, 1)
 
@@ -482,6 +486,7 @@ class BusinessBus(QThread):
             # 退出房间
             exitRoom(hwnd_1p, zoom1)
 
+    # 功能：魔塔蛋糕 ------------------------------------------------------------------
     def startMagicTower(self, level_num, loop_count):
         # 切换地图
         self.formatBusinessMessage("正在切换到关卡")
@@ -541,6 +546,51 @@ class BusinessBus(QThread):
         # 1P关闭魔塔界面
         mouseClick(hwnd_1p, 925 * zoom1, 32 * zoom1)
         delay(500)
+
+    # 功能：跨服远征 ------------------------------------------------------------------
+    def startCrossService(self, player1_room_name_path, level_type, level_num, loop_count):
+        # 切换地图
+        self.formatBusinessMessage("正在切换到关卡")
+        hwnd_1p = self.player1_info["hwnd"]
+        zoom1 = self.player1_info["zoom"]
+        switchWorldZone(hwnd_1p, "跨服远征", zoom1)
+        if self.player2_info is not None:
+            hwnd_2p = self.player2_info["hwnd"]
+            zoom2 = self.player2_info["zoom"]
+            switchWorldZone(hwnd_2p, "跨服远征", zoom2)
+
+        self.formatBusinessMessage(f"正在创建 {level_type} 房间")
+        chooseCrossServiceLevel(hwnd_1p, level_type, level_num, zoom1)
+        # 应用卡片组
+        self.formatBusinessMessage("应用1P卡片组")
+        roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
+
+        if self.player2_info is not None:
+            # 2P进入房间
+            self.formatBusinessMessage(f"2P正在进入房间")
+            searchAndEnter1pRoom(hwnd_2p, player1_room_name_path, level_type, zoom2)
+            self.formatBusinessMessage("应用2P卡片组")
+            roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
+            # 从点击 准备/开始 到完成翻牌
+            for i in range(loop_count):
+                self.formatBusinessMessage(f"开始第{i + 1}局")
+                self.teamFromStartToFlop()
+                self.formatBusinessMessage(f"结束第{i + 1}局")
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
+            exitRoom(hwnd_2p, zoom2)
+            # 退出跨服
+            mouseClick(hwnd_1p, 915 * zoom1, 30 * zoom1)
+            mouseClick(hwnd_2p, 915 * zoom1, 30 * zoom2)
+        else:
+            for i in range(loop_count):
+                self.formatBusinessMessage(f"开始第{i + 1}局")
+                self.singleFromStartToFlop()
+                self.formatBusinessMessage(f"结束第{i + 1}局")
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
+            # 退出跨服
+            mouseClick(hwnd_1p, 915 * zoom1, 30 * zoom1)
 
     # 线程执行相关 -------------------------------------------------------------------
     def run(self) -> None:
@@ -740,6 +790,34 @@ class BusinessBus(QThread):
                 try:
                     # 启动 循环刷指定关卡 的功能
                     self.startMagicTower(
+                        func_param["level_num"],
+                        func_param["loop_count"])
+                except BusinessError as business_error:
+                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
+                    func_final_status = "wrong"
+                    self.signal_send_business_error.emit(business_error_str)
+                    self.formatBusinessMessage(business_error_str, "ERROR")
+            elif func_param["func_name"] == "跨服远征":
+                # 获取放卡方案信息
+                plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
+                # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+                player1_info_dict = self.convertToExecute(
+                    start_param, plan_info, func_param["flop_pos"], 1)
+                player2_info_dict = None
+                if enable_2p and plan_info["player_num"] == 2:
+                    player2_info_dict = self.convertToExecute(
+                        start_param, plan_info, func_param["flop_pos"], 2)
+                self.setPlayerInfo(player1_info_dict, player2_info_dict)
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"]
+                })
+                try:
+                    # 启动 循环刷指定关卡 的功能
+                    self.startCrossService(
+                        func_param["player1_room_name_path"],
+                        func_param["level_type"],
                         func_param["level_num"],
                         func_param["loop_count"])
                 except BusinessError as business_error:
