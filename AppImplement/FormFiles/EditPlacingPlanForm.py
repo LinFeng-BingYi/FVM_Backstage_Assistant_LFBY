@@ -146,7 +146,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         deck_1p = self.player_deck_procs.readDeck(plan_content["1P所用卡片组"])
         # print(deck_1p)
         self.comboBox_1p_deck.setCurrentText(deck_1p["deck_name"])
-        # TODO 更新1P卡槽listWidget
+        # 更新1P卡槽listWidget
         self.updateCardPlacingTable(self.tableWidget_1p_placing_table,
                                     1,
                                     plan_content["1p_card_plan"],

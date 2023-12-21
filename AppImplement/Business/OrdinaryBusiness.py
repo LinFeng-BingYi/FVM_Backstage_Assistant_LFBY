@@ -9,7 +9,7 @@
 from Common.Backstage import *
 from AppImplement.GlobalValue.StaticValue import *
 from AppImplement.Business.CustomException import BusinessError
-from AppImplement.Business.Foundation import switchWorldZone, singleLayerChooseLevel
+from AppImplement.Business.Foundation import switchWorldZone, singleLayerChooseLevel, createPwdRoom
 
 from math import floor
 from os import listdir
@@ -592,6 +592,30 @@ def findLoversQuest(hwnd, zoom=1):
     return quest_result_list
 
 
-# 魔塔蛋糕相关
+# 悬赏三连相关 -----------------------------------------------------------------------
+def openWantedDialog(hwnd, zoom=1):
+    wanted_pos = find_pic(hwnd, WANTED_PATH, [247, 17, 778, 112])
+    if not wanted_pos:
+        # 若没找到，则点击切换上方活动按钮
+        mouseClick(hwnd, 780 * zoom, 30 * zoom)
+        delay(500)
+        wanted_pos = find_pic(hwnd, WANTED_PATH, [247, 17, 778, 112])
+        if not wanted_pos:
+            raise BusinessError("未能找到悬赏活动图标！")
+    # 点击悬赏活动图标
+    mouseClick(hwnd, wanted_pos[0] * zoom, wanted_pos[1] * zoom)
+    if not find_pic_loop(hwnd, OPEN_WANTED_PATH, max_time=120):
+        raise BusinessError("超过2min还未打开悬赏活动界面！")
+    delay(1000)
+
+
+def createWantedRoom(hwnd, three_island_zone, zoom=1):
+    goto_button_pos = find_pic(hwnd, GOTO_BUTTON_PIC_DICT[three_island_zone])
+    # 点击“挑战”
+    mouseClick(hwnd, goto_button_pos[0] * zoom, goto_button_pos[1] * zoom)
+    delay(500)
+    # 创建房间
+    createPwdRoom(hwnd, "0000", zoom)
+
 
 

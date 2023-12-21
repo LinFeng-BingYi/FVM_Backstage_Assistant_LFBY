@@ -231,3 +231,21 @@ SECONDARY_PASSWORD = ROOT_PATH + r"\resources\images\application\界面图标\�
 CREATE_ROOM_PSW_PATH = ROOT_PATH + "\\resources\\images\\application\\界面图标\\通关相关\\创房勾选密码.bmp"
 # 进入关卡
 START_GAME_PATH = ROOT_PATH + "\\resources\\images\\application\\界面图标\\通关相关\\进入关卡.bmp"
+
+# 悬赏 ---------------------------------------------------------------------------
+# 悬赏活动图标
+WANTED_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\悬赏活动图标.bmp"
+# 进入悬赏活动
+OPEN_WANTED_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\进入悬赏活动.bmp"
+# 悬赏美味挑战按钮
+WANTED_MWD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\悬赏美味挑战按钮.bmp"
+# 悬赏火山挑战按钮
+WANTED_HSD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\悬赏火山挑战按钮.bmp"
+# 悬赏浮空挑战按钮
+WANTED_FKD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\悬赏浮空挑战按钮.bmp"
+# 创建三岛悬赏房间对应按钮
+GOTO_BUTTON_PIC_DICT = {
+    "美味岛": WANTED_MWD_GOTO_BUTTON_PATH,
+    "火山岛": WANTED_HSD_GOTO_BUTTON_PATH,
+    "浮空岛": WANTED_FKD_GOTO_BUTTON_PATH
+}
