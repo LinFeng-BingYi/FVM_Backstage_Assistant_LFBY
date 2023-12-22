@@ -896,9 +896,9 @@ class BusinessBus(QThread):
                     self.signal_send_business_error.emit(business_error_str)
                     self.formatBusinessMessage(business_error_str, "ERROR")
             elif func_param["func_name"] == "悬赏三连":
-                placing_plan_file_path = func_param["placing_plan_file_path"]
-                # 使用该文件路径初始化放卡方案处理器
-                self.place_plan_procs.setFilePath(placing_plan_file_path)
+                # placing_plan_file_path = func_param["placing_plan_file_path"]
+                # # 使用该文件路径初始化放卡方案处理器
+                # self.place_plan_procs.setFilePath(placing_plan_file_path)
 
                 # 获取"默认方案"放卡方案信息
                 plan_info = self.place_plan_procs.readPlan("默认方案")

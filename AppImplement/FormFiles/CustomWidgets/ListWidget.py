@@ -13,6 +13,7 @@ from AppImplement.FlowFunction.LoversQuestListItem import LoversQuestListWidget
 from AppImplement.FlowFunction.VolcanicRelicListItem import VolcanicRelicListWidget
 from AppImplement.FlowFunction.MagicTowerListItem import MagicTowerListWidget
 from AppImplement.FlowFunction.CrossServiceListItem import CrossServiceListWidget
+from AppImplement.FlowFunction.WantedListItem import WantedListWidget
 
 # 若需要修改键名，BusinessBus类的run函数中也要做相应的修改
 SUPPORT_FUNC = {
@@ -24,7 +25,8 @@ SUPPORT_FUNC = {
     "情侣任务": LoversQuestListWidget,
     "火山遗迹": VolcanicRelicListWidget,
     "魔塔蛋糕": MagicTowerListWidget,
-    "跨服远征": CrossServiceListWidget
+    "跨服远征": CrossServiceListWidget,
+    "悬赏三连": WantedListWidget
 }
 
 
