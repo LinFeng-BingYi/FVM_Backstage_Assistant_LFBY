@@ -145,7 +145,7 @@ class BusinessBus(QThread):
         delay(500)
         mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
         # 检测进入关卡
-        if not loopCheckStartGame(hwnd_1p, hwnd_2p, zoom1):
+        if not loopCheckStartGame(hwnd_1p, hwnd_2p, zoom1, zoom2):
             raise BusinessError("超过2min未检测到进入关卡！")
         self.formatBusinessMessage("检测到进入关卡")
         # 放置1P
@@ -208,7 +208,7 @@ class BusinessBus(QThread):
         delay(500)
         mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
         # 检测进入关卡
-        if not loopCheckStartGame(hwnd_1p, zoom=zoom1):
+        if not loopCheckStartGame(hwnd_1p, zoom1=zoom1):
             raise BusinessError("超过2min未检测到进入关卡！")
         self.formatBusinessMessage("检测到进入关卡")
         # 放置1P
@@ -945,7 +945,7 @@ class BusinessBus(QThread):
         card_no = 1
         for card_info in plan_info[f"{player}p_card_plan"]:
             # 获取该卡名称，以便在deck_info中得到对应的slot值
-            card_name = card_info[f"{player}P卡{card_no}名称"]
+            card_name = card_info[f"{player}P卡{card_no}"]
             card_slot = deck_info["deck_slot_info"][card_name]
             # 卡片CD以放卡方案配置文件中的为准
             card_cd = card_info[f"{player}P卡{card_no}CD"]

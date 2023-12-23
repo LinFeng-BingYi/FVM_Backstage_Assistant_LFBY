@@ -718,8 +718,15 @@
     <addaction name="action_tutorial"/>
     <addaction name="action_about"/>
    </widget>
+   <widget class="QMenu" name="menu_app_tool">
+    <property name="title">
+     <string>工具</string>
+    </property>
+    <addaction name="action_ini_file_update"/>
+   </widget>
    <addaction name="menu_function"/>
    <addaction name="menu_setting"/>
+   <addaction name="menu_app_tool"/>
    <addaction name="menu_help"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -737,6 +744,8 @@
    <addaction name="separator"/>
    <addaction name="action_style"/>
    <addaction name="action_global_config"/>
+   <addaction name="separator"/>
+   <addaction name="action_ini_file_update"/>
    <addaction name="separator"/>
    <addaction name="action_tutorial"/>
    <addaction name="action_about"/>
@@ -769,6 +778,11 @@
   <action name="action_about">
    <property name="text">
     <string>关于</string>
+   </property>
+  </action>
+  <action name="action_ini_file_update">
+   <property name="text">
+    <string>升级ini文件</string>
    </property>
   </action>
  </widget>

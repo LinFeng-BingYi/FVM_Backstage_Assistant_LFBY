@@ -262,7 +262,7 @@ def roomChooseDeck(hwnd, deck_no, zoom=1):
 
 
 # 游戏内循环检测 --------------------------------------------------------------------------------
-def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom=1):
+def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom1=1, zoom2=1):
     """循环检测进入游戏
 
     Args:
@@ -270,7 +270,9 @@ def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom=1):
             账号1窗口句柄
         hwnd_2p:
             账号2窗口句柄，默认为0。为0时表示单人模式，仅操作账号1的窗口
-        zoom: float
+        zoom1: float
+            窗口缩放比例
+        zoom2: float
             窗口缩放比例
 
     Returns: bool
@@ -282,11 +284,17 @@ def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom=1):
         if find_pic(hwnd_1p, START_GAME_PATH, [0, 0, 200, 70]):
             return True
         # 交替点击准备和开始
-        if (time_sum % 1500) == 0:
-            mouseClick(hwnd_1p, 872 * zoom, 480 * zoom)
-        elif (time_sum % 1500) == 750:
+        if (time_sum % 1500) == 750:
+            mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
+            delay(100)
+            if find_pic(hwnd_1p, BACKPACK_FULL, [345, 205, 615, 395]):
+                mouseClick(hwnd_1p, 430 * zoom1, 350 * zoom1)
+        elif (time_sum % 1500) == 0:
             if hwnd_2p > 0:
-                mouseClick(hwnd_2p, 879 * zoom, 481 * zoom)
+                mouseClick(hwnd_2p, 879 * zoom2, 481 * zoom2)
+                delay(100)
+                if find_pic(hwnd_2p, BACKPACK_FULL, [345, 205, 615, 395]):
+                    mouseClick(hwnd_2p, 430 * zoom1, 350 * zoom1)
         # 判断结束
         time_sum += 50
         if time_sum >= 120000:

@@ -4,6 +4,7 @@ from PySide6.QtGui import QTextCursor, QIcon
 
 from AppImplement.FormFiles.MyMainWindow import Ui_MyMainWindow
 from AppImplement.FormFiles.EditPlacingPlanForm import WidgetEditPlacingPlan
+from AppImplement.FormFiles.UpdateINIForm import WidgetUpdateINI
 from AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
 from AppImplement.FormFiles.CustomWidgets.Dialog import AddFuncFlowDialog
 
@@ -28,8 +29,8 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.verticalLayout_business_param_area.setContentsMargins(5, 0, 0, 0)
 
         # 子窗口
-        self.editAccountBookForm = None
-        self.visualizeAccountBookForm = None
+        self.editPlacingPlanForm = None                     # 编辑放卡方案窗口
+        self.updateIniForm = None                           # 升级放卡方案ini文件窗口
         self.add_func_flow_dialog = AddFuncFlowDialog()     # 添加功能到流程列表的内置对话框
         self.add_func_flow_dialog.signal_send_func_name.connect(self.addListWidget)
         # 内置消息框，用于提示信息
@@ -62,6 +63,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
     def bindSignal(self):
         # 菜单栏打开对应窗口
         self.action_edit_placing_plan.triggered.connect(self.displayEditPlacingPlanForm)
+        self.action_ini_file_update.triggered.connect(self.displayUpdateIniForm)
         # 功能流程列表添加功能
         self.pushButton_add_flow.clicked.connect(self.showAddFuncFlowDialog)
         # 启动/结束流程
@@ -88,8 +90,14 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
     def displayEditPlacingPlanForm(self):
         """响应菜单，打开'编辑放卡方案'窗口
         """
-        self.editAccountBookForm = WidgetEditPlacingPlan()
-        self.editAccountBookForm.show()
+        self.editPlacingPlanForm = WidgetEditPlacingPlan()
+        self.editPlacingPlanForm.show()
+
+    def displayUpdateIniForm(self):
+        """响应菜单，打开'升级ini文件'窗口
+        """
+        self.updateIniForm = WidgetUpdateINI()
+        self.updateIniForm.show()
 
     def addListWidget(self, func_name):
         if func_name not in SUPPORT_FUNC:

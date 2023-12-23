@@ -10,7 +10,7 @@ from Common.FileProcess.INIProcess import INIProcessor
 
 COMMON_1P_KEY = ["描述", "1P放置位置", "1P所用卡片组"]
 COMMON_2P_KEY = ["描述", "1P放置位置", "2P放置位置", "1P所用卡片组", "2P所用卡片组"]
-CARD_KEY = ["{}P卡{}名称", "{}P卡{}放置位置", "{}P卡{}CD"]
+CARD_KEY = ["{}P卡{}", "{}P卡{}放置位置", "{}P卡{}CD"]
 
 
 class PlacingPlanProcessor:
@@ -106,11 +106,11 @@ class PlacingPlanProcessor:
              example:
                 [
                     {
-                        "1P卡1名称": "海星",
+                        "1P卡1": "海星",
                         "1P卡1放置位置": "3,9,0;5,9;2,9;4,9",
                         "1P卡1CD": "7000"
                     }, {
-                        "1P卡2名称": "狮子座",
+                        "1P卡2": "狮子座",
                         "1P卡2放置位置": "3,7,52000;5,7",
                         "1P卡2CD": "35000"
                     }
@@ -141,7 +141,7 @@ class PlacingPlanProcessor:
         """
         card_num = 0
         for i in range(1, 22):
-            if self.ini_procs.hasKey(plan_name, f"{player}P卡{i}名称"):
+            if self.ini_procs.hasKey(plan_name, f"{player}P卡{i}"):
                 card_num = i
             else:
                 break
@@ -155,25 +155,17 @@ class PlacingPlanProcessor:
         if plan_dict['player_num'] == 1:
             for key in COMMON_1P_KEY:
                 self.ini_procs.setSpecificValue(plan_name, key, plan_dict[key])
-            self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'], 1, 8)
+            self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'], 1)
         # 组队配置
         else:
             for key in COMMON_2P_KEY:
                 self.ini_procs.setSpecificValue(plan_name, key, plan_dict[key])
-            self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'], 1, 5)
-            self.writePlayerCardPlan(plan_name, plan_dict['2p_card_plan'], 2, 5)
+            self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'], 1)
+            self.writePlayerCardPlan(plan_name, plan_dict['2p_card_plan'], 2)
 
-    def writePlayerCardPlan(self, plan_name, card_plan, player, max_num):
-        num = 1
+    def writePlayerCardPlan(self, plan_name, card_plan):
         for card_dict in card_plan:
-            while f"{player}P卡{num}" not in card_dict or card_dict[f"{player}P卡{num}"] == '0':
-                self.ini_procs.setSpecificValue(plan_name, f"{player}P卡{num}", '0')
-                num += 1
             self.ini_procs.setBatchValue(plan_name, card_dict)
-            num += 1
-        while num <= max_num:
-            self.ini_procs.setSpecificValue(plan_name, f"{player}P卡{num}", '0')
-            num += 1
 
 
 if __name__ == '__main__':

@@ -158,8 +158,10 @@ class FuncFlowListWidget(QListWidget):
             list_item = self.item(i)
             item_widget = self.itemWidget(list_item)
             # 对于“结束”item之前的所有状态为“挂起”的功能，检查其界面参数合法性
-            if item_widget.getFuncName() == "结束" or item_widget.getStatus() != "hanging":
+            if item_widget.getFuncName() == "结束":
                 break
+            if item_widget.getStatus() != "hanging":
+                continue
             # 若检测正常，则加入 有效功能list中
             func_check_result = item_widget.getFuncWidget().checkInputValidity()
             if isinstance(func_check_result, bool):

@@ -172,7 +172,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
 
     def setExistTableCell(self, tableWidget, current_row, player: int, card_dict: dict, deck_info: dict):
         for key, value in card_dict.items():
-            if key == f"{player}P卡{current_row + 1}名称":
+            if key == f"{player}P卡{current_row + 1}":
                 comboBox = QComboBox(tableWidget)
                 comboBox.setEditable(True)
                 comboBox.addItems(list(deck_info["deck_slot_info"]))
@@ -193,7 +193,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
                 print("未知的记录属性！！: ", key)
                 return
             # 设置卡片卡槽位置
-            card_slot = deck_info["deck_slot_info"][card_dict[f"{player}P卡{current_row + 1}名称"]]
-            # card_cd = deck_info["deck_cd_info"][card_dict[f"{player}P卡{current_row + 1}名称"]]
+            card_slot = deck_info["deck_slot_info"][card_dict[f"{player}P卡{current_row + 1}"]]
+            # card_cd = deck_info["deck_cd_info"][card_dict[f"{player}P卡{current_row + 1}"]]
             tableWidget.setItem(current_row, 1, QTableWidgetItem(card_slot))
             # TODO 设置表格操作列

@@ -231,6 +231,8 @@ SECONDARY_PASSWORD = ROOT_PATH + r"\resources\images\application\界面图标\�
 CREATE_ROOM_PSW_PATH = ROOT_PATH + "\\resources\\images\\application\\界面图标\\通关相关\\创房勾选密码.bmp"
 # 进入关卡
 START_GAME_PATH = ROOT_PATH + "\\resources\\images\\application\\界面图标\\通关相关\\进入关卡.bmp"
+# 背包空间不足
+BACKPACK_FULL = ROOT_PATH + r"\resources\images\application\界面图标\通关相关\背包空间不足.bmp"
 
 # 悬赏 ---------------------------------------------------------------------------
 # 悬赏活动图标
