@@ -7,6 +7,10 @@
 # @Dsc     : 游戏中的固定值
 from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
+
+# 软件相关
+APP_WINDOW_ICON = ROOT_PATH + r"\resources\images\application\软件图标\icon_nobkg.ico"
+
 # 地图相关 -------------------------------------------------------------------------
 # 世界地图坐标
 WORLD_MAP_POS = (860, 50)

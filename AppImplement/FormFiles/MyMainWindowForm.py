@@ -18,11 +18,6 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
     def __init__(self):
         super(MainMyMainWindow, self).__init__()
         self.setupUi(self)
-        # 窗口图标
-        icon = QIcon()
-        icon.addFile(ROOT_PATH + u"resources/images/application/\u8f6f\u4ef6\u56fe\u6807/icon_nobkg.ico",
-                     QSize(), QIcon.Normal, QIcon.Off)
-        self.setWindowIcon(icon)
         # 补加控件
         self.verticalLayout_business_param_area = QVBoxLayout(self.widget_business_param_area)
         self.verticalLayout_business_param_area.setObjectName("verticalLayout_business_param_area")

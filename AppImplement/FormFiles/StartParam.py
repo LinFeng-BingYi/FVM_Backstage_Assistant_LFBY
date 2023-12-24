@@ -25,7 +25,7 @@ class Ui_StartParam(object):
             StartParam.setObjectName(u"StartParam")
         StartParam.resize(523, 364)
         self.verticalLayout_general = QVBoxLayout(StartParam)
-        self.verticalLayout_general.setSpacing(10)
+        self.verticalLayout_general.setSpacing(5)
         self.verticalLayout_general.setObjectName(u"verticalLayout_general")
         self.verticalLayout_general.setContentsMargins(0, 10, 0, 0)
         self.label_dsc = QLabel(StartParam)
@@ -69,58 +69,85 @@ class Ui_StartParam(object):
 
         self.verticalLayout_general.addWidget(self.widget_other_setting)
 
-        self.groupBox_player_hwnd = QGroupBox(StartParam)
-        self.groupBox_player_hwnd.setObjectName(u"groupBox_player_hwnd")
-        self.groupBox_player_hwnd.setMaximumSize(QSize(16777215, 60))
-        self.groupBox_player_hwnd.setFlat(False)
-        self.horizontalLayout_player_hwnd = QHBoxLayout(self.groupBox_player_hwnd)
-        self.horizontalLayout_player_hwnd.setSpacing(5)
-        self.horizontalLayout_player_hwnd.setObjectName(u"horizontalLayout_player_hwnd")
-        self.horizontalLayout_player_hwnd.setContentsMargins(9, 0, 9, 5)
-        self.label_1p_hwnd = QLabel(self.groupBox_player_hwnd)
+        self.groupBox_player_setting = QGroupBox(StartParam)
+        self.groupBox_player_setting.setObjectName(u"groupBox_player_setting")
+        self.groupBox_player_setting.setFlat(False)
+        self.gridLayout_player_setting = QGridLayout(self.groupBox_player_setting)
+        self.gridLayout_player_setting.setSpacing(5)
+        self.gridLayout_player_setting.setObjectName(u"gridLayout_player_setting")
+        self.gridLayout_player_setting.setContentsMargins(-1, 0, -1, 5)
+        self.label_1p_hwnd = QLabel(self.groupBox_player_setting)
         self.label_1p_hwnd.setObjectName(u"label_1p_hwnd")
         self.label_1p_hwnd.setMinimumSize(QSize(65, 0))
         self.label_1p_hwnd.setMaximumSize(QSize(65, 16777215))
 
-        self.horizontalLayout_player_hwnd.addWidget(self.label_1p_hwnd)
+        self.gridLayout_player_setting.addWidget(self.label_1p_hwnd, 0, 0, 1, 1)
 
-        self.lineEdit_1p_hwnd = QLineEdit(self.groupBox_player_hwnd)
+        self.lineEdit_1p_hwnd = QLineEdit(self.groupBox_player_setting)
         self.lineEdit_1p_hwnd.setObjectName(u"lineEdit_1p_hwnd")
         self.lineEdit_1p_hwnd.setMinimumSize(QSize(0, 30))
         self.lineEdit_1p_hwnd.setMaximumSize(QSize(16777215, 30))
 
-        self.horizontalLayout_player_hwnd.addWidget(self.lineEdit_1p_hwnd)
+        self.gridLayout_player_setting.addWidget(self.lineEdit_1p_hwnd, 0, 1, 1, 1)
 
-        self.pushButton_1p_hwnd = QPushButton(self.groupBox_player_hwnd)
+        self.pushButton_1p_hwnd = QPushButton(self.groupBox_player_setting)
         self.pushButton_1p_hwnd.setObjectName(u"pushButton_1p_hwnd")
         self.pushButton_1p_hwnd.setMinimumSize(QSize(80, 30))
         self.pushButton_1p_hwnd.setMaximumSize(QSize(40, 30))
 
-        self.horizontalLayout_player_hwnd.addWidget(self.pushButton_1p_hwnd)
+        self.gridLayout_player_setting.addWidget(self.pushButton_1p_hwnd, 0, 2, 1, 1)
 
-        self.label_2p_hwnd = QLabel(self.groupBox_player_hwnd)
+        self.label_2p_hwnd = QLabel(self.groupBox_player_setting)
         self.label_2p_hwnd.setObjectName(u"label_2p_hwnd")
         self.label_2p_hwnd.setMinimumSize(QSize(65, 0))
         self.label_2p_hwnd.setMaximumSize(QSize(50, 16777215))
 
-        self.horizontalLayout_player_hwnd.addWidget(self.label_2p_hwnd)
+        self.gridLayout_player_setting.addWidget(self.label_2p_hwnd, 0, 3, 1, 1)
 
-        self.lineEdit_2p_hwnd = QLineEdit(self.groupBox_player_hwnd)
+        self.lineEdit_2p_hwnd = QLineEdit(self.groupBox_player_setting)
         self.lineEdit_2p_hwnd.setObjectName(u"lineEdit_2p_hwnd")
         self.lineEdit_2p_hwnd.setMinimumSize(QSize(0, 30))
         self.lineEdit_2p_hwnd.setMaximumSize(QSize(16777215, 30))
 
-        self.horizontalLayout_player_hwnd.addWidget(self.lineEdit_2p_hwnd)
+        self.gridLayout_player_setting.addWidget(self.lineEdit_2p_hwnd, 0, 4, 1, 1)
 
-        self.pushButton_2p_hwnd = QPushButton(self.groupBox_player_hwnd)
+        self.pushButton_2p_hwnd = QPushButton(self.groupBox_player_setting)
         self.pushButton_2p_hwnd.setObjectName(u"pushButton_2p_hwnd")
         self.pushButton_2p_hwnd.setMinimumSize(QSize(80, 30))
         self.pushButton_2p_hwnd.setMaximumSize(QSize(40, 30))
 
-        self.horizontalLayout_player_hwnd.addWidget(self.pushButton_2p_hwnd)
+        self.gridLayout_player_setting.addWidget(self.pushButton_2p_hwnd, 0, 5, 1, 1)
+
+        self.label_1p_zoom = QLabel(self.groupBox_player_setting)
+        self.label_1p_zoom.setObjectName(u"label_1p_zoom")
+        self.label_1p_zoom.setMinimumSize(QSize(65, 0))
+        self.label_1p_zoom.setMaximumSize(QSize(65, 16777215))
+
+        self.gridLayout_player_setting.addWidget(self.label_1p_zoom, 1, 0, 1, 1)
+
+        self.lineEdit_1p_zoom = QLineEdit(self.groupBox_player_setting)
+        self.lineEdit_1p_zoom.setObjectName(u"lineEdit_1p_zoom")
+        self.lineEdit_1p_zoom.setMinimumSize(QSize(0, 30))
+        self.lineEdit_1p_zoom.setMaximumSize(QSize(16777215, 30))
+
+        self.gridLayout_player_setting.addWidget(self.lineEdit_1p_zoom, 1, 1, 1, 2)
+
+        self.label_2p_zoom = QLabel(self.groupBox_player_setting)
+        self.label_2p_zoom.setObjectName(u"label_2p_zoom")
+        self.label_2p_zoom.setMinimumSize(QSize(65, 0))
+        self.label_2p_zoom.setMaximumSize(QSize(50, 16777215))
+
+        self.gridLayout_player_setting.addWidget(self.label_2p_zoom, 1, 3, 1, 1)
+
+        self.lineEdit_2p_zoom = QLineEdit(self.groupBox_player_setting)
+        self.lineEdit_2p_zoom.setObjectName(u"lineEdit_2p_zoom")
+        self.lineEdit_2p_zoom.setMinimumSize(QSize(0, 30))
+        self.lineEdit_2p_zoom.setMaximumSize(QSize(16777215, 30))
+
+        self.gridLayout_player_setting.addWidget(self.lineEdit_2p_zoom, 1, 4, 1, 2)
 
 
-        self.verticalLayout_general.addWidget(self.groupBox_player_hwnd)
+        self.verticalLayout_general.addWidget(self.groupBox_player_setting)
 
         self.groupBox_necessity_pic = QGroupBox(StartParam)
         self.groupBox_necessity_pic.setObjectName(u"groupBox_necessity_pic")
@@ -218,13 +245,17 @@ class Ui_StartParam(object):
         self.checkBox_enable_2p.setText(QCoreApplication.translate("StartParam", u"\u542f\u75282P", None))
         self.label_max_check_time.setText(QCoreApplication.translate("StartParam", u"<html><head/><body><p style='line-height:0'>\u591a\u4e45\u63d0\u9192\u5bf9</p><p>\u5c40\u65f6\u95f4\u8fc7\u957f</p></body></html>", None))
         self.lineEdit_max_check_time.setText(QCoreApplication.translate("StartParam", u"15", None))
-        self.groupBox_player_hwnd.setTitle(QCoreApplication.translate("StartParam", u"\u8d26\u53f7\u53e5\u67c4", None))
+        self.groupBox_player_setting.setTitle(QCoreApplication.translate("StartParam", u"\u8d26\u53f7\u8bbe\u7f6e", None))
         self.label_1p_hwnd.setText(QCoreApplication.translate("StartParam", u"\u623f\u4e3b\u53e5\u67c4\uff1a", None))
         self.lineEdit_1p_hwnd.setText(QCoreApplication.translate("StartParam", u"0", None))
         self.pushButton_1p_hwnd.setText(QCoreApplication.translate("StartParam", u"\u83b7\u53d6", None))
         self.label_2p_hwnd.setText(QCoreApplication.translate("StartParam", u"\u623f\u5ba2\u53e5\u67c4\uff1a", None))
         self.lineEdit_2p_hwnd.setText(QCoreApplication.translate("StartParam", u"0", None))
         self.pushButton_2p_hwnd.setText(QCoreApplication.translate("StartParam", u"\u83b7\u53d6", None))
+        self.label_1p_zoom.setText(QCoreApplication.translate("StartParam", u"\u623f\u4e3b\u7f29\u653e\uff1a", None))
+        self.lineEdit_1p_zoom.setText(QCoreApplication.translate("StartParam", u"1.25", None))
+        self.label_2p_zoom.setText(QCoreApplication.translate("StartParam", u"\u623f\u5ba2\u7f29\u653e\uff1a", None))
+        self.lineEdit_2p_zoom.setText(QCoreApplication.translate("StartParam", u"1.25", None))
         self.groupBox_necessity_pic.setTitle(QCoreApplication.translate("StartParam", u"\u5fc5\u8981\u56fe\u7247", None))
         self.label_2p_name_pic.setText(QCoreApplication.translate("StartParam", u"2P\u6635\u79f0\uff1a", None))
         self.pushButton_2p_name_pic.setText(QCoreApplication.translate("StartParam", u"\u6d4f\u89c8", None))

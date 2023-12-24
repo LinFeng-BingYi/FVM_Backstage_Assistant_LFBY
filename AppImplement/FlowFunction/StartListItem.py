@@ -34,6 +34,13 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
 
         self.bindSignal()
 
+    def initWidget(self):
+        # 最大检测时长
+        self.lineEdit_max_check_time.setText("15")
+        # 缩放比例
+        self.lineEdit_1p_zoom.setText(ZOOM)
+        self.lineEdit_2p_zoom.setText(ZOOM)
+
     def bindSignal(self):
         self.pushButton_1p_hwnd.clicked.connect(lambda: self.setPlayerHwnd(self.lineEdit_1p_hwnd))
         self.pushButton_2p_hwnd.clicked.connect(lambda: self.setPlayerHwnd(self.lineEdit_2p_hwnd))
@@ -73,16 +80,42 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
         hwnd_2p = self.lineEdit_2p_hwnd.text()
         global_info = {
             "enable_2p": self.checkBox_enable_2p.isChecked(),
+            "max_check_time": int(self.lineEdit_max_check_time.text()),
             "1p_hwnd": int(hwnd_1p) if hwnd_1p != '' else None,
-            "1p_zoom": float(ZOOM),
+            "1p_zoom": float(self.lineEdit_1p_zoom.text()),
             "2p_hwnd": int(hwnd_2p) if hwnd_2p != '' else None,
-            "2p_zoom": float(ZOOM),
+            "2p_zoom": float(self.lineEdit_2p_zoom.text()),
             "2p_name_pic_path": self.lineEdit_2p_name_pic.text(),
             "deck_path": self.lineEdit_deck_file.text(),
-            "plan_path": self.lineEdit_plan_file.text(),
-            "max_check_time": int(self.lineEdit_max_check_time.text())
+            "plan_path": self.lineEdit_plan_file.text()
         }
         return global_info
+
+    def setAllParam(self, param_dict):
+        self.checkBox_enable_2p.setChecked(param_dict["enable_2p"])
+        self.lineEdit_max_check_time.setText(str(param_dict["max_check_time"]))
+        self.lineEdit_1p_hwnd.setText(str(param_dict["1p_hwnd"]))
+        self.lineEdit_1p_zoom.setText(str(param_dict["1p_zoom"]))
+        self.lineEdit_2p_hwnd.setText(str(param_dict["2p_hwnd"]))
+        self.lineEdit_2p_zoom.setText(str(param_dict["2p_zoom"]))
+        self.lineEdit_2p_name_pic.setText(param_dict["2p_name_pic_path"])
+        self.lineEdit_deck_file.setText(param_dict["deck_path"])
+        self.lineEdit_plan_file.setText(param_dict["plan_path"])
+        flag_set_success = True
+        error_msg_list = []
+        if not os.path.exists(param_dict["2p_name_pic_path"]):
+            flag_set_success = False
+            error_msg_list.append("2P昵称截图文件不存在！")
+        if not os.path.exists(param_dict["deck_path"]):
+            flag_set_success = False
+            error_msg_list.append("账号卡片组ini文件不存在！")
+        if not os.path.exists(param_dict["plan_path"]):
+            flag_set_success = False
+            error_msg_list.append("放卡方案ini文件不存在！")
+        if flag_set_success:
+            return True
+        else:
+            return False, "\n".join(error_msg_list)
 
     def checkInputValidity(self):
         if not match("^[0-9]+$", self.lineEdit_1p_hwnd.text()):

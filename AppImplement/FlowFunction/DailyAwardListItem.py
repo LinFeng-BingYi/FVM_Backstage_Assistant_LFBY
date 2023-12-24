@@ -84,6 +84,33 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
             }]
         }
 
+    def setAllParam(self, param_dict):
+        self.comboBox_select_player.setCurrentIndex(param_dict["player"])
+        self.checkBox_vip_signin.setChecked(param_dict["VIP签到"])
+        self.checkBox_daily_signin.setChecked(param_dict["每日签到"])
+        self.checkBox_free_wish.setChecked(param_dict["免费许愿"])
+        self.checkBox_bottom_quest.setChecked(param_dict["底部任务"])
+        self.checkBox_tarot_treasure.setChecked(param_dict["塔罗寻宝"])
+        self.checkBox_campsite_key.setChecked(param_dict["营地钥匙"])
+        self.checkBox_pharaoh_treasure.setChecked(param_dict["法老宝藏"][0])
+        self.comboBox_pharaoh_flop_pos.setCurrentText(str(param_dict["法老宝藏"][1]["flop_pos"]))
+        self.checkBox_union_garden.setChecked(param_dict["公会花园"][0])
+        self.checkBox_need_fertilize.setChecked(param_dict["公会花园"][1]["need_fertilize"])
+        self.comboBox_garden_plant_type.setCurrentIndex(param_dict["公会花园"][1]["plant_type"])
+        self.checkBox_union_quest.setChecked(param_dict["公会任务"][0])
+        self.checkBox_release_quest.setCurrentText(param_dict["公会任务"][1]["release_quest"])
+        self.checkBox_open_food_contest.setChecked(param_dict["打开美食大赛"])
+        self.checkBox_open_backpack.setChecked(param_dict["打开背包"])
+        self.checkBox_team_magic_tower.setChecked(param_dict["领取双人魔塔奖励"])
+        self.checkBox_destiny_tree.setChecked(param_dict["领取缘分树奖励"])
+        self.checkBox_give_flowers.setChecked(param_dict["赠送鲜花"][0])
+        self.lineEdit_flowers_receiver.setText(param_dict["赠送鲜花"][1]["receiver_name_path"])
+        self.checkBox_use_gift_coupon.setChecked(param_dict["赠送鲜花"][1]["use_gift_coupon"])
+        self.comboBox_use_coupon_times.setCurrentText(str(param_dict["赠送鲜花"][1]["use_times"]))
+        if self.checkBox_give_flowers.isChecked() and not os.path.exists(self.lineEdit_flowers_receiver.text()):
+            return False, "未找到鲜花接收方昵称截图！"
+        return True
+
     def checkInputValidity(self):
         if self.checkBox_give_flowers.isChecked() and not os.path.exists(self.lineEdit_flowers_receiver.text()):
             return False, "未找到鲜花接收方昵称截图！"

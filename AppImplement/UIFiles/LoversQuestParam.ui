@@ -13,19 +13,141 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,2,2,0">
+   <property name="spacing">
+    <number>5</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QLabel" name="label_dsc">
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;情侣任务截图文件的名称格式：地图区域-关卡名称-通关策略&lt;/span&gt;&lt;/p&gt;&lt;p&gt;其中：&amp;lt;地图区域&amp;gt;表示“世界地图”上显示的区域名称，&amp;lt;关卡名称&amp;gt;表示各地图区域中显示的关卡名称，必须严格对应界面上所显示的名称。名称重复的关卡加上“日/夜”、“水/陆”单个字，不要括号。&amp;lt;通关策略&amp;gt;填写“无二阶段”、“继续挑战”、“领取奖励”、“跳过”之中的一个&lt;/p&gt;&lt;p&gt;注意：通关所用的放卡方案需要在该界面选择的放卡方案文件中存在，且其名称需要与关卡名称保持一致&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
+    <widget class="QWidget" name="widget_dcs" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_dsc">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_dsc">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;情侣任务截图文件的名称格式：地图区域-关卡名称-通关策略-放卡方案&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#00aa00;&quot;&gt;&amp;lt;地图区域&amp;gt;表示“世界地图”上显示的区域名称；&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#00aa00;&quot;&gt;&amp;lt;关卡名称&amp;gt;表示各地图区域中显示的关卡名称，必须严格对应界面上所显示的名称。名称重复的关卡加上“日/夜”、“水/陆”单个字，不要括号；&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#00aa00;&quot;&gt;&amp;lt;通关策略&amp;gt;填写“无二阶段”、“继续挑战”、“领取奖励”、“跳过”之中的一个；&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#00aa00;&quot;&gt;&amp;lt;放卡方案&amp;gt;填写ini文件中该任务所用的放卡方案名称，若不填写，则默认使用与&amp;lt;关卡名称&amp;gt;相同的方案&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget_file_path" native="true">
+    <widget class="QGroupBox" name="groupBox_select_players">
+     <property name="title">
+      <string>选择账号</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_select_players">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_select_1p">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>房主：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_select_1p">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <item>
+         <property name="text">
+          <string>1P</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>2P</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_select_2p">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>房客：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_select_2p">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <item>
+         <property name="text">
+          <string>无</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1P</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>2P</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_file_path">
+     <property name="title">
+      <string>选择方案</string>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout_file_path">
       <property name="spacing">
        <number>5</number>
@@ -34,7 +156,7 @@
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>5</number>
       </property>
       <item>
        <widget class="QLabel" name="label_file_path">
@@ -42,6 +164,12 @@
          <size>
           <width>80</width>
           <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="text">
@@ -83,7 +211,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>153</height>
+       <height>39</height>
       </size>
      </property>
     </spacer>

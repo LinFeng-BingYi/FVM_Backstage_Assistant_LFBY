@@ -21,4 +21,4 @@ except FileExistsError:
     DEFAULT_DECK_INI = ""
 
     # 用户变量
-    ZOOM = 1
+    ZOOM = "1.25"

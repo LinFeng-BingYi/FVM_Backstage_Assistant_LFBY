@@ -118,5 +118,9 @@ class BaseParamWidget(QWidget):
         pass
 
     @abstractmethod
+    def setAllParam(self, param_dict):
+        pass
+
+    @abstractmethod
     def checkInputValidity(self):
         pass

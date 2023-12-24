@@ -2,14 +2,17 @@
 import ctypes
 import sys
 
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
-
 from AppImplement.FormFiles.MyMainWindowForm import MainMyMainWindow
+from AppImplement.GlobalValue.StaticValue import APP_WINDOW_ICON
 
 
 if __name__ == '__main__':
     if ctypes.windll.shell32.IsUserAnAdmin():
         app = QApplication([])
+        app_icon = QIcon(APP_WINDOW_ICON)
+        app.setWindowIcon(app_icon)
         myMainWindow = MainMyMainWindow()
         myMainWindow.show()
         app.exec()

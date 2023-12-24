@@ -330,7 +330,7 @@ class BusinessBus(QThread):
         pass
 
     # 功能：公会任务 ------------------------------------------------------------------
-    def startUnionQuest(self, placing_plan_file_path):
+    def startUnionQuest(self, plan_path):
         hwnd1 = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
         # 点击“跳转”
@@ -359,9 +359,9 @@ class BusinessBus(QThread):
                 continue
             self.formatBusinessMessage(f"公会任务{quest_no}: {quest_result}")
             # 执行
-            self.executeUnionQuest(quest_result, placing_plan_file_path)
+            self.executeUnionQuest(quest_result, plan_path)
 
-    def executeUnionQuest(self, quest_result, placing_plan_file_path):
+    def executeUnionQuest(self, quest_result, plan_path):
         zone, level, strategy = quest_result.split('-')
 
         # 设置关卡信息
@@ -378,7 +378,7 @@ class BusinessBus(QThread):
             self.level_info["has_stage2"] = False
 
         # 获取放卡方案信息：所用方案名称 与 关卡名称 相同
-        union_placing_plan_procs = PlacingPlanProcessor(placing_plan_file_path)
+        union_placing_plan_procs = PlacingPlanProcessor(plan_path)
         plan_info = union_placing_plan_procs.readPlan(level)
         if isinstance(plan_info, tuple):
             self.formatBusinessMessage("未找到目标放卡方案，将使用”默认方案“作为通关配置", "WARN")
@@ -399,7 +399,7 @@ class BusinessBus(QThread):
         self.loopSpecificLevel(zone, level, 1)
 
     # 功能：情侣任务 ------------------------------------------------------------------
-    def startLoversQuest(self, placing_plan_file_path):
+    def startLoversQuest(self, plan_path):
         hwnd1 = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
         # 点击“跳转”
@@ -426,7 +426,7 @@ class BusinessBus(QThread):
                 continue
             self.formatBusinessMessage(f"情侣任务{quest_no}: {quest_result}")
             # 执行
-            self.executeUnionQuest(quest_result, placing_plan_file_path)
+            self.executeUnionQuest(quest_result, plan_path)
 
     # 功能：火山遗迹 ------------------------------------------------------------------
     def startVolcanicRelic(self, level, loop_count):
@@ -725,14 +725,16 @@ class BusinessBus(QThread):
                 func_param["func_name"] = "日常领取"
             elif func_param["func_name"] == "刷指定关卡":
                 # 获取放卡方案信息
+                plan_path = func_param["plan_path"]
+                self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], 1)
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
                 player2_info_dict = None
-                if enable_2p and plan_info["player_num"] == 2:
+                if func_param["player2"] != 0:
                     player2_info_dict = self.convertToExecute(
-                        start_param, plan_info, func_param["flop_pos"], 2)
+                        start_param, plan_info, func_param["flop_pos"], func_param["player2"])
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": func_param["has_stage2"],
@@ -751,9 +753,9 @@ class BusinessBus(QThread):
                     self.signal_send_business_error.emit(business_error_str)
                     self.formatBusinessMessage(business_error_str, "ERROR")
             elif func_param["func_name"] == "公会任务":
-                placing_plan_file_path = func_param["placing_plan_file_path"]
+                plan_path = func_param["plan_path"]
                 # 使用该文件路径初始化放卡方案处理器
-                self.place_plan_procs.setFilePath(placing_plan_file_path)
+                self.place_plan_procs.setFilePath(plan_path)
 
                 # 获取"默认方案"放卡方案信息
                 plan_info = self.place_plan_procs.readPlan("默认方案")
@@ -765,11 +767,11 @@ class BusinessBus(QThread):
                 else:
                     # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                     player1_info_dict = self.convertToExecute(
-                        start_param, plan_info, "1;2", 1)
+                        start_param, plan_info, "1;2", func_param["player1"])
                     player2_info_dict = None
-                    if enable_2p and plan_info["player_num"] == 2:
+                    if func_param["player2"] != 0:
                         player2_info_dict = self.convertToExecute(
-                            start_param, plan_info, "1;2", 2)
+                            start_param, plan_info, "1;2", func_param["player2"])
                     self.setPlayerInfo(player1_info_dict, player2_info_dict)
                     self.setLevelInfo({
                         "has_stage2": False,
@@ -777,7 +779,7 @@ class BusinessBus(QThread):
                         "max_check_time": start_param["max_check_time"]
                     })
                     try:
-                        self.startUnionQuest(placing_plan_file_path)
+                        self.startUnionQuest(plan_path)
                     except BusinessError as business_error:
                         business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
                         func_final_status = "wrong"
@@ -791,9 +793,9 @@ class BusinessBus(QThread):
                     self.signal_send_func_status.emit(func_no, func_final_status)
                     func_no += 1
                     continue
-                placing_plan_file_path = func_param["placing_plan_file_path"]
+                plan_path = func_param["plan_path"]
                 # 使用该文件路径初始化放卡方案处理器
-                self.place_plan_procs.setFilePath(placing_plan_file_path)
+                self.place_plan_procs.setFilePath(plan_path)
 
                 # 获取"默认方案"放卡方案信息
                 plan_info = self.place_plan_procs.readPlan("默认方案")
@@ -805,11 +807,9 @@ class BusinessBus(QThread):
                 else:
                     # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                     player1_info_dict = self.convertToExecute(
-                        start_param, plan_info, "1;2", 1)
-                    player2_info_dict = None
-                    if enable_2p and plan_info["player_num"] == 2:
-                        player2_info_dict = self.convertToExecute(
-                            start_param, plan_info, "1;2", 2)
+                        start_param, plan_info, "1;2", func_param["player1"])
+                    player2_info_dict = self.convertToExecute(
+                        start_param, plan_info, "1;2", func_param["player2"])
                     self.setPlayerInfo(player1_info_dict, player2_info_dict)
                     self.setLevelInfo({
                         "has_stage2": False,
@@ -817,7 +817,7 @@ class BusinessBus(QThread):
                         "max_check_time": start_param["max_check_time"]
                     })
                     try:
-                        self.startLoversQuest(placing_plan_file_path)
+                        self.startLoversQuest(plan_path)
                     except BusinessError as business_error:
                         business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
                         func_final_status = "wrong"
@@ -825,14 +825,16 @@ class BusinessBus(QThread):
                         self.formatBusinessMessage(business_error_str, "ERROR")
             elif func_param["func_name"] == "火山遗迹":
                 # 获取放卡方案信息
+                plan_path = func_param["plan_path"]
+                self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], 1)
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
                 player2_info_dict = None
-                if enable_2p and plan_info["player_num"] == 2:
+                if func_param["player2"] != 0:
                     player2_info_dict = self.convertToExecute(
-                        start_param, plan_info, func_param["flop_pos"], 2)
+                        start_param, plan_info, func_param["flop_pos"], func_param["player2"])
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
@@ -851,14 +853,16 @@ class BusinessBus(QThread):
                     self.formatBusinessMessage(business_error_str, "ERROR")
             elif func_param["func_name"] == "魔塔蛋糕":
                 # 获取放卡方案信息
+                plan_path = func_param["plan_path"]
+                self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], 1)
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
                 player2_info_dict = None
-                if enable_2p and plan_info["player_num"] == 2:
+                if func_param["player2"] != 0:
                     player2_info_dict = self.convertToExecute(
-                        start_param, plan_info, func_param["flop_pos"], 2)
+                        start_param, plan_info, func_param["flop_pos"], func_param["player2"])
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
@@ -877,14 +881,16 @@ class BusinessBus(QThread):
                     self.formatBusinessMessage(business_error_str, "ERROR")
             elif func_param["func_name"] == "跨服远征":
                 # 获取放卡方案信息
+                plan_path = func_param["plan_path"]
+                self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], 1)
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
                 player2_info_dict = None
-                if enable_2p and plan_info["player_num"] == 2:
+                if func_param["player2"] != 0:
                     player2_info_dict = self.convertToExecute(
-                        start_param, plan_info, func_param["flop_pos"], 2)
+                        start_param, plan_info, func_param["flop_pos"], func_param["player2"])
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
@@ -904,10 +910,9 @@ class BusinessBus(QThread):
                     self.signal_send_business_error.emit(business_error_str)
                     self.formatBusinessMessage(business_error_str, "ERROR")
             elif func_param["func_name"] == "悬赏三连":
-                # placing_plan_file_path = func_param["placing_plan_file_path"]
-                # # 使用该文件路径初始化放卡方案处理器
-                # self.place_plan_procs.setFilePath(placing_plan_file_path)
-
+                plan_path = func_param["plan_path"]
+                # 使用该文件路径初始化放卡方案处理器
+                self.place_plan_procs.setFilePath(plan_path)
                 # 获取"默认方案"放卡方案信息
                 plan_info = self.place_plan_procs.readPlan("默认方案")
                 if isinstance(plan_info, tuple):
@@ -918,11 +923,11 @@ class BusinessBus(QThread):
                 else:
                     # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                     player1_info_dict = self.convertToExecute(
-                        start_param, plan_info, "1;2", 1)
+                        start_param, plan_info, "1;2", func_param["player1"])
                     player2_info_dict = None
                     if enable_2p and plan_info["player_num"] == 2:
                         player2_info_dict = self.convertToExecute(
-                            start_param, plan_info, "1;2", 2)
+                            start_param, plan_info, "1;2", func_param["player2"])
                     self.setPlayerInfo(player1_info_dict, player2_info_dict)
                     self.setLevelInfo({
                         "has_stage2": True,

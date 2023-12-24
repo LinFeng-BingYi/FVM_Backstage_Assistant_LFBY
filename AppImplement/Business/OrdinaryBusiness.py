@@ -362,7 +362,7 @@ def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
         delay(500)
         # 点击“抽取并发布”
         mouseClick(hwnd, 486 * zoom, 439 * zoom)
-        delay(500)
+        delay(3000)
         # 点击关闭抽取任务界面
         mouseClick(hwnd, 650 * zoom, 200 * zoom)
         delay(500)

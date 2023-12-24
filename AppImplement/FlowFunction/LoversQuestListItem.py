@@ -46,10 +46,21 @@ class LoversQuestParamWidget(Ui_LoversQuestParam, BaseParamWidget):
 
     def getAllParam(self):
         return {
-            "placing_plan_file_path": self.lineEdit_file_path.text()
+            "player1": self.comboBox_select_1p.currentIndex() + 1,
+            "player2": self.comboBox_select_2p.currentIndex(),  # 取值为0说明该功能为单人模式
+            "plan_path": self.lineEdit_file_path.text()
         }
 
+    def setAllParam(self, param_dict):
+        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] + 1)
+        self.comboBox_select_2p.setCurrentIndex(param_dict["player2"])
+        self.lineEdit_file_path.setText(param_dict["plan_path"])
+
     def checkInputValidity(self):
+        if self.comboBox_select_2p.currentIndex() == 0:
+            return False, "情侣任务只有组队模式才能完成！"
+        if self.comboBox_select_1p.currentText() == self.comboBox_select_2p.currentText():
+            return False, "房主与房客不能选择同一个！"
         if not os.path.exists(self.lineEdit_file_path.text()):
             return False, "未找到放卡方案ini文件！"
         return True
