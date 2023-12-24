@@ -664,6 +664,14 @@ class BusinessBus(QThread):
 
     # 线程执行相关 -------------------------------------------------------------------
     def run(self) -> None:
+        try:
+            self.executeBusinessFlow()
+        except Exception as exception:
+            business_error_str = repr(exception) + "\n" + str(exception)
+            self.signal_send_business_error.emit(business_error_str)
+            self.formatBusinessMessage(business_error_str, "ERROR")
+
+    def executeBusinessFlow(self):
         self.formatBusinessMessage("开始依次执行流程列表中可用功能")
         # 先从“开始”功能获取流程全局变量
         start_param = self.func_flow[0]
@@ -683,7 +691,7 @@ class BusinessBus(QThread):
         self.signal_send_func_status.emit(0, "completed")
 
         # 再执行每个功能
-        func_no = 1     # 功能在流程中的序号
+        func_no = 1  # 功能在流程中的序号
         for func_param in self.func_flow[1:]:
             self.formatBusinessMessage(f"开始功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, "executing")
@@ -939,6 +947,9 @@ class BusinessBus(QThread):
     def convertToExecute(self, start_param, plan_info, flop_pos, player):
         # 获取该账号使用的 卡片组名称
         deck_info = self.player_deck_procs.readDeck(plan_info[f"{player}P所用卡片组"])
+        if isinstance(deck_info, tuple):
+            deck_name = plan_info[f"{player}P所用卡片组"]
+            raise BusinessError(f"放卡方案[{plan_info['plan_name']}]中{player}P所用卡片组“{deck_name}”在账号卡片组ini文件中不存在")
         # 用来存放可执行dict格式中，cards_plan的内容
         cards_plan = []
         # 从卡1到卡n依次存放（这要求放卡方案配置文件里必须保证递增的顺序）

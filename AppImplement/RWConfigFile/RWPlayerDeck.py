@@ -8,7 +8,7 @@
 
 from Common.FileProcess.INIProcess import INIProcessor
 
-EXCLUDE_SECTION = ['DEFAULT', 'CD配置']
+EXCLUDE_SECTION = ['文件说明', 'CD配置']
 DECK_COMMON_KEY = ["描述", "卡片组编号", "卡片CD配置"]
 
 

@@ -8,6 +8,7 @@
 
 from Common.FileProcess.INIProcess import INIProcessor
 
+EXCLUDE_SECTION = ['文件说明']
 COMMON_1P_KEY = ["描述", "1P放置位置", "1P所用卡片组"]
 COMMON_2P_KEY = ["描述", "1P放置位置", "2P放置位置", "1P所用卡片组", "2P所用卡片组"]
 CARD_KEY = ["{}P卡{}", "{}P卡{}放置位置", "{}P卡{}CD"]
@@ -45,7 +46,13 @@ class PlacingPlanProcessor:
         self.encoding = encoding
 
     def getAllSection(self):
-        return self.ini_procs.getAllSection()
+        sections = self.ini_procs.getAllSection()
+        result_sections = list()
+        for section_ex in EXCLUDE_SECTION:
+            result_sections = [section_str
+                               for i, section_str in enumerate(sections)
+                               if section_str.find(section_ex) == -1]
+        return result_sections
 
     def readPlan(self, plan_name):
         """解析指定的卡片放置方案配置
@@ -155,13 +162,13 @@ class PlacingPlanProcessor:
         if plan_dict['player_num'] == 1:
             for key in COMMON_1P_KEY:
                 self.ini_procs.setSpecificValue(plan_name, key, plan_dict[key])
-            self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'], 1)
+            self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'])
         # 组队配置
         else:
             for key in COMMON_2P_KEY:
                 self.ini_procs.setSpecificValue(plan_name, key, plan_dict[key])
-            self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'], 1)
-            self.writePlayerCardPlan(plan_name, plan_dict['2p_card_plan'], 2)
+            self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'])
+            self.writePlayerCardPlan(plan_name, plan_dict['2p_card_plan'])
 
     def writePlayerCardPlan(self, plan_name, card_plan):
         for card_dict in card_plan:

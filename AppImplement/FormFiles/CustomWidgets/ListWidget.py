@@ -66,11 +66,15 @@ class FuncFlowListWidget(QListWidget):
         # 创建 解禁 动作
         action_lift_ban = QAction("解禁", self)
         action_lift_ban.triggered.connect(lambda: self.liftBanItem(list_item))
+        # 创建 重置所有功能状态 动作
+        action_reset_all_status = QAction("重置所有功能状态", self)
+        action_reset_all_status.triggered.connect(self.resetAllFuncStatus)
         # 加入菜单
         list_widget_menu = QMenu(self)
         list_widget_menu.addAction(action_delete)
         list_widget_menu.addAction(action_ban)
         list_widget_menu.addAction(action_lift_ban)
+        list_widget_menu.addAction(action_reset_all_status)
         list_widget_menu.exec(self.mapToGlobal(pos))
 
     def showSelectedFuncWidget(self, list_item):
@@ -132,6 +136,16 @@ class FuncFlowListWidget(QListWidget):
             return
         item_widget.getFuncWidget().setEnabled(True)
         item_widget.changeStatus("hanging")
+
+    def resetAllFuncStatus(self):
+        for i in range(self.count()):
+            list_item = self.item(i)
+            item_widget = self.itemWidget(list_item)
+            # 对于“结束”item之前的所有状态不是“挂起”的功能，重置它的状态
+            if item_widget.getFuncName() == "结束":
+                break
+            if item_widget.getStatus() != "hanging":
+                item_widget.changeStatus("hanging")
 
     def checkFuncOrderValidity(self):
         if self.item_widget_list[0].getFuncName() != "开始":
