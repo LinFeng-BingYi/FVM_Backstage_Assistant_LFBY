@@ -102,6 +102,9 @@ class BaseListWidget(QWidget):
         """
         pass
 
+    def setFuncParam(self, param_dict):
+        self.func_widget.setAllParam(param_dict)
+
     # @abstractmethod
     # def executeFunc(self):
     #     """执行该功能

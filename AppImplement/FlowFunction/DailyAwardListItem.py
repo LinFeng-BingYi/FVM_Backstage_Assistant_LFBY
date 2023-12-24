@@ -98,7 +98,7 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
         self.checkBox_need_fertilize.setChecked(param_dict["公会花园"][1]["need_fertilize"])
         self.comboBox_garden_plant_type.setCurrentIndex(param_dict["公会花园"][1]["plant_type"])
         self.checkBox_union_quest.setChecked(param_dict["公会任务"][0])
-        self.checkBox_release_quest.setCurrentText(param_dict["公会任务"][1]["release_quest"])
+        self.checkBox_release_quest.setChecked(param_dict["公会任务"][1]["release_quest"])
         self.checkBox_open_food_contest.setChecked(param_dict["打开美食大赛"])
         self.checkBox_open_backpack.setChecked(param_dict["打开背包"])
         self.checkBox_team_magic_tower.setChecked(param_dict["领取双人魔塔奖励"])

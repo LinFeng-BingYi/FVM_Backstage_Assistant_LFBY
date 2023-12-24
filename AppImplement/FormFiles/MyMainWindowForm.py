@@ -5,6 +5,7 @@ from PySide6.QtGui import QTextCursor, QIcon
 from AppImplement.FormFiles.MyMainWindow import Ui_MyMainWindow
 from AppImplement.FormFiles.EditPlacingPlanForm import WidgetEditPlacingPlan
 from AppImplement.FormFiles.UpdateINIForm import WidgetUpdateINI
+from AppImplement.FormFiles.SaveFlowListForm import WidgetSaveFlowList
 from AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
 from AppImplement.FormFiles.CustomWidgets.Dialog import AddFuncFlowDialog
 
@@ -27,6 +28,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.editPlacingPlanForm = None                     # 编辑放卡方案窗口
         self.updateIniForm = None                           # 升级放卡方案ini文件窗口
         self.add_func_flow_dialog = AddFuncFlowDialog()     # 添加功能到流程列表的内置对话框
+        self.saveFlowListForm = WidgetSaveFlowList()        # 保存功能流程列表为json文件的窗口
         self.add_func_flow_dialog.signal_send_func_name.connect(self.addListWidget)
         # 内置消息框，用于提示信息
         self.tip_message_box = QMessageBox(
@@ -59,15 +61,21 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         # 菜单栏打开对应窗口
         self.action_edit_placing_plan.triggered.connect(self.displayEditPlacingPlanForm)
         self.action_ini_file_update.triggered.connect(self.displayUpdateIniForm)
+
         # 功能流程列表添加功能
         self.pushButton_add_flow.clicked.connect(self.showAddFuncFlowDialog)
-        # 启动/结束流程
-        self.pushButton_start_flow.clicked.connect(self.startBusinessBus)
-        self.pushButton_end_flow.clicked.connect(self.stopBusinessBus)
-
         # 双击流程显示”功能参数“tab页
         self.listWidget_flow.signal_show_func_param_tab.connect(
             lambda: self.tabWidget_config_business.setCurrentIndex(1))
+        # 保存功能流程参数
+        self.pushButton_save_flow.clicked.connect(self.openSaveFlowList)
+        # 应用功能流程参数
+        self.pushButton_apply_flow.clicked.connect(self.openApplyFlowList)
+        self.saveFlowListForm.signal_apply_flow_param.connect(self.applyFlowParam)
+
+        # 启动/结束流程
+        self.pushButton_start_flow.clicked.connect(self.startBusinessBus)
+        self.pushButton_end_flow.clicked.connect(self.stopBusinessBus)
 
         # 线程业务消息打印在日志中
         self.thread_business_bus.signal_send_business_message.connect(self.printLog)
@@ -143,3 +151,32 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.tip_message_box.setWindowTitle("错误")
         self.tip_message_box.setText(error_str)
         self.tip_message_box.show()
+
+    def openSaveFlowList(self):
+        flow_funcs_param = self.listWidget_flow.getFlowFuncsParam(False)
+        if flow_funcs_param is None or len(flow_funcs_param) == 0:
+            return
+        flow_funcs_param_dict = dict()
+        for func_param_dict in flow_funcs_param:
+            func_name = func_param_dict["func_name"]
+            del func_param_dict["func_name"]
+            flow_funcs_param_dict[func_name] = func_param_dict
+        # print(flow_funcs_param_dict)
+        self.saveFlowListForm.setSaveMode()
+        self.saveFlowListForm.setFlowParamDict(flow_funcs_param_dict)
+        self.saveFlowListForm.show()
+
+    def openApplyFlowList(self):
+        self.saveFlowListForm.setApplyMode()
+        self.saveFlowListForm.show()
+
+    def applyFlowParam(self, flow_param_dict):
+        self.listWidget_flow.clearAllItem()
+        current_item_no = 0
+        for key, value in flow_param_dict.items():
+            print("本功能名称:", key)
+            print("本功能参数字典", value)
+            self.addListWidget(key)
+            self.listWidget_flow.item_widget_list[current_item_no].setFuncParam(value)
+            current_item_no += 1
+        self.addListWidget("结束")

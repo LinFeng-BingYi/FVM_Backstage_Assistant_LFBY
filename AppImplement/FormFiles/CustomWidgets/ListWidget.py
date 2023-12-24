@@ -137,6 +137,10 @@ class FuncFlowListWidget(QListWidget):
         item_widget.getFuncWidget().setEnabled(True)
         item_widget.changeStatus("hanging")
 
+    def clearAllItem(self):
+        for list_item in [self.item(i) for i in range(self.count())]:
+            self.deleteItem(list_item)
+
     def resetAllFuncStatus(self):
         for i in range(self.count()):
             list_item = self.item(i)
@@ -193,7 +197,7 @@ class FuncFlowListWidget(QListWidget):
                 return False
         return True
 
-    def getFlowFuncsParam(self):
+    def getFlowFuncsParam(self, change_status=True):
         if not self.checkFuncOrderValidity():
             return None
         if not self.checkActiveFuncParamValidity():
@@ -204,7 +208,8 @@ class FuncFlowListWidget(QListWidget):
             func_widget_param["func_name"] = item_widget.getFuncName()
             flow_funcs_param.append(func_widget_param)
             print("功能参数", func_widget_param)
-            item_widget.changeStatus("waiting")
+            if change_status:
+                item_widget.changeStatus("waiting")
         return flow_funcs_param
 
     def updateFlowFuncStatus(self, func_no, status):
