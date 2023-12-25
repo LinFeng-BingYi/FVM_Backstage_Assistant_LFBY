@@ -87,7 +87,7 @@ class WantedParamWidget(Ui_WantedParam, BaseParamWidget):
         }
 
     def setAllParam(self, param_dict):
-        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] + 1)
+        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] - 1)
         self.comboBox_select_2p.setCurrentIndex(param_dict["player2"])
         self.lineEdit_flop_pos.setText(param_dict["flop_pos"])
         self.lineEdit_plan_path.setText(param_dict["plan_path"])

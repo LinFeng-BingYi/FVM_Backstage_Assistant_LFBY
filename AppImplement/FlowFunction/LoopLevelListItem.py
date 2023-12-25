@@ -90,7 +90,7 @@ class LoopLevelParamWidget(Ui_LoopLevelParam, BaseParamWidget):
         }
 
     def setAllParam(self, param_dict):
-        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] + 1)
+        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] - 1)
         self.comboBox_select_2p.setCurrentIndex(param_dict["player2"])
         self.comboBox_zone.setCurrentText(param_dict["zone_name"])
         self.comboBox_level.setCurrentText(param_dict["level_name"])

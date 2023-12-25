@@ -31,7 +31,7 @@
                 true,
                 {
                     "need_fertilize": true,
-                    "plant_type": 0
+                    "plant_type": 1
                 }
             ],
             "公会任务": [

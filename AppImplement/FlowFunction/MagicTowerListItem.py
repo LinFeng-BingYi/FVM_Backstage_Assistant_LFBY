@@ -68,7 +68,7 @@ class MagicTowerParamWidget(Ui_MagicTowerParam, BaseParamWidget):
         }
 
     def setAllParam(self, param_dict):
-        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] + 1)
+        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] - 1)
         self.comboBox_select_2p.setCurrentIndex(param_dict["player2"])
         self.lineEdit_level_num.setText(str(param_dict["level_num"]))
         self.lineEdit_loop_count.setText(str(param_dict["loop_count"]))

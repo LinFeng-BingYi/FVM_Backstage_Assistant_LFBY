@@ -82,7 +82,7 @@ class CrossServiceParamWidget(Ui_CrossServiceParam, BaseParamWidget):
         }
 
     def setAllParam(self, param_dict):
-        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] + 1)
+        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] - 1)
         self.comboBox_select_2p.setCurrentIndex(param_dict["player2"])
         self.comboBox_level_type.setCurrentText(param_dict["level_type"])
         self.comboBox_level_num.setCurrentText(param_dict["level_num"])

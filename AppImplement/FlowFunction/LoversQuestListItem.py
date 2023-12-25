@@ -52,7 +52,7 @@ class LoversQuestParamWidget(Ui_LoversQuestParam, BaseParamWidget):
         }
 
     def setAllParam(self, param_dict):
-        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] + 1)
+        self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] - 1)
         self.comboBox_select_2p.setCurrentIndex(param_dict["player2"])
         self.lineEdit_file_path.setText(param_dict["plan_path"])
 
