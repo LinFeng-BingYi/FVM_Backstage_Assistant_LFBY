@@ -156,27 +156,24 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         flow_funcs_param = self.listWidget_flow.getFlowFuncsParam(False)
         if flow_funcs_param is None or len(flow_funcs_param) == 0:
             return
-        flow_funcs_param_dict = dict()
-        for func_param_dict in flow_funcs_param:
-            func_name = func_param_dict["func_name"]
-            del func_param_dict["func_name"]
-            flow_funcs_param_dict[func_name] = func_param_dict
-        # print(flow_funcs_param_dict)
+        # 流程中单个功能可以出现多次，使用dict存储会键冲突，改用list存储
+        print(flow_funcs_param)
         self.saveFlowListForm.setSaveMode()
-        self.saveFlowListForm.setFlowParamDict(flow_funcs_param_dict)
+        self.saveFlowListForm.setFlowParamDict(flow_funcs_param)
         self.saveFlowListForm.show()
 
     def openApplyFlowList(self):
         self.saveFlowListForm.setApplyMode()
         self.saveFlowListForm.show()
 
-    def applyFlowParam(self, flow_param_dict):
+    def applyFlowParam(self, flow_param_list):
         self.listWidget_flow.clearAllItem()
-        current_item_no = 0
-        for key, value in flow_param_dict.items():
+        for i in range(len(flow_param_list)):
+            key = flow_param_list[i]["func_name"]
+            del flow_param_list[i]["func_name"]
+            value = flow_param_list[i]
             print("本功能名称:", key)
             print("本功能参数字典", value)
             self.addListWidget(key)
-            self.listWidget_flow.item_widget_list[current_item_no].setFuncParam(value)
-            current_item_no += 1
+            self.listWidget_flow.item_widget_list[i].setFuncParam(value)
         self.addListWidget("结束")

@@ -49,12 +49,12 @@ class PlayerDeckProcessor:
         Returns: list[str]
         """
         sections = self.ini_procs.getAllSection()
-        result = list()
-        for section_ex in EXCLUDE_SECTION:
-            result = [section_str
-                      for i, section_str in enumerate(sections)
-                      if section_str.find(section_ex) == -1]
-        return result
+        for i in range(len(sections)):
+            right_index = len(sections) - i - 1
+            for section_ex in EXCLUDE_SECTION:
+                if sections[right_index].find(section_ex) != -1:
+                    sections.pop(right_index)
+        return sections
 
     def readCardCd(self, cd_section):
         """返回指定的"CD配置"节中的信息

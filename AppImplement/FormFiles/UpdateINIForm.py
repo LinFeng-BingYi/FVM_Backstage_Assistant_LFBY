@@ -17,6 +17,14 @@ from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 from AppImplement.RWConfigFile.RWPlayerDeck import DECK_COMMON_KEY, PlayerDeckProcessor
 from Common.FileProcess.INIProcess import INIProcessor
 
+NEW_V0_01_DSC_SECTION = {
+    "描述1": "配置文件以ini文件编写，无相关知识基础请勿随意修改，避免软件无法正常运行",
+    "描述2": "可通过手动编辑文件来保存放卡预设配置",
+    "描述3": "所有小节的重排序只能通过手动编辑ini文件的方式完成",
+    "描述4": "每个放卡方案ini文件必须有一个[默认方案]section",
+    "描述5": '注：键"所用卡片组"对应的值必须存在于"账号预设卡片组.ini"文件中'
+}
+
 
 class WidgetUpdateINI(QWidget, Ui_UpdateINI):
     def __init__(self):
@@ -25,7 +33,7 @@ class WidgetUpdateINI(QWidget, Ui_UpdateINI):
 
         self.file_processor: INIProcessor = None    # ini文件读写器
         self.player_deck_procs = None
-        self.cwd = ROOT_PATH                      # 程序当前工作目录
+        self.cwd = ROOT_PATH + r"\config\卡片放置方案"                      # 程序当前工作目录
         self.tip_dialog = None
 
         self.bindSignal()
@@ -76,7 +84,7 @@ class WidgetUpdateINI(QWidget, Ui_UpdateINI):
         current_section = ""
         new_abstract_file_path = ""
         try:
-            abstract_file_path = self.lineEdit_file_path_new_v001.text()
+            abstract_file_path = self.lineEdit_file_path.text()
             file_dir = os.path.dirname(abstract_file_path)
             pure_file_name = os.path.basename(abstract_file_path)
             new_pure_file_name = pure_file_name.rsplit('.', 1)[0] + "_V6.05.ini"
@@ -86,6 +94,7 @@ class WidgetUpdateINI(QWidget, Ui_UpdateINI):
             self.file_processor = INIProcessor(new_abstract_file_path)
 
             for section in self.file_processor.getAllSection():
+                current_section = section
                 if self.file_processor.hasKey(section, "2P放置位置"):
                     self.updateTeamConfigToV6_05(section)
                 else:
@@ -216,7 +225,11 @@ class WidgetUpdateINI(QWidget, Ui_UpdateINI):
             copyfile(abstract_file_path, new_abstract_file_path)
             self.file_processor = INIProcessor(new_abstract_file_path)
 
+            self.file_processor.setBatchValue("文件说明", NEW_V0_01_DSC_SECTION)
+
             for section in self.file_processor.getAllSection():
+                if section == "文件说明":
+                    continue
                 current_section = section
                 if self.file_processor.hasKey(section, "2P放置位置"):
                     self.updateTeamConfigToNewV0_01(section,
@@ -330,7 +343,8 @@ class WidgetUpdateINI(QWidget, Ui_UpdateINI):
         deck_info_1p = self.getNewCardInfo(player_deck_path, player1_deck_name)
         # 获取1P每张卡的信息
         card_no = 0
-        for i in range(1, 6):
+        max_1p_card = 5 if enable_2p else 8
+        for i in range(1, max_1p_card + 1):
             if not self.file_processor.hasKey(section, f"1P卡{i}") or \
                     self.file_processor.getSpecificValue(section, f"1P卡{i}") == '0':
                 continue
@@ -353,7 +367,7 @@ class WidgetUpdateINI(QWidget, Ui_UpdateINI):
                 plan_dict[f"2P卡{card_no}CD"] = self.file_processor.getSpecificValue(section, f"2P卡{i}CD")
 
         # 先删除所有key，避免新增的键值对顺序不对
-        self.file_processor.deleteBatchValue(section, self.file_processor.getAllKey(section))
+        self.file_processor.deleteSectionOrValue(section)
         # 批量写入
         self.file_processor.setBatchValue(section, plan_dict)
 

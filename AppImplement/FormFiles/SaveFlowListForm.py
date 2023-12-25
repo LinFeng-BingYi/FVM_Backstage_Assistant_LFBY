@@ -5,6 +5,7 @@
 # @File    : SaveFlowListForm.py
 # @Time    : 2023/12/24 22:19
 # @Dsc     : 保存功能流程列表的参数
+from collections import OrderedDict
 
 from PySide6.QtWidgets import QWidget, QFileDialog
 from PySide6.QtCore import Qt, Signal
@@ -18,14 +19,14 @@ from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
 
 class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
-    signal_apply_flow_param = Signal(dict)
+    signal_apply_flow_param = Signal(list)
 
     def __init__(self):
         super(WidgetSaveFlowList, self).__init__()
         self.setupUi(self)
 
         self.file_processor = None    # json文件读写器
-        self.flow_param_dict = dict()
+        self.flow_param_list = list()
         self.json_file_dict = dict()
         self.cwd = ROOT_PATH + r"\config\功能流程列表参数"     # 程序当前工作目录
         self.tip_dialog = None
@@ -51,8 +52,8 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         self.lineEdit_flow_file.setText(norm_file_path)
         self.readFlowListParam()
 
-    def setFlowParamDict(self, flow_param_dict):
-        self.flow_param_dict = flow_param_dict
+    def setFlowParamDict(self, flow_param_list):
+        self.flow_param_list = flow_param_list
 
     def setApplyMode(self):
         self.pushButton_apply.setEnabled(True)
@@ -70,23 +71,23 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
             self.tip_dialog.show()
             return
         json_file = open(flow_file_path, 'r', encoding='utf-8')
-        json_file_dict = json.load(json_file)
+        json_file_dict = json.load(json_file, object_pairs_hook=OrderedDict)
         try:
             flow_dsc = json_file_dict["流程描述"]
-            self.flow_param_dict = json_file_dict["流程参数"]
+            self.flow_param_list = json_file_dict["流程参数"]
             self.plainTextEdit.setPlainText(flow_dsc)
-            # print(self.flow_param_dict["开始"]["2p_name_pic_path"])
+            # print(self.flow_param_list[0]["2p_name_pic_path"])
         except KeyError as keyError:
             self.tip_dialog = TipMessageBox(
                 "错误",
-                f"该json文件格式不正确！")
+                f"该json文件格式不正确！\n{keyError.args}")
             self.tip_dialog.show()
         finally:
             json_file.close()
 
     def writeFlowListParam(self):
         self.json_file_dict["流程描述"] = self.plainTextEdit.toPlainText()
-        self.json_file_dict["流程参数"] = self.flow_param_dict
+        self.json_file_dict["流程参数"] = self.flow_param_list
         flow_file_path = self.lineEdit_flow_file.text()
         if flow_file_path[-4:] != "json":
             self.tip_dialog = TipMessageBox("错误", f"请先在”文件路径“输入框中填写正确的json文件名称\n\n文件不存在时将自动新建，否则会覆盖原文件")
@@ -101,11 +102,11 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         self.tip_dialog.show()
 
     def applyJsonFile(self):
-        print(self.flow_param_dict)
-        if self.flow_param_dict is None or len(self.flow_param_dict) == 0:
+        print(self.flow_param_list)
+        if len(self.flow_param_list) == 0:
             self.tip_dialog = TipMessageBox(
                 "错误",
-                f"还未解析json文件！")
+                f"还未解析json文件！或该文件的流程中没有任何功能！")
             self.tip_dialog.show()
             return
-        self.signal_apply_flow_param.emit(self.flow_param_dict)
+        self.signal_apply_flow_param.emit(self.flow_param_list)
