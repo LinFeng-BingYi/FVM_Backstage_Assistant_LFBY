@@ -605,7 +605,7 @@ def findLoversQuest(hwnd, zoom=1):
         quest_pic_dir_path = ROOT_PATH + r"\resources\images\application\任务图片\情侣任务\任务" + f"{i + 1}"
         for quest_pic in listdir(quest_pic_dir_path):
             quest_pic_abstract_path = quest_pic_dir_path + "\\" + quest_pic
-            if find_pic(hwnd, quest_pic_abstract_path, [432, 90, 855, 367]):
+            if find_pic(hwnd, quest_pic_abstract_path, [100 + 250 * i, 100, 345 + 250 * i, 350]):
                 # 若找到了，则将 任务结果 改为 纯文件名
                 quest_find_result = quest_pic.rsplit('.', 1)[0]
                 break

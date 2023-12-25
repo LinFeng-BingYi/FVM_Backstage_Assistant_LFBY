@@ -181,89 +181,89 @@ MULTI_HIERARCHY_ZONE = {
 
 # 日常签到领奖相关 ---------------------------------------------------------------------
 # VIP签到
-VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\VIP签到.bmp"
+VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\VIP签到.bmp"
 # 进入VIP
-OPEN_VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入VIP.bmp"
+OPEN_VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入VIP.bmp"
 # 每日签到
-DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\每日签到.bmp"
+DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\每日签到.bmp"
 # 进入每日签到
-OPEN_DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入每日签到.bmp"
+OPEN_DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入每日签到.bmp"
 # 每日签到按钮
-DAILY_SIGNIN_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\每日签到按钮.bmp"
+DAILY_SIGNIN_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\每日签到按钮.bmp"
 # 美食活动
-FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\美食活动.bmp"
+FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\美食活动.bmp"
 # 进入美食活动
-OPEN_FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入美食活动.bmp"
+OPEN_FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入美食活动.bmp"
 # 法老宝藏
-PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\法老宝藏.bmp"
+PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\法老宝藏.bmp"
 # 进入法老宝藏
-OPEN_PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入法老宝藏.bmp"
+OPEN_PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入法老宝藏.bmp"
 # 法老宝藏免费
-PHARAOH_FREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\法老宝藏免费.bmp"
+PHARAOH_FREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\法老宝藏免费.bmp"
 # 塔罗寻宝
-TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\塔罗寻宝.bmp"
+TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\塔罗寻宝.bmp"
 # 进入塔罗寻宝
-OPEN_TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入塔罗寻宝.bmp"
+OPEN_TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入塔罗寻宝.bmp"
 # 塔罗寻宝免费
-TAROT_FREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\塔罗寻宝免费.bmp"
+TAROT_FREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\塔罗寻宝免费.bmp"
 # 换线，用来判断活动界面是否关闭成功
-SWITCH_LINE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\换线.bmp"
+SWITCH_LINE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\换线.bmp"
 # 进入底部任务
-OPEN_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入底部任务.bmp"
+OPEN_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入底部任务.bmp"
 # 底部任务收起
-FOLD_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\底部任务收起.bmp"
+FOLD_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\底部任务收起.bmp"
 # 底部任务完成
-COMPLETE_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\底部任务完成.bmp"
+COMPLETE_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\底部任务完成.bmp"
 # 进入公会任务
-OPEN_UNION_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入公会任务.bmp"
+OPEN_UNION_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入公会任务.bmp"
 # 进入情侣任务
-OPEN_LOVERS_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入情侣任务.bmp"
+OPEN_LOVERS_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入情侣任务.bmp"
 # 进入公会
-OPEN_UNION_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入公会.bmp"
+OPEN_UNION_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入公会.bmp"
 # 进入公会花园
-OPEN_UNION_GARDEN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入公会花园.bmp"
+OPEN_UNION_GARDEN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入公会花园.bmp"
 # 公会花园成长值满
-UNION_GARDEN_MAX_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\公会花园成长值满.bmp"
+UNION_GARDEN_MAX_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\公会花园成长值满.bmp"
 # 公会花园待种植
-UNION_GARDEN_PLANT_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\公会花园待种植.bmp"
+UNION_GARDEN_PLANT_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\公会花园待种植.bmp"
 # 进入好友
-OPEN_FRIEND_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入好友.bmp"
+OPEN_FRIEND_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入好友.bmp"
 # 美食大赛
-FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\美食大赛.bmp"
+FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\美食大赛.bmp"
 # 进入美食大赛
-OPEN_FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入美食大赛.bmp"
+OPEN_FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入美食大赛.bmp"
 # 进入背包
-OPEN_BACKPACK_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入背包.bmp"
+OPEN_BACKPACK_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入背包.bmp"
 # 二级密码
-SECONDARY_PASSWORD_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\二级密码.bmp"
+SECONDARY_PASSWORD_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\二级密码.bmp"
 # 进入缘分树
-OPEN_DESTINY_TREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入缘分树.bmp"
+OPEN_DESTINY_TREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入缘分树.bmp"
 
 # 进入区域相关 -----------------------------------------------------------------------
 # 世界地图
-WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\世界地图.bmp"
+WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\世界地图.bmp"
 # 进入世界地图
-OPEN_WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\application\界面图标\地图相关\进入世界地图.bmp"
+OPEN_WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入世界地图.bmp"
 # 进入美味岛
-OPEN_MWD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入美味岛.bmp"
+OPEN_MWD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入美味岛.bmp"
 # 进入火山岛
-OPEN_HSD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入火山岛.bmp"
+OPEN_HSD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入火山岛.bmp"
 # 进入浮空岛
-OPEN_FKD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入浮空岛.bmp"
+OPEN_FKD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入浮空岛.bmp"
 # 进入火山遗迹
-OPEN_HSYJ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入火山遗迹.bmp"
+OPEN_HSYJ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入火山遗迹.bmp"
 # 进入海底漩涡
-OPEN_HDXW_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入海底漩涡.bmp"
+OPEN_HDXW_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入海底漩涡.bmp"
 # 进入竞技岛
-OPEN_JJD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入竞技岛.bmp"
+OPEN_JJD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入竞技岛.bmp"
 # 进入魔塔蛋糕
-OPEN_MTDG_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入魔塔蛋糕.bmp"
+OPEN_MTDG_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入魔塔蛋糕.bmp"
 # 进入勇士挑战
-OPEN_YSTZ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入勇士挑战.bmp"
+OPEN_YSTZ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入勇士挑战.bmp"
 # 进入跨服远征
-OPEN_KFYZ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入跨服远征.bmp"
+OPEN_KFYZ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入跨服远征.bmp"
 # 进入探险营地
-OPEN_TXYD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入探险营地.bmp"
+OPEN_TXYD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入探险营地.bmp"
 
 # 通关相关 -------------------------------------------------------------------------
 # 创房勾选密码
