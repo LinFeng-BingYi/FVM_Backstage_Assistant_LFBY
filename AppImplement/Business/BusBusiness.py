@@ -338,7 +338,9 @@ class BusinessBus(QThread):
         delay(500)
         # 点击“公会任务”
         mouseClick(hwnd1, 900 * zoom1, 260 * zoom1)
-        delay(2000)
+        if not find_pic_loop(hwnd1, OPEN_UNION_QUEST_PATH, [392, 35, 566, 72], max_time=120):
+            raise BusinessError("超过2min还未打开公会任务界面！")
+        delay(500)
         # 获取会长任务结果列表
         quest_result_list = findUnionPresidentQuest(hwnd1, zoom1)
         # 关闭公会任务界面
@@ -407,7 +409,9 @@ class BusinessBus(QThread):
         delay(500)
         # 点击“情侣任务”
         mouseClick(hwnd1, 900 * zoom1, 300 * zoom1)
-        delay(2000)
+        if not find_pic_loop(hwnd1, OPEN_LOVERS_QUEST_PATH, [392, 35, 566, 80], max_time=120):
+            raise BusinessError("超过2min还未打开情侣任务界面！")
+        delay(500)
         # 获取情侣任务结果列表
         quest_result_list = findLoversQuest(hwnd1, zoom1)
         # 关闭情侣任务界面

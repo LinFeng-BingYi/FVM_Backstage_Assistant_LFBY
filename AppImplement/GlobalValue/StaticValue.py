@@ -14,7 +14,6 @@ APP_WINDOW_ICON = ROOT_PATH + r"\resources\images\application\软件图标\icon_
 # 地图相关 -------------------------------------------------------------------------
 # 世界地图坐标
 WORLD_MAP_POS = (860, 50)
-WORLD_MAP_TITTLE_PATH = ROOT_PATH + "\\resources\\images\\application\\界面图标\\地图相关\\世界地图标题.bmp"
 WORLD_MAP_ZONE_POS = {
     "美味岛": (280, 270),
     "火山岛": (680, 460),
@@ -215,6 +214,10 @@ OPEN_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图�
 FOLD_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\底部任务收起.bmp"
 # 底部任务完成
 COMPLETE_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\底部任务完成.bmp"
+# 进入公会任务
+OPEN_UNION_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入公会任务.bmp"
+# 进入情侣任务
+OPEN_LOVERS_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入情侣任务.bmp"
 # 进入公会
 OPEN_UNION_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入公会.bmp"
 # 进入公会花园
@@ -232,15 +235,43 @@ OPEN_FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\application\界面图�
 # 进入背包
 OPEN_BACKPACK_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入背包.bmp"
 # 二级密码
-SECONDARY_PASSWORD = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\二级密码.bmp"
+SECONDARY_PASSWORD_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\二级密码.bmp"
+# 进入缘分树
+OPEN_DESTINY_TREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入缘分树.bmp"
+
+# 进入区域相关 -----------------------------------------------------------------------
+# 世界地图
+WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\世界地图.bmp"
+# 进入世界地图
+OPEN_WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\application\界面图标\地图相关\进入世界地图.bmp"
+# 进入美味岛
+OPEN_MWD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入美味岛.bmp"
+# 进入火山岛
+OPEN_HSD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入火山岛.bmp"
+# 进入浮空岛
+OPEN_FKD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入浮空岛.bmp"
+# 进入火山遗迹
+OPEN_HSYJ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入火山遗迹.bmp"
+# 进入海底漩涡
+OPEN_HDXW_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入海底漩涡.bmp"
+# 进入竞技岛
+OPEN_JJD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入竞技岛.bmp"
+# 进入魔塔蛋糕
+OPEN_MTDG_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入魔塔蛋糕.bmp"
+# 进入勇士挑战
+OPEN_YSTZ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入勇士挑战.bmp"
+# 进入跨服远征
+OPEN_KFYZ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入跨服远征.bmp"
+# 进入探险营地
+OPEN_TXYD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入探险营地.bmp"
 
 # 通关相关 -------------------------------------------------------------------------
 # 创房勾选密码
-CREATE_ROOM_PSW_PATH = ROOT_PATH + "\\resources\\images\\application\\界面图标\\通关相关\\创房勾选密码.bmp"
+CREATE_ROOM_PSW_PATH = ROOT_PATH + r"\resources\images\application\界面图标\通关相关\创房勾选密码.bmp"
 # 进入关卡
-START_GAME_PATH = ROOT_PATH + "\\resources\\images\\application\\界面图标\\通关相关\\进入关卡.bmp"
+START_GAME_PATH = ROOT_PATH + r"\resources\images\application\界面图标\通关相关\进入关卡.bmp"
 # 背包空间不足
-BACKPACK_FULL = ROOT_PATH + r"\resources\images\application\界面图标\通关相关\背包空间不足.bmp"
+BACKPACK_FULL_PATH = ROOT_PATH + r"\resources\images\application\界面图标\通关相关\背包空间不足.bmp"
 
 # 悬赏 ---------------------------------------------------------------------------
 # 悬赏活动图标

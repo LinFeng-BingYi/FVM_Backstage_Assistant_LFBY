@@ -5,17 +5,32 @@
 # @File    : Foundation.py
 # @Time    : 2023/11/26 22:03
 # @Dsc     : 基础操作
-
+from AppImplement.Business.CustomException import BusinessError
 from Common.Backstage import *
 from AppImplement.GlobalValue.StaticValue import *
 
 from math import floor
+
+OPEN_ZONE_PATH_DICT = {
+    "美味岛": (OPEN_MWD_ZONE_PATH, [230, 150, 320, 220]),
+    "火山岛": (OPEN_HSD_ZONE_PATH, [70, 250, 140, 350]),
+    "浮空岛": (OPEN_FKD_ZONE_PATH, [100, 260, 200, 370]),
+    "火山遗迹": (OPEN_HSYJ_ZONE_PATH, [120, 250, 250, 320]),
+    "海底漩涡": (OPEN_HDXW_ZONE_PATH, [360, 100, 440, 160]),
+    "竞技岛": (OPEN_JJD_ZONE_PATH, [80, 180, 180, 280]),
+    "魔塔蛋糕": (OPEN_MTDG_ZONE_PATH, [320, 10, 670, 60]),
+    "勇士挑战": (OPEN_YSTZ_ZONE_PATH, [380, 20, 570, 100]),
+    "跨服远征": (OPEN_KFYZ_ZONE_PATH, [380, 20, 570, 100]),
+    "探险营地": (OPEN_TXYD_ZONE_PATH, [250, 100, 320, 200])
+}
 
 
 # 选择 对应地图 对应关卡 ---------------------------------------------------------------------------
 def switchWorldZone(hwnd: int, zone_name, zoom=1):
     """在世界地图中切换地区，地区名必须与世界地图中显示的保持一致
     """
+    if not find_pic(hwnd, WORLD_MAP_PATH, [788, 3, 945, 90]):
+        raise BusinessError("没找到世界地图！")
     if zone_name not in WORLD_MAP_ZONE_POS:
         raise KeyError
     need_switch_server = {
@@ -28,23 +43,14 @@ def switchWorldZone(hwnd: int, zone_name, zoom=1):
     }
     # 打开世界地图
     mouseClick(hwnd, WORLD_MAP_POS[0] * zoom, WORLD_MAP_POS[1] * zoom)
-    delay(2000)
-    # 检查是否打开成功
-    find_result = find_pic(hwnd, WORLD_MAP_TITTLE_PATH)
-    if not find_result:
-        print("未能检测到打开世界地图！正在重新尝试...")
-        # 打开世界地图
-        mouseClick(hwnd, WORLD_MAP_POS[0] * zoom, WORLD_MAP_POS[1] * zoom)
-        delay(2000)
-        # 检查是否打开成功
-        find_result = find_pic(hwnd, WORLD_MAP_TITTLE_PATH)
-        if not find_result:
-            print("打开世界地图失败！！！")
-            return
-    delay(1000)
+    if not find_pic_loop(hwnd, OPEN_WORLD_MAP_PATH, [340, 20, 650, 160], max_time=120):
+        raise BusinessError("超过2min还未打开世界地图！")
+    delay(500)
     # 点击对应的地图
     mouseClick(hwnd, WORLD_MAP_ZONE_POS[zone_name][0] * zoom, WORLD_MAP_ZONE_POS[zone_name][1] * zoom)
-    delay(2000)
+    if not find_pic_loop(hwnd, OPEN_ZONE_PATH_DICT[zone_name][0], OPEN_ZONE_PATH_DICT[zone_name][1], max_time=120):
+        raise BusinessError(f"超过2min还未进入区域[{zone_name}]！")
+    delay(500)
     if zone_name in need_switch_server:
         # 点击”换线“
         mouseClick(hwnd, 820 * zoom, 85 * zoom)
@@ -78,6 +84,7 @@ def multiLayerChooseLevel(hwnd, zone_name, level_name, zoom=1):
     # 切换到探险营地-探险港口
     singleLayerChooseLevel(hwnd, "探险营地", "探险港口", zoom)
     # 选择副本地图
+    delay(2000)
     mouseClick(hwnd,
                TXGK_ZONE_POS[zone_name][0] * zoom,
                TXGK_ZONE_POS[zone_name][1] * zoom)
@@ -287,13 +294,13 @@ def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom1=1, zoom2=1):
         if (time_sum % 1500) == 750:
             mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
             delay(100)
-            if find_pic(hwnd_1p, BACKPACK_FULL, [345, 205, 615, 395]):
+            if find_pic(hwnd_1p, BACKPACK_FULL_PATH, [345, 205, 615, 395]):
                 mouseClick(hwnd_1p, 430 * zoom1, 350 * zoom1)
         elif (time_sum % 1500) == 0:
             if hwnd_2p > 0:
                 mouseClick(hwnd_2p, 879 * zoom2, 481 * zoom2)
                 delay(100)
-                if find_pic(hwnd_2p, BACKPACK_FULL, [345, 205, 615, 395]):
+                if find_pic(hwnd_2p, BACKPACK_FULL_PATH, [345, 205, 615, 395]):
                     mouseClick(hwnd_2p, 430 * zoom1, 350 * zoom1)
         # 判断结束
         time_sum += 50

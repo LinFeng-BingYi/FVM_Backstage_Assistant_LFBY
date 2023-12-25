@@ -343,7 +343,9 @@ def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
     delay(500)
     # 点击“公会任务”
     mouseClick(hwnd, 900 * zoom, 260 * zoom)
-    delay(2000)
+    if not find_pic_loop(hwnd, OPEN_UNION_QUEST_PATH, [392, 35, 566, 72], max_time=120):
+        raise BusinessError("超过2min还未打开公会任务界面！")
+    delay(500)
     # 查找已完成的任务
     complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
     while complete_quest_pos:
@@ -440,6 +442,9 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
     if not find_pic_loop(hwnd, OPEN_FRIEND_PATH, [434, 87, 543, 122], max_time=120):
         raise BusinessError("超过2min还未打开好友签到界面！")
     delay(500)
+    # 点击“我的好友”tab页，避免被好友申请干扰
+    mouseClick(hwnd, 280 * zoom, 140 * zoom)
+    delay(500)
     # 先重置滑动条
     if not find_color(hwnd, [758, 195, 758, 210], 0xFCE683):
         mouseClick(hwnd, 758 * zoom, 200 * zoom)
@@ -468,7 +473,7 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
     # 点击”送出“
     mouseClick(hwnd, 500 * zoom, 400 * zoom)
     delay(500)
-    if find_pic(hwnd, SECONDARY_PASSWORD, [360, 170, 510, 220]):
+    if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
         # 关闭二级密码框
         mouseClick(hwnd, 570 * zoom, 200 * zoom)
         delay(500)
@@ -505,7 +510,9 @@ def executeReceiveDestinyTree(hwnd, zoom=1):
     delay(500)
     # 点击“缘分树”
     mouseClick(hwnd, 900 * zoom, 340 * zoom)
-    delay(2000)
+    if not find_pic_loop(hwnd, OPEN_DESTINY_TREE_PATH, [380, 10, 570, 80], max_time=120):
+        raise BusinessError("超过2min还未打开缘分树界面！")
+    delay(500)
     # 点击”领取“
     mouseClick(hwnd, 375 * zoom, 505 * zoom)
     delay(500)
