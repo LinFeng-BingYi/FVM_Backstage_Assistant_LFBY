@@ -292,17 +292,17 @@ def executeUnionGarden(hwnd, need_fertilize: bool, plant_type=0, zoom=1):
             # 当尝试次数为4的倍数+1时，需要往上翻一页
             mouseClick(hwnd, 840 * zoom, 194 * zoom)
             delay(1000)
-        elif try_num == 1 and False:  # TODO plant_type != 0:
-            plant_pos = find_pic(hwnd, UNION_GARDEN_PLANT_PATH, [326, 303, 628, 486])
+        elif try_num == 1 and plant_type != 0:
+            plant_pos = find_pic(hwnd, UNION_GARDEN_PLANT_PATH, [400, 350, 600, 450])
             if plant_pos:
                 # 点击种植
                 mouseClick(hwnd, plant_pos[0] * zoom, plant_pos[1] * zoom)
                 delay(500)
-                # TODO 选择树苗
-                mouseClick(hwnd, 0, 0)
+                # 选择树苗
+                mouseClick(hwnd, (360 + 115 * (plant_type - 1)) * zoom, 340 * zoom)
                 delay(500)
-                # TODO 确认种植
-                mouseClick(hwnd, 0, 0)
+                # 确认种植
+                mouseClick(hwnd, 475 * zoom, 420 * zoom)
                 delay(500)
                 # 设置“刚种植”标志，并直接继续下一次循环，避免点击“前往”导致离开本公会
                 just_plant = True
@@ -376,8 +376,23 @@ def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
     return result_str
 
 
-def executeOpenFoodContest(hwnd, zoom=1):
-    return "目前暂未实现[打开美食大赛]"
+def executeOpenFoodContest(hwnd, close_dialog=True, zoom=1):
+    contest_pos = find_pic(hwnd, FOOD_CONTEST_PATH, [247, 17, 778, 112])
+    if not contest_pos:
+        # 若没找到，则点击切换上方活动按钮
+        mouseClick(hwnd, 780 * zoom, 30 * zoom)
+        delay(500)
+        contest_pos = find_pic(hwnd, FOOD_CONTEST_PATH, [247, 17, 778, 112])
+        if not contest_pos:
+            raise BusinessError("未能找到美食大赛图标！")
+    # 点击图标
+    mouseClick(hwnd, contest_pos[0] * zoom, contest_pos[1] * zoom)
+    if not find_pic_loop(hwnd, OPEN_FOOD_CONTEST_PATH, [390, 40, 600, 150], max_time=120):
+        raise BusinessError("超过2min还未打开美食大赛界面！")
+    delay(1000)
+    if close_dialog:
+        mouseClick(hwnd, 890 * zoom, 50 * zoom)
+    return "完成[打开美食大赛]"
 
 
 def executeOpenBackpack(hwnd, zoom=1):

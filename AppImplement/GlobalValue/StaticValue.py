@@ -225,6 +225,10 @@ UNION_GARDEN_MAX_PATH = ROOT_PATH + r"\resources\images\application\界面图标
 UNION_GARDEN_PLANT_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\公会花园待种植.bmp"
 # 进入好友
 OPEN_FRIEND_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入好友.bmp"
+# 美食大赛
+FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\美食大赛.bmp"
+# 进入美食大赛
+OPEN_FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入美食大赛.bmp"
 # 进入背包
 OPEN_BACKPACK_PATH = ROOT_PATH + r"\resources\images\application\界面图标\日常活动领取\进入背包.bmp"
 # 二级密码
