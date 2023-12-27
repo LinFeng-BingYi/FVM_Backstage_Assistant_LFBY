@@ -1,5 +1,5 @@
 from PySide6.QtCore import Signal, QSize
-from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox
+from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QFileDialog
 from PySide6.QtGui import QTextCursor, QIcon
 
 from AppImplement.FormFiles.MyMainWindow import Ui_MyMainWindow
@@ -10,7 +10,7 @@ from AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
 from AppImplement.FormFiles.CustomWidgets.Dialog import AddFuncFlowDialog
 
 from AppImplement.Business.BusBusiness import BusinessBus
-from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
+from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH, DEFAULT_FUNC_FLOW_JSON
 
 
 class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
@@ -44,8 +44,8 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         # 内置主线程
         self.thread_business_bus = BusinessBus()
 
-        self.initWidget()
         self.bindSignal()
+        self.initWidget()
 
     def initWidget(self):
         if ROOT_PATH is None or ROOT_PATH == "":
@@ -53,9 +53,13 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
             self.tip_message_box.setText("未找到配置文件[AppGlobalSetting.ini]！\n请务必将其放在与exe同级目录下的config文件夹中，"
                                          "否则无法正常使用！\n\n完成以上操作后需要重启软件")
             self.tip_message_box.show()
-        # 初始化时，向流程列表中添加”开始“、”结束“item
-        self.addListWidget("开始")
-        self.addListWidget("结束")
+        # 初始化时，加载指定的json文件，若未指定或指定的文件不存在，则向流程列表中添加”开始“、”结束“item
+        if DEFAULT_FUNC_FLOW_JSON != "" and self.saveFlowListForm.setJsonToLineedit(DEFAULT_FUNC_FLOW_JSON):
+            self.saveFlowListForm.readFlowListParam()
+            self.saveFlowListForm.applyJsonFile()
+        else:
+            self.addListWidget("开始")
+            self.addListWidget("结束")
 
     def bindSignal(self):
         # 菜单栏打开对应窗口
@@ -89,6 +93,8 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
 
         # 清除日志
         self.pushButton_clear_log.clicked.connect(self.plainTextEdit_log.clear)
+        # 保存日志
+        self.pushButton_save_log.clicked.connect(self.saveLog)
 
     def displayEditPlacingPlanForm(self):
         """响应菜单，打开'编辑放卡方案'窗口
@@ -146,6 +152,25 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         )
         # 设置光标到文本末尾，方便查看最新消息
         self.plainTextEdit_log.moveCursor(QTextCursor.MoveOperation.End)
+
+    def saveLog(self):
+        if self.plainTextEdit_log.toPlainText() == "":
+            self.tip_message_box.setWindowTitle("错误")
+            self.tip_message_box.setText("日志输出区中没有信息！！！")
+            self.tip_message_box.show()
+            return
+        first_line_str = self.plainTextEdit_log.document().findBlockByLineNumber(0).text()
+        time_str = first_line_str[0:19]
+        # print(time_str)
+        pure_time_str = time_str.replace('/', '').replace(' ', '').replace(':', '')
+        flow_file_path, _ = QFileDialog.getSaveFileName(
+            self, "保存文件",
+            ROOT_PATH + f"\\logs\\{pure_time_str}.log",
+            "All Files(*);;LOG Files(*.log)"
+        )
+        f = open(flow_file_path, 'w', encoding='utf-8')
+        f.write(self.plainTextEdit_log.toPlainText())
+        f.close()
 
     def popupError(self, error_str):
         self.tip_message_box.setWindowTitle("错误")

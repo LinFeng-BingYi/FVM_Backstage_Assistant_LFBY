@@ -42,7 +42,7 @@ class VolcanicRelicParamWidget(Ui_VolcanicRelicParam, BaseParamWidget):
     def choosePlanFile(self):
         chosen_file, file_type = QFileDialog.getOpenFileName(
             self, "选择文件",
-            ROOT_PATH + "\\config\\卡片放置方案\\",
+            ROOT_PATH + "\\userdata\\卡片放置方案\\",
             "All Files(*);;INI Files(*.ini)")
         norm_file_path = os.path.normpath(chosen_file)
         if norm_file_path == '.':

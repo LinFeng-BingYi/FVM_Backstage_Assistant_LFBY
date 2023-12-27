@@ -56,7 +56,7 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
     def chooseFile(self):
         chosen_file, file_type = QFileDialog.getOpenFileName(
             self, "选择文件",
-            ROOT_PATH + "\\resources\\images\\用户图片\\",
+            ROOT_PATH + "\\userdata\\用户图片\\",
             "All Files(*);;BMP Files(*.bmp)")
         norm_file_path = os.path.normpath(chosen_file)
         if norm_file_path == '.':
@@ -67,7 +67,7 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
     def chooseIniFile(self, lineEdit):
         chosen_file, file_type = QFileDialog.getOpenFileName(
             self, "选择文件",
-            ROOT_PATH + "\\config\\卡片放置方案\\",
+            ROOT_PATH + "\\userdata\\卡片放置方案\\",
             "All Files(*);;INI Files(*.ini)")
         norm_file_path = os.path.normpath(chosen_file)
         if norm_file_path == '.':

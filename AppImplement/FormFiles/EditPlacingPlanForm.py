@@ -64,7 +64,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         self.pushButton_modify_config.clicked.connect(self.changeEditStatus)
 
     def chooseFile(self):
-        chosen_file, file_type = QFileDialog.getOpenFileName(self, "选择文件", self.cwd + "\\config\\卡片放置方案",
+        chosen_file, file_type = QFileDialog.getOpenFileName(self, "选择文件", self.cwd + "\\userdata\\卡片放置方案",
                                                              "All Files(*);;XML Files(*.xml)")
         norm_file_path = os.path.normpath(chosen_file)
         if norm_file_path == '.':

@@ -33,7 +33,7 @@ class WidgetUpdateINI(QWidget, Ui_UpdateINI):
 
         self.file_processor: INIProcessor = None    # ini文件读写器
         self.player_deck_procs = None
-        self.cwd = ROOT_PATH + r"\config\卡片放置方案"                      # 程序当前工作目录
+        self.cwd = ROOT_PATH + r"\userdata\卡片放置方案"                      # 程序当前工作目录
         self.tip_dialog = None
 
         self.bindSignal()

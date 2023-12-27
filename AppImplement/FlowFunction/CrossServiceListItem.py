@@ -43,7 +43,7 @@ class CrossServiceParamWidget(Ui_CrossServiceParam, BaseParamWidget):
     def choosePlanFile(self):
         chosen_file, file_type = QFileDialog.getOpenFileName(
             self, "选择文件",
-            ROOT_PATH + "\\config\\卡片放置方案\\",
+            ROOT_PATH + "\\userdata\\卡片放置方案\\",
             "All Files(*);;INI Files(*.ini)")
         norm_file_path = os.path.normpath(chosen_file)
         if norm_file_path == '.':
@@ -60,7 +60,7 @@ class CrossServiceParamWidget(Ui_CrossServiceParam, BaseParamWidget):
     def chooseFile(self):
         chosen_file, file_type = QFileDialog.getOpenFileName(
             self, "选择文件",
-            ROOT_PATH + "\\resources\\images\\用户图片\\",
+            ROOT_PATH + "\\userdata\\用户图片\\",
             "All Files(*);;BMP Files(*.bmp)")
         norm_file_path = os.path.normpath(chosen_file)
         if norm_file_path == '.':

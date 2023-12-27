@@ -29,7 +29,7 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
         self.bindSignal()
 
     def initWidget(self):
-        pass
+        self.comboBox_garden_plant_type.view().setFixedWidth(70)
 
     def bindSignal(self):
         self.pushButton_flowers_receiver.clicked.connect(self.chooseFile)
@@ -37,7 +37,7 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
     def chooseFile(self):
         chosen_file, file_type = QFileDialog.getOpenFileName(
             self, "选择文件",
-            ROOT_PATH + "\\resources\\images\\用户图片\\",
+            ROOT_PATH + "\\userdata\\用户图片\\",
             "All Files(*);;BMP Files(*.bmp)")
         norm_file_path = os.path.normpath(chosen_file)
         if norm_file_path == '.':

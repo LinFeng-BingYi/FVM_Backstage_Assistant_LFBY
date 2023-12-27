@@ -28,7 +28,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         self.file_processor = None    # json文件读写器
         self.flow_param_list = list()
         self.json_file_dict = dict()
-        self.cwd = ROOT_PATH + r"\config\功能流程列表参数"     # 程序当前工作目录
+        self.cwd = ROOT_PATH + r"\userdata\功能流程列表参数"     # 程序当前工作目录
         self.tip_dialog = None
 
         self.bindSignal()
@@ -64,8 +64,18 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         self.pushButton_apply.setEnabled(False)
         # self.lineEdit_flow_file.setText(self.cwd)
 
+    def setJsonToLineedit(self, json_file_path):
+        """给主界面初始化时自动加载指定的json调用
+        """
+        if os.path.exists(json_file_path):
+            self.lineEdit_flow_file.setText(json_file_path)
+            return True
+        else:
+            return False
+
     def readFlowListParam(self):
         flow_file_path = self.lineEdit_flow_file.text()
+        print(flow_file_path)
         if flow_file_path[-4:] != "json":
             self.tip_dialog = TipMessageBox("错误", "未选择正确的文件！！")
             self.tip_dialog.show()
@@ -76,7 +86,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
             flow_dsc = json_file_dict["流程描述"]
             self.flow_param_list = json_file_dict["流程参数"]
             self.plainTextEdit.setPlainText(flow_dsc)
-            # print(self.flow_param_list[0]["2p_name_pic_path"])
+            print(self.flow_param_list[0]["2p_name_pic_path"])
         except KeyError as keyError:
             self.tip_dialog = TipMessageBox(
                 "错误",
