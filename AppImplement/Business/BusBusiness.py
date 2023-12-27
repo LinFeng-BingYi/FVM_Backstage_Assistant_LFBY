@@ -109,8 +109,8 @@ class BusinessBus(QThread):
                 账号2通关信息，格式同账号1。为 None 时表示单人模式
         """
         self.player1_info = player1_info
-        if player2_info is not None:
-            self.player2_info = player2_info
+        # if player2_info is not None:
+        self.player2_info = player2_info
 
     def setLevelInfo(self, level_info: dict):
         """设置关卡信息属性
@@ -128,7 +128,7 @@ class BusinessBus(QThread):
 
     def setFuncFlow(self, func_flow: list):
         self.func_flow = func_flow
-        print("设置了内部参数：\n", self.func_flow)
+        # print("设置了内部参数：\n", self.func_flow)
 
     # 最基本的 从 准备/开始 到结束翻牌 方法 ----------------------------------------------------
     def teamFromStartToFlop(self):
@@ -299,7 +299,7 @@ class BusinessBus(QThread):
         self.formatBusinessMessage("正在创建房间")
         createPwdRoom(hwnd_1p, zoom=zoom1)
         # 应用卡片组
-        self.formatBusinessMessage("应用1P卡片组")
+        # self.formatBusinessMessage("应用1P卡片组")
         roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
         if self.player2_info is not None:
             # 邀请队友
@@ -307,7 +307,7 @@ class BusinessBus(QThread):
             if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
                 # 若没找到2P
                 raise BusinessError("")
-            self.formatBusinessMessage("应用2P卡片组")
+            # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
         # 从点击 准备/开始 到完成翻牌
             for i in range(loop_count):
@@ -448,13 +448,13 @@ class BusinessBus(QThread):
         self.formatBusinessMessage("正在创建房间")
         createPwdRoom(hwnd_1p, zoom=zoom1)
         # 应用卡片组
-        self.formatBusinessMessage("应用1P卡片组")
+        # self.formatBusinessMessage("应用1P卡片组")
         roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
         if self.player2_info is not None:
             # 邀请队友
             self.formatBusinessMessage("邀请2P")
             teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2)
-            self.formatBusinessMessage("应用2P卡片组")
+            # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
             try:
@@ -464,8 +464,12 @@ class BusinessBus(QThread):
                     self.formatBusinessMessage(f"结束第{i + 1}局")
             except BusinessError as business_error:
                 business_error_str = business_error.error_info
-                if business_error_str.find("超过"):
+                # print(business_error_str)
+                # print("查找结果", business_error_str.find("超过"))
+                if business_error_str.find("超过") != -1:
                     business_error_str = business_error_str + "\n可能是剩余次数不足！"
+                    exitRoom(hwnd_1p, zoom1)
+                    exitRoom(hwnd_2p, zoom2)
                     self.formatBusinessMessage(business_error_str, "WARN")
                 else:
                     raise business_error
@@ -480,8 +484,9 @@ class BusinessBus(QThread):
                     self.formatBusinessMessage(f"结束第{i + 1}局")
             except BusinessError as business_error:
                 business_error_str = business_error.error_info
-                if business_error_str.find("超过"):
+                if business_error_str.find("超过") != -1:
                     business_error_str = business_error_str + "\n可能是剩余次数不足！"
+                    exitRoom(hwnd_1p, zoom1)
                     self.formatBusinessMessage(business_error_str, "WARN")
                 else:
                     raise business_error
@@ -514,20 +519,20 @@ class BusinessBus(QThread):
             chooseMagicTowerLevel(hwnd_1p, level_num, zoom1)
 
             # 应用卡片组
-            self.formatBusinessMessage("应用1P卡片组")
+            # self.formatBusinessMessage("应用1P卡片组")
             roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
             if self.player2_info is not None:
                 # 邀请队友
                 self.formatBusinessMessage("邀请2P")
                 teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2)
-                self.formatBusinessMessage("应用2P卡片组")
+                # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
                 # 从点击 准备/开始 到完成翻牌
                 try:
                     self.teamFromStartToFlop()
                 except BusinessError as business_error:
                     business_error_str = business_error.error_info
-                    if business_error_str.find("超过"):
+                    if business_error_str.find("超过") != -1:
                         business_error_str = business_error_str + "\n可能是剩余次数不足！"
                         self.formatBusinessMessage(business_error_str, "WARN")
                     else:
@@ -539,7 +544,7 @@ class BusinessBus(QThread):
                     self.singleFromStartToFlop()
                 except BusinessError as business_error:
                     business_error_str = business_error.error_info
-                    if business_error_str.find("超过"):
+                    if business_error_str.find("超过") != -1:
                         business_error_str = business_error_str + "\n可能是剩余次数不足！"
                         self.formatBusinessMessage(business_error_str, "WARN")
                     else:
@@ -564,14 +569,14 @@ class BusinessBus(QThread):
         self.formatBusinessMessage(f"正在创建 {level_type} 房间")
         chooseCrossServiceLevel(hwnd_1p, level_type, level_num, zoom1)
         # 应用卡片组
-        self.formatBusinessMessage("应用1P卡片组")
+        # self.formatBusinessMessage("应用1P卡片组")
         roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
 
         if self.player2_info is not None:
             # 2P进入房间
             self.formatBusinessMessage(f"2P正在进入房间")
             searchAndEnter1pRoom(hwnd_2p, player1_room_name_path, level_type, zoom2)
-            self.formatBusinessMessage("应用2P卡片组")
+            # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
             for i in range(loop_count):
@@ -644,7 +649,7 @@ class BusinessBus(QThread):
             openWantedDialog(hwnd_1p, zoom1)
             createWantedRoom(hwnd_1p, three_island, zoom1)
             # 应用卡片组
-            self.formatBusinessMessage("应用1P卡片组")
+            # self.formatBusinessMessage("应用1P卡片组")
             roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
 
             if self.player2_info is not None:
@@ -654,7 +659,7 @@ class BusinessBus(QThread):
                 # 邀请队友
                 self.formatBusinessMessage("邀请2P")
                 teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2)
-                self.formatBusinessMessage("应用2P卡片组")
+                # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
                 # 从点击 准备/开始 到完成翻牌
                 self.teamFromStartToFlop()

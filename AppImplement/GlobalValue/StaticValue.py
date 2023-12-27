@@ -42,7 +42,8 @@ MWD_LEVEL_POS = {
     "可可岛夜": (154, 209),
     "咖喱岛日": (194, 142),
     "咖喱岛夜": (261, 125),
-    "深渊岛": (356, 76)
+    "深渊岛": (356, 76),
+    "美味漫游": (366, 180)
 }
 
 # 火山岛关卡坐标
@@ -61,7 +62,8 @@ HSD_LEVEL_POS = {
     "棉花糖天空夜": (305, 156),
     "果酱部落日": (220, 137),
     "果酱部落夜": (266, 118),
-    "雪顶火山": (350, 72)
+    "雪顶火山": (350, 72),
+    "火山漫游": (352, 235)
 }
 
 # 浮空岛关卡坐标
@@ -80,7 +82,8 @@ FKD_LEVEL_POS = {
     "花椒浮岛夜": (309, 177),
     "丁香彩虹日": (539, 164),
     "丁香彩虹夜": (458, 203),
-    "十三香中心岛": (477, 97)
+    "十三香中心岛": (477, 97),
+    "浮空漫游": (60, 400)
 }
 
 # 火山遗迹关卡坐标
@@ -214,6 +217,8 @@ OPEN_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图�
 FOLD_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\底部任务收起.bmp"
 # 底部任务完成
 COMPLETE_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\底部任务完成.bmp"
+# 底部任务进行中
+TODO_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\底部任务进行中.bmp"
 # 进入公会任务
 OPEN_UNION_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入公会任务.bmp"
 # 进入情侣任务

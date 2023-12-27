@@ -483,7 +483,7 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
         # 关闭好友界面
         mouseClick(hwnd, 760 * zoom, 100 * zoom)
         delay(500)
-        raise BusinessError("未解锁二级密码，送花失败！")
+        result_str = "[赠送鲜花]失败！未解锁二级密码"
     if use_gift_coupon:
         # 选择礼券鲜花
         mouseClick(hwnd, 500 * zoom, 308 * zoom)
@@ -556,9 +556,9 @@ def findUnionPresidentQuest(hwnd, zoom=1):
     for i in [0, 1, 2]:
         # 点击对应任务
         mouseClick(hwnd, 160 * zoom, (205 + 30 * i) * zoom)
-        delay(500)
-        # 若发现已完成，则跳过
-        if find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [355, 190 + 30 * i, 400, 220 + 30 * i]):
+        delay(800)
+        # 若该任务状态不是“进行中”，则跳过
+        if not find_pic(hwnd, TODO_BOTTOM_QUEST_PATH, [355, 190 + 30 * i, 400, 220 + 30 * i]):
             quest_result_list.append("已完成")
             continue
         # 否则，查找任务结果，默认值为”没找到“
@@ -566,7 +566,7 @@ def findUnionPresidentQuest(hwnd, zoom=1):
         quest_pic_dir_path = ROOT_PATH + r"\resources\images\application\任务图片\公会任务\任务" + f"{i + 1}"
         for quest_pic in listdir(quest_pic_dir_path):
             quest_pic_abstract_path = quest_pic_dir_path + "\\" + quest_pic
-            if find_pic(hwnd, quest_pic_abstract_path, [432, 90, 855, 367]):
+            if find_pic(hwnd, quest_pic_abstract_path, [432, 90, 855, 367], 0.999):
                 # 若找到了，则将 任务结果 改为 纯文件名
                 quest_find_result = quest_pic.rsplit('.', 1)[0]
                 break
@@ -605,7 +605,7 @@ def findLoversQuest(hwnd, zoom=1):
         quest_pic_dir_path = ROOT_PATH + r"\resources\images\application\任务图片\情侣任务\任务" + f"{i + 1}"
         for quest_pic in listdir(quest_pic_dir_path):
             quest_pic_abstract_path = quest_pic_dir_path + "\\" + quest_pic
-            if find_pic(hwnd, quest_pic_abstract_path, [100 + 250 * i, 100, 345 + 250 * i, 350]):
+            if find_pic(hwnd, quest_pic_abstract_path, [100 + 250 * i, 100, 345 + 250 * i, 350], 0.999):
                 # 若找到了，则将 任务结果 改为 纯文件名
                 quest_find_result = quest_pic.rsplit('.', 1)[0]
                 break

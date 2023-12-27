@@ -46,9 +46,9 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
                                                              "All Files(*);;JSON Files(*.ini)")
         # chosen_file = QFileDialog.getExistingDirectory(self, "选择文件夹", self.cwd)
         norm_file_path = os.path.normpath(chosen_file)
-        # if norm_file_path == '.' or norm_file_path[-4:] != "json":
-        #     print("未选择正确的文件！！")
-        #     return
+        if norm_file_path == '.' or norm_file_path[-4:] != "json":
+            print("未选择正确的文件！！")
+            return
         self.lineEdit_flow_file.setText(norm_file_path)
         self.readFlowListParam()
 
@@ -62,7 +62,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
     def setSaveMode(self):
         self.pushButton_save.setEnabled(True)
         self.pushButton_apply.setEnabled(False)
-        self.lineEdit_flow_file.setText(self.cwd)
+        # self.lineEdit_flow_file.setText(self.cwd)
 
     def readFlowListParam(self):
         flow_file_path = self.lineEdit_flow_file.text()
@@ -86,9 +86,17 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
             json_file.close()
 
     def writeFlowListParam(self):
+        flow_file_path, _ = QFileDialog.getSaveFileName(
+            self, "保存文件",
+            self.cwd,
+            "All Files(*);;JSON Files(*.ini)"
+        )
+        norm_file_path = os.path.normpath(flow_file_path)
+        if norm_file_path == '.' or norm_file_path[-4:] != "json":
+            print("未选择正确的文件！！")
+            return
         self.json_file_dict["流程描述"] = self.plainTextEdit.toPlainText()
         self.json_file_dict["流程参数"] = self.flow_param_list
-        flow_file_path = self.lineEdit_flow_file.text()
         if flow_file_path[-4:] != "json":
             self.tip_dialog = TipMessageBox("错误", f"请先在”文件路径“输入框中填写正确的json文件名称\n\n文件不存在时将自动新建，否则会覆盖原文件")
             self.tip_dialog.show()
@@ -102,7 +110,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         self.tip_dialog.show()
 
     def applyJsonFile(self):
-        print(self.flow_param_list)
+        # print(self.flow_param_list)
         if len(self.flow_param_list) == 0:
             self.tip_dialog = TipMessageBox(
                 "错误",

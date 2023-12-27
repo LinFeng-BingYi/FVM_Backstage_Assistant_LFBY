@@ -157,7 +157,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         if flow_funcs_param is None or len(flow_funcs_param) == 0:
             return
         # 流程中单个功能可以出现多次，使用dict存储会键冲突，改用list存储
-        print(flow_funcs_param)
+        # print(flow_funcs_param)
         self.saveFlowListForm.setSaveMode()
         self.saveFlowListForm.setFlowParamDict(flow_funcs_param)
         self.saveFlowListForm.show()
@@ -172,8 +172,8 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
             key = flow_param_list[i]["func_name"]
             del flow_param_list[i]["func_name"]
             value = flow_param_list[i]
-            print("本功能名称:", key)
-            print("本功能参数字典", value)
+            # print("本功能名称:", key)
+            # print("本功能参数字典", value)
             self.addListWidget(key)
             self.listWidget_flow.item_widget_list[i].setFuncParam(value)
         self.addListWidget("结束")

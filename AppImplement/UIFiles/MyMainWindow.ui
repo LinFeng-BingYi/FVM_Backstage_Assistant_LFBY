@@ -87,7 +87,7 @@
           <enum>QFrame::StyledPanel</enum>
          </property>
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#55aaff;&quot;&gt;欢迎使用【FVM一键日常助手】！&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;问题反馈Q群：51865331 B站视频教程：林风冰翼&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#55aaff;&quot;&gt;欢迎使用【FVM一键日常助手】！&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;问题反馈Q群：518615331 B站视频教程：林风冰翼&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

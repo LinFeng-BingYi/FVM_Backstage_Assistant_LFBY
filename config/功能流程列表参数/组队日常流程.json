@@ -1,5 +1,5 @@
 {
-    "流程描述": "两个号先后签到，再过日常：公会任务、情侣任务、遗迹、组队魔塔、单人魔塔、跨服",
+    "流程描述": "两个账号双开，先后日常领取，再刷指定关卡，最后过日常：公会、情侣任务，遗迹、魔塔、跨服",
     "流程参数": [
         {
             "enable_2p": true,
@@ -30,7 +30,7 @@
             "公会花园": [
                 true,
                 {
-                    "need_fertilize": true,
+                    "need_fertilize": false,
                     "plant_type": 1
                 }
             ],
@@ -42,14 +42,14 @@
             ],
             "打开美食大赛": true,
             "打开背包": true,
-            "领取双人魔塔奖励": true,
-            "领取缘分树奖励": true,
+            "领取双人魔塔奖励": false,
+            "领取缘分树奖励": false,
             "赠送鲜花": [
                 true,
                 {
                     "receiver_name_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\resources\\images\\用户图片\\好友界面小号昵称.bmp",
                     "use_gift_coupon": true,
-                    "use_times": 2
+                    "use_times": 1
                 }
             ],
             "func_name": "日常领取"
@@ -71,7 +71,7 @@
             "公会花园": [
                 true,
                 {
-                    "need_fertilize": true,
+                    "need_fertilize": false,
                     "plant_type": 0
                 }
             ],
@@ -83,17 +83,30 @@
             ],
             "打开美食大赛": true,
             "打开背包": true,
-            "领取双人魔塔奖励": true,
-            "领取缘分树奖励": true,
+            "领取双人魔塔奖励": false,
+            "领取缘分树奖励": false,
             "赠送鲜花": [
                 true,
                 {
                     "receiver_name_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\resources\\images\\用户图片\\好友界面大号昵称.bmp",
                     "use_gift_coupon": true,
-                    "use_times": 2
+                    "use_times": 1
                 }
             ],
             "func_name": "日常领取"
+        },
+        {
+            "player1": 1,
+            "player2": 2,
+            "zone_name": "火山岛",
+            "level_name": "玛奇朵港",
+            "loop_count": 1,
+            "flop_pos": "1;2",
+            "has_stage2": true,
+            "shall_continue": true,
+            "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\config\\卡片放置方案\\组队常用方案_二转海星.ini",
+            "plan_name": "玛奇朵港",
+            "func_name": "刷指定关卡"
         },
         {
             "player1": 1,
@@ -111,7 +124,7 @@
             "player1": 1,
             "player2": 2,
             "level_name": "圣代基地",
-            "loop_count": 5,
+            "loop_count": 1,
             "flop_pos": "1;2;3;4",
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\config\\卡片放置方案\\组队常用方案_二转海星.ini",
             "plan_name": "圣代基地",
@@ -121,20 +134,10 @@
             "player1": 1,
             "player2": 2,
             "level_num": 99,
-            "loop_count": 5,
+            "loop_count": 1,
             "flop_pos": "1;2;3;4;5;6",
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\config\\卡片放置方案\\组队常用方案_二转海星.ini",
             "plan_name": "魔塔蛋糕双人99",
-            "func_name": "魔塔蛋糕"
-        },
-        {
-            "player1": 1,
-            "player2": 0,
-            "level_num": 139,
-            "loop_count": 5,
-            "flop_pos": "1;2;3;4;5;6",
-            "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\config\\卡片放置方案\\组队常用方案_二转海星.ini",
-            "plan_name": "曲奇岛",
             "func_name": "魔塔蛋糕"
         },
         {
@@ -143,7 +146,7 @@
             "level_type": "巫毒研究所",
             "level_num": "9星",
             "player1_room_name_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\resources\\images\\用户图片\\跨服房间列表1P截图示例.bmp",
-            "loop_count": 10,
+            "loop_count": 1,
             "flop_pos": "1;2",
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\config\\卡片放置方案\\组队常用方案_二转海星.ini",
             "plan_name": "巫毒走道",
