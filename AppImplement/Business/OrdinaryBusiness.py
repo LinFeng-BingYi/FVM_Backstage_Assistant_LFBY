@@ -205,7 +205,7 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
     mouseClick(hwnd, 640 * zoom, 585 * zoom)
     delay(1000)
     if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 640 * zoom, 585 * zoom)
+        mouseClick(hwnd, 855 * zoom, 55 * zoom)
         delay(1000)
     return "完成[底部任务]"
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>753</width>
-    <height>450</height>
+    <width>850</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="rightMargin">
     <number>0</number>
@@ -33,7 +33,7 @@
     <widget class="QWidget" name="widget_general" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_general">
       <property name="spacing">
-       <number>10</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -45,28 +45,31 @@
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>5</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget_file_path" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_file_path">
-         <property name="spacing">
-          <number>9</number>
-         </property>
-         <property name="leftMargin">
-          <number>10</number>
-         </property>
+       <widget class="QGroupBox" name="groupBox_file_path">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>90</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>文件路径</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_file_path">
          <property name="topMargin">
-          <number>10</number>
-         </property>
-         <property name="rightMargin">
-          <number>10</number>
-         </property>
-         <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
-          <widget class="QLabel" name="label_file_path">
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_deck_path">
            <property name="minimumSize">
             <size>
              <width>70</width>
@@ -80,12 +83,12 @@
             </size>
            </property>
            <property name="text">
-            <string>文件路径：</string>
+            <string>卡片组：</string>
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_file_path">
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineEdit_deck_path">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -94,8 +97,56 @@
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_file_path">
+         <item row="0" column="2">
+          <widget class="QPushButton" name="pushButton_deck_path">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>浏览</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_plan_path">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>70</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>放卡方案：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineEdit_plan_path">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="pushButton_plan_path">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -117,39 +168,39 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="widget_common" native="true">
+       <widget class="QGroupBox" name="groupBox_common">
+        <property name="title">
+         <string>设置</string>
+        </property>
         <layout class="QHBoxLayout" name="horizontalLayout_common">
          <property name="spacing">
-          <number>9</number>
-         </property>
-         <property name="leftMargin">
-          <number>10</number>
+          <number>5</number>
          </property>
          <property name="topMargin">
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>10</number>
+          <number>9</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>5</number>
          </property>
          <item>
           <widget class="QCheckBox" name="checkBox_is_team_mode">
            <property name="minimumSize">
             <size>
-             <width>70</width>
+             <width>135</width>
              <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>70</width>
+             <width>135</width>
              <height>30</height>
             </size>
            </property>
            <property name="text">
-            <string>组队模式</string>
+            <string>组队放卡方案模式</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -185,13 +236,13 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>180</width>
              <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>120</width>
+             <width>180</width>
              <height>30</height>
             </size>
            </property>
@@ -211,7 +262,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_new_config">
+          <widget class="QPushButton" name="pushButton_save_plan">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -221,7 +272,26 @@
            <property name="maximumSize">
             <size>
              <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>保存方案</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_new_plan">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
              <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="text">
@@ -230,7 +300,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_modify_config">
+          <widget class="QPushButton" name="pushButton_delete_plan">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -240,32 +310,7 @@
            <property name="maximumSize">
             <size>
              <width>80</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>修改方案</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_delete_config">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>30</height>
+             <height>16777215</height>
             </size>
            </property>
            <property name="text">
@@ -290,13 +335,13 @@
            <number>10</number>
           </property>
           <property name="leftMargin">
-           <number>10</number>
+           <number>7</number>
           </property>
           <property name="topMargin">
            <number>10</number>
           </property>
           <property name="rightMargin">
-           <number>10</number>
+           <number>7</number>
           </property>
           <property name="bottomMargin">
            <number>10</number>
@@ -305,12 +350,15 @@
            <widget class="QWidget" name="widget_1p_setting" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_1p_setting">
              <property name="spacing">
-              <number>9</number>
+              <number>5</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
              </property>
              <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
@@ -331,7 +379,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>房主放置位置</string>
+                <string>房主位置：</string>
                </property>
               </widget>
              </item>
@@ -374,13 +422,13 @@
               <widget class="QComboBox" name="comboBox_1p_deck">
                <property name="minimumSize">
                 <size>
-                 <width>120</width>
+                 <width>180</width>
                  <height>30</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>120</width>
+                 <width>180</width>
                  <height>30</height>
                 </size>
                </property>
@@ -393,11 +441,68 @@
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
-                 <width>576</width>
+                 <width>40</width>
                  <height>20</height>
                 </size>
                </property>
               </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_1p_save_deck">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>保存卡片组</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_1p_new_deck">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>新建卡片组</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_1p_delete_deck">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>删除卡片组</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -444,6 +549,9 @@
                <property name="alternatingRowColors">
                 <bool>true</bool>
                </property>
+               <attribute name="horizontalHeaderMinimumSectionSize">
+                <number>100</number>
+               </attribute>
                <column>
                 <property name="text">
                  <string>卡片名称</string>
@@ -457,6 +565,11 @@
                <column>
                 <property name="text">
                  <string>放置位置</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>补卡位置</string>
                 </property>
                </column>
                <column>
@@ -480,18 +593,18 @@
          <attribute name="title">
           <string>房客卡片放置方案</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_2p_placing_config" stretch="0,1,5">
+         <layout class="QVBoxLayout" name="verticalLayout_2p_placing_config" stretch="1,2,10">
           <property name="spacing">
            <number>10</number>
           </property>
           <property name="leftMargin">
-           <number>10</number>
+           <number>7</number>
           </property>
           <property name="topMargin">
            <number>10</number>
           </property>
           <property name="rightMargin">
-           <number>10</number>
+           <number>7</number>
           </property>
           <property name="bottomMargin">
            <number>10</number>
@@ -500,12 +613,15 @@
            <widget class="QWidget" name="widget_2p_setting" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_2p_setting">
              <property name="spacing">
-              <number>9</number>
+              <number>5</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
              </property>
              <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
@@ -526,7 +642,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>房客放置位置</string>
+                <string>房客位置：</string>
                </property>
               </widget>
              </item>
@@ -569,13 +685,13 @@
               <widget class="QComboBox" name="comboBox_2p_deck">
                <property name="minimumSize">
                 <size>
-                 <width>120</width>
+                 <width>180</width>
                  <height>30</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>120</width>
+                 <width>180</width>
                  <height>30</height>
                 </size>
                </property>
@@ -593,6 +709,63 @@
                 </size>
                </property>
               </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_2p_save_deck">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>保存卡片组</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_2p_new_deck">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>新建卡片组</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_2p_delete_deck">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>删除卡片组</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -656,6 +829,11 @@
                </column>
                <column>
                 <property name="text">
+                 <string>补卡位置</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
                  <string>默认CD</string>
                 </property>
                </column>
@@ -671,6 +849,92 @@
           </item>
          </layout>
         </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_other_edit_way" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_other_edit_way">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <spacer name="horizontalSpacer_other_edit_way_1">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>200</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_plan_timeline">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>放卡方案时间线</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_other_edit_way_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>200</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_plan_visualize">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>放卡阵容可视化</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_other_edit_way_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>200</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

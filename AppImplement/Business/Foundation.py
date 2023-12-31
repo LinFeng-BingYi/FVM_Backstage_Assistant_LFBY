@@ -287,23 +287,23 @@ def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom1=1, zoom2=1):
     """
     time_sum = 0
     while True:
-        delay(50)
+        delay(500)
         if find_pic(hwnd_1p, START_GAME_PATH, [0, 0, 200, 70]):
             return True
         # 交替点击准备和开始
-        if (time_sum % 1500) == 750:
+        if (time_sum % 1000) == 500:
             mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
             delay(100)
             if find_pic(hwnd_1p, BACKPACK_FULL_PATH, [345, 205, 615, 395]):
                 mouseClick(hwnd_1p, 430 * zoom1, 350 * zoom1)
-        elif (time_sum % 1500) == 0:
+        elif (time_sum % 1000) == 0:
             if hwnd_2p > 0:
                 mouseClick(hwnd_2p, 879 * zoom2, 481 * zoom2)
                 delay(100)
                 if find_pic(hwnd_2p, BACKPACK_FULL_PATH, [345, 205, 615, 395]):
                     mouseClick(hwnd_2p, 430 * zoom1, 350 * zoom1)
         # 判断结束
-        time_sum += 50
+        time_sum += 500
         if time_sum >= 120000:
             return False
 

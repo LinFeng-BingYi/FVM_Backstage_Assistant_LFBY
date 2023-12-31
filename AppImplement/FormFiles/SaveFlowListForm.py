@@ -25,7 +25,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         super(WidgetSaveFlowList, self).__init__()
         self.setupUi(self)
 
-        self.file_processor = None    # json文件读写器
+        self.flag_save_mode = False
         self.flow_param_list = list()
         self.json_file_dict = dict()
         self.cwd = ROOT_PATH + r"\userdata\功能流程列表参数"     # 程序当前工作目录
@@ -50,16 +50,21 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
             print("未选择正确的文件！！")
             return
         self.lineEdit_flow_file.setText(norm_file_path)
-        self.readFlowListParam()
+        # 若当前是保存模式，则在”浏览“文件后不要更新窗口存储的流程参数list self.flow_param_list
+        # 因为在”保存“模式下，该参数list是主窗口送过来的，若在点击”浏览“按钮后再点击”更新“，则会将内容保存为”浏览“所选择的文件内容
+        if not self.flag_save_mode:
+            self.readFlowListParam()
 
-    def setFlowParamDict(self, flow_param_list):
+    def setFlowParamList(self, flow_param_list):
         self.flow_param_list = flow_param_list
 
     def setApplyMode(self):
+        self.flag_save_mode = False
         self.pushButton_apply.setEnabled(True)
         self.pushButton_save.setEnabled(False)
 
     def setSaveMode(self):
+        self.flag_save_mode = True
         self.pushButton_save.setEnabled(True)
         self.pushButton_apply.setEnabled(False)
         # self.lineEdit_flow_file.setText(self.cwd)
@@ -99,7 +104,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         flow_file_path, _ = QFileDialog.getSaveFileName(
             self, "保存文件",
             self.cwd,
-            "All Files(*);;JSON Files(*.ini)"
+            "All Files(*);;JSON Files(*.json)"
         )
         norm_file_path = os.path.normpath(flow_file_path)
         if norm_file_path == '.' or norm_file_path[-4:] != "json":
@@ -108,7 +113,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         self.json_file_dict["流程描述"] = self.plainTextEdit.toPlainText()
         self.json_file_dict["流程参数"] = self.flow_param_list
         if flow_file_path[-4:] != "json":
-            self.tip_dialog = TipMessageBox("错误", f"请先在”文件路径“输入框中填写正确的json文件名称\n\n文件不存在时将自动新建，否则会覆盖原文件")
+            self.tip_dialog = TipMessageBox("错误", f"请填写正确的json文件名称\n\n文件不存在时将自动新建，否则会覆盖原文件")
             self.tip_dialog.show()
             return
         # if not os.path.exists(flow_file_path):
@@ -120,7 +125,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         self.tip_dialog.show()
 
     def applyJsonFile(self):
-        # print(self.flow_param_list)
+        print("应用的流程参数：\n", self.flow_param_list)
         if len(self.flow_param_list) == 0:
             self.tip_dialog = TipMessageBox(
                 "错误",

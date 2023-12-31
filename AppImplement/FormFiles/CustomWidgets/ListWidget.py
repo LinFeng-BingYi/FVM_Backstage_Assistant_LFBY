@@ -171,7 +171,7 @@ class FuncFlowListWidget(QListWidget):
     def checkActiveFuncParamValidity(self):
         # 避免使用list.clear()方法，这会导致原地址中的数据被清除
         self.active_item_widget_list = []
-        print("当前列表中功能数", self.count())
+        # print("当前列表中功能数", self.count())
         for i in range(self.count()):
             list_item = self.item(i)
             item_widget = self.itemWidget(list_item)
@@ -207,7 +207,7 @@ class FuncFlowListWidget(QListWidget):
             func_widget_param = item_widget.getFuncParam()
             func_widget_param["func_name"] = item_widget.getFuncName()
             flow_funcs_param.append(func_widget_param)
-            print("功能参数", func_widget_param)
+            # print("功能参数", func_widget_param)
             if change_status:
                 item_widget.changeStatus("waiting")
         return flow_funcs_param

@@ -5,8 +5,9 @@
 # @File    : EditPlacingPlanForm.py
 # @Time    : 2023/12/2 22:28
 # @Dsc     : 实现编辑卡片放置方案的界面功能
-from PySide6.QtGui import QFont
+
 from PySide6.QtWidgets import QWidget, QFileDialog, QTableWidget, QComboBox, QTableWidgetItem, QLineEdit, QHeaderView, QMessageBox
+from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
 
 import os
@@ -24,13 +25,13 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         super(WidgetEditPlacingPlan, self).__init__()
         self.setupUi(self)
         self.tableWidget_1p_placing_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.tableWidget_1p_placing_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
         self.tableWidget_2p_placing_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.tableWidget_2p_placing_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
 
         self.cwd = ROOT_PATH                                # 程序当前工作目录
-        self.place_plan_procs: PlacingPlanProcessor = None    # 放卡方案文件读写器
-        print(DEFAULT_PLACING_PLAN_INI)
-        self.player_deck_procs = PlayerDeckProcessor(DEFAULT_DECK_INI)
-        self.edit_enable = False
+        self.place_plan_procs = PlacingPlanProcessor(None)    # 放卡方案文件读写器
+        self.player_deck_procs = PlayerDeckProcessor(None)
 
         self.initWidgets()
         self.bindSignal()
@@ -38,76 +39,36 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
 
     def initWidgets(self):
-        # 初始化时，禁用编辑模式
-        self.checkBox_is_team_mode.setEnabled(False)
-        self.tab_1p_placing_config.setEnabled(self.edit_enable)
-        self.tab_2p_placing_config.setEnabled(self.edit_enable)
-        init_file_path = DEFAULT_PLACING_PLAN_INI
-        # 初始化本窗口的文件处理器
-        self.place_plan_procs = PlacingPlanProcessor(init_file_path)
         # 默认路径
-        self.lineEdit_file_path.setText(init_file_path)
-        # 填充卡片组comboBox
+        self.lineEdit_plan_path.setText(DEFAULT_PLACING_PLAN_INI)
+        self.lineEdit_deck_path.setText(DEFAULT_DECK_INI)
+        # 初始化本窗口的文件处理器
+        self.place_plan_procs.setFilePath(DEFAULT_PLACING_PLAN_INI)
+        self.player_deck_procs.setFilePath(DEFAULT_DECK_INI)
+        # 填充放卡方案、卡片组comboBox
+        self.comboBox_choose_section.addItems(self.place_plan_procs.getAllSection())
         all_player_decks = self.player_deck_procs.getAllSection()
         self.comboBox_1p_deck.addItems(all_player_decks)
         self.comboBox_2p_deck.addItems(all_player_decks)
 
         # 更新界面
-        self.responseFilePathChange()
+        self.responsePlanPathChange()
 
     def bindSignal(self):
-        # 文件
-        self.pushButton_file_path.clicked.connect(self.chooseFile)
+        # 放卡方案ini文件
+        self.pushButton_plan_path.clicked.connect(self.chooseFile)
         # 显示方案内容
         self.comboBox_choose_section.currentIndexChanged.connect(self.displayPlan)
-        # 编辑按钮
-        self.pushButton_modify_config.clicked.connect(self.changeEditStatus)
 
     def chooseFile(self):
         chosen_file, file_type = QFileDialog.getOpenFileName(self, "选择文件", self.cwd + "\\userdata\\卡片放置方案",
-                                                             "All Files(*);;XML Files(*.xml)")
+                                                             "All Files(*);;INI Files(*.ini)")
         norm_file_path = os.path.normpath(chosen_file)
-        if norm_file_path == '.':
-            print("未选择正确的文件！！")
+        if norm_file_path == '.' or norm_file_path[-4:] != '.ini':
+            print("未选择正确的ini文件！！")
             return
-        self.lineEdit_file_path.setText(norm_file_path)
-        self.responseFilePathChange()
-
-    def changeEditStatus(self):
-        """响应"修改"按钮的函数
-        """
-        if self.edit_enable:    # 当处于启用编辑状态触发该按钮时，询问是否保存修改
-            msgBox = QMessageBox()
-            msgBox.setText("是否要保存修改？")
-            msgBox.setStandardButtons(QMessageBox.StandardButton.Save | QMessageBox.StandardButton.Cancel)
-            msgBox.button(QMessageBox.StandardButton.Save).setText("保存")
-            msgBox.button(QMessageBox.StandardButton.Cancel).setText("取消")
-            result = msgBox.exec()
-            if result == QMessageBox.StandardButton.Save:
-                pass  # TODO 实现保存配置
-        self.edit_enable = not self.edit_enable
-        # 设置账号放卡方案区的编辑状态
-        self.tab_1p_placing_config.setEnabled(self.edit_enable)
-        if self.checkBox_is_team_mode.isChecked():
-            self.tab_2p_placing_config.setEnabled(self.edit_enable)
-        else:  # 单人模式不能编辑2P
-            self.tab_2p_placing_config.setEnabled(False)
-        # 设置其他两个按钮的状态
-        self.pushButton_new_config.setEnabled(not self.edit_enable)
-        self.pushButton_delete_config.setEnabled(not self.edit_enable)
-        # 设置切换配置comboBox的状态
-        self.comboBox_choose_section.setEnabled(not self.edit_enable)
-        # 设置"浏览"按钮的状态，修改时不能切换文件
-        self.lineEdit_file_path.setEnabled(not self.edit_enable)
-        self.pushButton_file_path.setEnabled(not self.edit_enable)
-
-        # 设置"修改"按钮的样式
-        if self.edit_enable:
-            self.pushButton_modify_config.setText("退出保存")
-            self.pushButton_modify_config.setStyleSheet('background-color: green')
-        else:
-            self.pushButton_modify_config.setText("修改方案")
-            self.pushButton_modify_config.setStyleSheet('')
+        self.lineEdit_plan_path.setText(norm_file_path)
+        self.responsePlanPathChange()
 
     def clearWidgets(self):
         """更换选择的放卡方案后，先清除界面上的控件"""
@@ -119,10 +80,10 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         self.tableWidget_1p_placing_table.setRowCount(0)
         self.tableWidget_2p_placing_table.setRowCount(0)
 
-    def responseFilePathChange(self):
+    def responsePlanPathChange(self):
         self.clearWidgets()
         # 更新文件处理器存储的文件路径
-        self.place_plan_procs.setFilePath(self.lineEdit_file_path.text())
+        self.place_plan_procs.setFilePath(self.lineEdit_plan_path.text())
         # 填充放卡方案comboBox
         print(self.place_plan_procs.getAllSection())
         self.comboBox_choose_section.addItems(self.place_plan_procs.getAllSection())

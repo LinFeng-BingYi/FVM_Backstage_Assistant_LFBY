@@ -1,6 +1,9 @@
-from PySide6.QtCore import Signal, QSize
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QFileDialog
-from PySide6.QtGui import QTextCursor, QIcon
+from PySide6.QtGui import QTextCursor
+from PySide6.QtCore import Signal
 
 from AppImplement.FormFiles.MyMainWindow import Ui_MyMainWindow
 from AppImplement.FormFiles.EditPlacingPlanForm import WidgetEditPlacingPlan
@@ -11,6 +14,8 @@ from AppImplement.FormFiles.CustomWidgets.Dialog import AddFuncFlowDialog
 
 from AppImplement.Business.BusBusiness import BusinessBus
 from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH, DEFAULT_FUNC_FLOW_JSON
+
+from copy import deepcopy
 
 
 class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
@@ -184,7 +189,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         # 流程中单个功能可以出现多次，使用dict存储会键冲突，改用list存储
         # print(flow_funcs_param)
         self.saveFlowListForm.setSaveMode()
-        self.saveFlowListForm.setFlowParamDict(flow_funcs_param)
+        self.saveFlowListForm.setFlowParamList(flow_funcs_param)
         self.saveFlowListForm.show()
 
     def openApplyFlowList(self):
@@ -192,6 +197,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.saveFlowListForm.show()
 
     def applyFlowParam(self, flow_param_list):
+        flow_param_list = deepcopy(flow_param_list)
         self.listWidget_flow.clearAllItem()
         for i in range(len(flow_param_list)):
             key = flow_param_list[i]["func_name"]

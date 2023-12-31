@@ -677,6 +677,11 @@ class BusinessBus(QThread):
             self.executeBusinessFlow()
         except Exception as exception:
             business_error_str = repr(exception) + "\n" + str(exception)
+            if business_error_str.find("无效的窗口句柄"):
+                self.formatBusinessMessage("结束流程")
+                self.signal_send_business_error.emit("请先在[开始]功能中获取正确的游戏窗口句柄！")
+                self.signal_flow_finished.emit()
+                return
             self.signal_send_business_error.emit(business_error_str)
             self.formatBusinessMessage(business_error_str, "ERROR")
 
