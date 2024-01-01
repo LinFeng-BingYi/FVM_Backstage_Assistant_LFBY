@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QListWidget, QListWidgetItem, QMenu, QMessageBox
+import os.path
+
+from PySide6.QtGui import QAction, QFont, QPixmap
+from PySide6.QtWidgets import QListWidget, QListWidgetItem, QMenu, QMessageBox, QWidget, QLabel, QLineEdit, QVBoxLayout
 from PySide6.QtCore import Qt, Signal
 
 from AppImplement.FlowFunction.StartListItem import StartListWidget
@@ -14,6 +16,8 @@ from AppImplement.FlowFunction.VolcanicRelicListItem import VolcanicRelicListWid
 from AppImplement.FlowFunction.MagicTowerListItem import MagicTowerListWidget
 from AppImplement.FlowFunction.CrossServiceListItem import CrossServiceListWidget
 from AppImplement.FlowFunction.WantedListItem import WantedListWidget
+
+from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
 # 若需要修改键名，BusinessBus类的run函数中也要做相应的修改
 SUPPORT_FUNC = {
@@ -232,3 +236,91 @@ class FuncFlowListWidget(QListWidget):
 
             old_item_widget = self.item_widget_list.pop(old_no)
             self.item_widget_list.insert(new_no, old_item_widget)
+
+
+class PlayerDeckListWidget(QListWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        # 设置右键菜单
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.showContextMenu)
+
+    def showContextMenu(self, pos):
+        """添加右键菜单
+        """
+        list_item = self.itemAt(pos)
+        # 创建 添加 动作
+        action_add = QAction("添加", self)
+        action_add.triggered.connect(lambda: self.addListItem(None, None))
+        # 创建 删除 动作
+        action_delete = QAction("删除", self)
+        action_delete.triggered.connect(lambda: self.deleteItem(list_item))
+        # 加入菜单
+        list_widget_menu = QMenu(self)
+        list_widget_menu.addAction(action_add)
+        list_widget_menu.addAction(action_delete)
+        list_widget_menu.exec(self.mapToGlobal(pos))
+
+    def addListItem(self, card_info: list = None, card_pic_path: str = None):
+        # print(card_info)
+        # 创建列表项控件
+        card_item_widget = PlayerDeckListWidget.DeckListItem(self)
+        if card_pic_path is None or not os.path.exists(card_pic_path):
+            card_pic_path = ROOT_PATH + r"\resources\images\application\其他图片\默认卡片图片.bmp"
+        if card_info is not None:
+            card_item_widget.setCardInfo(card_info)
+        card_item_widget.setCardPic(card_pic_path)
+        # 创建列表项
+        listWidgetItem = QListWidgetItem(self)
+        listWidgetItem.setSizeHint(card_item_widget.size())
+        # 添加列表项并关联控件
+        self.addItem(listWidgetItem)
+        self.setItemWidget(listWidgetItem, card_item_widget)
+
+    def deleteItem(self, list_item):
+        item_widget = self.itemWidget(list_item)
+        self.takeItem(self.row(list_item))
+        item_widget.deleteLater()
+
+    class DeckListItem(QWidget):
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.setupUi()
+
+        def setupUi(self):
+            # 整个widget的设置
+            self.setFixedSize(50, 90)
+            # 卡片图片
+            self.label_card_pic = QLabel(self)
+            self.label_card_pic.setObjectName("label_card_pic")
+            # self.label_card_pic.setFixedSize(40, 40)
+            # self.label_card_pic.setPixmap("card_pic.png")
+            # self.label_card_pic.setScaledContents(True)
+            # 卡片名称
+            self.lineEdit_card_name = QLineEdit(self)
+            self.lineEdit_card_name.setObjectName("lineEdit_card_name")
+            self.lineEdit_card_name.setMinimumHeight(30)
+            font_card_name = QFont()
+            font_card_name.setBold(True)
+            font_card_name.setPointSize(10)
+            self.lineEdit_card_name.setFont(font_card_name)
+            # 卡槽位置
+            self.lineEdit_card_slot = QLineEdit(self)
+            self.lineEdit_card_slot.setObjectName("lineEdit_card_slot")
+            self.lineEdit_card_slot.setMinimumHeight(20)
+
+            # 布局
+            self.verticalLayout = QVBoxLayout(self)
+            self.verticalLayout.setObjectName("verticalLayout")
+            self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+            self.verticalLayout.setSpacing(0)
+            self.verticalLayout.addWidget(self.label_card_pic)
+            self.verticalLayout.addWidget(self.lineEdit_card_name)
+            self.verticalLayout.addWidget(self.lineEdit_card_slot)
+
+        def setCardInfo(self, card_info):
+            self.lineEdit_card_name.setText(card_info[0])
+            self.lineEdit_card_slot.setText(str(card_info[1]))
+
+        def setCardPic(self, pic_path):
+            self.label_card_pic.setPixmap(QPixmap(pic_path))

@@ -16,17 +16,19 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
-    QGridLayout, QGroupBox, QHBoxLayout, QHeaderView,
-    QLabel, QLineEdit, QListView, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
-    QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
-    QWidget)
+    QFrame, QGridLayout, QGroupBox, QHBoxLayout,
+    QHeaderView, QLabel, QLineEdit, QListView,
+    QListWidgetItem, QPlainTextEdit, QPushButton, QSizePolicy,
+    QSpacerItem, QTabWidget, QTableWidget, QTableWidgetItem,
+    QVBoxLayout, QWidget)
+
+from AppImplement.FormFiles.CustomWidgets.ListWidget import PlayerDeckListWidget
 
 class Ui_EditPlacingPlan(object):
     def setupUi(self, EditPlacingPlan):
         if not EditPlacingPlan.objectName():
             EditPlacingPlan.setObjectName(u"EditPlacingPlan")
-        EditPlacingPlan.resize(850, 600)
+        EditPlacingPlan.resize(900, 650)
         self.gridLayout_top = QGridLayout(EditPlacingPlan)
         self.gridLayout_top.setSpacing(0)
         self.gridLayout_top.setObjectName(u"gridLayout_top")
@@ -39,48 +41,48 @@ class Ui_EditPlacingPlan(object):
         self.verticalLayout_general.setContentsMargins(0, 0, 0, 5)
         self.groupBox_file_path = QGroupBox(self.widget_general)
         self.groupBox_file_path.setObjectName(u"groupBox_file_path")
-        self.groupBox_file_path.setMinimumSize(QSize(0, 90))
+        self.groupBox_file_path.setMinimumSize(QSize(0, 10))
         self.gridLayout_file_path = QGridLayout(self.groupBox_file_path)
         self.gridLayout_file_path.setSpacing(5)
         self.gridLayout_file_path.setObjectName(u"gridLayout_file_path")
         self.gridLayout_file_path.setContentsMargins(-1, 0, -1, 5)
         self.label_deck_path = QLabel(self.groupBox_file_path)
         self.label_deck_path.setObjectName(u"label_deck_path")
-        self.label_deck_path.setMinimumSize(QSize(70, 30))
-        self.label_deck_path.setMaximumSize(QSize(70, 30))
+        self.label_deck_path.setMinimumSize(QSize(70, 25))
+        self.label_deck_path.setMaximumSize(QSize(70, 25))
 
         self.gridLayout_file_path.addWidget(self.label_deck_path, 0, 0, 1, 1)
 
         self.lineEdit_deck_path = QLineEdit(self.groupBox_file_path)
         self.lineEdit_deck_path.setObjectName(u"lineEdit_deck_path")
-        self.lineEdit_deck_path.setMinimumSize(QSize(0, 30))
+        self.lineEdit_deck_path.setMinimumSize(QSize(0, 25))
 
         self.gridLayout_file_path.addWidget(self.lineEdit_deck_path, 0, 1, 1, 1)
 
         self.pushButton_deck_path = QPushButton(self.groupBox_file_path)
         self.pushButton_deck_path.setObjectName(u"pushButton_deck_path")
-        self.pushButton_deck_path.setMinimumSize(QSize(80, 30))
-        self.pushButton_deck_path.setMaximumSize(QSize(80, 30))
+        self.pushButton_deck_path.setMinimumSize(QSize(80, 25))
+        self.pushButton_deck_path.setMaximumSize(QSize(80, 25))
 
         self.gridLayout_file_path.addWidget(self.pushButton_deck_path, 0, 2, 1, 1)
 
         self.label_plan_path = QLabel(self.groupBox_file_path)
         self.label_plan_path.setObjectName(u"label_plan_path")
-        self.label_plan_path.setMinimumSize(QSize(70, 30))
-        self.label_plan_path.setMaximumSize(QSize(70, 30))
+        self.label_plan_path.setMinimumSize(QSize(70, 25))
+        self.label_plan_path.setMaximumSize(QSize(70, 25))
 
         self.gridLayout_file_path.addWidget(self.label_plan_path, 1, 0, 1, 1)
 
         self.lineEdit_plan_path = QLineEdit(self.groupBox_file_path)
         self.lineEdit_plan_path.setObjectName(u"lineEdit_plan_path")
-        self.lineEdit_plan_path.setMinimumSize(QSize(0, 30))
+        self.lineEdit_plan_path.setMinimumSize(QSize(0, 25))
 
         self.gridLayout_file_path.addWidget(self.lineEdit_plan_path, 1, 1, 1, 1)
 
         self.pushButton_plan_path = QPushButton(self.groupBox_file_path)
         self.pushButton_plan_path.setObjectName(u"pushButton_plan_path")
-        self.pushButton_plan_path.setMinimumSize(QSize(80, 30))
-        self.pushButton_plan_path.setMaximumSize(QSize(80, 30))
+        self.pushButton_plan_path.setMinimumSize(QSize(80, 25))
+        self.pushButton_plan_path.setMaximumSize(QSize(80, 25))
 
         self.gridLayout_file_path.addWidget(self.pushButton_plan_path, 1, 2, 1, 1)
 
@@ -89,11 +91,19 @@ class Ui_EditPlacingPlan(object):
 
         self.groupBox_common = QGroupBox(self.widget_general)
         self.groupBox_common.setObjectName(u"groupBox_common")
-        self.horizontalLayout_common = QHBoxLayout(self.groupBox_common)
+        self.groupBox_common.setMinimumSize(QSize(0, 110))
+        self.groupBox_common.setMaximumSize(QSize(16777215, 110))
+        self.verticalLayout_common = QVBoxLayout(self.groupBox_common)
+        self.verticalLayout_common.setSpacing(5)
+        self.verticalLayout_common.setObjectName(u"verticalLayout_common")
+        self.verticalLayout_common.setContentsMargins(-1, 0, -1, 0)
+        self.widget_common = QWidget(self.groupBox_common)
+        self.widget_common.setObjectName(u"widget_common")
+        self.horizontalLayout_common = QHBoxLayout(self.widget_common)
         self.horizontalLayout_common.setSpacing(5)
         self.horizontalLayout_common.setObjectName(u"horizontalLayout_common")
-        self.horizontalLayout_common.setContentsMargins(-1, 0, 9, 5)
-        self.checkBox_is_team_mode = QCheckBox(self.groupBox_common)
+        self.horizontalLayout_common.setContentsMargins(0, 0, 0, 0)
+        self.checkBox_is_team_mode = QCheckBox(self.widget_common)
         self.checkBox_is_team_mode.setObjectName(u"checkBox_is_team_mode")
         self.checkBox_is_team_mode.setMinimumSize(QSize(135, 30))
         self.checkBox_is_team_mode.setMaximumSize(QSize(135, 30))
@@ -101,14 +111,14 @@ class Ui_EditPlacingPlan(object):
 
         self.horizontalLayout_common.addWidget(self.checkBox_is_team_mode)
 
-        self.label_choose_section = QLabel(self.groupBox_common)
+        self.label_choose_section = QLabel(self.widget_common)
         self.label_choose_section.setObjectName(u"label_choose_section")
         self.label_choose_section.setMinimumSize(QSize(60, 0))
         self.label_choose_section.setMaximumSize(QSize(60, 16777215))
 
         self.horizontalLayout_common.addWidget(self.label_choose_section)
 
-        self.comboBox_choose_section = QComboBox(self.groupBox_common)
+        self.comboBox_choose_section = QComboBox(self.widget_common)
         self.comboBox_choose_section.setObjectName(u"comboBox_choose_section")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(120)
@@ -124,26 +134,35 @@ class Ui_EditPlacingPlan(object):
 
         self.horizontalLayout_common.addItem(self.horizontalSpacer_common)
 
-        self.pushButton_save_plan = QPushButton(self.groupBox_common)
+        self.pushButton_save_plan = QPushButton(self.widget_common)
         self.pushButton_save_plan.setObjectName(u"pushButton_save_plan")
         self.pushButton_save_plan.setMinimumSize(QSize(80, 30))
         self.pushButton_save_plan.setMaximumSize(QSize(80, 16777215))
 
         self.horizontalLayout_common.addWidget(self.pushButton_save_plan)
 
-        self.pushButton_new_plan = QPushButton(self.groupBox_common)
+        self.pushButton_new_plan = QPushButton(self.widget_common)
         self.pushButton_new_plan.setObjectName(u"pushButton_new_plan")
         self.pushButton_new_plan.setMinimumSize(QSize(80, 30))
         self.pushButton_new_plan.setMaximumSize(QSize(80, 16777215))
 
         self.horizontalLayout_common.addWidget(self.pushButton_new_plan)
 
-        self.pushButton_delete_plan = QPushButton(self.groupBox_common)
+        self.pushButton_delete_plan = QPushButton(self.widget_common)
         self.pushButton_delete_plan.setObjectName(u"pushButton_delete_plan")
         self.pushButton_delete_plan.setMinimumSize(QSize(80, 30))
         self.pushButton_delete_plan.setMaximumSize(QSize(80, 16777215))
 
         self.horizontalLayout_common.addWidget(self.pushButton_delete_plan)
+
+
+        self.verticalLayout_common.addWidget(self.widget_common)
+
+        self.plainTextEdit_plan_dsc = QPlainTextEdit(self.groupBox_common)
+        self.plainTextEdit_plan_dsc.setObjectName(u"plainTextEdit_plan_dsc")
+        self.plainTextEdit_plan_dsc.setMaximumSize(QSize(16777215, 60))
+
+        self.verticalLayout_common.addWidget(self.plainTextEdit_plan_dsc)
 
 
         self.verticalLayout_general.addWidget(self.groupBox_common)
@@ -218,8 +237,17 @@ class Ui_EditPlacingPlan(object):
 
         self.verticalLayout_1p_placing_config.addWidget(self.widget_1p_setting)
 
-        self.listWidget_1p_deck = QListWidget(self.tab_1p_placing_config)
+        self.listWidget_1p_deck = PlayerDeckListWidget(self.tab_1p_placing_config)
         self.listWidget_1p_deck.setObjectName(u"listWidget_1p_deck")
+        self.listWidget_1p_deck.setMinimumSize(QSize(0, 90))
+        self.listWidget_1p_deck.setMaximumSize(QSize(16777215, 90))
+        self.listWidget_1p_deck.setFrameShape(QFrame.Box)
+        self.listWidget_1p_deck.setFrameShadow(QFrame.Plain)
+        self.listWidget_1p_deck.setLineWidth(1)
+        self.listWidget_1p_deck.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.listWidget_1p_deck.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.listWidget_1p_deck.setDragEnabled(True)
+        self.listWidget_1p_deck.setDragDropMode(QAbstractItemView.InternalMove)
         self.listWidget_1p_deck.setFlow(QListView.LeftToRight)
 
         self.verticalLayout_1p_placing_config.addWidget(self.listWidget_1p_deck)
@@ -227,14 +255,13 @@ class Ui_EditPlacingPlan(object):
         self.groupBox_1p_placing_table = QGroupBox(self.tab_1p_placing_config)
         self.groupBox_1p_placing_table.setObjectName(u"groupBox_1p_placing_table")
         self.groupBox_1p_placing_table.setFlat(True)
-        self.groupBox_1p_placing_table.setCheckable(True)
         self.verticalLayout_1p_placing_table = QVBoxLayout(self.groupBox_1p_placing_table)
         self.verticalLayout_1p_placing_table.setSpacing(5)
         self.verticalLayout_1p_placing_table.setObjectName(u"verticalLayout_1p_placing_table")
         self.verticalLayout_1p_placing_table.setContentsMargins(0, 5, 0, 0)
         self.tableWidget_1p_placing_table = QTableWidget(self.groupBox_1p_placing_table)
-        if (self.tableWidget_1p_placing_table.columnCount() < 6):
-            self.tableWidget_1p_placing_table.setColumnCount(6)
+        if (self.tableWidget_1p_placing_table.columnCount() < 5):
+            self.tableWidget_1p_placing_table.setColumnCount(5)
         __qtablewidgetitem = QTableWidgetItem()
         self.tableWidget_1p_placing_table.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
@@ -245,9 +272,9 @@ class Ui_EditPlacingPlan(object):
         self.tableWidget_1p_placing_table.setHorizontalHeaderItem(3, __qtablewidgetitem3)
         __qtablewidgetitem4 = QTableWidgetItem()
         self.tableWidget_1p_placing_table.setHorizontalHeaderItem(4, __qtablewidgetitem4)
-        __qtablewidgetitem5 = QTableWidgetItem()
-        self.tableWidget_1p_placing_table.setHorizontalHeaderItem(5, __qtablewidgetitem5)
         self.tableWidget_1p_placing_table.setObjectName(u"tableWidget_1p_placing_table")
+        self.tableWidget_1p_placing_table.setFrameShape(QFrame.Box)
+        self.tableWidget_1p_placing_table.setFrameShadow(QFrame.Plain)
         self.tableWidget_1p_placing_table.setEditTriggers(QAbstractItemView.DoubleClicked|QAbstractItemView.EditKeyPressed)
         self.tableWidget_1p_placing_table.setAlternatingRowColors(True)
         self.tableWidget_1p_placing_table.horizontalHeader().setMinimumSectionSize(100)
@@ -329,8 +356,16 @@ class Ui_EditPlacingPlan(object):
 
         self.verticalLayout_2p_placing_config.addWidget(self.widget_2p_setting)
 
-        self.listWidget_2p_deck = QListWidget(self.tab_2p_placing_config)
+        self.listWidget_2p_deck = PlayerDeckListWidget(self.tab_2p_placing_config)
         self.listWidget_2p_deck.setObjectName(u"listWidget_2p_deck")
+        self.listWidget_2p_deck.setMinimumSize(QSize(0, 90))
+        self.listWidget_2p_deck.setMaximumSize(QSize(16777215, 90))
+        self.listWidget_2p_deck.setFrameShape(QFrame.Box)
+        self.listWidget_2p_deck.setFrameShadow(QFrame.Plain)
+        self.listWidget_2p_deck.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.listWidget_2p_deck.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.listWidget_2p_deck.setDragEnabled(True)
+        self.listWidget_2p_deck.setDragDropMode(QAbstractItemView.InternalMove)
         self.listWidget_2p_deck.setFlow(QListView.LeftToRight)
 
         self.verticalLayout_2p_placing_config.addWidget(self.listWidget_2p_deck)
@@ -338,27 +373,26 @@ class Ui_EditPlacingPlan(object):
         self.groupBox_2p_placing_table = QGroupBox(self.tab_2p_placing_config)
         self.groupBox_2p_placing_table.setObjectName(u"groupBox_2p_placing_table")
         self.groupBox_2p_placing_table.setFlat(True)
-        self.groupBox_2p_placing_table.setCheckable(True)
         self.verticalLayout_2p_placing_table = QVBoxLayout(self.groupBox_2p_placing_table)
         self.verticalLayout_2p_placing_table.setSpacing(5)
         self.verticalLayout_2p_placing_table.setObjectName(u"verticalLayout_2p_placing_table")
         self.verticalLayout_2p_placing_table.setContentsMargins(0, 5, 0, 0)
         self.tableWidget_2p_placing_table = QTableWidget(self.groupBox_2p_placing_table)
-        if (self.tableWidget_2p_placing_table.columnCount() < 6):
-            self.tableWidget_2p_placing_table.setColumnCount(6)
+        if (self.tableWidget_2p_placing_table.columnCount() < 5):
+            self.tableWidget_2p_placing_table.setColumnCount(5)
+        __qtablewidgetitem5 = QTableWidgetItem()
+        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(0, __qtablewidgetitem5)
         __qtablewidgetitem6 = QTableWidgetItem()
-        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(0, __qtablewidgetitem6)
+        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(1, __qtablewidgetitem6)
         __qtablewidgetitem7 = QTableWidgetItem()
-        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(1, __qtablewidgetitem7)
+        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(2, __qtablewidgetitem7)
         __qtablewidgetitem8 = QTableWidgetItem()
-        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(2, __qtablewidgetitem8)
+        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(3, __qtablewidgetitem8)
         __qtablewidgetitem9 = QTableWidgetItem()
-        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(3, __qtablewidgetitem9)
-        __qtablewidgetitem10 = QTableWidgetItem()
-        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(4, __qtablewidgetitem10)
-        __qtablewidgetitem11 = QTableWidgetItem()
-        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(5, __qtablewidgetitem11)
+        self.tableWidget_2p_placing_table.setHorizontalHeaderItem(4, __qtablewidgetitem9)
         self.tableWidget_2p_placing_table.setObjectName(u"tableWidget_2p_placing_table")
+        self.tableWidget_2p_placing_table.setFrameShape(QFrame.Box)
+        self.tableWidget_2p_placing_table.setFrameShadow(QFrame.Plain)
         self.tableWidget_2p_placing_table.setEditTriggers(QAbstractItemView.DoubleClicked|QAbstractItemView.EditKeyPressed)
         self.tableWidget_2p_placing_table.setAlternatingRowColors(True)
 
@@ -442,15 +476,13 @@ class Ui_EditPlacingPlan(object):
         ___qtablewidgetitem = self.tableWidget_1p_placing_table.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u7247\u540d\u79f0", None));
         ___qtablewidgetitem1 = self.tableWidget_1p_placing_table.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u69fd\u4f4d\u7f6e", None));
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("EditPlacingPlan", u"\u653e\u7f6e\u4f4d\u7f6e", None));
         ___qtablewidgetitem2 = self.tableWidget_1p_placing_table.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("EditPlacingPlan", u"\u653e\u7f6e\u4f4d\u7f6e", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("EditPlacingPlan", u"\u8865\u5361\u4f4d\u7f6e", None));
         ___qtablewidgetitem3 = self.tableWidget_1p_placing_table.horizontalHeaderItem(3)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("EditPlacingPlan", u"\u8865\u5361\u4f4d\u7f6e", None));
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9ed8\u8ba4CD", None));
         ___qtablewidgetitem4 = self.tableWidget_1p_placing_table.horizontalHeaderItem(4)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9ed8\u8ba4CD", None));
-        ___qtablewidgetitem5 = self.tableWidget_1p_placing_table.horizontalHeaderItem(5)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("EditPlacingPlan", u"\u64cd\u4f5c", None));
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("EditPlacingPlan", u"\u64cd\u4f5c", None));
         self.tabWidget_placing_config.setTabText(self.tabWidget_placing_config.indexOf(self.tab_1p_placing_config), QCoreApplication.translate("EditPlacingPlan", u"\u623f\u4e3b\u5361\u7247\u653e\u7f6e\u65b9\u6848", None))
         self.label_2p_pos.setText(QCoreApplication.translate("EditPlacingPlan", u"\u623f\u5ba2\u4f4d\u7f6e\uff1a", None))
         self.label_2p_deck.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9009\u62e9\u5361\u7ec4\uff1a", None))
@@ -458,18 +490,16 @@ class Ui_EditPlacingPlan(object):
         self.pushButton_2p_new_deck.setText(QCoreApplication.translate("EditPlacingPlan", u"\u65b0\u5efa\u5361\u7247\u7ec4", None))
         self.pushButton_2p_delete_deck.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5220\u9664\u5361\u7247\u7ec4", None))
         self.groupBox_2p_placing_table.setTitle(QCoreApplication.translate("EditPlacingPlan", u"\u623f\u5ba2\u5361\u7247\u653e\u7f6e\u4fe1\u606f", None))
-        ___qtablewidgetitem6 = self.tableWidget_2p_placing_table.horizontalHeaderItem(0)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u7247\u540d\u79f0", None));
-        ___qtablewidgetitem7 = self.tableWidget_2p_placing_table.horizontalHeaderItem(1)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u69fd\u4f4d\u7f6e", None));
-        ___qtablewidgetitem8 = self.tableWidget_2p_placing_table.horizontalHeaderItem(2)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("EditPlacingPlan", u"\u653e\u7f6e\u4f4d\u7f6e", None));
-        ___qtablewidgetitem9 = self.tableWidget_2p_placing_table.horizontalHeaderItem(3)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("EditPlacingPlan", u"\u8865\u5361\u4f4d\u7f6e", None));
-        ___qtablewidgetitem10 = self.tableWidget_2p_placing_table.horizontalHeaderItem(4)
-        ___qtablewidgetitem10.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9ed8\u8ba4CD", None));
-        ___qtablewidgetitem11 = self.tableWidget_2p_placing_table.horizontalHeaderItem(5)
-        ___qtablewidgetitem11.setText(QCoreApplication.translate("EditPlacingPlan", u"\u64cd\u4f5c", None));
+        ___qtablewidgetitem5 = self.tableWidget_2p_placing_table.horizontalHeaderItem(0)
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("EditPlacingPlan", u"\u5361\u7247\u540d\u79f0", None));
+        ___qtablewidgetitem6 = self.tableWidget_2p_placing_table.horizontalHeaderItem(1)
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("EditPlacingPlan", u"\u653e\u7f6e\u4f4d\u7f6e", None));
+        ___qtablewidgetitem7 = self.tableWidget_2p_placing_table.horizontalHeaderItem(2)
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("EditPlacingPlan", u"\u8865\u5361\u4f4d\u7f6e", None));
+        ___qtablewidgetitem8 = self.tableWidget_2p_placing_table.horizontalHeaderItem(3)
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("EditPlacingPlan", u"\u9ed8\u8ba4CD", None));
+        ___qtablewidgetitem9 = self.tableWidget_2p_placing_table.horizontalHeaderItem(4)
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("EditPlacingPlan", u"\u64cd\u4f5c", None));
         self.tabWidget_placing_config.setTabText(self.tabWidget_placing_config.indexOf(self.tab_2p_placing_config), QCoreApplication.translate("EditPlacingPlan", u"\u623f\u5ba2\u5361\u7247\u653e\u7f6e\u65b9\u6848", None))
         self.pushButton_plan_timeline.setText(QCoreApplication.translate("EditPlacingPlan", u"\u653e\u5361\u65b9\u6848\u65f6\u95f4\u7ebf", None))
         self.pushButton_plan_visualize.setText(QCoreApplication.translate("EditPlacingPlan", u"\u653e\u5361\u9635\u5bb9\u53ef\u89c6\u5316", None))

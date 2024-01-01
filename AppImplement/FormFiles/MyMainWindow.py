@@ -290,11 +290,17 @@ class Ui_MyMainWindow(object):
 
         self.horizontalLayout_flow_setting.addItem(self.horizontalSpacer_flow_setting_left)
 
-        self.checkBox_remaind_stop = QCheckBox(self.widget_flow_setting)
-        self.checkBox_remaind_stop.setObjectName(u"checkBox_remaind_stop")
-        self.checkBox_remaind_stop.setMinimumSize(QSize(0, 30))
+        self.checkBox_remaind_when_stop = QCheckBox(self.widget_flow_setting)
+        self.checkBox_remaind_when_stop.setObjectName(u"checkBox_remaind_when_stop")
+        self.checkBox_remaind_when_stop.setMinimumSize(QSize(0, 30))
 
-        self.horizontalLayout_flow_setting.addWidget(self.checkBox_remaind_stop)
+        self.horizontalLayout_flow_setting.addWidget(self.checkBox_remaind_when_stop)
+
+        self.checkBox_save_log_when_stop = QCheckBox(self.widget_flow_setting)
+        self.checkBox_save_log_when_stop.setObjectName(u"checkBox_save_log_when_stop")
+        self.checkBox_save_log_when_stop.setMinimumSize(QSize(0, 30))
+
+        self.horizontalLayout_flow_setting.addWidget(self.checkBox_save_log_when_stop)
 
         self.horizontalSpacer_flow_setting_right = QSpacerItem(200, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -415,7 +421,8 @@ class Ui_MyMainWindow(object):
         self.pushButton_apply_flow.setToolTip(QCoreApplication.translate("MyMainWindow", u"\u4ece\u4fdd\u5b58\u7684JSON\u6587\u4ef6\u4e2d\u5e94\u7528\u529f\u80fd\u6d41\u7a0b", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_apply_flow.setText(QCoreApplication.translate("MyMainWindow", u"\u5e94\u7528\u6d41\u7a0b", None))
-        self.checkBox_remaind_stop.setText(QCoreApplication.translate("MyMainWindow", u"\u7ed3\u675f\u65f6\u5f39\u7a97\u63d0\u9192", None))
+        self.checkBox_remaind_when_stop.setText(QCoreApplication.translate("MyMainWindow", u"\u7ed3\u675f\u65f6\u5f39\u7a97\u63d0\u9192", None))
+        self.checkBox_save_log_when_stop.setText(QCoreApplication.translate("MyMainWindow", u"\u7ed3\u675f\u65f6\u4fdd\u5b58\u65e5\u5fd7", None))
         self.pushButton_start_flow.setText(QCoreApplication.translate("MyMainWindow", u"\u5f00\u59cb\u6d41\u7a0b", None))
         self.pushButton_end_flow.setText(QCoreApplication.translate("MyMainWindow", u"\u7ed3\u675f\u6d41\u7a0b", None))
         self.menu_function.setTitle(QCoreApplication.translate("MyMainWindow", u"\u529f\u80fd", None))

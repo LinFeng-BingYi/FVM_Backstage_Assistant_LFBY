@@ -27,7 +27,7 @@ def executeVipSignin(hwnd, zoom=1):
     mouseClick(hwnd, 674 * zoom, 30 * zoom)
     if not find_pic_loop(hwnd, OPEN_VIP_SIGNIN_PATH, [392, 35, 566, 72], max_time=120):
         raise BusinessError("超过2min还未打开VIP签到界面！")
-    delay(500)
+    delay(1000)
     # 点击”每日签到“
     mouseClick(hwnd, 740 * zoom, 188 * zoom)
     delay(100)
@@ -119,7 +119,7 @@ def executePharaohTreasure(hwnd, flop_pos: int, zoom=1):
     if free_pos and 1 <= flop_pos <= 8:
         # 点击选择的宝藏位置：第一个宝藏位置正中心是(300, 257)，左右两个相隔120，上下两个相隔140
         mouseClick(hwnd, (301 + ((flop_pos - 1) % 4) * 120) * zoom, (257 + floor((flop_pos - 1) / 4) * 140) * zoom)
-        delay(100)
+        delay(700)
         result_str = f"完成[法老宝藏]。翻取了第{flop_pos}张牌"
     # 点击”关闭“
     mouseClick(hwnd, 790 * zoom, 97 * zoom)
@@ -150,7 +150,7 @@ def executeTarotTreasure(hwnd, zoom=1):
     print("塔罗免费结果: ", free_pos)
     if free_pos:
         mouseClick(hwnd, free_pos[0] * zoom, free_pos[1] * zoom)
-        delay(100)
+        delay(700)
         result_str = f"完成[塔罗寻宝]"
     # 点击”关闭“
     mouseClick(hwnd, 830 * zoom, 80 * zoom)

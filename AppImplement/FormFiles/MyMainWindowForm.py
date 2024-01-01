@@ -62,6 +62,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         if DEFAULT_FUNC_FLOW_JSON != "" and self.saveFlowListForm.setJsonToLineedit(DEFAULT_FUNC_FLOW_JSON):
             self.saveFlowListForm.readFlowListParam()
             self.saveFlowListForm.applyJsonFile()
+            self.tabWidget_config_business.setCurrentIndex(0)
         else:
             self.addListWidget("开始")
             self.addListWidget("结束")
@@ -94,7 +95,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.thread_business_bus.signal_send_func_status.connect(self.signal_update_flow_func_status)
         self.signal_update_flow_func_status.connect(self.listWidget_flow.updateFlowFuncStatus)
         # 完成流程后将所有状态置为“挂起”
-        self.thread_business_bus.signal_flow_finished.connect(self.listWidget_flow.flowFinished)
+        self.thread_business_bus.signal_flow_finished.connect(self.respondBusinessBusFinish)
 
         # 清除日志
         self.pushButton_clear_log.clicked.connect(self.plainTextEdit_log.clear)
@@ -150,6 +151,24 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
             self.tip_message_box.show()
             return
         self.thread_business_bus.terminate()
+
+    def respondBusinessBusFinish(self, non_exception_stop):
+        self.listWidget_flow.flowFinished()
+        # 若主界面下方勾选“结束时保存日志”，且流程是正常结束，则保存log
+        if self.checkBox_save_log_when_stop.isChecked() and non_exception_stop:
+            if self.plainTextEdit_log.toPlainText() == "":
+                self.tip_message_box.setWindowTitle("错误")
+                self.tip_message_box.setText("日志输出区中没有信息！！！")
+                self.tip_message_box.show()
+                return
+            first_line_str = self.plainTextEdit_log.document().findBlockByLineNumber(0).text()
+            time_str = first_line_str[0:19]
+            # print(time_str)
+            pure_time_str = time_str.replace('/', '').replace(' ', '').replace(':', '')
+            flow_file_path = ROOT_PATH + f"\\logs\\{pure_time_str}.log"
+            f = open(flow_file_path, 'w', encoding='utf-8')
+            f.write(self.plainTextEdit_log.toPlainText())
+            f.close()
 
     def printLog(self, message_str):
         self.plainTextEdit_log.setPlainText(

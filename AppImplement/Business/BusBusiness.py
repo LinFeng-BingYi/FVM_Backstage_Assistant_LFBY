@@ -40,8 +40,8 @@ class BusinessBus(QThread):
     # 向主窗口发送功能执行情况（功能在流程中的序号，功能的状态）
     # 状态：['hanging'(挂起)、'waiting'(等待)、'executing'(执行)、'completed'(完成)、'banned'(禁用)、'wrong'(错误)]
     signal_send_func_status = Signal(int, str)
-    # 告诉主窗口完成整个流程
-    signal_flow_finished = Signal()
+    # 告诉主窗口完成整个流程(True表示正常结束, False表示异常结束)
+    signal_flow_finished = Signal(bool)
     # 关闭所有子放卡线程
     signal_terminate_sub_thread = Signal()
 
@@ -364,7 +364,12 @@ class BusinessBus(QThread):
             self.executeUnionQuest(quest_result, plan_path)
 
     def executeUnionQuest(self, quest_result, plan_path):
-        zone, level, strategy = quest_result.split('-')
+        parse_result = quest_result.split('-')
+        if len(parse_result) > 3:
+            zone, level, strategy, plan_name = parse_result
+        else:
+            zone, level, strategy = parse_result
+            plan_name = level
 
         # 设置关卡信息
         if strategy == "无二阶段":
@@ -381,7 +386,7 @@ class BusinessBus(QThread):
 
         # 获取放卡方案信息：所用方案名称 与 关卡名称 相同
         union_placing_plan_procs = PlacingPlanProcessor(plan_path)
-        plan_info = union_placing_plan_procs.readPlan(level)
+        plan_info = union_placing_plan_procs.readPlan(plan_name)
         if isinstance(plan_info, tuple):
             self.formatBusinessMessage("未找到目标放卡方案，将使用”默认方案“作为通关配置", "WARN")
             plan_info = union_placing_plan_procs.readPlan("默认方案")
@@ -680,7 +685,7 @@ class BusinessBus(QThread):
             if business_error_str.find("无效的窗口句柄"):
                 self.formatBusinessMessage("结束流程")
                 self.signal_send_business_error.emit("请先在[开始]功能中获取正确的游戏窗口句柄！")
-                self.signal_flow_finished.emit()
+                self.signal_flow_finished.emit(False)
                 return
             self.signal_send_business_error.emit(business_error_str)
             self.formatBusinessMessage(business_error_str, "ERROR")
@@ -961,7 +966,7 @@ class BusinessBus(QThread):
             func_no += 1
             self.place_plan_procs.setFilePath(plan_path)
         self.formatBusinessMessage("流程执行完成")
-        self.signal_flow_finished.emit()
+        self.signal_flow_finished.emit(True)
 
     def convertToExecute(self, start_param, plan_info, flop_pos, player):
         # 获取该账号使用的 卡片组名称
@@ -982,6 +987,7 @@ class BusinessBus(QThread):
             # 组装dict
             card_plan = {
                 "card_pos_series": card_info[f"{player}P卡{card_no}放置位置"],
+                "card_replenish_series": card_info[f"{player}P卡{card_no}补卡位置"],
                 "card_slot": int(card_slot),
                 "card_cd": int(card_cd)}
             # 加入cards_plan

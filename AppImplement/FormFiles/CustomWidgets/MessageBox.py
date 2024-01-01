@@ -16,6 +16,7 @@ class TipMessageBox(QWidget):
         self.pushButton_ok.clicked.connect(self.close)
 
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        self.setWindowModality(Qt.WindowModality.ApplicationModal)
 
     def setupUi(self):
         self.resize(250, 150)

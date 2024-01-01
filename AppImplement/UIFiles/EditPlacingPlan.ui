@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>850</width>
-    <height>600</height>
+    <width>900</width>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,7 +52,7 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>90</height>
+          <height>10</height>
          </size>
         </property>
         <property name="title">
@@ -73,13 +73,13 @@
            <property name="minimumSize">
             <size>
              <width>70</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>70</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
            <property name="text">
@@ -92,7 +92,7 @@
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
           </widget>
@@ -102,13 +102,13 @@
            <property name="minimumSize">
             <size>
              <width>80</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>80</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
            <property name="text">
@@ -121,13 +121,13 @@
            <property name="minimumSize">
             <size>
              <width>70</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>70</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
            <property name="text">
@@ -140,7 +140,7 @@
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
           </widget>
@@ -150,13 +150,13 @@
            <property name="minimumSize">
             <size>
              <width>80</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>80</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
            <property name="text">
@@ -169,152 +169,192 @@
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox_common">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>110</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>110</height>
+         </size>
+        </property>
         <property name="title">
          <string>设置</string>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_common">
+        <layout class="QVBoxLayout" name="verticalLayout_common">
          <property name="spacing">
           <number>5</number>
          </property>
          <property name="topMargin">
           <number>0</number>
          </property>
-         <property name="rightMargin">
-          <number>9</number>
-         </property>
          <property name="bottomMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
          <item>
-          <widget class="QCheckBox" name="checkBox_is_team_mode">
-           <property name="minimumSize">
-            <size>
-             <width>135</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>135</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>组队放卡方案模式</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
+          <widget class="QWidget" name="widget_common" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_common">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QCheckBox" name="checkBox_is_team_mode">
+              <property name="minimumSize">
+               <size>
+                <width>135</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>135</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>组队放卡方案模式</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_choose_section">
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>选择方案：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox_choose_section">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>120</horstretch>
+                <verstretch>30</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>180</width>
+                <height>30</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_common">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_save_plan">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>保存方案</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_new_plan">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>新建方案</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_delete_plan">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>删除方案</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_choose_section">
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>0</height>
-            </size>
-           </property>
+          <widget class="QPlainTextEdit" name="plainTextEdit_plan_dsc">
            <property name="maximumSize">
             <size>
-             <width>60</width>
-             <height>16777215</height>
+             <width>16777215</width>
+             <height>60</height>
             </size>
-           </property>
-           <property name="text">
-            <string>选择方案：</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboBox_choose_section">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>120</horstretch>
-             <verstretch>30</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>180</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>180</width>
-             <height>30</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_common">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_save_plan">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>保存方案</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_new_plan">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>新建方案</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_delete_plan">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>删除方案</string>
            </property>
           </widget>
          </item>
@@ -508,7 +548,40 @@
            </widget>
           </item>
           <item>
-           <widget class="QListWidget" name="listWidget_1p_deck">
+           <widget class="PlayerDeckListWidget" name="listWidget_1p_deck">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>90</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>90</height>
+             </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::InternalMove</enum>
+            </property>
             <property name="flow">
              <enum>QListView::LeftToRight</enum>
             </property>
@@ -520,9 +593,6 @@
              <string>房主卡片放置信息</string>
             </property>
             <property name="flat">
-             <bool>true</bool>
-            </property>
-            <property name="checkable">
              <bool>true</bool>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_1p_placing_table">
@@ -543,6 +613,12 @@
              </property>
              <item>
               <widget class="QTableWidget" name="tableWidget_1p_placing_table">
+               <property name="frameShape">
+                <enum>QFrame::Box</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Plain</enum>
+               </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
                </property>
@@ -555,11 +631,6 @@
                <column>
                 <property name="text">
                  <string>卡片名称</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>卡槽位置</string>
                 </property>
                </column>
                <column>
@@ -771,7 +842,37 @@
            </widget>
           </item>
           <item>
-           <widget class="QListWidget" name="listWidget_2p_deck">
+           <widget class="PlayerDeckListWidget" name="listWidget_2p_deck">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>90</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>90</height>
+             </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::InternalMove</enum>
+            </property>
             <property name="flow">
              <enum>QListView::LeftToRight</enum>
             </property>
@@ -783,9 +884,6 @@
              <string>房客卡片放置信息</string>
             </property>
             <property name="flat">
-             <bool>true</bool>
-            </property>
-            <property name="checkable">
              <bool>true</bool>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_2p_placing_table">
@@ -806,6 +904,12 @@
              </property>
              <item>
               <widget class="QTableWidget" name="tableWidget_2p_placing_table">
+               <property name="frameShape">
+                <enum>QFrame::Box</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Plain</enum>
+               </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
                </property>
@@ -815,11 +919,6 @@
                <column>
                 <property name="text">
                  <string>卡片名称</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>卡槽位置</string>
                 </property>
                </column>
                <column>
@@ -942,6 +1041,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlayerDeckListWidget</class>
+   <extends>QListWidget</extends>
+   <header>AppImplement.FormFiles.CustomWidgets.ListWidget</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

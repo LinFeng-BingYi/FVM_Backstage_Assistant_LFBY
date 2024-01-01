@@ -80,7 +80,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
 
     def readFlowListParam(self):
         flow_file_path = self.lineEdit_flow_file.text()
-        print(flow_file_path)
+        # print(flow_file_path)
         if flow_file_path[-4:] != "json":
             self.tip_dialog = TipMessageBox("错误", "未选择正确的文件！！")
             self.tip_dialog.show()
@@ -91,7 +91,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
             flow_dsc = json_file_dict["流程描述"]
             self.flow_param_list = json_file_dict["流程参数"]
             self.plainTextEdit.setPlainText(flow_dsc)
-            print(self.flow_param_list[0]["2p_name_pic_path"])
+            # print(self.flow_param_list[0]["2p_name_pic_path"])
         except KeyError as keyError:
             self.tip_dialog = TipMessageBox(
                 "错误",
@@ -125,7 +125,7 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         self.tip_dialog.show()
 
     def applyJsonFile(self):
-        print("应用的流程参数：\n", self.flow_param_list)
+        # print("应用的流程参数：\n", self.flow_param_list)
         if len(self.flow_param_list) == 0:
             self.tip_dialog = TipMessageBox(
                 "错误",

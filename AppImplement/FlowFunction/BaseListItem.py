@@ -57,7 +57,7 @@ class BaseListWidget(QWidget):
         self.label_function_name.setFont(font_func_name)
         # 拖拽图标
         self.label_drag = QLabel(self)
-        self.label_drag.setObjectName("label_status")
+        self.label_drag.setObjectName("label_drag")
         self.label_drag.setFixedSize(30, 30)
         self.label_drag.setText("=")
         font_drag = QFont()

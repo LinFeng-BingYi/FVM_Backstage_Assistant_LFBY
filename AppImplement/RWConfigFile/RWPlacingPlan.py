@@ -11,7 +11,7 @@ from Common.FileProcess.INIProcess import INIProcessor
 EXCLUDE_SECTION = ['文件说明']
 COMMON_1P_KEY = ["描述", "1P放置位置", "1P所用卡片组"]
 COMMON_2P_KEY = ["描述", "1P放置位置", "2P放置位置", "1P所用卡片组", "2P所用卡片组"]
-CARD_KEY = ["{}P卡{}", "{}P卡{}放置位置", "{}P卡{}CD"]
+CARD_KEY = ["{}P卡{}", "{}P卡{}放置位置", "{}P卡{}补卡位置", "{}P卡{}CD"]
 
 
 class PlacingPlanProcessor:
@@ -96,7 +96,7 @@ class PlacingPlanProcessor:
                 plan_dict[key] = self.ini_procs.getSpecificValue(plan_name, key)
             plan_dict['1p_card_plan'] = self.readPlayerCardPlan(plan_name, 1)
             plan_dict['2p_card_plan'] = self.readPlayerCardPlan(plan_name, 2)
-        print(plan_dict)
+        # print(plan_dict)
         return plan_dict
 
     def readPlayerCardPlan(self, plan_name, player):
@@ -115,10 +115,12 @@ class PlacingPlanProcessor:
                     {
                         "1P卡1": "海星",
                         "1P卡1放置位置": "3,9,0;5,9;2,9;4,9",
+                        "1P卡1补卡位置": "3,9;5,9;2,9;4,9",
                         "1P卡1CD": "7000"
                     }, {
                         "1P卡2": "狮子座",
                         "1P卡2放置位置": "3,7,52000;5,7",
+                        "1P卡2补卡位置": "3,7;5,7",
                         "1P卡2CD": "35000"
                     }
                 ]
@@ -131,7 +133,8 @@ class PlacingPlanProcessor:
             card_dict = dict()
             for key in CARD_KEY:
                 key = key.format(player, i)
-                card_dict[key] = self.ini_procs.getSpecificValue(plan_name, key)
+                card_dict[key] = self.ini_procs.getSpecificValue(plan_name, key) if \
+                    self.ini_procs.hasKey(plan_name, key) else ""
             parse_list.append(card_dict)
         return parse_list
 
@@ -157,7 +160,8 @@ class PlacingPlanProcessor:
     def writePlan(self, plan_dict):
         plan_name = plan_dict['plan_name']
         # 先删除所有key，避免新增的键值对顺序不对
-        self.ini_procs.deleteBatchValue(plan_name, self.ini_procs.getAllKey(plan_dict['plan_name']))
+        if self.ini_procs.hasSection(plan_name):
+            self.ini_procs.deleteBatchValue(plan_name, self.ini_procs.getAllKey(plan_name))
         # 单人配置
         if plan_dict['player_num'] == 1:
             for key in COMMON_1P_KEY:
@@ -173,6 +177,9 @@ class PlacingPlanProcessor:
     def writePlayerCardPlan(self, plan_name, card_plan):
         for card_dict in card_plan:
             self.ini_procs.setBatchValue(plan_name, card_dict)
+
+    def deletePlan(self, plan_name):
+        self.ini_procs.deleteSectionOrValue(plan_name)
 
 
 if __name__ == '__main__':
