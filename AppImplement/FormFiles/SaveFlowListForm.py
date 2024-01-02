@@ -41,10 +41,16 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
         self.pushButton_apply.clicked.connect(self.applyJsonFile)
 
     def chooseJsonFile(self):
-        chosen_file, file_type = QFileDialog.getOpenFileName(self, "选择文件",
-                                                             self.cwd,
-                                                             "All Files(*);;JSON Files(*.ini)")
-        # chosen_file = QFileDialog.getExistingDirectory(self, "选择文件夹", self.cwd)
+        if not self.flag_save_mode:
+            chosen_file, file_type = QFileDialog.getOpenFileName(self, "选择文件",
+                                                                 self.cwd,
+                                                                 "All Files(*);;JSON Files(*.json)")
+        else:
+            chosen_file, _ = QFileDialog.getSaveFileName(
+                self, "保存文件",
+                self.cwd,
+                "All Files(*);;JSON Files(*.json)"
+            )
         norm_file_path = os.path.normpath(chosen_file)
         if norm_file_path == '.' or norm_file_path[-4:] != "json":
             print("未选择正确的文件！！")
@@ -101,23 +107,13 @@ class WidgetSaveFlowList(QWidget, Ui_SaveFlowList):
             json_file.close()
 
     def writeFlowListParam(self):
-        flow_file_path, _ = QFileDialog.getSaveFileName(
-            self, "保存文件",
-            self.cwd,
-            "All Files(*);;JSON Files(*.json)"
-        )
-        norm_file_path = os.path.normpath(flow_file_path)
-        if norm_file_path == '.' or norm_file_path[-4:] != "json":
-            print("未选择正确的文件！！")
+        flow_file_path = self.lineEdit_flow_file.text()
+        if flow_file_path[-4:] != "json":
+            self.tip_dialog = TipMessageBox("错误", f"请选择正确的json文件名称\n\n文件不存在时将自动新建，否则会覆盖原文件")
+            self.tip_dialog.show()
             return
         self.json_file_dict["流程描述"] = self.plainTextEdit.toPlainText()
         self.json_file_dict["流程参数"] = self.flow_param_list
-        if flow_file_path[-4:] != "json":
-            self.tip_dialog = TipMessageBox("错误", f"请填写正确的json文件名称\n\n文件不存在时将自动新建，否则会覆盖原文件")
-            self.tip_dialog.show()
-            return
-        # if not os.path.exists(flow_file_path):
-        #     os.mknod(flow_file_path)
         json_file = open(flow_file_path, 'w', encoding='utf-8')
         json.dump(self.json_file_dict, json_file, indent=4, ensure_ascii=False)
         json_file.close()
