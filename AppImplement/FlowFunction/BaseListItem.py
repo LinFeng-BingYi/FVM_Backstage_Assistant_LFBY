@@ -97,7 +97,7 @@ class BaseListWidget(QWidget):
         return self.func_widget
 
     @abstractmethod
-    def getFuncParam(self):
+    def getFuncParam(self, get_for_json=False):
         """获取属性 self.func_widget 的界面参数
         """
         pass
@@ -117,7 +117,7 @@ class BaseParamWidget(QWidget):
         super().__init__()
 
     @abstractmethod
-    def getAllParam(self):
+    def getAllParam(self, get_for_json=False):
         pass
 
     @abstractmethod

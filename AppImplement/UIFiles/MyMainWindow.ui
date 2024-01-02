@@ -715,7 +715,6 @@
      <string>功能</string>
     </property>
     <addaction name="action_edit_placing_plan"/>
-    <addaction name="action_edit_player_deck"/>
    </widget>
    <widget class="QMenu" name="menu_setting">
     <property name="title">
@@ -753,7 +752,6 @@
     <bool>false</bool>
    </attribute>
    <addaction name="action_edit_placing_plan"/>
-   <addaction name="action_edit_player_deck"/>
    <addaction name="separator"/>
    <addaction name="action_style"/>
    <addaction name="action_global_config"/>
@@ -766,11 +764,6 @@
   <action name="action_edit_placing_plan">
    <property name="text">
     <string>编辑放卡方案</string>
-   </property>
-  </action>
-  <action name="action_edit_player_deck">
-   <property name="text">
-    <string>编辑账号卡组</string>
    </property>
   </action>
   <action name="action_style">

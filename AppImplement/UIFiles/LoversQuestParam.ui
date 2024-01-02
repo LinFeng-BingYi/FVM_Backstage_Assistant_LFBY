@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,2,2,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="7,2,2,0">
    <property name="spacing">
     <number>5</number>
    </property>
@@ -211,7 +211,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>39</height>
+       <height>100</height>
       </size>
      </property>
     </spacer>

@@ -50,7 +50,7 @@ def switchWorldZone(hwnd: int, zone_name, zoom=1):
     mouseClick(hwnd, WORLD_MAP_ZONE_POS[zone_name][0] * zoom, WORLD_MAP_ZONE_POS[zone_name][1] * zoom)
     if not find_pic_loop(hwnd, OPEN_ZONE_PATH_DICT[zone_name][0], OPEN_ZONE_PATH_DICT[zone_name][1], max_time=120):
         raise BusinessError(f"超过2min还未进入区域[{zone_name}]！")
-    delay(500)
+    delay(800)
     if zone_name in need_switch_server:
         # 点击”换线“
         mouseClick(hwnd, 820 * zoom, 85 * zoom)

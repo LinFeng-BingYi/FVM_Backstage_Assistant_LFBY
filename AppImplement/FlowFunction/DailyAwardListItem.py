@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 from PySide6.QtWidgets import QFileDialog
 from PySide6.QtCore import QDate
 from AppImplement.FlowFunction.BaseListItem import BaseListWidget, BaseParamWidget
 from AppImplement.FormFiles.DailyAwardParam import Ui_DailyAwardParam
 
 import os
+from re import match
 
 from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
@@ -16,8 +18,8 @@ class DailyAwardListWidget(BaseListWidget):
 
         self.func_widget = DailyAwardParamWidget()
 
-    def getFuncParam(self):
-        return self.func_widget.getAllParam()
+    def getFuncParam(self, get_for_json=False):
+        return self.func_widget.getAllParam(get_for_json)
 
 
 class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
@@ -45,7 +47,7 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
             return
         self.lineEdit_flowers_receiver.setText(norm_file_path)
 
-    def getAllParam(self):
+    def getAllParam(self, get_for_json=False):
         execute_team_magic_tower = False
         execute_destiny_tree = False
         # 在勾选主体复选框的情况下，若勾选"强制执行"，则永远返回True，否则只有星期一时返回True
@@ -55,6 +57,26 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
         if self.checkBox_destiny_tree.isChecked() and (
                 self.checkBox_force_destiny_tree.isChecked() or QDate.currentDate().dayOfWeek() == 1):
             execute_destiny_tree = True
+        # 如果是用于生成json文件，则字典dict内容与界面控件一一对应
+        if get_for_json:
+            union_garden_param_dict = {
+                "fertilize_date": self.lineEdit_fertilize_date.text(),
+                "plant_type": self.comboBox_garden_plant_type.currentIndex()
+            }
+        else:
+            # 获取施肥起止时间，判断当前日期是否需要施肥
+            start_date_str, end_date_str = self.lineEdit_fertilize_date.text().split('-')
+            start_year, start_month, start_day = start_date_str.split('/')
+            start_date = QDate(int(start_year), int(start_month), int(start_day))
+            end_year, end_month, end_day = end_date_str.split('/')
+            end_date = QDate(int(end_year), int(end_month), int(end_day))
+            need_fertilize = False
+            if start_date <= QDate.currentDate() <= end_date:
+                need_fertilize = True
+            union_garden_param_dict = {
+                "need_fertilize": need_fertilize,
+                "plant_type": self.comboBox_garden_plant_type.currentIndex()
+            }
         return {
             "player": self.comboBox_select_player.currentIndex(),
             "VIP签到": self.checkBox_vip_signin.isChecked(),
@@ -66,17 +88,14 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
             "法老宝藏": [self.checkBox_pharaoh_treasure.isChecked(), {
                 "flop_pos": int(self.comboBox_pharaoh_flop_pos.currentText())
             }],
-            "公会花园": [self.checkBox_union_garden.isChecked(), {
-                "need_fertilize": self.checkBox_need_fertilize.isChecked(),
-                "plant_type": self.comboBox_garden_plant_type.currentIndex()
-            }],
+            "公会花园": [self.checkBox_union_garden.isChecked(), union_garden_param_dict],
             "公会任务": [self.checkBox_union_quest.isChecked(), {
                 "release_quest": self.checkBox_release_quest.isChecked()
             }],
             "打开美食大赛": self.checkBox_open_food_contest.isChecked(),
             "打开背包": self.checkBox_open_backpack.isChecked(),
-            "领取双人魔塔奖励": execute_team_magic_tower,
-            "领取缘分树奖励": execute_destiny_tree,
+            "领取双人魔塔奖励": self.checkBox_team_magic_tower.isChecked() if get_for_json else execute_team_magic_tower,
+            "领取缘分树奖励": self.checkBox_destiny_tree.isChecked() if get_for_json else execute_destiny_tree,
             "赠送鲜花": [self.checkBox_give_flowers.isChecked(), {
                 "receiver_name_path": self.lineEdit_flowers_receiver.text(),
                 "use_gift_coupon": self.checkBox_use_gift_coupon.isChecked(),
@@ -95,7 +114,8 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
         self.checkBox_pharaoh_treasure.setChecked(param_dict["法老宝藏"][0])
         self.comboBox_pharaoh_flop_pos.setCurrentText(str(param_dict["法老宝藏"][1]["flop_pos"]))
         self.checkBox_union_garden.setChecked(param_dict["公会花园"][0])
-        self.checkBox_need_fertilize.setChecked(param_dict["公会花园"][1]["need_fertilize"])
+        if "fertilize_date" in param_dict["公会花园"][1]:
+            self.lineEdit_fertilize_date.setText(param_dict["公会花园"][1]["fertilize_date"])
         self.comboBox_garden_plant_type.setCurrentIndex(param_dict["公会花园"][1]["plant_type"])
         self.checkBox_union_quest.setChecked(param_dict["公会任务"][0])
         self.checkBox_release_quest.setChecked(param_dict["公会任务"][1]["release_quest"])
@@ -114,4 +134,14 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
     def checkInputValidity(self):
         if self.checkBox_give_flowers.isChecked() and not os.path.exists(self.lineEdit_flowers_receiver.text()):
             return False, "未找到鲜花接收方昵称截图！"
+        if not match("^[0-9]{4}/[01][0-9]/[0-3][0-9]-[0-9]{4}/[01][0-9]/[0-3][0-9]$", self.lineEdit_fertilize_date.text()):
+            return False, "请输入正确的日期范围！"
+        start_date_str, end_date_str = self.lineEdit_fertilize_date.text().split('-')
+        start_year, start_month, start_day = start_date_str.split('/')
+        start_date = QDate(int(start_year), int(start_month), int(start_day))
+        end_year, end_month, end_day = end_date_str.split('/')
+        end_date = QDate(int(end_year), int(end_month), int(end_day))
+        # print(start_date, end_date)
+        if start_date > end_date:
+            return False, "施肥起始日期不能大于终止日期！"
         return True

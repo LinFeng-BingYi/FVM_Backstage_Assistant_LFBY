@@ -19,8 +19,8 @@ class CrossServiceListWidget(BaseListWidget):
 
         self.func_widget = CrossServiceParamWidget()
 
-    def getFuncParam(self):
-        return self.func_widget.getAllParam()
+    def getFuncParam(self, get_for_json=False):
+        return self.func_widget.getAllParam(get_for_json)
 
 
 class CrossServiceParamWidget(Ui_CrossServiceParam, BaseParamWidget):
@@ -68,7 +68,7 @@ class CrossServiceParamWidget(Ui_CrossServiceParam, BaseParamWidget):
             return
         self.lineEdit_1p_room_name_path.setText(norm_file_path)
 
-    def getAllParam(self):
+    def getAllParam(self, get_for_json=False):
         return {
             "player1": self.comboBox_select_1p.currentIndex() + 1,
             "player2": self.comboBox_select_2p.currentIndex(),      # 取值为0说明该功能为单人模式

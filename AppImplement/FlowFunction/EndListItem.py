@@ -15,8 +15,8 @@ class EndListWidget(BaseListWidget):
 
         self.func_widget = EndParamWidget()
 
-    def getFuncParam(self):
-        return self.func_widget.getAllParam()
+    def getFuncParam(self, get_for_json=False):
+        return self.func_widget.getAllParam(get_for_json)
 
 
 class EndParamWidget(Ui_EndParam, BaseParamWidget):
@@ -26,7 +26,7 @@ class EndParamWidget(Ui_EndParam, BaseParamWidget):
 
         self.cwd = ROOT_PATH                      # 程序当前工作目录
 
-    def getAllParam(self):
+    def getAllParam(self, get_for_json=False):
         return None
 
     def checkInputValidity(self):

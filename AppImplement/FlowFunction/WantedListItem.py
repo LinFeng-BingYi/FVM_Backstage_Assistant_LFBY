@@ -19,8 +19,8 @@ class WantedListWidget(BaseListWidget):
 
         self.func_widget = WantedParamWidget()
 
-    def getFuncParam(self):
-        return self.func_widget.getAllParam()
+    def getFuncParam(self, get_for_json=False):
+        return self.func_widget.getAllParam(get_for_json)
 
 
 class WantedParamWidget(Ui_WantedParam, BaseParamWidget):
@@ -67,7 +67,7 @@ class WantedParamWidget(Ui_WantedParam, BaseParamWidget):
         self.comboBox_plan_fkd.clear()
         self.comboBox_plan_fkd.addItems(all_plan)
 
-    def getAllParam(self):
+    def getAllParam(self, get_for_json=False):
         active_level_dict = dict()
         """
         active_level_dict格式：{

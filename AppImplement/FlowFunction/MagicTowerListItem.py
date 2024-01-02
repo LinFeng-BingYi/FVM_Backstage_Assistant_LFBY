@@ -19,8 +19,8 @@ class MagicTowerListWidget(BaseListWidget):
 
         self.func_widget = MagicTowerParamWidget()
 
-    def getFuncParam(self):
-        return self.func_widget.getAllParam()
+    def getFuncParam(self, get_for_json=False):
+        return self.func_widget.getAllParam(get_for_json)
 
 
 class MagicTowerParamWidget(Ui_MagicTowerParam, BaseParamWidget):
@@ -56,7 +56,7 @@ class MagicTowerParamWidget(Ui_MagicTowerParam, BaseParamWidget):
         self.comboBox_1p_plan.clear()
         self.comboBox_1p_plan.addItems(self.place_plan_procs.getAllSection())
 
-    def getAllParam(self):
+    def getAllParam(self, get_for_json=False):
         return {
             "player1": self.comboBox_select_1p.currentIndex() + 1,
             "player2": self.comboBox_select_2p.currentIndex(),  # 取值为0说明该功能为单人模式

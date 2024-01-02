@@ -201,14 +201,14 @@ class FuncFlowListWidget(QListWidget):
                 return False
         return True
 
-    def getFlowFuncsParam(self, change_status=True):
+    def getFlowFuncsParam(self, change_status=True, get_for_json=False):
         if not self.checkFuncOrderValidity():
             return None
         if not self.checkActiveFuncParamValidity():
             return None
         flow_funcs_param = []
         for item_widget in self.active_item_widget_list:
-            func_widget_param = item_widget.getFuncParam()
+            func_widget_param = item_widget.getFuncParam(get_for_json)
             func_widget_param["func_name"] = item_widget.getFuncName()
             flow_funcs_param.append(func_widget_param)
             # print("功能参数", func_widget_param)

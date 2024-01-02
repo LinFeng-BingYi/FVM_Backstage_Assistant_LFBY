@@ -202,7 +202,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.tip_message_box.show()
 
     def openSaveFlowList(self):
-        flow_funcs_param = self.listWidget_flow.getFlowFuncsParam(False)
+        flow_funcs_param = self.listWidget_flow.getFlowFuncsParam(False, True)
         if flow_funcs_param is None or len(flow_funcs_param) == 0:
             return
         # 流程中单个功能可以出现多次，使用dict存储会键冲突，改用list存储

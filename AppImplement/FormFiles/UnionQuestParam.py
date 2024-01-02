@@ -109,7 +109,7 @@ class Ui_UnionQuestParam(object):
 
         self.verticalLayout_top.addWidget(self.groupBox_file_path)
 
-        self.verticalSpacer = QSpacerItem(20, 158, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 100, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_top.addItem(self.verticalSpacer)
 

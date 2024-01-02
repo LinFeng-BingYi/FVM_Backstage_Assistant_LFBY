@@ -20,8 +20,8 @@ class StartListWidget(BaseListWidget):
 
         self.func_widget = StartParamWidget()
 
-    def getFuncParam(self):
-        return self.func_widget.getAllParam()
+    def getFuncParam(self, get_for_json=False):
+        return self.func_widget.getAllParam(get_for_json)
 
 
 class StartParamWidget(Ui_StartParam, BaseParamWidget):
@@ -75,7 +75,7 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
             return
         lineEdit.setText(norm_file_path)
 
-    def getAllParam(self):
+    def getAllParam(self, get_for_json=False):
         hwnd_1p = self.lineEdit_1p_hwnd.text()
         hwnd_2p = self.lineEdit_2p_hwnd.text()
         global_info = {

@@ -109,10 +109,11 @@ class Ui_LoversQuestParam(object):
 
         self.verticalLayout.addWidget(self.groupBox_file_path)
 
-        self.verticalSpacer = QSpacerItem(20, 39, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 100, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
+        self.verticalLayout.setStretch(0, 7)
         self.verticalLayout.setStretch(1, 2)
         self.verticalLayout.setStretch(2, 2)
 
