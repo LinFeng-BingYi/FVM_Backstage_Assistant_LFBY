@@ -4,9 +4,9 @@
         {
             "enable_2p": true,
             "max_check_time": 15,
-            "1p_hwnd": 10160050,
+            "1p_hwnd": 0,
             "1p_zoom": 1.5,
-            "2p_hwnd": 3542566,
+            "2p_hwnd": 0,
             "2p_zoom": 1.5,
             "2p_name_pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\好友界面小号昵称.bmp",
             "deck_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\账号预设卡片组.ini",

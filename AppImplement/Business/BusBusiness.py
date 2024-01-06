@@ -682,7 +682,7 @@ class BusinessBus(QThread):
             self.executeBusinessFlow()
         except Exception as exception:
             business_error_str = repr(exception) + "\n" + str(exception)
-            if business_error_str.find("无效的窗口句柄"):
+            if business_error_str.find("无效的窗口句柄") != -1:
                 self.formatBusinessMessage("结束流程")
                 self.signal_send_business_error.emit("请先在[开始]功能中获取正确的游戏窗口句柄！")
                 self.signal_flow_finished.emit(False)
@@ -711,7 +711,11 @@ class BusinessBus(QThread):
 
         # 再执行每个功能
         func_no = 1  # 功能在流程中的序号
-        for func_param in self.func_flow[1:]:
+        # 应对刚登录游戏的弹窗
+        closeJustLoginDialog(start_param["1p_hwnd"], start_param["1p_zoom"])
+        if enable_2p and start_param["2p_hwnd"] != 0:
+            closeJustLoginDialog(start_param["2p_hwnd"], start_param["2p_zoom"])
+        for func_param in self.func_flow[func_no:]:
             self.formatBusinessMessage(f"开始功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, "executing")
             # 当前功能执行结果，默认为“完成”，当捕捉到异常后改为“错误”
@@ -720,6 +724,7 @@ class BusinessBus(QThread):
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
                 zoom = start_param[f"{func_param['player'] + 1}p_zoom"]
+                print("日常领取的句柄与缩放：", hwnd, zoom)
                 # 去除干扰项
                 del func_param["func_name"]
                 del func_param["player"]

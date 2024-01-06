@@ -243,6 +243,8 @@ OPEN_BACKPACK_PATH = ROOT_PATH + r"\resources\images\application\界面图标\�
 SECONDARY_PASSWORD_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\二级密码.bmp"
 # 进入缘分树
 OPEN_DESTINY_TREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入缘分树.bmp"
+# 进入假期特惠
+OPEN_HOLIDAY_DISCOUNT_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入假期特惠.bmp"
 
 # 进入区域相关 -----------------------------------------------------------------------
 # 世界地图
@@ -295,3 +297,6 @@ GOTO_BUTTON_PIC_DICT = {
     "火山岛": WANTED_HSD_GOTO_BUTTON_PATH,
     "浮空岛": WANTED_FKD_GOTO_BUTTON_PATH
 }
+
+# 其他 ---------------------------------------------------------------------------
+COMMON_TIP_DIALOG_CLOSE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\常见提示框关闭按钮.bmp"

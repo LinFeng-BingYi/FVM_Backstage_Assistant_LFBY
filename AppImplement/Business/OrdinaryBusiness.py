@@ -202,11 +202,11 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
                 # 继续找其他已完成的任务
                 complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
     # 关闭底部任务界面
-    mouseClick(hwnd, 640 * zoom, 585 * zoom)
+    mouseClick(hwnd, 855 * zoom, 55 * zoom)
     delay(1000)
-    if not checkCloseActivity(hwnd):
-        mouseClick(hwnd, 855 * zoom, 55 * zoom)
-        delay(1000)
+    # if not checkCloseActivity(hwnd):
+    #     mouseClick(hwnd, 855 * zoom, 55 * zoom)
+    #     delay(1000)
     return "完成[底部任务]"
 
 
@@ -484,7 +484,7 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
         mouseClick(hwnd, 760 * zoom, 100 * zoom)
         delay(500)
         result_str = "[赠送鲜花]失败！未解锁二级密码"
-    if use_gift_coupon:
+    elif use_gift_coupon:
         # 选择礼券鲜花
         mouseClick(hwnd, 500 * zoom, 308 * zoom)
         delay(500)
@@ -640,4 +640,16 @@ def createWantedRoom(hwnd, three_island_zone, zoom=1):
     createPwdRoom(hwnd, "0000", zoom)
 
 
-
+def closeJustLoginDialog(hwnd, zoom=1):
+    """关闭刚登录游戏时弹出的对话框
+    """
+    # 健康游戏提示对话框
+    tip_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH)
+    if tip_dialog_close_btn:
+        mouseClick(hwnd, tip_dialog_close_btn[0] * zoom, tip_dialog_close_btn[1] * zoom)
+        delay(200)
+    delay(300)
+    # 假期特惠对话框
+    if find_pic(hwnd, OPEN_HOLIDAY_DISCOUNT_PATH):
+        mouseClick(hwnd, 770 * zoom, 130 * zoom)
+        delay(500)
