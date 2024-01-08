@@ -12,7 +12,7 @@ import win32ui
 import cv2
 import numpy
 import math
-from time import time
+from time import time, sleep
 
 
 # 找图 -----------------------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ def save_captured_pic(pic_path, hwnd=0, cap_range=None):
     cv2.imwrite(pic_path, img)
 
 
-def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.9):
+def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.98):
     """在指定窗口中，指定范围内，寻找模板图像，相似度大于等于threshold则表示找到了. 失败返回 False
 
     Args:
@@ -139,7 +139,7 @@ def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: 
     return coordinate
 
 
-def find_pic_loop(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.9, max_time=600):
+def find_pic_loop(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.98, max_time=600, internal=0.01):
     """在指定窗口中，指定范围内，寻找模板图像，相似度大于等于threshold则表示找到了. 失败返回 False
        超过 max_time 后仍未找到则直接返回 False，其单位为秒(s)
 
@@ -154,6 +154,8 @@ def find_pic_loop(hwnd: int, template_path: str, find_range: list = None, thresh
             判断图像是否找到的阈值
         max_time: int
             寻找时间限制，单位为秒(s)
+        internal: float
+            寻找时间间隔，单位为秒(s)
 
     Returns: tuple[float, float, float, float, float, float] | False
         窗口中与模板图像相似度最高的位置信息。包含6个元素：
@@ -222,6 +224,8 @@ def find_pic_loop(hwnd: int, template_path: str, find_range: list = None, thresh
                 return coordinate
             if (time() - start_time) >= max_time:
                 return False
+
+            sleep(internal)
     except cv2.error:
         print('文件错误! 模板图片路径：', template_path)
         return False

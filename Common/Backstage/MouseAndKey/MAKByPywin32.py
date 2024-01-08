@@ -205,3 +205,9 @@ def keyUp(hwnd, key: str):
     num = win32api.MapVirtualKey(key_num, 0)
     uparam = 1 | (num << 16) | (1 << 30) | (1 << 31)
     win32api.PostMessage(hwnd, win32con.WM_KEYUP, key_num, uparam)
+
+
+def keyInputStr(hwnd, key_str):
+    for char in key_str:
+        keyPress(hwnd, char)
+        sleep(0.3)

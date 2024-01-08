@@ -16,6 +16,7 @@ from AppImplement.FlowFunction.VolcanicRelicListItem import VolcanicRelicListWid
 from AppImplement.FlowFunction.MagicTowerListItem import MagicTowerListWidget
 from AppImplement.FlowFunction.CrossServiceListItem import CrossServiceListWidget
 from AppImplement.FlowFunction.WantedListItem import WantedListWidget
+from AppImplement.FlowFunction.AutoLoginListItem import AutoLoginListWidget
 
 from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
@@ -23,6 +24,7 @@ from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 SUPPORT_FUNC = {
     "开始": StartListWidget,
     "结束": EndListWidget,
+    "自动登录": AutoLoginListWidget,
     "日常领取": DailyAwardListWidget,
     "刷指定关卡": LoopLevelListWidget,
     "公会任务": UnionQuestListWidget,

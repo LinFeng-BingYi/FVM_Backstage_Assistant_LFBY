@@ -154,6 +154,12 @@
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;功能流程列表&lt;/span&gt;&lt;/p&gt;&lt;p&gt;双击选中，右侧显示参数界面&lt;/p&gt;&lt;p&gt;右键可删除、禁用、解禁&lt;/p&gt;&lt;p&gt;流程状态：&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; color:#5f9ea0;&quot;&gt;●&lt;/span&gt;挂起&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; color:green;&quot;&gt;●&lt;/span&gt;等待&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; color:blue;&quot;&gt;●&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;/&gt;执行&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; color:yellow;&quot;&gt;●&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;/&gt;完成&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; color:red;&quot;&gt;●&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;/&gt;错误&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
             <property name="dragEnabled">
              <bool>true</bool>
             </property>

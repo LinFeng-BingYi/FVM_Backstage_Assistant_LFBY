@@ -13,7 +13,9 @@ from AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
 from AppImplement.RWConfigFile.RWPlacingPlan import PlacingPlanProcessor
 from AppImplement.Business.Foundation import *
 from AppImplement.Business.OrdinaryBusiness import *
+from AppImplement.Business.NonGameBusiness import *
 
+# [日常领取]子功能名称与函数名映射关系dict
 DAILY_AWARD_FUNC_DICT = {
     "VIP签到": executeVipSignin,
     "每日签到": executeDailySignin,
@@ -29,6 +31,12 @@ DAILY_AWARD_FUNC_DICT = {
     "领取双人魔塔奖励": executeReceiveTeamMagicTower,
     "赠送鲜花": executeGiveFlowers,
     "领取缘分树奖励": executeReceiveDestinyTree
+}
+
+# [自动登录]登录方式与函数名映射关系dict
+AUTO_LOGIN_WAY_FUNC_DICT = {
+    "微端": autoLoginMicroTerminal,
+    "360游戏大厅": autoLogin360GameHall
 }
 
 
@@ -514,6 +522,7 @@ class BusinessBus(QThread):
 
             tab_num = 1
         switchWorldZone(hwnd_1p, "魔塔蛋糕", zoom1)
+        delay(2000)
 
         # 选择tab页
         mouseClick(hwnd_1p, (45 + 73 * tab_num) * zoom1, 70 * zoom1)
@@ -711,6 +720,39 @@ class BusinessBus(QThread):
 
         # 再执行每个功能
         func_no = 1  # 功能在流程中的序号
+        # 若第二个是[自动登录]，则执行
+        if self.func_flow[1]["func_name"] == "自动登录":
+            func_param = self.func_flow[1]
+            # 获取顶层句柄
+            top_hwnd_1p = func_param["1p_top_hwnd"]
+            # 获取区服
+            server_no_1p = func_param["1p_server_no"]
+
+            # 启动延时（单位min）
+            delay(func_param["start_delay"] * 60000)
+
+            # 调用自动登录函数，更新可操作句柄
+            start_param["1p_hwnd"] = AUTO_LOGIN_WAY_FUNC_DICT[func_param["1p_login_way"]](
+                top_hwnd_1p,
+                server_no_1p,
+                start_param["1p_zoom"]
+            )
+            if enable_2p and func_param["2p_top_hwnd"] != 0:
+                # 获取顶层句柄
+                top_hwnd_2p = func_param["2p_top_hwnd"]
+                # 获取区服
+                server_no_2p = func_param["2p_server_no"]
+                # 调用自动登录函数，更新可操作句柄
+                start_param["2p_hwnd"] = AUTO_LOGIN_WAY_FUNC_DICT[func_param["2p_login_way"]](
+                    top_hwnd_2p,
+                    server_no_2p,
+                    start_param["2p_zoom"]
+                )
+            # 完成”自动登录“功能
+            self.signal_send_func_status.emit(func_no, "completed")
+            # 下一个功能从数组下标2开始执行
+            func_no = 2
+
         # 应对刚登录游戏的弹窗
         closeJustLoginDialog(start_param["1p_hwnd"], start_param["1p_zoom"])
         if enable_2p and start_param["2p_hwnd"] != 0:
@@ -965,6 +1007,12 @@ class BusinessBus(QThread):
                         func_final_status = "wrong"
                         self.signal_send_business_error.emit(business_error_str)
                         self.formatBusinessMessage(business_error_str, "ERROR")
+            else:
+                self.formatBusinessMessage(f"功能[{func_param['func_name']}]不存在！或该功能处于错误的位置！", "ERROR")
+                func_final_status = "wrong"
+                self.signal_send_func_status.emit(func_no, func_final_status)
+                func_no += 1
+                continue
 
             self.formatBusinessMessage(f"结束功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, func_final_status)

@@ -231,6 +231,8 @@ OPEN_UNION_GARDEN_PATH = ROOT_PATH + r"\resources\images\application\界面图�
 UNION_GARDEN_MAX_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\公会花园成长值满.bmp"
 # 公会花园待种植
 UNION_GARDEN_PLANT_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\公会花园待种植.bmp"
+# 好友列表
+FRIEND_LIST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\好友列表.bmp"
 # 进入好友
 OPEN_FRIEND_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入好友.bmp"
 # 美食大赛
@@ -300,3 +302,7 @@ GOTO_BUTTON_PIC_DICT = {
 
 # 其他 ---------------------------------------------------------------------------
 COMMON_TIP_DIALOG_CLOSE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\常见提示框关闭按钮.bmp"
+
+# 自动登录 -------------------------------------------------------------------------
+AUTO_LOGIN_USERNAME_BOX = ROOT_PATH + r"\resources\images\application\自动登录相关\用户名输入框.bmp"
+AUTO_LOGIN_ENTER_SERVER_BTN = ROOT_PATH + r"\resources\images\application\自动登录相关\进入服务器按钮.bmp"

@@ -643,6 +643,7 @@ def createWantedRoom(hwnd, three_island_zone, zoom=1):
 def closeJustLoginDialog(hwnd, zoom=1):
     """关闭刚登录游戏时弹出的对话框
     """
+    delay(2000)
     # 健康游戏提示对话框
     tip_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH)
     if tip_dialog_close_btn:

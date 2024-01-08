@@ -93,6 +93,8 @@ class Ui_MyMainWindow(object):
 
         self.listWidget_flow = FuncFlowListWidget(self.widget_edit_flow)
         self.listWidget_flow.setObjectName(u"listWidget_flow")
+        self.listWidget_flow.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.listWidget_flow.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.listWidget_flow.setDragEnabled(True)
         self.listWidget_flow.setDragDropMode(QAbstractItemView.InternalMove)
 
