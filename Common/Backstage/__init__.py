@@ -24,7 +24,7 @@ if __name__ == "__main__":
     keyPress(hwnd, "1", times=4)
 
     # # 测试找图
-    # pic_path = "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\resources\\images\\application\\情侣任务\\任务1\\美味岛-曲奇岛-领取奖励.bmp"
+    # pic_path = r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\application\情侣任务\任务1\美味岛-曲奇岛-领取奖励.bmp"
     # range_list = [115, 118, 306, 158]
     # find_result = find_pic(hwnd, pic_path, range_list)
     # if find_result is None:

@@ -6,10 +6,12 @@
 # @Time    : 2023/12/10 15:29
 # @Dsc     : 一般业务，过程中不用输出信息到主界面
 
+from PySide6.QtCore import QDate
+
 from Common.Backstage import *
 from AppImplement.GlobalValue.StaticValue import *
 from AppImplement.Business.CustomException import BusinessError
-from AppImplement.Business.Foundation import switchWorldZone, singleLayerChooseLevel, createPwdRoom
+from AppImplement.Business.Foundation import switchWorldZone, singleLayerChooseLevel, createPwdRoom, openBottomMenu
 
 from math import floor
 from os import listdir
@@ -162,11 +164,7 @@ def executeTarotTreasure(hwnd, zoom=1):
 
 
 def executeReceiveBottomQuest(hwnd, zoom=1):
-    # 点击界面下方”任务“
-    mouseClick(hwnd, 640 * zoom, 585 * zoom)
-    if not find_pic_loop(hwnd, OPEN_BOTTOM_QUEST_PATH, [422, 41, 525, 68], max_time=120):
-        raise BusinessError("超过2min还未打开底部任务界面！")
-    delay(1000)
+    openBottomMenu(hwnd, "任务", zoom=zoom)
     # 收起前三种任务
     for i in range(3):
         print(f"收起第{i}种任务")
@@ -210,20 +208,21 @@ def executeReceiveBottomQuest(hwnd, zoom=1):
     return "完成[底部任务]"
 
 
-def executeUnionGarden(hwnd, need_fertilize: bool, plant_type=0, zoom=1):
+def executeUnionGarden(hwnd, fertilize_date: str, plant_type=0, zoom=1):
     """执行公会花园浇水、施肥
 
     Args:
         hwnd: int
             窗口句柄
-        need_fertilize: bool
-            是否需要施肥
+        fertilize_date: str
+            公会花园施肥日期范围。格式："yyyy/MM/dd-yyyy/MM/dd"
         plant_type: int[0 | 1 | 2 | 3]
             当本公会的公会树需要种植时生效。0表示无种植权限，1、2、3表示种植初级、中级、高级公会树
         zoom: float
             缩放比例
     """
     result_str = "完成[公会花园]。已浇水，但未施肥"
+    need_fertilize = determineDateRangeEvent(fertilize_date)
     # 点击底部“公会”
     mouseClick(hwnd, 777 * zoom, 585 * zoom)
     if not find_pic_loop(hwnd, OPEN_UNION_PATH, [218, 95, 292, 111], max_time=120):
@@ -338,14 +337,7 @@ def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
     """领取公会任务，若有权限，可以选择发布会长任务
     """
     result_str = "完成[公会任务]"
-    # 点击“跳转”
-    mouseClick(hwnd, 870 * zoom, 585 * zoom)
-    delay(500)
-    # 点击“公会任务”
-    mouseClick(hwnd, 900 * zoom, 260 * zoom)
-    if not find_pic_loop(hwnd, OPEN_UNION_QUEST_PATH, [392, 35, 566, 72], max_time=120):
-        raise BusinessError("超过2min还未打开公会任务界面！")
-    delay(500)
+    openBottomMenu(hwnd, "跳转", "公会任务", zoom)
     # 查找已完成的任务
     complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
     while complete_quest_pos:
@@ -398,14 +390,7 @@ def executeOpenFoodContest(hwnd, close_dialog=True, zoom=1):
 
 
 def executeOpenBackpack(hwnd, zoom=1):
-    # 点击界面下方”背包“
-    mouseClick(hwnd, 595 * zoom, 585 * zoom)
-    if not find_pic_loop(hwnd, OPEN_BACKPACK_PATH, [33, 123, 122, 184], max_time=120):
-        raise BusinessError("超过2min还未打开背包界面！")
-    delay(1000)
-    # 点击“道具”
-    mouseClick(hwnd, 780 * zoom, 70 * zoom)
-    delay(500)
+    openBottomMenu(hwnd, "背包", "道具", zoom)
     # 关闭界面
     mouseClick(hwnd, 917 * zoom, 60 * zoom)
     delay(1000)
@@ -415,7 +400,9 @@ def executeOpenBackpack(hwnd, zoom=1):
     return "完成[打开背包]"
 
 
-def executeReceiveTeamMagicTower(hwnd, zoom=1):
+def executeReceiveTeamMagicTower(hwnd, box_checked: bool, force_execute: bool, zoom=1):
+    if not determineMondayEvent(box_checked, force_execute):
+        return "跳过[领取双人魔塔奖励]"
     """领取双人魔塔奖励"""
     switchWorldZone(hwnd, "魔塔蛋糕", zoom)
     # 点击双人tab页
@@ -502,17 +489,12 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
     return result_str
 
 
-def executeReceiveDestinyTree(hwnd, zoom=1):
+def executeReceiveDestinyTree(hwnd, box_checked: bool, force_execute: bool, zoom=1):
+    if not determineMondayEvent(box_checked, force_execute):
+        return "跳过[领取缘分树奖励]"
     """领取缘分树奖励
     """
-    # 点击“跳转”
-    mouseClick(hwnd, 870 * zoom, 585 * zoom)
-    delay(500)
-    # 点击“缘分树”
-    mouseClick(hwnd, 900 * zoom, 340 * zoom)
-    if not find_pic_loop(hwnd, OPEN_DESTINY_TREE_PATH, [380, 10, 570, 80], max_time=120):
-        raise BusinessError("超过2min还未打开缘分树界面！")
-    delay(500)
+    openBottomMenu(hwnd, "跳转", "缘分树", zoom)
     # 点击”领取“
     mouseClick(hwnd, 375 * zoom, 505 * zoom)
     delay(500)
@@ -654,3 +636,40 @@ def closeJustLoginDialog(hwnd, zoom=1):
     if find_pic(hwnd, OPEN_HOLIDAY_DISCOUNT_PATH):
         mouseClick(hwnd, 770 * zoom, 130 * zoom)
         delay(500)
+
+
+# 流程列表功能界面参数加工相关
+
+
+def determineMondayEvent(sub_func_checked: bool, force_execute: bool):
+    """判断每周一才执行的事件在本日是否需要执行
+
+    适用的事件有：[领取双人魔塔奖励]、[领取缘分树奖励]
+    """
+    if sub_func_checked and (
+            force_execute or QDate.currentDate().dayOfWeek() == 1):
+        return True
+    return False
+
+
+def determineDateRangeEvent(execute_date_range: str):
+    """判断指定日期范围的事件在本日是否需要执行
+
+    适用的事件有：[公会花园施肥]
+
+    Args:
+        execute_date_range: str
+            日期范围。格式："yyyy/MM/dd-yyyy/MM/dd"
+
+    Return: bool
+    """
+    # 获取起止时间，判断当前日期是否需要执行
+    start_date_str, end_date_str = execute_date_range.split('-')
+    start_year, start_month, start_day = start_date_str.split('/')
+    start_date = QDate(int(start_year), int(start_month), int(start_day))
+    end_year, end_month, end_day = end_date_str.split('/')
+    end_date = QDate(int(end_year), int(end_month), int(end_day))
+    if start_date <= QDate.currentDate() <= end_date:
+        return True
+    return False
+

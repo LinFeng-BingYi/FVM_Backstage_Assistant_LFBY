@@ -48,35 +48,6 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
         self.lineEdit_flowers_receiver.setText(norm_file_path)
 
     def getAllParam(self, get_for_json=False):
-        execute_team_magic_tower = False
-        execute_destiny_tree = False
-        # 在勾选主体复选框的情况下，若勾选"强制执行"，则永远返回True，否则只有星期一时返回True
-        if self.checkBox_team_magic_tower.isChecked() and (
-                self.checkBox_force_team_magic_tower.isChecked() or QDate.currentDate().dayOfWeek() == 1):
-            execute_team_magic_tower = True
-        if self.checkBox_destiny_tree.isChecked() and (
-                self.checkBox_force_destiny_tree.isChecked() or QDate.currentDate().dayOfWeek() == 1):
-            execute_destiny_tree = True
-        # 如果是用于生成json文件，则字典dict内容与界面控件一一对应
-        if get_for_json:
-            union_garden_param_dict = {
-                "fertilize_date": self.lineEdit_fertilize_date.text(),
-                "plant_type": self.comboBox_garden_plant_type.currentIndex()
-            }
-        else:
-            # 获取施肥起止时间，判断当前日期是否需要施肥
-            start_date_str, end_date_str = self.lineEdit_fertilize_date.text().split('-')
-            start_year, start_month, start_day = start_date_str.split('/')
-            start_date = QDate(int(start_year), int(start_month), int(start_day))
-            end_year, end_month, end_day = end_date_str.split('/')
-            end_date = QDate(int(end_year), int(end_month), int(end_day))
-            need_fertilize = False
-            if start_date <= QDate.currentDate() <= end_date:
-                need_fertilize = True
-            union_garden_param_dict = {
-                "need_fertilize": need_fertilize,
-                "plant_type": self.comboBox_garden_plant_type.currentIndex()
-            }
         return {
             "player": self.comboBox_select_player.currentIndex(),
             "VIP签到": self.checkBox_vip_signin.isChecked(),
@@ -88,14 +59,23 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
             "法老宝藏": [self.checkBox_pharaoh_treasure.isChecked(), {
                 "flop_pos": int(self.comboBox_pharaoh_flop_pos.currentText())
             }],
-            "公会花园": [self.checkBox_union_garden.isChecked(), union_garden_param_dict],
+            "公会花园": [self.checkBox_union_garden.isChecked(), {
+                "fertilize_date": self.lineEdit_fertilize_date.text(),
+                "plant_type": self.comboBox_garden_plant_type.currentIndex()
+            }],
             "公会任务": [self.checkBox_union_quest.isChecked(), {
                 "release_quest": self.checkBox_release_quest.isChecked()
             }],
             "打开美食大赛": self.checkBox_open_food_contest.isChecked(),
             "打开背包": self.checkBox_open_backpack.isChecked(),
-            "领取双人魔塔奖励": self.checkBox_team_magic_tower.isChecked() if get_for_json else execute_team_magic_tower,
-            "领取缘分树奖励": self.checkBox_destiny_tree.isChecked() if get_for_json else execute_destiny_tree,
+            "领取双人魔塔奖励": [True, {
+                "box_checked": self.checkBox_team_magic_tower.isChecked(),
+                "force_execute": self.checkBox_force_team_magic_tower.isChecked()
+            }],
+            "领取缘分树奖励": [True, {
+                "box_checked": self.checkBox_destiny_tree.isChecked(),
+                "force_execute": self.checkBox_force_destiny_tree.isChecked()
+            }],
             "赠送鲜花": [self.checkBox_give_flowers.isChecked(), {
                 "receiver_name_path": self.lineEdit_flowers_receiver.text(),
                 "use_gift_coupon": self.checkBox_use_gift_coupon.isChecked(),
@@ -104,6 +84,8 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
         }
 
     def setAllParam(self, param_dict):
+        flag_set_success = True
+        error_msg_list = []
         self.comboBox_select_player.setCurrentIndex(param_dict["player"])
         self.checkBox_vip_signin.setChecked(param_dict["VIP签到"])
         self.checkBox_daily_signin.setChecked(param_dict["每日签到"])
@@ -116,19 +98,35 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
         self.checkBox_union_garden.setChecked(param_dict["公会花园"][0])
         if "fertilize_date" in param_dict["公会花园"][1]:
             self.lineEdit_fertilize_date.setText(param_dict["公会花园"][1]["fertilize_date"])
+        else:
+            flag_set_success = False
+            error_msg_list.append('JSON文件中[公会花园]功能不存在"fertilize_date"字段')
         self.comboBox_garden_plant_type.setCurrentIndex(param_dict["公会花园"][1]["plant_type"])
         self.checkBox_union_quest.setChecked(param_dict["公会任务"][0])
         self.checkBox_release_quest.setChecked(param_dict["公会任务"][1]["release_quest"])
         self.checkBox_open_food_contest.setChecked(param_dict["打开美食大赛"])
         self.checkBox_open_backpack.setChecked(param_dict["打开背包"])
-        self.checkBox_team_magic_tower.setChecked(param_dict["领取双人魔塔奖励"])
-        self.checkBox_destiny_tree.setChecked(param_dict["领取缘分树奖励"])
+        if isinstance(param_dict["领取双人魔塔奖励"], list):
+            self.checkBox_team_magic_tower.setChecked(param_dict["领取双人魔塔奖励"][1]["box_checked"])
+            self.checkBox_force_team_magic_tower.setChecked(param_dict["领取双人魔塔奖励"][1]["force_execute"])
+        else:
+            flag_set_success = False
+            error_msg_list.append('JSON文件中[领取双人魔塔奖励]功能的参数格式与当前版本不兼容')
+        if isinstance(param_dict["领取缘分树奖励"], list):
+            self.checkBox_destiny_tree.setChecked(param_dict["领取缘分树奖励"][1]["box_checked"])
+            self.checkBox_force_destiny_tree.setChecked(param_dict["领取缘分树奖励"][1]["force_execute"])
+        else:
+            flag_set_success = False
+            error_msg_list.append('JSON文件中[领取缘分树奖励]功能的参数格式与当前版本不兼容')
         self.checkBox_give_flowers.setChecked(param_dict["赠送鲜花"][0])
         self.lineEdit_flowers_receiver.setText(param_dict["赠送鲜花"][1]["receiver_name_path"])
         self.checkBox_use_gift_coupon.setChecked(param_dict["赠送鲜花"][1]["use_gift_coupon"])
         self.comboBox_use_coupon_times.setCurrentText(str(param_dict["赠送鲜花"][1]["use_times"]))
         if self.checkBox_give_flowers.isChecked() and not os.path.exists(self.lineEdit_flowers_receiver.text()):
-            return False, "未找到鲜花接收方昵称截图！"
+            flag_set_success = False
+            error_msg_list.append('[赠送鲜花]功能中鲜花接收方昵称截图不存在')
+        if not flag_set_success:
+            return False, "\n".join(error_msg_list)
         return True
 
     def checkInputValidity(self):

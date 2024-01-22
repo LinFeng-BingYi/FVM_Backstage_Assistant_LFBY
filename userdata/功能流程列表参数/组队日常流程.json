@@ -14,6 +14,16 @@
             "func_name": "开始"
         },
         {
+            "start_delay": 60.0,
+            "1p_top_hwnd": 0,
+            "1p_server_no": "4",
+            "1p_login_way": "微端",
+            "2p_top_hwnd": 0,
+            "2p_server_no": "4",
+            "2p_login_way": "微端",
+            "func_name": "自动登录"
+        },
+        {
             "player": 0,
             "VIP签到": true,
             "每日签到": true,
@@ -30,7 +40,7 @@
             "公会花园": [
                 true,
                 {
-                    "fertilize_date": "2024/01/01-2024/01/11",
+                    "fertilize_date": "2024/01/18-2024/02/07",
                     "plant_type": 1
                 }
             ],
@@ -42,10 +52,22 @@
             ],
             "打开美食大赛": true,
             "打开背包": true,
-            "领取双人魔塔奖励": true,
-            "领取缘分树奖励": true,
-            "赠送鲜花": [
+            "领取双人魔塔奖励": [
                 true,
+                {
+                    "box_checked": true,
+                    "force_execute": false
+                }
+            ],
+            "领取缘分树奖励": [
+                true,
+                {
+                    "box_checked": true,
+                    "force_execute": false
+                }
+            ],
+            "赠送鲜花": [
+                false,
                 {
                     "receiver_name_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\好友界面小号昵称.bmp",
                     "use_gift_coupon": true,
@@ -71,7 +93,7 @@
             "公会花园": [
                 true,
                 {
-                    "fertilize_date": "2024/01/01-2024/01/11",
+                    "fertilize_date": "2024/01/18-2024/02/07",
                     "plant_type": 0
                 }
             ],
@@ -83,8 +105,20 @@
             ],
             "打开美食大赛": true,
             "打开背包": true,
-            "领取双人魔塔奖励": true,
-            "领取缘分树奖励": true,
+            "领取双人魔塔奖励": [
+                true,
+                {
+                    "box_checked": true,
+                    "force_execute": false
+                }
+            ],
+            "领取缘分树奖励": [
+                true,
+                {
+                    "box_checked": true,
+                    "force_execute": false
+                }
+            ],
             "赠送鲜花": [
                 true,
                 {
@@ -98,14 +132,14 @@
         {
             "player1": 1,
             "player2": 2,
-            "zone_name": "火山岛",
-            "level_name": "玛奇朵港",
+            "zone_name": "美味岛",
+            "level_name": "可可岛日",
             "loop_count": 45,
-            "flop_pos": "1;2",
+            "flop_pos": "1",
             "has_stage2": true,
             "shall_continue": true,
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\组队常用方案_二转海星.ini",
-            "plan_name": "玛奇朵港",
+            "plan_name": "可可岛日",
             "func_name": "刷指定关卡"
         },
         {
@@ -133,6 +167,18 @@
         {
             "player1": 1,
             "player2": 2,
+            "level_type": "巫毒研究所",
+            "level_num": "9星",
+            "player1_room_name_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\跨服房间列表1P截图示例.bmp",
+            "loop_count": 10,
+            "flop_pos": "1;2",
+            "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\组队常用方案_二转海星.ini",
+            "plan_name": "巫毒走道",
+            "func_name": "跨服远征"
+        },
+        {
+            "player1": 1,
+            "player2": 2,
             "level_num": 99,
             "loop_count": 5,
             "flop_pos": "1;2;3;4;5;6",
@@ -149,18 +195,6 @@
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\单人魔塔139_二转海星草扇.ini",
             "plan_name": "魔塔139",
             "func_name": "魔塔蛋糕"
-        },
-        {
-            "player1": 1,
-            "player2": 2,
-            "level_type": "巫毒研究所",
-            "level_num": "9星",
-            "player1_room_name_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\跨服房间列表1P截图示例.bmp",
-            "loop_count": 10,
-            "flop_pos": "1;2",
-            "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\组队常用方案_二转海星.ini",
-            "plan_name": "巫毒走道",
-            "func_name": "跨服远征"
         }
     ]
 }

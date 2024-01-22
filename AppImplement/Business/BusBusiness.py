@@ -321,7 +321,7 @@ class BusinessBus(QThread):
             for i in range(loop_count):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
                 self.teamFromStartToFlop()
-                self.formatBusinessMessage(f"结束第{i + 1}局")
+                # self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
             exitRoom(hwnd_1p, zoom1)
             exitRoom(hwnd_2p, zoom2)
@@ -329,7 +329,7 @@ class BusinessBus(QThread):
             for i in range(loop_count):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
                 self.singleFromStartToFlop()
-                self.formatBusinessMessage(f"结束第{i + 1}局")
+                # self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
             exitRoom(hwnd_1p, zoom1)
 
@@ -341,14 +341,7 @@ class BusinessBus(QThread):
     def startUnionQuest(self, plan_path):
         hwnd1 = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
-        # 点击“跳转”
-        mouseClick(hwnd1, 870 * zoom1, 585 * zoom1)
-        delay(500)
-        # 点击“公会任务”
-        mouseClick(hwnd1, 900 * zoom1, 260 * zoom1)
-        if not find_pic_loop(hwnd1, OPEN_UNION_QUEST_PATH, [392, 35, 566, 72], max_time=120):
-            raise BusinessError("超过2min还未打开公会任务界面！")
-        delay(500)
+        openBottomMenu(hwnd1, "跳转", "公会任务", zoom1)
         # 获取会长任务结果列表
         quest_result_list = findUnionPresidentQuest(hwnd1, zoom1)
         # 关闭公会任务界面
@@ -417,14 +410,7 @@ class BusinessBus(QThread):
     def startLoversQuest(self, plan_path):
         hwnd1 = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
-        # 点击“跳转”
-        mouseClick(hwnd1, 870 * zoom1, 585 * zoom1)
-        delay(500)
-        # 点击“情侣任务”
-        mouseClick(hwnd1, 900 * zoom1, 300 * zoom1)
-        if not find_pic_loop(hwnd1, OPEN_LOVERS_QUEST_PATH, [392, 35, 566, 80], max_time=120):
-            raise BusinessError("超过2min还未打开情侣任务界面！")
-        delay(500)
+        openBottomMenu(hwnd1, "跳转", "情侣任务", zoom1)
         # 获取情侣任务结果列表
         quest_result_list = findLoversQuest(hwnd1, zoom1)
         # 关闭情侣任务界面
@@ -474,7 +460,7 @@ class BusinessBus(QThread):
                 for i in range(loop_count):
                     self.formatBusinessMessage(f"开始第{i + 1}局")
                     self.teamFromStartToFlop()
-                    self.formatBusinessMessage(f"结束第{i + 1}局")
+                    # self.formatBusinessMessage(f"结束第{i + 1}局")
             except BusinessError as business_error:
                 business_error_str = business_error.error_info
                 # print(business_error_str)
@@ -494,7 +480,7 @@ class BusinessBus(QThread):
                 for i in range(loop_count):
                     self.formatBusinessMessage(f"开始第{i + 1}局")
                     self.singleFromStartToFlop()
-                    self.formatBusinessMessage(f"结束第{i + 1}局")
+                    # self.formatBusinessMessage(f"结束第{i + 1}局")
             except BusinessError as business_error:
                 business_error_str = business_error.error_info
                 if business_error_str.find("超过") != -1:
@@ -563,7 +549,7 @@ class BusinessBus(QThread):
                         self.formatBusinessMessage(business_error_str, "WARN")
                     else:
                         raise business_error
-            self.formatBusinessMessage(f"结束第{loop_time + 1}局")
+            # self.formatBusinessMessage(f"结束第{loop_time + 1}局")
         # 1P关闭魔塔界面
         mouseClick(hwnd_1p, 925 * zoom1, 32 * zoom1)
         delay(500)
@@ -596,7 +582,7 @@ class BusinessBus(QThread):
             for i in range(loop_count):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
                 self.teamFromStartToFlop()
-                self.formatBusinessMessage(f"结束第{i + 1}局")
+                # self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
             exitRoom(hwnd_1p, zoom1)
             exitRoom(hwnd_2p, zoom2)
@@ -607,11 +593,13 @@ class BusinessBus(QThread):
             for i in range(loop_count):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
                 self.singleFromStartToFlop()
-                self.formatBusinessMessage(f"结束第{i + 1}局")
+                # self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
             exitRoom(hwnd_1p, zoom1)
             # 退出跨服
             mouseClick(hwnd_1p, 915 * zoom1, 30 * zoom1)
+        # 退出跨服界面后，延时1s再操作
+        delay(1000)
 
     # 功能：悬赏三连 ------------------------------------------------------------------
     def startWanted(self, active_level_dict):
@@ -737,6 +725,8 @@ class BusinessBus(QThread):
                 server_no_1p,
                 start_param["1p_zoom"]
             )
+            # 应对刚登录游戏的弹窗
+            closeJustLoginDialog(start_param["1p_hwnd"], start_param["1p_zoom"])
             if enable_2p and func_param["2p_top_hwnd"] != 0:
                 # 获取顶层句柄
                 top_hwnd_2p = func_param["2p_top_hwnd"]
@@ -748,15 +738,13 @@ class BusinessBus(QThread):
                     server_no_2p,
                     start_param["2p_zoom"]
                 )
+                # 应对刚登录游戏的弹窗
+                closeJustLoginDialog(start_param["2p_hwnd"], start_param["2p_zoom"])
             # 完成”自动登录“功能
             self.signal_send_func_status.emit(func_no, "completed")
             # 下一个功能从数组下标2开始执行
             func_no = 2
 
-        # 应对刚登录游戏的弹窗
-        closeJustLoginDialog(start_param["1p_hwnd"], start_param["1p_zoom"])
-        if enable_2p and start_param["2p_hwnd"] != 0:
-            closeJustLoginDialog(start_param["2p_hwnd"], start_param["2p_zoom"])
         for func_param in self.func_flow[func_no:]:
             self.formatBusinessMessage(f"开始功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, "executing")

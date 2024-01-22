@@ -55,7 +55,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
     def initWidget(self):
         if ROOT_PATH is None or ROOT_PATH == "":
             self.tip_message_box.setWindowTitle("错误")
-            self.tip_message_box.setText("未找到配置文件[AppGlobalSetting.ini]！\n请务必将其放在与exe同级目录下的config文件夹中，"
+            self.tip_message_box.setText("未找到配置文件[AppGlobalSetting.ini]！\n请务必将其放在与exe同级目录下的userdata文件夹中，"
                                          "否则无法正常使用！\n\n完成以上操作后需要重启软件")
             self.tip_message_box.show()
         # 初始化时，加载指定的json文件，若未指定或指定的文件不存在，则向流程列表中添加”开始“、”结束“item
@@ -218,6 +218,8 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
     def applyFlowParam(self, flow_param_list):
         flow_param_list = deepcopy(flow_param_list)
         self.listWidget_flow.clearAllItem()
+
+        apply_error_func = {}
         for i in range(len(flow_param_list)):
             key = flow_param_list[i]["func_name"]
             del flow_param_list[i]["func_name"]
@@ -225,5 +227,17 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
             # print("本功能名称:", key)
             # print("本功能参数字典", value)
             self.addListWidget(key)
-            self.listWidget_flow.item_widget_list[i].setFuncParam(value)
+            apply_result = self.listWidget_flow.item_widget_list[i].setFuncParam(value)
+            # 若应用参数出错，则汇总错误信息
+            if apply_result is not True:
+                apply_error_func[key] = apply_result[1]
         self.addListWidget("结束")
+
+        if len(apply_error_func) > 0:
+            messagebox_error_str = '应用流程时发生了以下错误\n原因可能是<一键日常助手>更新了功能界面，或JSON文件保存格式：\n\n'
+            for func_name, error_reason in apply_error_func.items():
+                messagebox_error_str += f"[{func_name}]: \n{error_reason}\n\n"
+
+            self.tip_message_box.setWindowTitle("错误")
+            self.tip_message_box.setText(messagebox_error_str)
+            self.tip_message_box.show()

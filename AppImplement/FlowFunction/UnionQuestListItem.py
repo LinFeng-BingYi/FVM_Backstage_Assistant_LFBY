@@ -55,6 +55,9 @@ class UnionQuestParamWidget(Ui_UnionQuestParam, BaseParamWidget):
         self.comboBox_select_1p.setCurrentIndex(param_dict["player1"] - 1)
         self.comboBox_select_2p.setCurrentIndex(param_dict["player2"])
         self.lineEdit_file_path.setText(param_dict["plan_path"])
+        if not os.path.exists(param_dict["plan_path"]):
+            return False, "放卡方案ini文件不存在"
+        return True
 
     def checkInputValidity(self):
         if self.comboBox_select_1p.currentText() == self.comboBox_select_2p.currentText():

@@ -11,19 +11,6 @@ from AppImplement.GlobalValue.StaticValue import *
 
 from math import floor
 
-OPEN_ZONE_PATH_DICT = {
-    "美味岛": (OPEN_MWD_ZONE_PATH, [230, 150, 320, 220]),
-    "火山岛": (OPEN_HSD_ZONE_PATH, [70, 250, 140, 350]),
-    "浮空岛": (OPEN_FKD_ZONE_PATH, [100, 260, 200, 370]),
-    "火山遗迹": (OPEN_HSYJ_ZONE_PATH, [120, 250, 250, 320]),
-    "海底漩涡": (OPEN_HDXW_ZONE_PATH, [360, 100, 440, 160]),
-    "竞技岛": (OPEN_JJD_ZONE_PATH, [80, 180, 180, 280]),
-    "魔塔蛋糕": (OPEN_MTDG_ZONE_PATH, [320, 10, 670, 60]),
-    "勇士挑战": (OPEN_YSTZ_ZONE_PATH, [380, 20, 570, 100]),
-    "跨服远征": (OPEN_KFYZ_ZONE_PATH, [380, 20, 570, 100]),
-    "探险营地": (OPEN_TXYD_ZONE_PATH, [250, 100, 320, 200])
-}
-
 
 # 选择 对应地图 对应关卡 ---------------------------------------------------------------------------
 def switchWorldZone(hwnd: int, zone_name, zoom=1):
@@ -539,3 +526,36 @@ def loopPlaceCardForThread(hwnd, pos_series: str, card_slot: int, card_cd: int, 
             mouseClick(hwnd, (left_top_pos[0] + (pos_y - 1) * grid_width) * zoom, (left_top_pos[1] + (pos_x - 1) * grid_height) * zoom)
             # 放回失败的卡
             mouseClick(hwnd, 80 * zoom, 130 * zoom)
+
+
+# 游戏主界面公共操作 ------------------------------------------------------------------------------
+def openBottomMenu(hwnd, menu_name: str, sub_menu_name='', zoom=1):
+    """打开底部菜单，支持背包、合成屋、跳转的子菜单
+    """
+    # 点击主界面底部菜单
+    menu_pos = BOTTOM_MENU_POS[menu_name]
+    mouseClick(hwnd, menu_pos[0] * zoom, menu_pos[1] * zoom)
+    delay(500)
+
+    # 获取对应的“打开xx界面”图片路径与识图范围
+    final_dialog_name = menu_name
+    if menu_name == "跳转":
+        final_dialog_name = sub_menu_name
+        # 如果所选底部菜单是“跳转”，则还需再点击一次
+        sub_menu_pos = BOTTOM_SUB_MENU_POS[menu_name][sub_menu_name]
+        mouseClick(hwnd, sub_menu_pos[0] * zoom, sub_menu_pos[1] * zoom)
+        delay(500)
+        
+    # 若最终打开的界面存在于该dict，则需要识图判断是否成功打开
+    if final_dialog_name in OPEN_BOTTOM_MENU_DICT:
+        open_menu_pic_info = OPEN_BOTTOM_MENU_DICT[final_dialog_name]
+        # 判断是否成功打开界面
+        if not find_pic_loop(hwnd, open_menu_pic_info[0], open_menu_pic_info[1], max_time=120):
+            raise BusinessError(f"超过2min还未打开{final_dialog_name}界面！")
+        delay(1000)
+    
+    if menu_name != "跳转" and menu_name in BOTTOM_SUB_MENU_POS:
+        # 如果所选底部菜单不是“跳转”，且还有子菜单（背包、合成屋），则还需再点击一次
+        sub_menu_pos = BOTTOM_SUB_MENU_POS[menu_name][sub_menu_name]
+        mouseClick(hwnd, sub_menu_pos[0] * zoom, sub_menu_pos[1] * zoom)
+        delay(500)
