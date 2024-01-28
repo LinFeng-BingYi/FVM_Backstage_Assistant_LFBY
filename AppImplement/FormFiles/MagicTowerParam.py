@@ -200,7 +200,10 @@ class Ui_MagicTowerParam(object):
 
         self.groupBox_select_level.setTitle(QCoreApplication.translate("MagicTowerParam", u"\u9009\u62e9\u5173\u5361", None))
         self.label_level_num.setText(QCoreApplication.translate("MagicTowerParam", u"\u5c42\u6570\uff1a", None))
-        self.lineEdit_level_num.setText(QCoreApplication.translate("MagicTowerParam", u"99", None))
+#if QT_CONFIG(tooltip)
+        self.lineEdit_level_num.setToolTip(QCoreApplication.translate("MagicTowerParam", u"\u5f53\u4e3a\u8d1f\u6570\u65f6\uff0c\u8868\u793a\u9b54\u5854\u7b2c\u4e09\u9875\u4ece\u4e0a\u5f80\u4e0b\u5bf9\u5e94\u7684\u5173\u5361\u3002\u4f8b\u5982-5\u8868\u793a\u5a01\u671b\u5c4b", None))
+#endif // QT_CONFIG(tooltip)
+        self.lineEdit_level_num.setPlaceholderText(QCoreApplication.translate("MagicTowerParam", u"\u5f53\u4e3a\u8d1f\u6570\u65f6\uff0c\u8868\u793a\u9b54\u5854\u7b2c\u4e09\u9875\u3002\u4f8b\u5982 -5 \u8868\u793a\u5a01\u671b\u5c4b", None))
         self.groupBox_select_plan.setTitle(QCoreApplication.translate("MagicTowerParam", u"\u9009\u62e9\u65b9\u6848", None))
         self.label_plan_path.setText(QCoreApplication.translate("MagicTowerParam", u"\u65b9\u6848\u8def\u5f84\uff1a", None))
         self.pushButton_plan_path.setText(QCoreApplication.translate("MagicTowerParam", u"\u6d4f\u89c8", None))

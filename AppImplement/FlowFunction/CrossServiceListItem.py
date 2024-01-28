@@ -105,7 +105,7 @@ class CrossServiceParamWidget(Ui_CrossServiceParam, BaseParamWidget):
             return False, "房主与房客不能选择同一个！"
         if not os.path.exists(self.lineEdit_plan_path.text()):
             return False, "未找到放卡方案ini文件！"
-        if not os.path.exists(self.lineEdit_1p_room_name_path.text()):
+        if self.comboBox_select_2p.currentIndex() != 0 and not os.path.exists(self.lineEdit_1p_room_name_path.text()):
             return False, "未找到1P跨服房间昵称截图！"
         if not match("^[0-9]+$", self.lineEdit_loop_count.text()):
             return False, "请填写正确的循环次数！"

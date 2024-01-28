@@ -33,8 +33,8 @@ class PlayerDeckProcessor:
         if file_path is None:
             return
         # 文件没改变则直接退出
-        if file_path == self.file_path:
-            return
+        # if file_path == self.file_path:
+        #     return
         try:
             self.ini_procs = INIProcessor(file_path, encoding)
         except Exception as e:

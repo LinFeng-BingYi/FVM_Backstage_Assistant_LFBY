@@ -163,8 +163,11 @@
           <height>30</height>
          </size>
         </property>
-        <property name="text">
-         <string>99</string>
+        <property name="toolTip">
+         <string>当为负数时，表示魔塔第三页从上往下对应的关卡。例如-5表示威望屋</string>
+        </property>
+        <property name="placeholderText">
+         <string>当为负数时，表示魔塔第三页。例如 -5 表示威望屋</string>
         </property>
        </widget>
       </item>

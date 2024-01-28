@@ -6,7 +6,7 @@ from PySide6.QtGui import QTextCursor
 from PySide6.QtCore import Signal
 
 from AppImplement.FormFiles.MyMainWindow import Ui_MyMainWindow
-from AppImplement.FormFiles.EditPlacingPlanForm import WidgetEditPlacingPlan
+from AppImplement.FormFiles.EditPlacingPlanForm import WidgetEditPlacingPlan, os
 from AppImplement.FormFiles.UpdateINIForm import WidgetUpdateINI
 from AppImplement.FormFiles.SaveFlowListForm import WidgetSaveFlowList
 from AppImplement.FormFiles.CustomWidgets.ListWidget import SUPPORT_FUNC
@@ -187,11 +187,15 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         time_str = first_line_str[0:19]
         # print(time_str)
         pure_time_str = time_str.replace('/', '').replace(' ', '').replace(':', '')
+        if not os.path.exists(ROOT_PATH + "/logs"):
+            os.mkdir(ROOT_PATH + "/logs")
         flow_file_path, _ = QFileDialog.getSaveFileName(
             self, "保存文件",
             ROOT_PATH + f"\\logs\\{pure_time_str}.log",
             "All Files(*);;LOG Files(*.log)"
         )
+        if flow_file_path == '':
+            return
         f = open(flow_file_path, 'w', encoding='utf-8')
         f.write(self.plainTextEdit_log.toPlainText())
         f.close()

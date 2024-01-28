@@ -335,7 +335,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         )
         temp_messageBox.button(QMessageBox.StandardButton.Ok).setText("确定")
         temp_messageBox.button(QMessageBox.StandardButton.Cancel).setText("取消")
-        if temp_messageBox.exec() != QDialog.DialogCode.Accepted:
+        if temp_messageBox.exec() == QMessageBox.StandardButton.Cancel:
             return
         plan_dict = self.organizePlacePlan(self.comboBox_choose_section.currentText())
         self.place_plan_procs.writePlan(plan_dict)

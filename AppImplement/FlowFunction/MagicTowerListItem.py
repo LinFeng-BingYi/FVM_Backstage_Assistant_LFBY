@@ -89,7 +89,7 @@ class MagicTowerParamWidget(Ui_MagicTowerParam, BaseParamWidget):
             return False, "房主与房客不能选择同一个！"
         if not os.path.exists(self.lineEdit_plan_path.text()):
             return False, "未找到放卡方案ini文件！"
-        if not match("^[0-9]+$", self.lineEdit_level_num.text()):
+        if not match("^-?[0-9]+$", self.lineEdit_level_num.text()):
             return False, "请填写正确的魔塔层数！"
         if not match("^[0-9]+$", self.lineEdit_loop_count.text()):
             return False, "请填写正确的循环次数！"

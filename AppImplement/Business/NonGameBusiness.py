@@ -14,7 +14,7 @@ from AppImplement.Business.CustomException import BusinessError
 def autoLoginMicroTerminal(hwnd, server_no: str, zoom=1):
     y_offset = 25
 
-    enter_server_btn = find_pic(hwnd, AUTO_LOGIN_ENTER_SERVER_BTN)
+    enter_server_btn = find_pic(hwnd, AUTO_LOGIN_ENTER_SERVER_BTN, record_fail=True)
     if not enter_server_btn:
         raise BusinessError("使用自动登录时，请抓取窗口顶层句柄！并且初始界面必须为选择服务器的界面！")
     print(enter_server_btn)

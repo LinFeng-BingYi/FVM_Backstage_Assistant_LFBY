@@ -16,7 +16,7 @@ from math import floor
 def switchWorldZone(hwnd: int, zone_name, zoom=1):
     """在世界地图中切换地区，地区名必须与世界地图中显示的保持一致
     """
-    if not find_pic(hwnd, WORLD_MAP_PATH, [788, 3, 945, 90]):
+    if not find_pic(hwnd, WORLD_MAP_PATH, [788, 3, 945, 90], record_fail=True):
         raise BusinessError("没找到世界地图！")
     if zone_name not in WORLD_MAP_ZONE_POS:
         raise KeyError
@@ -94,18 +94,23 @@ def chooseSingleOrMultiZone(hwnd, zone_name, level_name, zoom=1):
 
 def chooseMagicTowerLevel(hwnd, level_num: int, zoom=1):
     """在已打开魔塔界面的情况下，根据魔塔层数 level_num 选择对应的魔塔关卡，并创建进入房间"""
-    right_num = floor((level_num - 1) / 15)
-    down_to_up_num = (level_num - 1) % 15 + 1
-    # 点击跳转到第一页
-    mouseClick(hwnd, 46 * zoom, 576 * zoom)
-    delay(100)
-    # 向右翻页，跳转到目标页
-    for i in range(right_num):
-        mouseClick(hwnd, 149 * zoom, 576 * zoom)
+    if level_num >= 0:
+        right_num = floor((level_num - 1) / 15)
+        down_to_up_num = (level_num - 1) % 15 + 1
+        # 点击跳转到第一页
+        mouseClick(hwnd, 46 * zoom, 576 * zoom)
         delay(100)
-    # 选择层数
-    mouseClick(hwnd, 113 * zoom, (542 - 30 * (down_to_up_num - 1)) * zoom)
-    delay(500)
+        # 向右翻页，跳转到目标页
+        for i in range(right_num):
+            mouseClick(hwnd, 149 * zoom, 576 * zoom)
+            delay(100)
+        # 选择层数
+        mouseClick(hwnd, 113 * zoom, (542 - 30 * (down_to_up_num - 1)) * zoom)
+        delay(500)
+    else:
+        # 选择关卡
+        mouseClick(hwnd, 60 * zoom, (140 + 95 * (-1 * level_num - 1)) * zoom)
+        delay(500)
     # 点击创建
     mouseClick(hwnd, 588 * zoom, 560 * zoom)
     delay(500)
@@ -232,19 +237,25 @@ def teamInvite(hwnd_1p, hwnd_2p, player2_name_path, zoom1=1, zoom2=1):
     print(player2_result)
     if player2_result:
         # 2P先拒绝其他邀请
-        mouseClick(hwnd_2p, 610 * zoom2, 400 * zoom2)
-        delay(50)
+        acceptInvitationOrNot(hwnd_2p, False, zoom2)
         # 1P点击"邀请"
         mouseClick(hwnd_1p, 600 * zoom1, player2_result[1] * zoom1)
         delay(1000)
         # 2P接受邀请
-        mouseClick(hwnd_2p, 450 * zoom2, 400 * zoom2)
-        delay(100)
+        acceptInvitationOrNot(hwnd_2p, True, zoom2)
         # 1P退出邀请界面
         mouseClick(hwnd_1p, 590 * zoom1, 490 * zoom1)
         delay(1000)
         return True
     return False
+
+
+def acceptInvitationOrNot(hwnd, accept: bool, zoom=1):
+    # 查找邀请接受弹窗
+    if find_pic(hwnd, INVITATION_ACCEPT_PATH, [500, 200, 560, 250]):
+        click_x_pos = 450 if accept else 610
+        mouseClick(hwnd, click_x_pos * zoom, 405 * zoom)
+        delay(80)
 
 
 def roomChooseDeck(hwnd, deck_no, zoom=1):
@@ -559,3 +570,47 @@ def openBottomMenu(hwnd, menu_name: str, sub_menu_name='', zoom=1):
         sub_menu_pos = BOTTOM_SUB_MENU_POS[menu_name][sub_menu_name]
         mouseClick(hwnd, sub_menu_pos[0] * zoom, sub_menu_pos[1] * zoom)
         delay(500)
+
+
+def openTopMenu(hwnd, menu_name: str, sub_menu_name='', zoom=1):
+    """打开顶部菜单，支持美食活动、法老宝藏、塔罗寻宝、假期特惠、积分商城的子菜单
+    """
+    # 寻找顶部菜单
+    menu_pic = FIND_AND_OPEN_TOP_MENU_DICT[menu_name][0]
+    open_menu_pic = FIND_AND_OPEN_TOP_MENU_DICT[menu_name][1]
+    open_menu_range = FIND_AND_OPEN_TOP_MENU_DICT[menu_name][2]
+    if menu_name == '好友列表':
+        menu_pos = find_pic(hwnd, menu_pic, [0, 75, 250, 150])
+    else:
+        menu_pos = find_pic(hwnd, menu_pic, [245, 0, 780, 120])
+        if not menu_pos:
+            # 若没找到，则点击切换上方活动按钮
+            mouseClick(hwnd, 785 * zoom, 30 * zoom)
+            delay(500)
+            menu_pos = find_pic(hwnd, menu_pic, [245, 0, 780, 120])
+    # 没找到则返回False
+    if not menu_pos:
+        return False
+    # 点击图标
+    mouseClick(hwnd, menu_pos[0] * zoom, menu_pos[1] * zoom)
+    # 等待界面加载完成
+    if not find_pic_loop(hwnd, open_menu_pic, open_menu_range, max_time=120):
+        raise BusinessError(f"超过2min还未打开{menu_name}界面！")
+    delay(1000)
+
+    # 处理某些特殊界面
+    if menu_name == "假期特惠":
+        mouseClick(hwnd, 300 * zoom, 350 * zoom)
+        delay(300)
+
+    # 如果还有子菜单，则还需再点击一次
+    if menu_name in TOP_SUB_MENU_POS:
+        sub_menu_pos = TOP_SUB_MENU_POS[menu_name][sub_menu_name]
+        mouseClick(hwnd, sub_menu_pos[0] * zoom, sub_menu_pos[1] * zoom)
+        delay(500)
+
+        # 处理特殊界面
+        if menu_name == "假期特惠":
+            for jump_times in range(30):
+                mouseClick(hwnd, 640 * zoom, 480 * zoom)
+                delay(50)

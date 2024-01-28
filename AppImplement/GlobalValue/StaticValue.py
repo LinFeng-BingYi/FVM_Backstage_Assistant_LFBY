@@ -9,7 +9,7 @@ from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
 
 # 软件相关
-APP_WINDOW_ICON = ROOT_PATH + r"\resources\images\application\软件图标\icon_nobkg.ico"
+APP_WINDOW_ICON = ROOT_PATH + r"\resources\images\软件图标\icon_nobkg.ico"
 
 # 地图相关 -------------------------------------------------------------------------
 # 世界地图坐标
@@ -184,29 +184,29 @@ MULTI_HIERARCHY_ZONE = {
 
 # 进入区域相关 -----------------------------------------------------------------------
 # 世界地图
-WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\世界地图.bmp"
+WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\世界地图.bmp"
 # 进入世界地图
-OPEN_WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入世界地图.bmp"
+OPEN_WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入世界地图.bmp"
 # 进入美味岛
-OPEN_MWD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入美味岛.bmp"
+OPEN_MWD_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入美味岛.bmp"
 # 进入火山岛
-OPEN_HSD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入火山岛.bmp"
+OPEN_HSD_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入火山岛.bmp"
 # 进入浮空岛
-OPEN_FKD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入浮空岛.bmp"
+OPEN_FKD_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入浮空岛.bmp"
 # 进入火山遗迹
-OPEN_HSYJ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入火山遗迹.bmp"
+OPEN_HSYJ_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入火山遗迹.bmp"
 # 进入海底漩涡
-OPEN_HDXW_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入海底漩涡.bmp"
+OPEN_HDXW_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入海底漩涡.bmp"
 # 进入竞技岛
-OPEN_JJD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入竞技岛.bmp"
+OPEN_JJD_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入竞技岛.bmp"
 # 进入魔塔蛋糕
-OPEN_MTDG_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入魔塔蛋糕.bmp"
+OPEN_MTDG_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入魔塔蛋糕.bmp"
 # 进入勇士挑战
-OPEN_YSTZ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入勇士挑战.bmp"
+OPEN_YSTZ_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入勇士挑战.bmp"
 # 进入跨服远征
-OPEN_KFYZ_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入跨服远征.bmp"
+OPEN_KFYZ_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入跨服远征.bmp"
 # 进入探险营地
-OPEN_TXYD_ZONE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入探险营地.bmp"
+OPEN_TXYD_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入探险营地.bmp"
 # 判断是否进入区域
 OPEN_ZONE_PATH_DICT = {
     "美味岛": (OPEN_MWD_ZONE_PATH, [230, 150, 320, 220]),
@@ -221,87 +221,231 @@ OPEN_ZONE_PATH_DICT = {
     "探险营地": (OPEN_TXYD_ZONE_PATH, [250, 100, 320, 200])
 }
 
+# 悬赏 ---------------------------------------------------------------------------
+# 悬赏活动图标
+WANTED_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏活动图标.bmp"
+# 进入悬赏活动
+OPEN_WANTED_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\进入悬赏活动.bmp"
+# 悬赏美味挑战按钮
+WANTED_MWD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏美味挑战按钮.bmp"
+# 悬赏火山挑战按钮
+WANTED_HSD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏火山挑战按钮.bmp"
+# 悬赏浮空挑战按钮
+WANTED_FKD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏浮空挑战按钮.bmp"
+# 创建三岛悬赏房间对应按钮
+GOTO_BUTTON_PIC_DICT = {
+    "美味岛": WANTED_MWD_GOTO_BUTTON_PATH,
+    "火山岛": WANTED_HSD_GOTO_BUTTON_PATH,
+    "浮空岛": WANTED_FKD_GOTO_BUTTON_PATH
+}
+
 # 通关相关 -------------------------------------------------------------------------
 # 创房勾选密码
-CREATE_ROOM_PSW_PATH = ROOT_PATH + r"\resources\images\application\界面图标\通关相关\创房勾选密码.bmp"
+CREATE_ROOM_PSW_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\创房勾选密码.bmp"
 # 进入关卡
-START_GAME_PATH = ROOT_PATH + r"\resources\images\application\界面图标\通关相关\进入关卡.bmp"
+START_GAME_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\进入关卡.bmp"
 # 背包空间不足
-BACKPACK_FULL_PATH = ROOT_PATH + r"\resources\images\application\界面图标\通关相关\背包空间不足.bmp"
+BACKPACK_FULL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\背包空间不足.bmp"
+# 邀请接受弹窗
+INVITATION_ACCEPT_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\邀请接受弹窗.bmp"
+# 魔塔第三页次数耗尽
+MAGIC_TOWER_TAB3_NO_RESIDUAL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\魔塔第三页次数耗尽.bmp"
 
 # 主界面各种活动窗口相关 ------------------------------------------------------------------
 # 顶部活动 -------------------------------------------------------------------------
 # VIP签到
-VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\VIP签到.bmp"
+VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\VIP签到.bmp"
 # 进入VIP
-OPEN_VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入VIP.bmp"
+OPEN_VIP_SIGNIN_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入VIP.bmp"
 # 每日签到
-DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\每日签到.bmp"
+DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\每日签到.bmp"
 # 进入每日签到
-OPEN_DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入每日签到.bmp"
+OPEN_DAILY_SIGNIN_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入每日签到.bmp"
 # 每日签到按钮
-DAILY_SIGNIN_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\每日签到按钮.bmp"
+DAILY_SIGNIN_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\每日签到按钮.bmp"
 # 美食活动
-FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\美食活动.bmp"
+FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\美食活动.bmp"
 # 进入美食活动
-OPEN_FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入美食活动.bmp"
+OPEN_FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入美食活动.bmp"
 # 美食大赛
-FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\美食大赛.bmp"
+FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\美食大赛.bmp"
 # 进入美食大赛
-OPEN_FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入美食大赛.bmp"
+OPEN_FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入美食大赛.bmp"
 # 法老宝藏
-PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\法老宝藏.bmp"
+PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\法老宝藏.bmp"
 # 进入法老宝藏
-OPEN_PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入法老宝藏.bmp"
+OPEN_PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入法老宝藏.bmp"
 # 法老宝藏免费
-PHARAOH_FREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\法老宝藏免费.bmp"
+PHARAOH_FREE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\法老宝藏免费.bmp"
 # 塔罗寻宝
-TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\塔罗寻宝.bmp"
+TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\塔罗寻宝.bmp"
 # 进入塔罗寻宝
-OPEN_TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入塔罗寻宝.bmp"
+OPEN_TAROT_TREASURE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入塔罗寻宝.bmp"
 # 塔罗寻宝免费
-TAROT_FREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\塔罗寻宝免费.bmp"
+TAROT_FREE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\塔罗寻宝免费.bmp"
+# 假期特惠
+HOLIDAY_DISCOUNT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\假期特惠.bmp"
 # 进入假期特惠
-OPEN_HOLIDAY_DISCOUNT_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入假期特惠.bmp"
+OPEN_HOLIDAY_DISCOUNT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入假期特惠.bmp"
+# 月卡福利
+MONTHLY_CARD_WELFARE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\月卡福利.bmp"
+# 进入月卡福利
+OPEN_MONTHLY_CARD_WELFARE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入月卡福利.bmp"
+# 假期副本
+HOLIDAY_DUNGEON_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\假期副本.bmp"
+# 进入假期副本
+OPEN_HOLIDAY_DUNGEON_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入假期副本.bmp"
+# 实验室
+LABORATORY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\实验室.bmp"
+# 进入实验室
+OPEN_LABORATORY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入实验室.bmp"
+# 积分商城
+CREDIT_SHOPPING_MALL_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\积分商城.bmp"
+# 进入积分商城
+OPEN_CREDIT_SHOPPING_MALL_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入积分商城.bmp"
+# 萌宠神殿
+CUTE_PET_TEMPLE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\萌宠神殿.bmp"
+# 进入萌宠神殿
+OPEN_CUTE_PET_TEMPLE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入萌宠神殿.bmp"
 # 好友列表
-FRIEND_LIST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\好友列表.bmp"
+FRIEND_LIST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\好友列表.bmp"
 # 进入好友
-OPEN_FRIEND_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入好友.bmp"
+OPEN_FRIEND_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入好友.bmp"
+# 顶部菜单图标以及判断是否进入顶部菜单
+FIND_AND_OPEN_TOP_MENU_DICT = {
+    "VIP签到": (
+        VIP_SIGNIN_PATH,
+        OPEN_VIP_SIGNIN_PATH,
+        [392, 35, 566, 72]
+    ),
+    "每日签到": (
+        DAILY_SIGNIN_PATH,
+        OPEN_DAILY_SIGNIN_PATH,
+        [387, 35, 460, 63]
+    ),
+    "美食活动": (
+        FVM_ACTIVITY_PATH,
+        OPEN_FVM_ACTIVITY_PATH,
+        [394, 45, 560, 75]
+    ),
+    "美食大赛": (
+        FOOD_CONTEST_PATH,
+        OPEN_FOOD_CONTEST_PATH,
+        [390, 40, 600, 150]
+    ),
+    "悬赏活动": (
+        WANTED_PATH,
+        OPEN_WANTED_PATH,
+        None
+    ),
+    "法老宝藏": (
+        PHARAOH_TREASURE_PATH,
+        OPEN_PHARAOH_TREASURE_PATH,
+        [337, 94, 434, 142]
+    ),
+    "塔罗寻宝": (
+        TAROT_TREASURE_PATH,
+        OPEN_TAROT_TREASURE_PATH,
+        [393, 58, 477, 82]
+    ),
+    "假期特惠": (
+        HOLIDAY_DISCOUNT_PATH,
+        OPEN_HOLIDAY_DISCOUNT_PATH,
+        [450, 80, 700, 120]
+    ),
+    "月卡福利": (
+        MONTHLY_CARD_WELFARE_PATH,
+        OPEN_MONTHLY_CARD_WELFARE_PATH,
+        [360, 30, 560, 70]
+    ),
+    "假期副本": (
+        HOLIDAY_DUNGEON_PATH,
+        OPEN_HOLIDAY_DUNGEON_PATH,
+        None
+    ),
+    "实验室": (
+        LABORATORY_PATH,
+        OPEN_LABORATORY_PATH,
+        [400, 25, 580, 50]
+    ),
+    "积分商城": (
+        CREDIT_SHOPPING_MALL_PATH,
+        OPEN_CREDIT_SHOPPING_MALL_PATH,
+        [400, 30, 580, 60]
+    ),
+    "萌宠神殿": (
+        CUTE_PET_TEMPLE_PATH,
+        OPEN_CUTE_PET_TEMPLE_PATH,
+        [400, 25, 580, 60]
+    ),
+    "好友列表": (
+        FRIEND_LIST_PATH,
+        OPEN_FRIEND_PATH,
+        [434, 87, 543, 122]
+    )
+}
+# 顶部子菜单坐标
+TOP_SUB_MENU_POS = {
+    "美食活动": {
+        "美食福利": (280, 200),
+        "奖品兑换": (480, 200),
+        "活动日历": (680, 200)
+    },
+    "法老宝藏": {
+        "法老商店": (710, 150),
+        "连抽": (730, 500)
+    },
+    "塔罗寻宝": {
+        "积分奖励": (210, 100),
+        "连抽": (600, 470)
+    },
+    "假期特惠": {
+        "节日兑换": (400, 170),
+        "限时兑换": (490, 170),
+        "长期兑换": (580, 170),
+        "其他兑换": (670, 170)
+    },
+    "积分商城": {
+        "神秘商人": (100, 150),
+        "黑市商人": (800, 150)
+    }
+}
+
 # 底部菜单 -------------------------------------------------------------------------
 # 进入商城
-OPEN_SHOPPING_MALL_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入商城.bmp"
+OPEN_SHOPPING_MALL_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入商城.bmp"
 # 进入背包
-OPEN_BACKPACK_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入背包.bmp"
+OPEN_BACKPACK_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入背包.bmp"
 # 进入底部任务
-OPEN_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入底部任务.bmp"
+OPEN_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入底部任务.bmp"
 # 底部任务收起
-FOLD_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\底部任务收起.bmp"
+FOLD_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\底部任务收起.bmp"
 # 底部任务完成
-COMPLETE_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\底部任务完成.bmp"
+COMPLETE_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\底部任务完成.bmp"
 # 底部任务进行中
-TODO_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\底部任务进行中.bmp"
+TODO_BOTTOM_QUEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\底部任务进行中.bmp"
 # 进入合成屋
-OPEN_SYNTHESIZING_HOUSE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入合成屋.bmp"
+OPEN_SYNTHESIZING_HOUSE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入合成屋.bmp"
 # 进入公会
-OPEN_UNION_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入公会.bmp"
+OPEN_UNION_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入公会.bmp"
 # 进入公会花园
-OPEN_UNION_GARDEN_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入公会花园.bmp"
+OPEN_UNION_GARDEN_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入公会花园.bmp"
 # 公会花园成长值满
-UNION_GARDEN_MAX_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\公会花园成长值满.bmp"
+UNION_GARDEN_MAX_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\公会花园成长值满.bmp"
 # 公会花园待种植
-UNION_GARDEN_PLANT_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\公会花园待种植.bmp"
+UNION_GARDEN_PLANT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\公会花园待种植.bmp"
 # 进入公会副本
-OPEN_UNION_DUNGEON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入公会副本.bmp"
+OPEN_UNION_DUNGEON_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入公会副本.bmp"
 # 进入公会任务
-OPEN_UNION_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入公会任务.bmp"
+OPEN_UNION_QUEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入公会任务.bmp"
 # 进入情侣任务
-OPEN_LOVERS_QUEST_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入情侣任务.bmp"
+OPEN_LOVERS_QUEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入情侣任务.bmp"
 # 进入缘分树
-OPEN_DESTINY_TREE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入缘分树.bmp"
+OPEN_DESTINY_TREE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入缘分树.bmp"
 # 进入邮件
-OPEN_MAIL_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入邮件.bmp"
+OPEN_MAIL_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入邮件.bmp"
 # 进入交易场
-OPEN_TRADING_MARKET_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\进入交易场.bmp"
+OPEN_TRADING_MARKET_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入交易场.bmp"
 # 判断是否进入底部菜单
 OPEN_BOTTOM_MENU_DICT = {
     "商城": (OPEN_SHOPPING_MALL_PATH, [374, 4, 613, 56]),
@@ -356,32 +500,18 @@ BOTTOM_SUB_MENU_POS = {
     }
 }
 
-# 悬赏 ---------------------------------------------------------------------------
-# 悬赏活动图标
-WANTED_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\悬赏活动图标.bmp"
-# 进入悬赏活动
-OPEN_WANTED_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\进入悬赏活动.bmp"
-# 悬赏美味挑战按钮
-WANTED_MWD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\悬赏美味挑战按钮.bmp"
-# 悬赏火山挑战按钮
-WANTED_HSD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\悬赏火山挑战按钮.bmp"
-# 悬赏浮空挑战按钮
-WANTED_FKD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\application\界面图标\悬赏三连\悬赏浮空挑战按钮.bmp"
-# 创建三岛悬赏房间对应按钮
-GOTO_BUTTON_PIC_DICT = {
-    "美味岛": WANTED_MWD_GOTO_BUTTON_PATH,
-    "火山岛": WANTED_HSD_GOTO_BUTTON_PATH,
-    "浮空岛": WANTED_FKD_GOTO_BUTTON_PATH
-}
-
 # 其他 ---------------------------------------------------------------------------
 # 换线，用来判断活动界面是否关闭成功
-SWITCH_LINE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\换线.bmp"
+SWITCH_LINE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\换线.bmp"
 # 常见提示框关闭按钮
-COMMON_TIP_DIALOG_CLOSE_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\常见提示框关闭按钮.bmp"
+COMMON_TIP_DIALOG_CLOSE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\常见提示框关闭按钮.bmp"
 # 二级密码
-SECONDARY_PASSWORD_PATH = ROOT_PATH + r"\resources\images\application\界面图标\各种界面元素\二级密码.bmp"
+SECONDARY_PASSWORD_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\二级密码.bmp"
+# 背包道具使用技能书时弹窗
+BACKPACK_PROP_USE_SKILL_BOOK_DIALOG_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\背包道具使用技能书时弹窗.bmp"
+# 魔塔蛋糕未加载完全
+MAGIC_TOWER_LOADING_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\魔塔蛋糕未加载完全.bmp"
 
 # 自动登录 -------------------------------------------------------------------------
-AUTO_LOGIN_USERNAME_BOX = ROOT_PATH + r"\resources\images\application\自动登录相关\用户名输入框.bmp"
-AUTO_LOGIN_ENTER_SERVER_BTN = ROOT_PATH + r"\resources\images\application\自动登录相关\进入服务器按钮.bmp"
+AUTO_LOGIN_USERNAME_BOX = ROOT_PATH + r"\resources\images\界面图标\自动登录相关\用户名输入框.bmp"
+AUTO_LOGIN_ENTER_SERVER_BTN = ROOT_PATH + r"\resources\images\界面图标\自动登录相关\进入服务器按钮.bmp"

@@ -17,6 +17,7 @@ from AppImplement.FlowFunction.MagicTowerListItem import MagicTowerListWidget
 from AppImplement.FlowFunction.CrossServiceListItem import CrossServiceListWidget
 from AppImplement.FlowFunction.WantedListItem import WantedListWidget
 from AppImplement.FlowFunction.AutoLoginListItem import AutoLoginListWidget
+from AppImplement.FlowFunction.UseStuffListItem import UseStuffListWidget
 
 from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
@@ -32,7 +33,8 @@ SUPPORT_FUNC = {
     "火山遗迹": VolcanicRelicListWidget,
     "魔塔蛋糕": MagicTowerListWidget,
     "跨服远征": CrossServiceListWidget,
-    "悬赏三连": WantedListWidget
+    "悬赏三连": WantedListWidget,
+    "使用物品": UseStuffListWidget
 }
 
 
@@ -75,12 +77,16 @@ class FuncFlowListWidget(QListWidget):
         # 创建 重置所有功能状态 动作
         action_reset_all_status = QAction("重置所有功能状态", self)
         action_reset_all_status.triggered.connect(self.resetAllFuncStatus)
+        # 创建 清空所有功能 动作
+        action_clear_all_func = QAction("清空所有功能", self)
+        action_clear_all_func.triggered.connect(lambda: self.clearAllItem(True))
         # 加入菜单
         list_widget_menu = QMenu(self)
         list_widget_menu.addAction(action_delete)
         list_widget_menu.addAction(action_ban)
         list_widget_menu.addAction(action_lift_ban)
         list_widget_menu.addAction(action_reset_all_status)
+        list_widget_menu.addAction(action_clear_all_func)
         list_widget_menu.exec(self.mapToGlobal(pos))
 
     def showSelectedFuncWidget(self, list_item):
@@ -143,8 +149,10 @@ class FuncFlowListWidget(QListWidget):
         item_widget.getFuncWidget().setEnabled(True)
         item_widget.changeStatus("hanging")
 
-    def clearAllItem(self):
+    def clearAllItem(self, keep_start_and_end=False):
         for list_item in [self.item(i) for i in range(self.count())]:
+            if keep_start_and_end and self.itemWidget(list_item).getFuncName() in ["开始", "结束"]:
+                continue
             self.deleteItem(list_item)
 
     def resetAllFuncStatus(self):
@@ -268,7 +276,7 @@ class PlayerDeckListWidget(QListWidget):
         # 创建列表项控件
         card_item_widget = PlayerDeckListWidget.DeckListItem(self)
         if card_pic_path is None or not os.path.exists(card_pic_path):
-            card_pic_path = ROOT_PATH + r"\resources\images\application\其他图片\默认卡片图片.bmp"
+            card_pic_path = ROOT_PATH + r"\resources\images\其他图片\默认卡片图片.bmp"
         if card_info is not None:
             card_item_widget.setCardInfo(card_info)
         card_item_widget.setCardPic(card_pic_path)

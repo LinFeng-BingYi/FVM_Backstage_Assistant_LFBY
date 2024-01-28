@@ -130,6 +130,24 @@
             "func_name": "日常领取"
         },
         {
+            "player": 0,
+            "stuff_list": [
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\道具双爆卡.bmp",
+                    "panel": "背包装备",
+                    "operation": "使用",
+                    "opt_times": 2
+                },
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\全部使用",
+                    "panel": "背包装备",
+                    "operation": "使用",
+                    "opt_times": -1
+                }
+            ],
+            "func_name": "使用物品"
+        },
+        {
             "player1": 1,
             "player2": 2,
             "zone_name": "美味岛",
@@ -141,6 +159,24 @@
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\组队常用方案_二转海星.ini",
             "plan_name": "可可岛日",
             "func_name": "刷指定关卡"
+        },
+        {
+            "player": 0,
+            "stuff_list": [
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",
+                    "panel": "背包道具",
+                    "operation": "删除",
+                    "opt_times": 1
+                },
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\全部使用",
+                    "panel": "背包装备",
+                    "operation": "使用",
+                    "opt_times": -1
+                }
+            ],
+            "func_name": "使用物品"
         },
         {
             "player1": 1,
@@ -195,6 +231,24 @@
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\单人魔塔139_二转海星草扇.ini",
             "plan_name": "魔塔139",
             "func_name": "魔塔蛋糕"
+        },
+        {
+            "player": 0,
+            "stuff_list": [
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",
+                    "panel": "背包道具",
+                    "operation": "删除",
+                    "opt_times": 1
+                },
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\全部使用",
+                    "panel": "背包装备",
+                    "operation": "使用",
+                    "opt_times": -1
+                }
+            ],
+            "func_name": "使用物品"
         }
     ]
 }

@@ -494,6 +494,16 @@ class BusinessBus(QThread):
 
     # 功能：魔塔蛋糕 ------------------------------------------------------------------
     def startMagicTower(self, level_num, loop_count):
+        """从主界面开始，先跳转至“美味岛”，再进入魔塔
+           并根据当前启用账号数选择单人或双人魔塔，再根据level_num选择关卡
+           最后完成关卡退出魔塔界面
+
+        Args:
+            level_num: int
+                ...
+            loop_count: int
+                ...
+        """
         # 切换地图
         self.formatBusinessMessage("正在切换到关卡")
         hwnd_1p = self.player1_info["hwnd"]
@@ -507,8 +517,15 @@ class BusinessBus(QThread):
             switchWorldZone(hwnd_2p, "美味岛", zoom2)
 
             tab_num = 1
+        if level_num < 0:
+            tab_num = 2
+            # 魔塔第三页是单人模式
+            self.player2_info = None
         switchWorldZone(hwnd_1p, "魔塔蛋糕", zoom1)
-        delay(2000)
+        delay(500)
+        # 等待魔塔加载完毕
+        while find_pic(hwnd_1p, MAGIC_TOWER_LOADING_PATH, [5, 80, 220, 160]):
+            delay(300)
 
         # 选择tab页
         mouseClick(hwnd_1p, (45 + 73 * tab_num) * zoom1, 70 * zoom1)
@@ -517,6 +534,11 @@ class BusinessBus(QThread):
             self.formatBusinessMessage(f"开始第{loop_time + 1}局")
             # 选择魔塔关卡，并进入房间
             chooseMagicTowerLevel(hwnd_1p, level_num, zoom1)
+            # 若提示次数不足
+            if find_pic(hwnd_1p, MAGIC_TOWER_TAB3_NO_RESIDUAL_PATH, [300, 210, 650, 400]):
+                mouseClick(hwnd_1p, 585 * zoom1, 250 * zoom1)
+                delay(500)
+                break
 
             # 应用卡片组
             # self.formatBusinessMessage("应用1P卡片组")
@@ -672,6 +694,33 @@ class BusinessBus(QThread):
                 self.singleFromStartToFlop()
                 # 退出房间
                 exitRoom(hwnd_1p, zoom1)
+
+    # 功能：使用物品 ------------------------------------------------------------------
+    def startOperateStuff(self, hwnd, stuff_path, panel, operation, use_times, zoom=1):
+        """对文件夹中所有物品执行相同操作
+        """
+        function_name = USE_STUFF_PANEL_IO_DICT[panel][0]
+        menu_name = USE_STUFF_PANEL_IO_DICT[panel][1][0]
+        sub_menu_name = operation if panel in ["假期特惠"] else USE_STUFF_PANEL_IO_DICT[panel][1][1]
+        panel_close_pos = USE_STUFF_PANEL_IO_DICT[panel][2]
+
+        # 打开对应界面
+        function_name(hwnd, menu_name, sub_menu_name, zoom)
+        # 对物品图片，或文件夹中所有图片执行操作
+        if path.isdir(stuff_path):
+            for stuff_pic in listdir(stuff_path):
+                stuff_pic_abstract_path = stuff_path + "\\" + stuff_pic
+                if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](hwnd, stuff_pic_abstract_path, use_times, zoom):
+                    self.formatBusinessMessage(f"未解锁二级密码，无法{operation}物品", "WARN")
+                    break
+        else:
+            if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](hwnd, stuff_path, use_times, zoom):
+                self.formatBusinessMessage(f"未解锁二级密码，无法{operation}物品", "WARN")
+
+        # 关闭界面
+        for close_pos in panel_close_pos:
+            mouseClick(hwnd, close_pos[0] * zoom, close_pos[1] * zoom)
+            delay(500)
 
     # 线程执行相关 -------------------------------------------------------------------
     def run(self) -> None:
@@ -995,6 +1044,28 @@ class BusinessBus(QThread):
                         func_final_status = "wrong"
                         self.signal_send_business_error.emit(business_error_str)
                         self.formatBusinessMessage(business_error_str, "ERROR")
+            elif func_param["func_name"] == "使用物品":
+                # 获取操作目标 窗口句柄 和 缩放比例
+                hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
+                zoom = start_param[f"{func_param['player'] + 1}p_zoom"]
+                # 对于每个物品执行操作
+                for stuff_info in func_param["stuff_list"]:
+                    stuff_name = stuff_info["pic_path"].rsplit('\\', 1)[1]
+                    self.formatBusinessMessage(f"开始{stuff_info['operation']}物品或文件夹中所有物品：[{stuff_name}]...")
+                    try:
+                        self.startOperateStuff(
+                            hwnd,
+                            stuff_info["pic_path"],
+                            stuff_info["panel"],
+                            stuff_info["operation"],
+                            stuff_info["opt_times"],
+                            zoom
+                        )
+                    except BusinessError as business_error:
+                        business_error_str = f"{stuff_info['operation']}物品[{stuff_name}]时出错！\n\n{business_error.error_info}"
+                        func_final_status = "wrong"
+                        self.signal_send_business_error.emit(business_error_str)
+                        self.formatBusinessMessage(business_error_str, "ERROR")
             else:
                 self.formatBusinessMessage(f"功能[{func_param['func_name']}]不存在！或该功能处于错误的位置！", "ERROR")
                 func_final_status = "wrong"
@@ -1019,16 +1090,19 @@ class BusinessBus(QThread):
         cards_plan = []
         # 从卡1到卡n依次存放（这要求放卡方案配置文件里必须保证递增的顺序）
         card_no = 1
+        print("转义前放卡计划\n", plan_info[f"{player}p_card_plan"])
         for card_info in plan_info[f"{player}p_card_plan"]:
             # 获取该卡名称，以便在deck_info中得到对应的slot值
             card_name = card_info[f"{player}P卡{card_no}"]
             card_slot = deck_info["deck_slot_info"][card_name]
             # 卡片CD以放卡方案配置文件中的为准
             card_cd = card_info[f"{player}P卡{card_no}CD"]
+            if card_cd == "CD":
+                card_cd = deck_info["deck_cd_info"][card_name]
             # 组装dict
             card_plan = {
-                "card_pos_series": card_info[f"{player}P卡{card_no}放置位置"],
-                "card_replenish_series": card_info[f"{player}P卡{card_no}补卡位置"],
+                "card_pos_series": card_info[f"{player}P卡{card_no}放置位置"].replace(",CD", f',{deck_info["deck_cd_info"][card_name]}'),
+                "card_replenish_series": card_info[f"{player}P卡{card_no}补卡位置"].replace(",CD", f',{deck_info["deck_cd_info"][card_name]}'),
                 "card_slot": int(card_slot),
                 "card_cd": int(card_cd)}
             # 加入cards_plan
