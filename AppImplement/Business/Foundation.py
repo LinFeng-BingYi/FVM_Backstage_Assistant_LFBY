@@ -351,6 +351,13 @@ def executeFlop(hwnd, flop_pos: str, zoom=1):
     delay(200)
 
 
+def exitGame(hwnd, zoom=1):
+    mouseClick(hwnd, 925 * zoom, 580 * zoom)
+    delay(500)
+    mouseClick(hwnd, 450 * zoom, 385 * zoom)
+    delay(500)
+
+
 def exitRoom(hwnd, zoom=1):
     mouseClick(hwnd, 920 * zoom, 560 * zoom)
     delay(1000)
@@ -529,8 +536,6 @@ def loopPlaceCardForThread(hwnd, pos_series: str, card_slot: int, card_cd: int, 
                 print("结束了")
                 return
 
-            if card_slot == 3:
-                print(f"放置位置：({pos_x}, {pos_y})")
             # 取卡
             mouseClick(hwnd, card_slot_x * zoom, card_slot_y * zoom)
             # 放卡
@@ -600,7 +605,12 @@ def openTopMenu(hwnd, menu_name: str, sub_menu_name='', zoom=1):
 
     # 处理某些特殊界面
     if menu_name == "假期特惠":
+        # 点击“兑换特惠”
         mouseClick(hwnd, 300 * zoom, 350 * zoom)
+        delay(300)
+    elif menu_name == "欢乐假期":
+        # 点击“立即挑战”
+        mouseClick(hwnd, 655 * zoom, 200 * zoom)
         delay(300)
 
     # 如果还有子菜单，则还需再点击一次

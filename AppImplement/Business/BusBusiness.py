@@ -6,7 +6,6 @@
 # @Time    : 2023/12/7 1:24
 # @Dsc     : 总线业务线程类，需要在执行过程中输出信息，能够接受中断的业务
 
-from PySide6.QtWidgets import QMessageBox
 from PySide6.QtCore import QThread, QThreadPool, QRunnable, Signal, QDateTime
 
 from AppImplement.RWConfigFile.RWPlayerDeck import PlayerDeckProcessor
@@ -36,7 +35,8 @@ DAILY_AWARD_FUNC_DICT = {
 # [自动登录]登录方式与函数名映射关系dict
 AUTO_LOGIN_WAY_FUNC_DICT = {
     "微端": autoLoginMicroTerminal,
-    "360游戏大厅": autoLogin360GameHall
+    "360游戏大厅-4399服": autoLogin360GameHall4399,
+    "360游戏大厅-空间3366服": autoLogin360GameHall3366
 }
 
 
@@ -294,30 +294,29 @@ class BusinessBus(QThread):
 
     # 功能：循环刷指定关卡 ---------------------------------------------------------------
     def loopSpecificLevel(self, zone, level, loop_count):
-        # 切换地图
-        self.formatBusinessMessage("正在切换到关卡")
-        hwnd_1p = self.player1_info["hwnd"]
-        zoom1 = self.player1_info["zoom"]
-        chooseSingleOrMultiZone(hwnd_1p, zone, level, zoom1)
+        if "skip_choose_level" in self.level_info and not self.level_info["skip_choose_level"]:
+            # 切换地图，同时1P创建房间
+            self.formatBusinessMessage("正在切换到关卡")
+            hwnd_1p = self.player1_info["hwnd"]
+            zoom1 = self.player1_info["zoom"]
+            createAnyRoom(hwnd_1p, zone, level, zoom=zoom1)
+            if self.player2_info is not None:
+                hwnd_2p = self.player2_info["hwnd"]
+                zoom2 = self.player2_info["zoom"]
+                createAnyRoom(hwnd_2p, zone, level, False, zoom=zoom2)
+            # 应用卡片组
+            # self.formatBusinessMessage("应用1P卡片组")
+            roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
         if self.player2_info is not None:
-            hwnd_2p = self.player2_info["hwnd"]
-            zoom2 = self.player2_info["zoom"]
-            chooseSingleOrMultiZone(hwnd_2p, zone, level, zoom2)
-        # 创建房间
-        self.formatBusinessMessage("正在创建房间")
-        createPwdRoom(hwnd_1p, zoom=zoom1)
-        # 应用卡片组
-        # self.formatBusinessMessage("应用1P卡片组")
-        roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
-        if self.player2_info is not None:
-            # 邀请队友
-            self.formatBusinessMessage("邀请2P")
-            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
-                # 若没找到2P
-                raise BusinessError("")
-            # self.formatBusinessMessage("应用2P卡片组")
-            roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
-        # 从点击 准备/开始 到完成翻牌
+            if "skip_choose_level" in self.level_info and not self.level_info["skip_choose_level"]:
+                # 邀请队友
+                self.formatBusinessMessage("邀请2P")
+                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                    # 若没找到2P
+                    raise BusinessError("没找到2P")
+                # self.formatBusinessMessage("应用2P卡片组")
+                roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
+            # 从点击 准备/开始 到完成翻牌
             for i in range(loop_count):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
                 self.teamFromStartToFlop()
@@ -438,21 +437,20 @@ class BusinessBus(QThread):
         self.formatBusinessMessage("正在切换到关卡")
         hwnd_1p = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
-        chooseSingleOrMultiZone(hwnd_1p, zone, level, zoom1)
+        createAnyRoom(hwnd_1p, zone, level, zoom=zoom1)
         if self.player2_info is not None:
             hwnd_2p = self.player2_info["hwnd"]
             zoom2 = self.player2_info["zoom"]
-            chooseSingleOrMultiZone(hwnd_2p, zone, level, zoom2)
-        # 创建房间
-        self.formatBusinessMessage("正在创建房间")
-        createPwdRoom(hwnd_1p, zoom=zoom1)
+            createAnyRoom(hwnd_2p, zone, level, False, zoom=zoom2)
         # 应用卡片组
         # self.formatBusinessMessage("应用1P卡片组")
         roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
         if self.player2_info is not None:
             # 邀请队友
             self.formatBusinessMessage("邀请2P")
-            teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2)
+            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                # 若没找到2P
+                raise BusinessError("没找到2P")
             # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -546,7 +544,9 @@ class BusinessBus(QThread):
             if self.player2_info is not None:
                 # 邀请队友
                 self.formatBusinessMessage("邀请2P")
-                teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2)
+                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                    # 若没找到2P
+                    raise BusinessError("没找到2P")
                 # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
                 # 从点击 准备/开始 到完成翻牌
@@ -670,7 +670,6 @@ class BusinessBus(QThread):
 
             self.formatBusinessMessage(f"正在创建房间")
             # 打开悬赏活动界面
-            openWantedDialog(hwnd_1p, zoom1)
             createWantedRoom(hwnd_1p, three_island, zoom1)
             # 应用卡片组
             # self.formatBusinessMessage("应用1P卡片组")
@@ -682,7 +681,9 @@ class BusinessBus(QThread):
                     flag_2p_opened = True
                 # 邀请队友
                 self.formatBusinessMessage("邀请2P")
-                teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2)
+                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                    # 若没找到2P
+                    raise BusinessError("没找到2P")
                 # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
                 # 从点击 准备/开始 到完成翻牌
@@ -694,6 +695,88 @@ class BusinessBus(QThread):
                 self.singleFromStartToFlop()
                 # 退出房间
                 exitRoom(hwnd_1p, zoom1)
+
+    # 功能：勇士挑战 ------------------------------------------------------------------
+    def startWarriorChallenge(self, level_pic, loop_count):
+        # 切换地图
+        self.formatBusinessMessage("正在切换到关卡")
+        hwnd_1p = self.player1_info["hwnd"]
+        zoom1 = self.player1_info["zoom"]
+        singleLayerChooseLevel(hwnd_1p, "火山岛", "勇士挑战", zoom1)
+        if self.player2_info is not None:
+            hwnd_2p = self.player2_info["hwnd"]
+            zoom2 = self.player2_info["zoom"]
+            switchWorldZone(hwnd_2p, "火山岛", zoom2)
+
+        # 跳转至已解锁关卡中难度最高的一关
+        while find_pic(hwnd_1p, WARRIOR_CHALLENGE_TURN_RIGHT_PATH, [450, 150, 540, 200]):
+            mouseClick(hwnd_1p, 500 * zoom1, 175 * zoom1)
+            delay(850)
+        # 向左翻页直到找到目标关卡
+        while not find_pic(hwnd_1p, level_pic, [230, 150, 450, 360]):
+            # 若当前已经是最左一页，则说明未能找到截图对应的关卡
+            if not find_pic(hwnd_1p, WARRIOR_CHALLENGE_TURN_LEFT_PATH, [100, 150, 200, 200]):
+                mouseClick(hwnd_1p, 845 * zoom1, 60 * zoom1)
+                delay(500)
+                raise BusinessError("未找到所选“勇士挑战BOSS”截图对应的关卡！")
+            # 否则继续翻页
+            mouseClick(hwnd_1p, 150 * zoom1, 175 * zoom1)
+            delay(850)
+        # 点击创建房间
+        mouseClick(hwnd_1p, 450 * zoom1, 530 * zoom1)
+        delay(2000)
+
+        # 应用卡组
+        roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
+        if self.player2_info is not None:
+            # 邀请队友
+            self.formatBusinessMessage("邀请2P")
+            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                # 若没找到2P
+                raise BusinessError("没找到2P")
+            # self.formatBusinessMessage("应用2P卡片组")
+            roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
+            # 从点击 准备/开始 到完成翻牌
+            try:
+                for i in range(loop_count):
+                    self.formatBusinessMessage(f"开始第{i + 1}局")
+                    self.teamFromStartToFlop()
+                    # self.formatBusinessMessage(f"结束第{i + 1}局")
+            except BusinessError as business_error:
+                business_error_str = business_error.error_info
+                if business_error_str.find("超过") != -1:
+                    business_error_str = business_error_str + "\n可能是剩余次数不足！"
+                    exitRoom(hwnd_1p, zoom1)
+                    exitRoom(hwnd_2p, zoom2)
+                    self.formatBusinessMessage(business_error_str, "WARN")
+                else:
+                    raise business_error
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
+            exitRoom(hwnd_2p, zoom2)
+        else:
+            try:
+                for i in range(loop_count):
+                    self.formatBusinessMessage(f"开始第{i + 1}局")
+                    self.singleFromStartToFlop()
+                    # self.formatBusinessMessage(f"结束第{i + 1}局")
+            except BusinessError as business_error:
+                business_error_str = business_error.error_info
+                if business_error_str.find("超过") != -1:
+                    business_error_str = business_error_str + "\n可能是剩余次数不足！"
+                    exitRoom(hwnd_1p, zoom1)
+                    self.formatBusinessMessage(business_error_str, "WARN")
+                else:
+                    raise business_error
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
+        # 1P关闭勇士界面
+        mouseClick(hwnd_1p, 845 * zoom1, 60 * zoom1)
+        delay(500)
+
+    # 功能：刷技能 -------------------------------------------------------------------
+    def startCardSkill(self, level, loop_count):
+        pass
 
     # 功能：使用物品 ------------------------------------------------------------------
     def startOperateStuff(self, hwnd, stuff_path, panel, operation, use_times, zoom=1):
@@ -766,7 +849,10 @@ class BusinessBus(QThread):
             server_no_1p = func_param["1p_server_no"]
 
             # 启动延时（单位min）
-            delay(func_param["start_delay"] * 60000)
+            if func_param["start_way"] == "time":
+                waitUntilSpecificTime(func_param["start_time"])
+            else:
+                delay(func_param["start_delay"] * 60000)
 
             # 调用自动登录函数，更新可操作句柄
             start_param["1p_hwnd"] = AUTO_LOGIN_WAY_FUNC_DICT[func_param["1p_login_way"]](
@@ -842,7 +928,8 @@ class BusinessBus(QThread):
                 self.setLevelInfo({
                     "has_stage2": func_param["has_stage2"],
                     "shall_continue": func_param["shall_continue"],
-                    "max_check_time": start_param["max_check_time"]
+                    "max_check_time": start_param["max_check_time"],
+                    "skip_choose_level": func_param["skip_choose_level"]
                 })
                 try:
                     # 启动 循环刷指定关卡 的功能
@@ -1044,6 +1131,34 @@ class BusinessBus(QThread):
                         func_final_status = "wrong"
                         self.signal_send_business_error.emit(business_error_str)
                         self.formatBusinessMessage(business_error_str, "ERROR")
+            elif func_param["func_name"] == "勇士挑战":
+                # 获取放卡方案信息
+                plan_path = func_param["plan_path"]
+                self.place_plan_procs.setFilePath(plan_path)
+                plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
+                # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+                player1_info_dict = self.convertToExecute(
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
+                player2_info_dict = None
+                if func_param["player2"] != 0:
+                    player2_info_dict = self.convertToExecute(
+                        start_param, plan_info, func_param["flop_pos"], func_param["player2"])
+                self.setPlayerInfo(player1_info_dict, player2_info_dict)
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"]
+                })
+                try:
+                    # 启动 循环刷指定关卡 的功能
+                    self.startWarriorChallenge(
+                        func_param["boss_pic"],
+                        func_param["loop_count"])
+                except BusinessError as business_error:
+                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
+                    func_final_status = "wrong"
+                    self.signal_send_business_error.emit(business_error_str)
+                    self.formatBusinessMessage(business_error_str, "ERROR")
             elif func_param["func_name"] == "使用物品":
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from PySide6.QtWidgets import QFileDialog
-from PySide6.QtCore import QThread
+from PySide6.QtCore import QThread, QTime
 
 from AppImplement.FlowFunction.BaseListItem import BaseListWidget, BaseParamWidget
 from AppImplement.FormFiles.AutoLoginParam import Ui_AutoLoginParam
@@ -50,18 +50,25 @@ class AutoLoginParamWidget(Ui_AutoLoginParam, BaseParamWidget):
         top_hwnd_1p = self.lineEdit_1p_hwnd.text()
         top_hwnd_2p = self.lineEdit_2p_hwnd.text()
         global_info = {
-            "start_delay": float(self.lineEdit_start_delay.text()),
-            "1p_top_hwnd": int(top_hwnd_1p) if top_hwnd_1p != '' else 0,
+            "start_way": "time" if self.radioButton_start_time.isChecked() else "delay",
+            "start_time": self.timeEdit_start_time.text(),
+            "start_delay": self.doubleSpinBox_start_delay.value(),
+            "1p_top_hwnd": int(top_hwnd_1p) if not get_for_json and top_hwnd_1p != '' else 0,
             "1p_server_no": self.lineEdit_1p_server_no.text(),
             "1p_login_way": self.comboBox_1p_login_way.currentText(),
-            "2p_top_hwnd": int(top_hwnd_2p) if top_hwnd_2p != '' else 0,
+            "2p_top_hwnd": int(top_hwnd_2p) if not get_for_json and top_hwnd_2p != '' else 0,
             "2p_server_no": self.lineEdit_2p_server_no.text(),
             "2p_login_way": self.comboBox_2p_login_way.currentText()
         }
         return global_info
 
     def setAllParam(self, param_dict):
-        self.lineEdit_start_delay.setText(str(param_dict["start_delay"]))
+        if "start_way" not in param_dict or param_dict["start_way"] == "delay":
+            self.radioButton_start_delay.setChecked(True)
+        start_time_lst = param_dict["start_time"].split(":") if "start_time" in param_dict else ["00", "01", "00"]
+        start_time = QTime(int(start_time_lst[0]), int(start_time_lst[1]), int(start_time_lst[2]))
+        self.timeEdit_start_time.setTime(start_time)
+        self.doubleSpinBox_start_delay.setValue(float(param_dict["start_delay"]))
         self.lineEdit_1p_hwnd.setText(str(param_dict["1p_top_hwnd"]))
         self.lineEdit_2p_hwnd.setText(str(param_dict["2p_top_hwnd"]))
         self.lineEdit_1p_server_no.setText(param_dict["1p_server_no"])
@@ -75,7 +82,8 @@ class AutoLoginParamWidget(Ui_AutoLoginParam, BaseParamWidget):
             return False, "未获取正确的1P窗口句柄！"
         if not match("^[0-9]+$", self.lineEdit_2p_hwnd.text()):
             return False, "未获取正确的2P窗口句柄！"
-        if not match("^[0-9]+(\\.)?[0-9]*$", self.lineEdit_start_delay.text()):
+        if (self.radioButton_start_delay.isChecked() and
+                not match("^[0-9]+(\\.)?[0-9]*分钟$", self.doubleSpinBox_start_delay.text())):
             return False, "请输入正确的启动倒计时，单位为分钟(min)！"
         return True
 

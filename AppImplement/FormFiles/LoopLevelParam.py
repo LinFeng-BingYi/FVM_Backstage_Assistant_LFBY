@@ -158,10 +158,11 @@ class Ui_LoopLevelParam(object):
         self.gridLayout_level_setting.setSpacing(5)
         self.gridLayout_level_setting.setObjectName(u"gridLayout_level_setting")
         self.gridLayout_level_setting.setContentsMargins(-1, 0, -1, 5)
-        self.label_loop_count = QLabel(self.groupBox_level_setting)
-        self.label_loop_count.setObjectName(u"label_loop_count")
+        self.lineEdit_flop_pos = QLineEdit(self.groupBox_level_setting)
+        self.lineEdit_flop_pos.setObjectName(u"lineEdit_flop_pos")
+        self.lineEdit_flop_pos.setMinimumSize(QSize(0, 30))
 
-        self.gridLayout_level_setting.addWidget(self.label_loop_count, 0, 0, 1, 1)
+        self.gridLayout_level_setting.addWidget(self.lineEdit_flop_pos, 0, 3, 1, 1)
 
         self.lineEdit_loop_count = QLineEdit(self.groupBox_level_setting)
         self.lineEdit_loop_count.setObjectName(u"lineEdit_loop_count")
@@ -169,16 +170,17 @@ class Ui_LoopLevelParam(object):
 
         self.gridLayout_level_setting.addWidget(self.lineEdit_loop_count, 0, 1, 1, 1)
 
+        self.label_loop_count = QLabel(self.groupBox_level_setting)
+        self.label_loop_count.setObjectName(u"label_loop_count")
+        self.label_loop_count.setMaximumSize(QSize(67, 16777215))
+
+        self.gridLayout_level_setting.addWidget(self.label_loop_count, 0, 0, 1, 1)
+
         self.label_flop_pos = QLabel(self.groupBox_level_setting)
         self.label_flop_pos.setObjectName(u"label_flop_pos")
+        self.label_flop_pos.setMaximumSize(QSize(67, 16777215))
 
         self.gridLayout_level_setting.addWidget(self.label_flop_pos, 0, 2, 1, 1)
-
-        self.lineEdit_flop_pos = QLineEdit(self.groupBox_level_setting)
-        self.lineEdit_flop_pos.setObjectName(u"lineEdit_flop_pos")
-        self.lineEdit_flop_pos.setMinimumSize(QSize(0, 30))
-
-        self.gridLayout_level_setting.addWidget(self.lineEdit_flop_pos, 0, 3, 1, 1)
 
         self.checkBox_has_stage2 = QCheckBox(self.groupBox_level_setting)
         self.checkBox_has_stage2.setObjectName(u"checkBox_has_stage2")
@@ -194,7 +196,13 @@ class Ui_LoopLevelParam(object):
         self.checkBox_continue.setLayoutDirection(Qt.RightToLeft)
         self.checkBox_continue.setChecked(True)
 
-        self.gridLayout_level_setting.addWidget(self.checkBox_continue, 1, 2, 1, 1)
+        self.gridLayout_level_setting.addWidget(self.checkBox_continue, 1, 1, 1, 1)
+
+        self.checkBox_skip_choose_level = QCheckBox(self.groupBox_level_setting)
+        self.checkBox_skip_choose_level.setObjectName(u"checkBox_skip_choose_level")
+        self.checkBox_skip_choose_level.setLayoutDirection(Qt.RightToLeft)
+
+        self.gridLayout_level_setting.addWidget(self.checkBox_skip_choose_level, 1, 3, 1, 1)
 
         self.gridLayout_level_setting.setRowStretch(0, 1)
         self.gridLayout_level_setting.setRowStretch(1, 1)
@@ -240,11 +248,12 @@ class Ui_LoopLevelParam(object):
         self.label_1p_plan.setText(QCoreApplication.translate("LoopLevelParam", u"\u653e\u5361\u65b9\u6848\uff1a", None))
         self.pushButton_view_plan.setText(QCoreApplication.translate("LoopLevelParam", u"\u67e5\u770b\u65b9\u6848", None))
         self.groupBox_level_setting.setTitle(QCoreApplication.translate("LoopLevelParam", u"\u901a\u5173\u8bbe\u7f6e", None))
-        self.label_loop_count.setText(QCoreApplication.translate("LoopLevelParam", u"\u5faa\u73af\u6b21\u6570\uff1a", None))
-        self.lineEdit_loop_count.setText(QCoreApplication.translate("LoopLevelParam", u"1", None))
-        self.label_flop_pos.setText(QCoreApplication.translate("LoopLevelParam", u"\u7ffb\u724c\u4f4d\u7f6e\uff1a", None))
         self.lineEdit_flop_pos.setText(QCoreApplication.translate("LoopLevelParam", u"1;2", None))
+        self.lineEdit_loop_count.setText(QCoreApplication.translate("LoopLevelParam", u"1", None))
+        self.label_loop_count.setText(QCoreApplication.translate("LoopLevelParam", u"\u5faa\u73af\u6b21\u6570\uff1a", None))
+        self.label_flop_pos.setText(QCoreApplication.translate("LoopLevelParam", u"\u7ffb\u724c\u4f4d\u7f6e\uff1a", None))
         self.checkBox_has_stage2.setText(QCoreApplication.translate("LoopLevelParam", u"\u6709\u4e8c\u9636\u6bb5", None))
         self.checkBox_continue.setText(QCoreApplication.translate("LoopLevelParam", u"\u7ee7\u7eed\u6311\u6218", None))
+        self.checkBox_skip_choose_level.setText(QCoreApplication.translate("LoopLevelParam", u"\u8df3\u8fc7\u9009\u5173", None))
     # retranslateUi
 

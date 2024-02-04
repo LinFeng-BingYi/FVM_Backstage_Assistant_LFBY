@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_general">
+  <layout class="QVBoxLayout" name="verticalLayout_general" stretch="0,0,0,0">
    <property name="spacing">
     <number>5</number>
    </property>
@@ -52,14 +52,17 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget_other_setting" native="true">
+    <widget class="QGroupBox" name="groupBox_start_way">
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>50</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_other_setting">
+     <property name="title">
+      <string>启动方式</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_start_way" stretch="0,0,0,0">
       <property name="spacing">
        <number>5</number>
       </property>
@@ -67,10 +70,10 @@
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>5</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_start_delay">
+       <widget class="QRadioButton" name="radioButton_start_time">
         <property name="minimumSize">
          <size>
           <width>65</width>
@@ -84,48 +87,76 @@
          </size>
         </property>
         <property name="text">
-         <string>启动倒计时</string>
+         <string>时间点</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_start_delay">
+       <widget class="QTimeEdit" name="timeEdit_start_time">
         <property name="minimumSize">
          <size>
           <width>0</width>
           <height>30</height>
          </size>
         </property>
+        <property name="dateTime">
+         <datetime>
+          <hour>0</hour>
+          <minute>1</minute>
+          <second>0</second>
+          <year>2000</year>
+          <month>1</month>
+          <day>1</day>
+         </datetime>
+        </property>
+        <property name="displayFormat">
+         <string>HH:mm:ss</string>
+        </property>
+        <property name="timeSpec">
+         <enum>Qt::LocalTime</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_start_delay">
+        <property name="minimumSize">
+         <size>
+          <width>65</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>97</width>
+          <width>65</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
-         <string>60</string>
+         <string>倒计时</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_start_delay_unit">
-        <property name="text">
-         <string>分钟</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_other_setting">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_start_delay">
+        <property name="minimumSize">
          <size>
-          <width>308</width>
-          <height>20</height>
+          <width>0</width>
+          <height>30</height>
          </size>
         </property>
-       </spacer>
+        <property name="suffix">
+         <string>min</string>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <double>60.000000000000000</double>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -299,7 +330,12 @@
         </item>
         <item>
          <property name="text">
-          <string>360游戏大厅</string>
+          <string>360游戏大厅-4399服</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>360游戏大厅-空间3366服</string>
          </property>
         </item>
        </widget>
@@ -344,7 +380,12 @@
         </item>
         <item>
          <property name="text">
-          <string>360游戏大厅</string>
+          <string>360游戏大厅-4399服</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>360游戏大厅-空间3366服</string>
          </property>
         </item>
        </widget>

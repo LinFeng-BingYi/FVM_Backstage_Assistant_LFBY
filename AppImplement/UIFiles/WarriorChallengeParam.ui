@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LoopLevelParam</class>
- <widget class="QWidget" name="LoopLevelParam">
+ <class>WarriorChallengeParam</class>
+ <widget class="QWidget" name="WarriorChallengeParam">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
+    <width>530</width>
     <height>340</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_top" stretch="2,2,3,3,0">
+  <layout class="QVBoxLayout" name="verticalLayout_top">
    <property name="spacing">
     <number>5</number>
    </property>
@@ -120,15 +120,18 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_select_level">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>60</height>
+      </size>
+     </property>
      <property name="title">
       <string>选择关卡</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_select_level" stretch="1,2,1,2">
+     <layout class="QHBoxLayout" name="horizontalLayout_select_level">
       <property name="spacing">
        <number>5</number>
-      </property>
-      <property name="leftMargin">
-       <number>9</number>
       </property>
       <property name="topMargin">
        <number>0</number>
@@ -137,7 +140,7 @@
        <number>5</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_zone">
+       <widget class="QLabel" name="label_boss_pic">
         <property name="maximumSize">
          <size>
           <width>67</width>
@@ -145,40 +148,45 @@
          </size>
         </property>
         <property name="text">
-         <string>地图：</string>
+         <string>BOSS截图：</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBox_zone">
+       <widget class="QLineEdit" name="lineEdit_boss_pic">
         <property name="minimumSize">
          <size>
           <width>0</width>
           <height>30</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>截取BOSS位于正中央时的图像</string>
+        </property>
+        <property name="placeholderText">
+         <string>截取BOSS位于正中央时的图像</string>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_level">
+       <widget class="QPushButton" name="pushButton_boss_pic">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>67</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>关卡：</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboBox_level">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
+          <width>80</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>截取BOSS位于正中央时的图像</string>
+        </property>
+        <property name="text">
+         <string>浏览</string>
         </property>
        </widget>
       </item>
@@ -295,33 +303,39 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_level_setting">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>90</height>
+      </size>
+     </property>
      <property name="title">
       <string>通关设置</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_level_setting" rowstretch="1,1" columnstretch="1,1,1,1">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>5</number>
+      </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="bottomMargin">
        <number>5</number>
       </property>
-      <property name="spacing">
-       <number>5</number>
-      </property>
-      <item row="0" column="3">
-       <widget class="QLineEdit" name="lineEdit_flop_pos">
+      <item>
+       <widget class="QLabel" name="label_loop_count">
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>30</height>
+          <width>67</width>
+          <height>0</height>
          </size>
         </property>
         <property name="text">
-         <string>1;2</string>
+         <string>循环次数：</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item>
        <widget class="QLineEdit" name="lineEdit_loop_count">
         <property name="minimumSize">
          <size>
@@ -330,29 +344,16 @@
          </size>
         </property>
         <property name="text">
-         <string>1</string>
+         <string>5</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_loop_count">
-        <property name="maximumSize">
-         <size>
-          <width>67</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>循环次数：</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
+      <item>
        <widget class="QLabel" name="label_flop_pos">
-        <property name="maximumSize">
+        <property name="minimumSize">
          <size>
           <width>67</width>
-          <height>16777215</height>
+          <height>0</height>
          </size>
         </property>
         <property name="text">
@@ -360,51 +361,16 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="checkBox_has_stage2">
-        <property name="maximumSize">
+      <item>
+       <widget class="QLineEdit" name="lineEdit_flop_pos">
+        <property name="minimumSize">
          <size>
-          <width>67</width>
-          <height>16777215</height>
+          <width>0</width>
+          <height>30</height>
          </size>
         </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
         <property name="text">
-         <string>有二阶段</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="checkBox_continue">
-        <property name="maximumSize">
-         <size>
-          <width>67</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>继续挑战</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QCheckBox" name="checkBox_skip_choose_level">
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>跳过选关</string>
+         <string>1;2;3;4;5;6</string>
         </property>
        </widget>
       </item>
@@ -418,8 +384,8 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>0</width>
-       <height>60</height>
+       <width>20</width>
+       <height>135</height>
       </size>
      </property>
     </spacer>

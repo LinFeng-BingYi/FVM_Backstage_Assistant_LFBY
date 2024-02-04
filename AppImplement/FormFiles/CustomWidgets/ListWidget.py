@@ -16,6 +16,7 @@ from AppImplement.FlowFunction.VolcanicRelicListItem import VolcanicRelicListWid
 from AppImplement.FlowFunction.MagicTowerListItem import MagicTowerListWidget
 from AppImplement.FlowFunction.CrossServiceListItem import CrossServiceListWidget
 from AppImplement.FlowFunction.WantedListItem import WantedListWidget
+from AppImplement.FlowFunction.WarriorChallengeListItem import WarriorChallengeListWidget
 from AppImplement.FlowFunction.AutoLoginListItem import AutoLoginListWidget
 from AppImplement.FlowFunction.UseStuffListItem import UseStuffListWidget
 
@@ -34,6 +35,7 @@ SUPPORT_FUNC = {
     "魔塔蛋糕": MagicTowerListWidget,
     "跨服远征": CrossServiceListWidget,
     "悬赏三连": WantedListWidget,
+    "勇士挑战": WarriorChallengeListWidget,
     "使用物品": UseStuffListWidget
 }
 

@@ -6,13 +6,14 @@
 # @Time    : 2023/12/10 15:29
 # @Dsc     : 一般业务，过程中不用输出信息到主界面
 
-from PySide6.QtCore import QDate
+from PySide6.QtCore import QDate, QTime
 
 from Common.Backstage import *
 from AppImplement.GlobalValue.StaticValue import *
 from AppImplement.Business.CustomException import BusinessError
 from AppImplement.Business.Foundation import (
-    switchWorldZone, singleLayerChooseLevel, createPwdRoom, openBottomMenu, openTopMenu, acceptInvitationOrNot
+    switchWorldZone, singleLayerChooseLevel, createPwdRoom, openBottomMenu, openTopMenu, acceptInvitationOrNot,
+    chooseSingleOrMultiZone
 )
 
 from math import floor
@@ -238,11 +239,18 @@ def executeUnionGarden(hwnd, fertilize_date: str, plant_type=0, zoom=1):
     # 先查看公会任务中施肥任务的状态，若不是“进行中”，则无需施肥
     openBottomMenu(hwnd, "跳转", "公会任务", zoom)
     if need_fertilize:
+        # 展开公会任务
         unfoldUnionQuest(hwnd, zoom)
-        if not find_pic(hwnd, TODO_BOTTOM_QUEST_PATH, [355, 190 + 30 * 9, 400, 220 + 30 * 9]):
-            need_fertilize = False
-            mouseClick(hwnd, 855 * zoom, 55 * zoom)
-            delay(500)
+        # 识别施肥3次的任务是否已完成，注意根据有无发布过会长任务而变化识图范围
+        if find_color(hwnd, [377, 470, 377, 470], 0x512D00):
+            if not find_pic(hwnd, TODO_BOTTOM_QUEST_PATH, [355, 190 + 30 * 7, 400, 220 + 30 * 7]):
+                need_fertilize = False
+        else:
+            if not find_pic(hwnd, TODO_BOTTOM_QUEST_PATH, [355, 190 + 30 * 9, 400, 220 + 30 * 9]):
+                need_fertilize = False
+    # 关闭公会任务
+    mouseClick(hwnd, 855 * zoom, 55 * zoom)
+    delay(500)
     # 点击底部“公会”
     mouseClick(hwnd, 777 * zoom, 585 * zoom)
     if not find_pic_loop(hwnd, OPEN_UNION_PATH, [218, 95, 292, 111], max_time=120):
@@ -628,12 +636,39 @@ def openWantedDialog(hwnd, zoom=1):
 
 
 def createWantedRoom(hwnd, three_island_zone, zoom=1):
+    openWantedDialog(hwnd, zoom)
     goto_button_pos = find_pic(hwnd, GOTO_BUTTON_PIC_DICT[three_island_zone])
     # 点击“挑战”
     mouseClick(hwnd, goto_button_pos[0] * zoom, goto_button_pos[1] * zoom)
     delay(500)
     # 创建房间
     createPwdRoom(hwnd, "0000", zoom)
+
+
+# 汇总关卡创建 -----------------------------------------------------------------------
+# 顶部副本关卡
+TOP_MENU_LEVEL_OPEN_FUNC = {
+    "悬赏美味": (createWantedRoom, {"three_island_zone": "美味岛"}),
+    "悬赏火山": (createWantedRoom, {"three_island_zone": "火山岛"}),
+    "悬赏浮空": (createWantedRoom, {"three_island_zone": "浮空岛"}),
+    "欢乐假期": (openTopMenu, {"menu_name": "欢乐假期", "sub_menu_name": ""})
+}
+
+
+def createAnyRoom(hwnd, zone, level, enter_room=True, zoom=1):
+    """从跳转地图区域到进入房间。可以通过设置enter_room=False使得仅跳转，而不进入房间"""
+    if zone == "顶部关卡":
+        target_zone = "美味岛"
+        if level.find("悬赏") != -1:
+            target_zone = TOP_MENU_LEVEL_OPEN_FUNC[level][1]["three_island_zone"]
+        switchWorldZone(hwnd, target_zone, zoom)
+        if enter_room:
+            create_room_func, func_args = TOP_MENU_LEVEL_OPEN_FUNC[level]
+            create_room_func(hwnd=hwnd, zoom=zoom, **func_args)
+    else:
+        chooseSingleOrMultiZone(hwnd, zone, level, zoom)
+        if enter_room:
+            createPwdRoom(hwnd, zoom=zoom)
 
 
 # 使用物品相关 -----------------------------------------------------------------------
@@ -805,7 +840,7 @@ def holidayDiscountConvert(hwnd, stuff_pic, use_times, zoom=1):
                 break
             # 点击“领取”
             mouseClick(hwnd, 760 * zoom, stuff_y_pos * zoom)
-            delay(4100)
+            delay(1100)
             # 关闭二级密码框
             if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
                 mouseClick(hwnd, 570 * zoom, 200 * zoom)
@@ -819,7 +854,7 @@ def holidayDiscountConvert(hwnd, stuff_pic, use_times, zoom=1):
             break
         # 向右一页
         mouseClick(hwnd, 640 * zoom, 480 * zoom)
-        delay(300)
+        delay(3000)
     return True
 
 
@@ -911,3 +946,15 @@ def determineDateRangeEvent(execute_date_range: str):
         return True
     return False
 
+
+def waitUntilSpecificTime(specific_time_str):
+    """循环等待直到超过目标时间
+
+    Args:
+        specific_time_str: str
+            目标时间。格式：HH:mm:ss
+    """
+    specific_time_lst = specific_time_str.split(":")
+    specific_time = QTime(int(specific_time_lst[0]), int(specific_time_lst[1]), int(specific_time_lst[2]))
+    while QTime.currentTime() < specific_time:
+        delay(1)

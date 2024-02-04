@@ -63,6 +63,7 @@ HSD_LEVEL_POS = {
     "果酱部落日": (220, 137),
     "果酱部落夜": (266, 118),
     "雪顶火山": (350, 72),
+    "勇士挑战": (190, 410),
     "火山漫游": (352, 235)
 }
 
@@ -291,10 +292,10 @@ OPEN_HOLIDAY_DISCOUNT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种
 MONTHLY_CARD_WELFARE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\月卡福利.bmp"
 # 进入月卡福利
 OPEN_MONTHLY_CARD_WELFARE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入月卡福利.bmp"
-# 假期副本
-HOLIDAY_DUNGEON_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\假期副本.bmp"
-# 进入假期副本
-OPEN_HOLIDAY_DUNGEON_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入假期副本.bmp"
+# 欢乐假期
+JOYFUL_HOLIDAY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\欢乐假期.bmp"
+# 进入欢乐假期
+OPEN_JOYFUL_HOLIDAY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入欢乐假期.bmp"
 # 实验室
 LABORATORY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\实验室.bmp"
 # 进入实验室
@@ -358,10 +359,10 @@ FIND_AND_OPEN_TOP_MENU_DICT = {
         OPEN_MONTHLY_CARD_WELFARE_PATH,
         [360, 30, 560, 70]
     ),
-    "假期副本": (
-        HOLIDAY_DUNGEON_PATH,
-        OPEN_HOLIDAY_DUNGEON_PATH,
-        None
+    "欢乐假期": (
+        JOYFUL_HOLIDAY_PATH,
+        OPEN_JOYFUL_HOLIDAY_PATH,
+        [210, 90, 320, 130]
     ),
     "实验室": (
         LABORATORY_PATH,
@@ -503,6 +504,8 @@ BOTTOM_SUB_MENU_POS = {
 # 其他 ---------------------------------------------------------------------------
 # 换线，用来判断活动界面是否关闭成功
 SWITCH_LINE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\换线.bmp"
+# 换线，用来判断是否从自动登录进入游戏
+CHAT_BOX_CURRENT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\聊天框当前.bmp"
 # 常见提示框关闭按钮
 COMMON_TIP_DIALOG_CLOSE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\常见提示框关闭按钮.bmp"
 # 二级密码
@@ -511,7 +514,12 @@ SECONDARY_PASSWORD_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界
 BACKPACK_PROP_USE_SKILL_BOOK_DIALOG_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\背包道具使用技能书时弹窗.bmp"
 # 魔塔蛋糕未加载完全
 MAGIC_TOWER_LOADING_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\魔塔蛋糕未加载完全.bmp"
+# 勇士向左翻页
+WARRIOR_CHALLENGE_TURN_LEFT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\勇士向左翻页.bmp"
+# 勇士向右翻页
+WARRIOR_CHALLENGE_TURN_RIGHT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\勇士向右翻页.bmp"
 
 # 自动登录 -------------------------------------------------------------------------
 AUTO_LOGIN_USERNAME_BOX = ROOT_PATH + r"\resources\images\界面图标\自动登录相关\用户名输入框.bmp"
 AUTO_LOGIN_ENTER_SERVER_BTN = ROOT_PATH + r"\resources\images\界面图标\自动登录相关\进入服务器按钮.bmp"
+AUTO_LOGIN_3366_LAST_SERVER = ROOT_PATH + r"\resources\images\界面图标\自动登录相关\空间3366最近区服.bmp"

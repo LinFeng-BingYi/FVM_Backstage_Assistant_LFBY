@@ -81,9 +81,9 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
         global_info = {
             "enable_2p": self.checkBox_enable_2p.isChecked(),
             "max_check_time": int(self.lineEdit_max_check_time.text()),
-            "1p_hwnd": int(hwnd_1p) if hwnd_1p != '' else None,
+            "1p_hwnd": int(hwnd_1p) if not get_for_json and hwnd_1p != '' else 0,
             "1p_zoom": float(self.lineEdit_1p_zoom.text()),
-            "2p_hwnd": int(hwnd_2p) if hwnd_2p != '' else None,
+            "2p_hwnd": int(hwnd_2p) if not get_for_json and hwnd_2p != '' else 0,
             "2p_zoom": float(self.lineEdit_2p_zoom.text()),
             "2p_name_pic_path": self.lineEdit_2p_name_pic.text(),
             "deck_path": self.lineEdit_deck_file.text(),
