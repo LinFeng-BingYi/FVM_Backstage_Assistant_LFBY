@@ -19,6 +19,7 @@ from AppImplement.FlowFunction.WantedListItem import WantedListWidget
 from AppImplement.FlowFunction.WarriorChallengeListItem import WarriorChallengeListWidget
 from AppImplement.FlowFunction.AutoLoginListItem import AutoLoginListWidget
 from AppImplement.FlowFunction.UseStuffListItem import UseStuffListWidget
+from AppImplement.FlowFunction.LoopSkillListItem import LoopSkillListWidget
 
 from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
@@ -36,7 +37,8 @@ SUPPORT_FUNC = {
     "跨服远征": CrossServiceListWidget,
     "悬赏三连": WantedListWidget,
     "勇士挑战": WarriorChallengeListWidget,
-    "使用物品": UseStuffListWidget
+    "使用物品": UseStuffListWidget,
+    "刷熟练度": LoopSkillListWidget
 }
 
 

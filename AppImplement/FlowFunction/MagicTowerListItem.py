@@ -89,8 +89,8 @@ class MagicTowerParamWidget(Ui_MagicTowerParam, BaseParamWidget):
             return False, "房主与房客不能选择同一个！"
         if not os.path.exists(self.lineEdit_plan_path.text()):
             return False, "未找到放卡方案ini文件！"
-        if not match("^-?[0-9]+$", self.lineEdit_level_num.text()):
-            return False, "请填写正确的魔塔层数！"
+        if not match("^(-?[2-5])|[0-9]+$", self.lineEdit_level_num.text()):
+            return False, "请填写正确的魔塔层数！当为负数时，表示魔塔第三页从上往下对应的关卡。例如-5表示威望屋"
         if not match("^[0-9]+$", self.lineEdit_loop_count.text()):
             return False, "请填写正确的循环次数！"
         if not match("^([1-6])(;[1-6])*$", self.lineEdit_flop_pos.text()):

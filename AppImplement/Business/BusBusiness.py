@@ -282,19 +282,19 @@ class BusinessBus(QThread):
             self.card_place_thread_pool.start(place_worker)
 
     def endAllPlacingWorker(self, wait_time=5):
-        print("尝试结束")
-        start_time = time()
+        # print("尝试结束")
+        # start_time = time()
         self.card_place_thread_pool.clear()
         for place_thread in self.place_card_thread_list:
             print("关闭放卡线程：", place_thread)
             place_thread.stop()
         self.place_card_thread_list.clear()
         self.card_place_thread_pool.waitForDone(wait_time)
-        print("花费时间：", time() - start_time)
+        # print("花费时间：", time() - start_time)
 
     # 功能：循环刷指定关卡 ---------------------------------------------------------------
     def loopSpecificLevel(self, zone, level, loop_count):
-        if "skip_choose_level" in self.level_info and not self.level_info["skip_choose_level"]:
+        if "skip_choose_level" not in self.level_info or not self.level_info["skip_choose_level"]:
             # 切换地图，同时1P创建房间
             self.formatBusinessMessage("正在切换到关卡")
             hwnd_1p = self.player1_info["hwnd"]
@@ -308,12 +308,13 @@ class BusinessBus(QThread):
             # self.formatBusinessMessage("应用1P卡片组")
             roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
         if self.player2_info is not None:
-            if "skip_choose_level" in self.level_info and not self.level_info["skip_choose_level"]:
+            if "skip_choose_level" not in self.level_info or not self.level_info["skip_choose_level"]:
                 # 邀请队友
                 self.formatBusinessMessage("邀请2P")
                 if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
                     # 若没找到2P
-                    raise BusinessError("没找到2P")
+                    exitRoom(hwnd_1p, zoom1)
+                    raise BusinessError("没找到2P或2P进入房间失败！")
                 # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -450,7 +451,8 @@ class BusinessBus(QThread):
             self.formatBusinessMessage("邀请2P")
             if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
                 # 若没找到2P
-                raise BusinessError("没找到2P")
+                exitRoom(hwnd_1p, zoom1)
+                raise BusinessError("没找到2P或2P进入房间失败！")
             # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -546,7 +548,8 @@ class BusinessBus(QThread):
                 self.formatBusinessMessage("邀请2P")
                 if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
                     # 若没找到2P
-                    raise BusinessError("没找到2P")
+                    exitRoom(hwnd_1p, zoom1)
+                    raise BusinessError("没找到2P或2P进入房间失败！")
                 # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
                 # 从点击 准备/开始 到完成翻牌
@@ -683,7 +686,8 @@ class BusinessBus(QThread):
                 self.formatBusinessMessage("邀请2P")
                 if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
                     # 若没找到2P
-                    raise BusinessError("没找到2P")
+                    exitRoom(hwnd_1p, zoom1)
+                    raise BusinessError("没找到2P或2P进入房间失败！")
                 # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
                 # 从点击 准备/开始 到完成翻牌
@@ -733,7 +737,8 @@ class BusinessBus(QThread):
             self.formatBusinessMessage("邀请2P")
             if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
                 # 若没找到2P
-                raise BusinessError("没找到2P")
+                exitRoom(hwnd_1p, zoom1)
+                raise BusinessError("没找到2P或2P进入房间失败！")
             # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -804,6 +809,43 @@ class BusinessBus(QThread):
         for close_pos in panel_close_pos:
             mouseClick(hwnd, close_pos[0] * zoom, close_pos[1] * zoom)
             delay(500)
+
+    # 功能：刷熟练度 ------------------------------------------------------------------
+    def startLoopSkill(self, hwnd, zone, level, loop_count, exit_delay, zoom=1):
+        if loop_count <= 0:
+            return
+        createLoopSkillRoom(hwnd, zone, level, zoom)
+        self.executeLoopSkill(exit_delay)
+        for i in range(2, loop_count + 1):
+            reEnterLoopSkillRoom(hwnd, zone, level, zoom)
+            self.executeLoopSkill(exit_delay)
+            # 提醒进度
+            if i % 500 == 0:
+                self.formatBusinessMessage(f"已循环进入关卡刷熟练度{i}次")
+        self.formatBusinessMessage(f"正常完成{loop_count}次循环刷熟练度")
+        closeLoopSkillRoom(hwnd, zone, level, zoom)
+
+    def executeLoopSkill(self, exit_delay):
+        hwnd_1p = self.player1_info["hwnd"]
+        zoom1 = self.player1_info["zoom"]
+        # 应用卡片组
+        roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
+        # 1P开始
+        mouseClick(hwnd_1p, 872 * zoom1, 480 * zoom1)
+        # 检测进入关卡
+        if not loopCheckStartGame(hwnd_1p, zoom1=zoom1):
+            raise BusinessError("超过2min未检测到进入关卡！")
+        # self.formatBusinessMessage("检测到进入关卡")
+        # 放置1P
+        delay(100)
+        placeCard(hwnd_1p, self.player1_info["player_pos"], zoom1)
+        # 启动放卡线程
+        self.startPlacingCard(self.player1_info["cards_plan"], 1)
+        # 一定时间后关闭放卡线程并退出关卡
+        delay(exit_delay)
+        self.endAllPlacingWorker()
+        delay(300)
+        exitGame(hwnd_1p, zoom1)
 
     # 线程执行相关 -------------------------------------------------------------------
     def run(self) -> None:
@@ -1181,6 +1223,42 @@ class BusinessBus(QThread):
                         func_final_status = "wrong"
                         self.signal_send_business_error.emit(business_error_str)
                         self.formatBusinessMessage(business_error_str, "ERROR")
+            elif func_param["func_name"] == "刷熟练度":
+                # 获取操作目标 窗口句柄 和 缩放比例
+                hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
+                zoom = start_param[f"{func_param['player'] + 1}p_zoom"]
+                # 获取放卡方案信息
+                plan_path = func_param["plan_path"]
+                self.place_plan_procs.setFilePath(plan_path)
+                plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
+                # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+                player1_info_dict = self.convertToExecute(
+                    start_param, plan_info, '1', '1')
+                # 选2P时，convertToExecute()只能从放卡方案中获取2P相关信息，单人模式下，发生冲突
+                player1_info_dict["hwnd"] = hwnd
+                player1_info_dict["zoom"] = zoom
+                player2_info_dict = None
+                self.setPlayerInfo(player1_info_dict, player2_info_dict)
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"]
+                })
+                try:
+                    # 启动 循环刷熟练度 的功能
+                    self.startLoopSkill(
+                        hwnd,
+                        func_param["zone_name"],
+                        func_param["level_name"],
+                        func_param["loop_count"],
+                        func_param["exit_delay"],
+                        zoom
+                    )
+                except BusinessError as business_error:
+                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
+                    func_final_status = "wrong"
+                    self.signal_send_business_error.emit(business_error_str)
+                    self.formatBusinessMessage(business_error_str, "ERROR")
             else:
                 self.formatBusinessMessage(f"功能[{func_param['func_name']}]不存在！或该功能处于错误的位置！", "ERROR")
                 func_final_status = "wrong"

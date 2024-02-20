@@ -6,14 +6,14 @@
 # @Time    : 2023/12/10 15:29
 # @Dsc     : 一般业务，过程中不用输出信息到主界面
 
-from PySide6.QtCore import QDate, QTime
+from PySide6.QtCore import QDate, QTime, QDateTime
 
 from Common.Backstage import *
 from AppImplement.GlobalValue.StaticValue import *
 from AppImplement.Business.CustomException import BusinessError
 from AppImplement.Business.Foundation import (
     switchWorldZone, singleLayerChooseLevel, createPwdRoom, openBottomMenu, openTopMenu, acceptInvitationOrNot,
-    chooseSingleOrMultiZone
+    chooseSingleOrMultiZone, chooseCrossServiceLevel, chooseMagicTowerLevel
 )
 
 from math import floor
@@ -651,13 +651,15 @@ TOP_MENU_LEVEL_OPEN_FUNC = {
     "悬赏美味": (createWantedRoom, {"three_island_zone": "美味岛"}),
     "悬赏火山": (createWantedRoom, {"three_island_zone": "火山岛"}),
     "悬赏浮空": (createWantedRoom, {"three_island_zone": "浮空岛"}),
-    "欢乐假期": (openTopMenu, {"menu_name": "欢乐假期", "sub_menu_name": ""})
+    "欢乐假期": (openTopMenu, {"menu_name": "欢乐假期", "sub_menu_name": ""}),
+    "实验室": (openTopMenu, {"menu_name": "实验室", "sub_menu_name": ""})
 }
 
 
 def createAnyRoom(hwnd, zone, level, enter_room=True, zoom=1):
     """从跳转地图区域到进入房间。可以通过设置enter_room=False使得仅跳转，而不进入房间"""
     if zone == "顶部关卡":
+        # 顶部关卡支持 悬赏活动、欢乐假期、实验室
         target_zone = "美味岛"
         if level.find("悬赏") != -1:
             target_zone = TOP_MENU_LEVEL_OPEN_FUNC[level][1]["three_island_zone"]
@@ -665,10 +667,119 @@ def createAnyRoom(hwnd, zone, level, enter_room=True, zoom=1):
         if enter_room:
             create_room_func, func_args = TOP_MENU_LEVEL_OPEN_FUNC[level]
             create_room_func(hwnd=hwnd, zoom=zoom, **func_args)
+    elif zone in CROSS_SERVER_LEVEL_TYPE_NO:
+        switchWorldZone(hwnd, "跨服远征", zoom)
+        if enter_room:
+            chooseCrossServiceLevel(hwnd, zone, level, zoom)
     else:
         chooseSingleOrMultiZone(hwnd, zone, level, zoom)
         if enter_room:
             createPwdRoom(hwnd, zoom=zoom)
+
+
+def createLoopSkillRoom(hwnd, zone, level, zoom=1):
+    if zone not in LOOP_SKILL_ZONE:
+        return
+    if zone == "魔塔蛋糕":
+        level = int(level)
+        switchWorldZone(hwnd, "魔塔蛋糕", zoom)
+        # 等待魔塔加载完毕
+        while find_pic(hwnd, MAGIC_TOWER_LOADING_PATH, [5, 80, 220, 160]):
+            delay(300)
+        tab_num = 0
+        if level < 0:
+            tab_num = 2
+        # 选择tab页
+        mouseClick(hwnd, (45 + 73 * tab_num) * zoom, 70 * zoom)
+        delay(500)
+        # 选择魔塔关卡，并进入房间
+        chooseMagicTowerLevel(hwnd, level, zoom)
+        # 若提示次数不足
+        if find_pic(hwnd, MAGIC_TOWER_TAB3_NO_RESIDUAL_PATH, [300, 210, 650, 400]):
+            # 关闭次数不足提示框
+            mouseClick(hwnd, 585 * zoom, 250 * zoom)
+            delay(500)
+            # 关闭魔塔界面
+            mouseClick(hwnd, 925 * zoom, 32 * zoom)
+            delay(500)
+            return False
+    elif zone == "跨服远征":
+        createAnyRoom(hwnd, level, "8星", True, zoom)
+    elif zone == "实验室":
+        createAnyRoom(hwnd, "顶部关卡", "实验室", True, zoom)
+        # 点击“我的关卡”
+        mouseClick(hwnd, 660 * zoom, 550 * zoom)
+        delay(1500)
+        if level.split('-')[1] == "草稿箱":
+            mouseClick(hwnd, 250 * zoom, 90 * zoom)
+            delay(300)
+            # 点击”测试关卡“
+            mouseClick(hwnd, 650 * zoom, 295 * zoom)
+            delay(500)
+        else:
+            mouseClick(hwnd, 370 * zoom, 90 * zoom)
+            delay(300)
+            # 点击”游玩关卡“
+            mouseClick(hwnd, 540 * zoom, 155 * zoom)
+            delay(500)
+    else:
+        switchWorldZone(hwnd, zone, zoom)
+        # 选择 单层级地图 关卡
+        mouseClick(hwnd,
+                   SINGLE_HIERARCHY_ZONE[zone][level][0] * zoom,
+                   SINGLE_HIERARCHY_ZONE[zone][level][1] * zoom)
+        delay(300)
+        # 点击 "创建"
+        mouseClick(hwnd, 525 * zoom, 488 * zoom)
+        delay(300)
+
+
+def reEnterLoopSkillRoom(hwnd, zone, level, zoom=1):
+    if zone not in LOOP_SKILL_ZONE:
+        return
+    if zone == "魔塔蛋糕":
+        # 点击”开始挑战“
+        mouseClick(hwnd, 588 * zoom, 560 * zoom)
+        delay(300)
+    elif zone == "跨服远征":
+        chooseCrossServiceLevel(hwnd, level, "8星", zoom)
+    elif zone == "实验室":
+        # 点击“我的关卡”
+        mouseClick(hwnd, 660 * zoom, 550 * zoom)
+        delay(300)
+        if level.split('-')[1] == "草稿箱":
+            # 点击”测试关卡“
+            mouseClick(hwnd, 650 * zoom, 295 * zoom)
+            delay(300)
+        else:
+            # 点击”游玩关卡“
+            mouseClick(hwnd, 540 * zoom, 155 * zoom)
+            delay(300)
+    else:
+        # 选择 单层级地图 关卡
+        mouseClick(hwnd,
+                   SINGLE_HIERARCHY_ZONE[zone][level][0] * zoom,
+                   SINGLE_HIERARCHY_ZONE[zone][level][1] * zoom)
+        delay(300)
+        # 点击 "创建"
+        mouseClick(hwnd, 525 * zoom, 488 * zoom)
+        delay(300)
+
+
+def closeLoopSkillRoom(hwnd, zone, level, zoom=1):
+    if zone not in LOOP_SKILL_ZONE:
+        return
+    if zone == "魔塔蛋糕":
+        mouseClick(hwnd, 925 * zoom, 32 * zoom)
+        delay(300)
+    elif zone == "跨服远征":
+        mouseClick(hwnd, 915 * zoom, 30 * zoom)
+        delay(300)
+    elif zone == "实验室":
+        mouseClick(hwnd, 925 * zoom, 32 * zoom)
+        delay(300)
+    else:
+        pass
 
 
 # 使用物品相关 -----------------------------------------------------------------------
@@ -956,5 +1067,9 @@ def waitUntilSpecificTime(specific_time_str):
     """
     specific_time_lst = specific_time_str.split(":")
     specific_time = QTime(int(specific_time_lst[0]), int(specific_time_lst[1]), int(specific_time_lst[2]))
-    while QTime.currentTime() < specific_time:
+    if QTime.currentTime() < specific_time:
+        specific_datetime = QDateTime(QDate.currentDate(), specific_time)
+    else:
+        specific_datetime = QDateTime(QDate.currentDate().addDays(1), specific_time)
+    while QDateTime.currentDateTime() < specific_datetime:
         delay(1)

@@ -92,6 +92,12 @@ def chooseSingleOrMultiZone(hwnd, zone_name, level_name, zoom=1):
         raise KeyError
 
 
+def checkEnterRoom(hwnd):
+    if not find_pic_loop(hwnd, ENTER_ROOM_PATH, [375, 20, 430, 50], max_time=120):
+        raise BusinessError(f"超过2min还未进入房间！")
+    delay(200)
+
+
 def chooseMagicTowerLevel(hwnd, level_num: int, zoom=1):
     """在已打开魔塔界面的情况下，根据魔塔层数 level_num 选择对应的魔塔关卡，并创建进入房间"""
     if level_num >= 0:
@@ -111,12 +117,12 @@ def chooseMagicTowerLevel(hwnd, level_num: int, zoom=1):
         # 选择关卡
         mouseClick(hwnd, 60 * zoom, (140 + 95 * (-1 * level_num - 1)) * zoom)
         delay(500)
-    # 点击创建
+    # 点击”开始挑战“
     mouseClick(hwnd, 588 * zoom, 560 * zoom)
-    delay(500)
+    checkEnterRoom(hwnd)
 
 
-def chooseCrossServiceLevel(hwnd, level_type: str, level_num: int, zoom=1):
+def chooseCrossServiceLevel(hwnd, level_type: str, level_num: str, zoom=1):
     """在已打开跨服界面的情况下，选择跨服关卡
 
     Args:
@@ -134,19 +140,11 @@ def chooseCrossServiceLevel(hwnd, level_type: str, level_num: int, zoom=1):
         example:
         ...
     """
-    level_type_no_dict = {
-        "深渊古堡": 0,
-        "梦魇天空": 1,
-        "灼热地狱": 2,
-        "水火之间": 3,
-        "巫毒研究所": 4,
-        "冰封遗迹": 5
-    }
     level_num_dict = {
         "8星": 1, "9星": 2, "10星": 3, "11星": 4, "12星": 5, "13星": 6, "14星": 7, "15星": 8
     }
     level_num = level_num_dict[level_num]
-    level_type_no = level_type_no_dict[level_type]
+    level_type_no = CROSS_SERVER_LEVEL_TYPE_NO[level_type]
     # 点击”创建房间“
     mouseClick(hwnd, 850 * zoom, 550 * zoom)
     delay(500)
@@ -160,22 +158,14 @@ def chooseCrossServiceLevel(hwnd, level_type: str, level_num: int, zoom=1):
     mouseClick(hwnd, (123 + ((level_num - 1) % 4) * 226 + 80) * zoom, (244 + floor((level_num - 1) / 4) * 220) * zoom)
     delay(500)
     # 输入密码
-    keyPress(hwnd, "0", times=4)
+    keyPress(hwnd, "0", times=2)
     # 点击”创建“
     mouseClick(hwnd, (123 + ((level_num - 1) % 4) * 226 + 50) * zoom, (244 + floor((level_num - 1) / 4) * 220 + 40) * zoom)
-    delay(1000)
+    checkEnterRoom(hwnd)
 
 
 def searchAndEnter1pRoom(hwnd, player1_room_name_pic_path, level_type, zoom=1):
-    level_type_no_dict = {
-        "深渊古堡": 0,
-        "梦魇天空": 1,
-        "灼热地狱": 2,
-        "水火之间": 3,
-        "巫毒研究所": 4,
-        "冰封遗迹": 5
-    }
-    level_type_no = level_type_no_dict[level_type]
+    level_type_no = CROSS_SERVER_LEVEL_TYPE_NO[level_type]
     # 打开右上角关卡类型下拉框
     mouseClick(hwnd, 620 * zoom, 80 * zoom)
     delay(500)
@@ -200,10 +190,10 @@ def searchAndEnter1pRoom(hwnd, player1_room_name_pic_path, level_type, zoom=1):
     mouseClick(hwnd, 480 * zoom, 300 * zoom)
     delay(500)
     # 输入密码
-    keyPress(hwnd, "0", times=4)
+    keyPress(hwnd, "0", times=2)
     # 点击“确认”
     mouseClick(hwnd, 490 * zoom, 360 * zoom)
-    delay(500)
+    checkEnterRoom(hwnd)
 
 
 # 创建房间 -----------------------------------------------------------------------------------
@@ -222,7 +212,7 @@ def createPwdRoom(hwnd, pwd: str = "0000", zoom=1):
         delay(200)
     # 点击 "创建"
     mouseClick(hwnd, 525 * zoom, 488 * zoom)
-    delay(2000)
+    checkEnterRoom(hwnd)
 
 
 def teamInvite(hwnd_1p, hwnd_2p, player2_name_path, zoom1=1, zoom2=1):
@@ -245,7 +235,10 @@ def teamInvite(hwnd_1p, hwnd_2p, player2_name_path, zoom1=1, zoom2=1):
         acceptInvitationOrNot(hwnd_2p, True, zoom2)
         # 1P退出邀请界面
         mouseClick(hwnd_1p, 590 * zoom1, 490 * zoom1)
-        delay(1000)
+        try:
+            checkEnterRoom(hwnd_2p)
+        except BusinessError:
+            return False
         return True
     return False
 
@@ -353,9 +346,12 @@ def executeFlop(hwnd, flop_pos: str, zoom=1):
 
 def exitGame(hwnd, zoom=1):
     mouseClick(hwnd, 925 * zoom, 580 * zoom)
-    delay(500)
+    delay(300)
+    if not find_pic(hwnd, EXIT_GAME_TIP_PATH, [370, 200, 460, 270]):
+        mouseClick(hwnd, 925 * zoom, 580 * zoom)
+        delay(300)
     mouseClick(hwnd, 450 * zoom, 385 * zoom)
-    delay(500)
+    delay(300)
 
 
 def exitRoom(hwnd, zoom=1):

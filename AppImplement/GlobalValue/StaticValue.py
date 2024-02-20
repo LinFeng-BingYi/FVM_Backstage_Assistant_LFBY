@@ -183,6 +183,16 @@ MULTI_HIERARCHY_ZONE = {
     "雷城探险": LCTX_LEVEL_POS
 }
 
+# 跨服远征关卡类型
+CROSS_SERVER_LEVEL_TYPE_NO = {
+    "深渊古堡": 0,
+    "梦魇天空": 1,
+    "灼热地狱": 2,
+    "水火之间": 3,
+    "巫毒研究所": 4,
+    "冰封遗迹": 5
+}
+
 # 进入区域相关 -----------------------------------------------------------------------
 # 世界地图
 WORLD_MAP_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\世界地图.bmp"
@@ -243,8 +253,12 @@ GOTO_BUTTON_PIC_DICT = {
 # 通关相关 -------------------------------------------------------------------------
 # 创房勾选密码
 CREATE_ROOM_PSW_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\创房勾选密码.bmp"
+# 进入房间
+ENTER_ROOM_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\进入房间.bmp"
 # 进入关卡
 START_GAME_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\进入关卡.bmp"
+# 退出关卡提示
+EXIT_GAME_TIP_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\退出关卡提示.bmp"
 # 背包空间不足
 BACKPACK_FULL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\背包空间不足.bmp"
 # 邀请接受弹窗
@@ -500,6 +514,12 @@ BOTTOM_SUB_MENU_POS = {
         "交易场": (885, 512)
     }
 }
+
+# 刷熟练度 -------------------------------------------------------------------------
+# 支持的地图区域
+LOOP_SKILL_ZONE = ["火山遗迹", "海底漩涡", "魔塔蛋糕", "跨服远征", "实验室"]
+# 实验室所支持的关卡
+LAB_LEVEL = ["我的关卡-草稿箱-第一个", "我的关卡-已发布关卡-第一个"]
 
 # 其他 ---------------------------------------------------------------------------
 # 换线，用来判断活动界面是否关闭成功
