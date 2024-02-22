@@ -17,7 +17,7 @@ VALUE_KEY = {
     "0": "48", "1": "49", "2": "50", "3": "51", "4": "52", "5": "53", "6": "54", "7": "55", "8": "56", "9": "57",
     "F1": "112", "F2": "113", "F3": "114", "F4": "115", "F5": "116", "F6": "117", "F7": "118", "F8": "119",
     "F9": "120", "F10": "121", "F11": "122", "F12": "123",
-    "TAB": "9", "ENTER": "13", "SHIFT": "16", "CTRL": "17", "ALT": "18", "BACKSPACE": "8"
+    "TAB": "9", "ENTER": "13", "SHIFT": "16", "CTRL": "17", "ALT": "18", "BACKSPACE": "8", "CAPSLOCK": "20"
 }
 
 
@@ -207,7 +207,14 @@ def keyUp(hwnd, key: str):
     win32api.PostMessage(hwnd, win32con.WM_KEYUP, key_num, uparam)
 
 
-def keyInputStr(hwnd, key_str):
+def keyInputStr(hwnd, key_str: str):
     for char in key_str:
-        keyPress(hwnd, char)
+        if char.isupper():
+            keyDown(hwnd, "SHIFT")
+            sleep(0.1)
+            keyPress(hwnd, char)
+            sleep(0.1)
+            keyUp(hwnd, "SHIFT")
+        else:
+            keyPress(hwnd, char)
         sleep(0.3)

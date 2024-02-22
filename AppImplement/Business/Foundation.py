@@ -92,10 +92,35 @@ def chooseSingleOrMultiZone(hwnd, zone_name, level_name, zoom=1):
         raise KeyError
 
 
+def check2ndPsw(hwnd, psw='', zoom=1):
+    if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
+        if psw == '':
+            # 为空时不解锁，直接关闭弹窗并返回False
+            mouseClick(hwnd, 570 * zoom, 200 * zoom)
+            delay(500)
+            return False
+        else:
+            # 点击输入框
+            mouseClick(hwnd, 440 * zoom, 300 * zoom)
+            delay(300)
+            # 输入密码
+            keyInputStr(hwnd, psw)
+            # 点击“完成”
+            mouseClick(hwnd, 440 * zoom, 390 * zoom)
+            delay(300)
+            # 若密码错误，则关闭弹窗并返回False
+            if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
+                mouseClick(hwnd, 570 * zoom, 200 * zoom)
+                delay(500)
+                return False
+    # 未出现二级密码框、或成功解锁，则返回True
+    return True
+
+
 def checkEnterRoom(hwnd):
     if not find_pic_loop(hwnd, ENTER_ROOM_PATH, [375, 20, 430, 50], max_time=120):
         raise BusinessError(f"超过2min还未进入房间！")
-    delay(200)
+    delay(500)
 
 
 def chooseMagicTowerLevel(hwnd, level_num: int, zoom=1):

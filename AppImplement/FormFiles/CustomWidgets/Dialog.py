@@ -19,6 +19,7 @@ class AddFuncFlowDialog(QDialog):
         self.bindSignal()
 
         # self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        self.setWindowModality(Qt.WindowModality.ApplicationModal)
 
     def setupUi(self):
         # 设置 自身属性

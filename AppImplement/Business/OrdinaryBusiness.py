@@ -13,7 +13,7 @@ from AppImplement.GlobalValue.StaticValue import *
 from AppImplement.Business.CustomException import BusinessError
 from AppImplement.Business.Foundation import (
     switchWorldZone, singleLayerChooseLevel, createPwdRoom, openBottomMenu, openTopMenu, acceptInvitationOrNot,
-    chooseSingleOrMultiZone, chooseCrossServiceLevel, chooseMagicTowerLevel
+    chooseSingleOrMultiZone, chooseCrossServiceLevel, chooseMagicTowerLevel, check2ndPsw, checkEnterRoom
 )
 
 from math import floor
@@ -452,7 +452,7 @@ def executeReceiveTeamMagicTower(hwnd, box_checked: bool, force_execute: bool, z
     return "完成[领取双人魔塔奖励]"
 
 
-def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = False, use_times: int = 0, zoom=1):
+def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = False, use_times: int = 0, second_psw='', zoom=1):
     """赠送免费鲜花，可选择使用礼券
     """
     result_str = "完成[赠送鲜花]"
@@ -492,10 +492,7 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
     # 点击”送出“
     mouseClick(hwnd, 500 * zoom, 400 * zoom)
     delay(1000)
-    if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
-        # 关闭二级密码框
-        mouseClick(hwnd, 570 * zoom, 200 * zoom)
-        delay(500)
+    if not check2ndPsw(hwnd, second_psw, zoom):
         result_str = "[赠送鲜花]失败！未解锁二级密码"
     elif use_gift_coupon:
         # 选择礼券鲜花
@@ -707,9 +704,10 @@ def createLoopSkillRoom(hwnd, zone, level, zoom=1):
         createAnyRoom(hwnd, level, "8星", True, zoom)
     elif zone == "实验室":
         createAnyRoom(hwnd, "顶部关卡", "实验室", True, zoom)
+        delay(2000)
         # 点击“我的关卡”
         mouseClick(hwnd, 660 * zoom, 550 * zoom)
-        delay(1500)
+        delay(2000)
         if level.split('-')[1] == "草稿箱":
             mouseClick(hwnd, 250 * zoom, 90 * zoom)
             delay(300)
@@ -740,7 +738,6 @@ def reEnterLoopSkillRoom(hwnd, zone, level, zoom=1):
     if zone == "魔塔蛋糕":
         # 点击”开始挑战“
         mouseClick(hwnd, 588 * zoom, 560 * zoom)
-        delay(300)
     elif zone == "跨服远征":
         chooseCrossServiceLevel(hwnd, level, "8星", zoom)
     elif zone == "实验室":
@@ -750,11 +747,9 @@ def reEnterLoopSkillRoom(hwnd, zone, level, zoom=1):
         if level.split('-')[1] == "草稿箱":
             # 点击”测试关卡“
             mouseClick(hwnd, 650 * zoom, 295 * zoom)
-            delay(300)
         else:
             # 点击”游玩关卡“
             mouseClick(hwnd, 540 * zoom, 155 * zoom)
-            delay(300)
     else:
         # 选择 单层级地图 关卡
         mouseClick(hwnd,
@@ -763,7 +758,8 @@ def reEnterLoopSkillRoom(hwnd, zone, level, zoom=1):
         delay(300)
         # 点击 "创建"
         mouseClick(hwnd, 525 * zoom, 488 * zoom)
-        delay(300)
+    # 等待进入房间
+    checkEnterRoom(hwnd)
 
 
 def closeLoopSkillRoom(hwnd, zone, level, zoom=1):
@@ -784,7 +780,7 @@ def closeLoopSkillRoom(hwnd, zone, level, zoom=1):
 
 # 使用物品相关 -----------------------------------------------------------------------
 # 背包 -----------------------------------
-def backpackUseFirstPage(hwnd, stuff_pic, use_times, zoom=1):
+def backpackUseFirstPage(hwnd, stuff_pic, use_times, second_psw='', zoom=1):
     # 关闭背包图格区域的遮挡界面
     cover_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, [435, 90, 950, 485])
     if cover_dialog_close_btn:
@@ -811,9 +807,7 @@ def backpackUseFirstPage(hwnd, stuff_pic, use_times, zoom=1):
                 mouseClick(hwnd, (stuff_pos[0] + 32) * zoom, (stuff_pos[1] + 12) * zoom)
                 delay(500)
                 # 关闭二级密码框
-                if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
-                    mouseClick(hwnd, 570 * zoom, 200 * zoom)
-                    delay(500)
+                if not check2ndPsw(hwnd, second_psw, zoom):
                     return False
                 pop_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, [435, 90, 950, 485])
                 # 关闭弹出的对话框
@@ -830,7 +824,7 @@ def backpackUseFirstPage(hwnd, stuff_pic, use_times, zoom=1):
     return True
 
 
-def backpackUseThirdPage(hwnd, stuff_pic, use_times, zoom=1):
+def backpackUseThirdPage(hwnd, stuff_pic, use_times, second_psw='', zoom=1):
     # 关闭背包图格区域的遮挡界面
     cover_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, [435, 90, 950, 485])
     if cover_dialog_close_btn:
@@ -874,9 +868,7 @@ def backpackUseThirdPage(hwnd, stuff_pic, use_times, zoom=1):
                 else:
                     use_times -= 1
                 # 关闭二级密码框
-                if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
-                    mouseClick(hwnd, 570 * zoom, 200 * zoom)
-                    delay(500)
+                if not check2ndPsw(hwnd, second_psw, zoom):
                     return False
                 acceptInvitationOrNot(hwnd, False, zoom)
                 stuff_pos = find_pic(hwnd, stuff_pic)
@@ -887,7 +879,7 @@ def backpackUseThirdPage(hwnd, stuff_pic, use_times, zoom=1):
     return True
 
 
-def backpackDelete(hwnd, stuff_pic, use_times, zoom=1):
+def backpackDelete(hwnd, stuff_pic, use_times, second_psw='', zoom=1):
     # 关闭背包图格区域的遮挡界面
     cover_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, [435, 90, 950, 485])
     if cover_dialog_close_btn:
@@ -920,9 +912,7 @@ def backpackDelete(hwnd, stuff_pic, use_times, zoom=1):
                 mouseClick(hwnd, 850 * zoom, 473 * zoom)
                 delay(200)
                 # 关闭二级密码框
-                if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
-                    mouseClick(hwnd, 570 * zoom, 200 * zoom)
-                    delay(500)
+                if not check2ndPsw(hwnd, second_psw, zoom):
                     return False
                 # 继续查找物品
                 acceptInvitationOrNot(hwnd, False, zoom)
@@ -932,7 +922,7 @@ def backpackDelete(hwnd, stuff_pic, use_times, zoom=1):
 
 
 # 假期特惠
-def holidayDiscountConvert(hwnd, stuff_pic, use_times, zoom=1):
+def holidayDiscountConvert(hwnd, stuff_pic, use_times, second_psw='', zoom=1):
     # 跳转到第一页
     for jump_times in range(30):
         mouseClick(hwnd, 525 * zoom, 480 * zoom)
@@ -953,9 +943,7 @@ def holidayDiscountConvert(hwnd, stuff_pic, use_times, zoom=1):
             mouseClick(hwnd, 760 * zoom, stuff_y_pos * zoom)
             delay(1100)
             # 关闭二级密码框
-            if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
-                mouseClick(hwnd, 570 * zoom, 200 * zoom)
-                delay(500)
+            if not check2ndPsw(hwnd, second_psw, zoom):
                 return False
             use_times -= 1
             acceptInvitationOrNot(hwnd, False, zoom)
@@ -1008,16 +996,20 @@ USE_STUFF_PANEL_IO_DICT = {
 
 
 # 其他相关 -------------------------------------------------------------------------
+def closeCommonTipDialog(hwnd, zoom=1):
+    tip_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, threshold=0.9)
+    if tip_dialog_close_btn:
+        mouseClick(hwnd, tip_dialog_close_btn[0] * zoom, tip_dialog_close_btn[1] * zoom)
+        delay(200)
+    delay(300)
+
+
 def closeJustLoginDialog(hwnd, zoom=1):
     """关闭刚登录游戏时弹出的对话框
     """
     delay(2000)
     # 健康游戏提示对话框
-    tip_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH)
-    if tip_dialog_close_btn:
-        mouseClick(hwnd, tip_dialog_close_btn[0] * zoom, tip_dialog_close_btn[1] * zoom)
-        delay(200)
-    delay(300)
+    closeCommonTipDialog(hwnd, zoom)
     # 假期特惠对话框
     if find_pic(hwnd, OPEN_HOLIDAY_DISCOUNT_PATH):
         mouseClick(hwnd, 770 * zoom, 130 * zoom)

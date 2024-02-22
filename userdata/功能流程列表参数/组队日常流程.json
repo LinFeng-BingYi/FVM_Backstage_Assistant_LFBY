@@ -1,5 +1,5 @@
 {
-    "流程描述": "两个账号双开，先后签到，再刷三岛或其他关卡，再执行日常：公会任务、情侣任务、遗迹、组队魔塔、单人魔塔、跨服",
+    "流程描述": "两个账号双开，先后签到，再刷三岛或其他关卡，再执行日常：公会任务、情侣任务、遗迹、组队魔塔、单人魔塔、跨服。可以选择刷25次指定关卡后，使用或删除一次背包物品，再继续刷剩下的20次有奖励关卡，避免背包空间不足影响拾取物品。刷指定关卡前还可以使用2张双倍双爆卡",
     "流程参数": [
         {
             "enable_2p": true,
@@ -14,6 +14,8 @@
             "func_name": "开始"
         },
         {
+            "start_way": "time",
+            "start_time": "00:01:00",
             "start_delay": 60.0,
             "1p_top_hwnd": 0,
             "1p_server_no": "4",
@@ -136,8 +138,14 @@
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\道具双爆卡.bmp",
                     "panel": "背包装备",
                     "operation": "使用",
-                    "opt_times": 2
-                },
+                    "opt_times": -1
+                }
+            ],
+            "func_name": "使用物品"
+        },
+        {
+            "player": 1,
+            "stuff_list": [
                 {
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\全部使用",
                     "panel": "背包装备",
@@ -151,17 +159,36 @@
             "player1": 1,
             "player2": 2,
             "zone_name": "美味岛",
-            "level_name": "可可岛日",
+            "level_name": "咖喱岛日",
             "loop_count": 45,
             "flop_pos": "1",
             "has_stage2": true,
             "shall_continue": true,
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\组队常用方案_二转海星.ini",
-            "plan_name": "可可岛日",
+            "plan_name": "咖喱岛日",
+            "skip_choose_level": false,
             "func_name": "刷指定关卡"
         },
         {
             "player": 0,
+            "stuff_list": [
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",
+                    "panel": "背包道具",
+                    "operation": "删除",
+                    "opt_times": 1
+                },
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\全部使用",
+                    "panel": "背包装备",
+                    "operation": "使用",
+                    "opt_times": -1
+                }
+            ],
+            "func_name": "使用物品"
+        },
+        {
+            "player": 1,
             "stuff_list": [
                 {
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",
@@ -234,6 +261,24 @@
         },
         {
             "player": 0,
+            "stuff_list": [
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",
+                    "panel": "背包道具",
+                    "operation": "删除",
+                    "opt_times": 1
+                },
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\全部使用",
+                    "panel": "背包装备",
+                    "operation": "使用",
+                    "opt_times": -1
+                }
+            ],
+            "func_name": "使用物品"
+        },
+        {
+            "player": 1,
             "stuff_list": [
                 {
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",

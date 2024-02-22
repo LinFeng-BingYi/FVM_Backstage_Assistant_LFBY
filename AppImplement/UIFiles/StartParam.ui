@@ -136,8 +136,27 @@
       <property name="spacing">
        <number>5</number>
       </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_1p_hwnd">
+      <item row="0" column="5">
+       <widget class="QPushButton" name="pushButton_2p_hwnd">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>获取</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLabel" name="label_2p_zoom">
         <property name="minimumSize">
          <size>
           <width>65</width>
@@ -146,31 +165,12 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>65</width>
+          <width>50</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
-         <string>房主句柄：</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit_1p_hwnd">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>0</string>
+         <string>房客缩放：</string>
         </property>
        </widget>
       </item>
@@ -190,6 +190,44 @@
         </property>
         <property name="text">
          <string>获取</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_1p_zoom">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>1.25</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_1p_zoom">
+        <property name="minimumSize">
+         <size>
+          <width>65</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>65</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>房主缩放：</string>
         </property>
        </widget>
       </item>
@@ -231,46 +269,8 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="5">
-       <widget class="QPushButton" name="pushButton_2p_hwnd">
-        <property name="minimumSize">
-         <size>
-          <width>80</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>40</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>获取</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_1p_zoom">
-        <property name="minimumSize">
-         <size>
-          <width>65</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>65</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>房主缩放：</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QLineEdit" name="lineEdit_1p_zoom">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEdit_1p_hwnd">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -284,26 +284,7 @@
          </size>
         </property>
         <property name="text">
-         <string>1.25</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QLabel" name="label_2p_zoom">
-        <property name="minimumSize">
-         <size>
-          <width>65</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>房客缩放：</string>
+         <string>0</string>
         </property>
        </widget>
       </item>
@@ -323,6 +304,80 @@
         </property>
         <property name="text">
          <string>1.25</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_1p_hwnd">
+        <property name="minimumSize">
+         <size>
+          <width>65</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>65</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>房主句柄：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_1p_2nd_psw">
+        <property name="text">
+         <string>二级密码：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_1p_2nd_psw">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>为空时表示不解锁</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QLabel" name="label_2p_2nd_psw">
+        <property name="text">
+         <string>二级密码：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_2p_2nd_psw">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="placeholderText">
+         <string>为空时表示不解锁</string>
         </property>
        </widget>
       </item>
@@ -349,7 +404,7 @@
      <property name="flat">
       <bool>false</bool>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_necessity_pic">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
        <number>5</number>
       </property>
@@ -359,12 +414,57 @@
       <property name="topMargin">
        <number>0</number>
       </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
       <property name="bottomMargin">
        <number>5</number>
       </property>
+      <item>
+       <widget class="QLabel" name="label_1p_name_pic">
+        <property name="minimumSize">
+         <size>
+          <width>65</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>65</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>1P昵称：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_1p_name_pic">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_1p_name_pic">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>浏览</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QLabel" name="label_2p_name_pic">
         <property name="minimumSize">
@@ -523,19 +623,6 @@
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_bottom">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

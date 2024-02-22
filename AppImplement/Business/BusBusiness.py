@@ -779,12 +779,66 @@ class BusinessBus(QThread):
         mouseClick(hwnd_1p, 845 * zoom1, 60 * zoom1)
         delay(500)
 
+    # 功能：公会副本 ------------------------------------------------------------------
+    def startUnionDungeon(self, level_name, loop_count):
+        # 切换地图
+        self.formatBusinessMessage("正在切换到关卡")
+        hwnd_1p = self.player1_info["hwnd"]
+        zoom1 = self.player1_info["zoom"]
+        switchWorldZone(hwnd_1p, "美味岛", zoom1)
+        openBottomMenu(hwnd_1p, "跳转", "公会副本", zoom1)
+        if self.player2_info is not None:
+            hwnd_2p = self.player2_info["hwnd"]
+            zoom2 = self.player2_info["zoom"]
+            switchWorldZone(hwnd_2p, "美味岛", zoom2)
+        # 选择关卡
+        if level_name == "月光果园":
+            level_x_pos = 155
+        elif level_name == "堕落深渊":
+            level_x_pos = 365
+        elif level_name == "死亡之棘":
+            level_x_pos = 575
+        else:
+            closeCommonTipDialog(hwnd_1p, zoom1)
+            raise BusinessError(f"未知的关卡名称{level_name}")
+        # 点击“进入地图”
+        mouseClick(hwnd_1p, level_x_pos * zoom1, 415 * zoom1)
+        delay(1000)
+        # 创建房间
+        createPwdRoom(hwnd_1p, zoom=zoom1)
+        # 应用卡组
+        roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
+        if self.player2_info is not None:
+            # 邀请队友
+            self.formatBusinessMessage("邀请2P")
+            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                # 若没找到2P
+                exitRoom(hwnd_1p, zoom1)
+                raise BusinessError("没找到2P或2P进入房间失败！")
+            # self.formatBusinessMessage("应用2P卡片组")
+            roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
+            # 从点击 准备/开始 到完成翻牌
+            for i in range(loop_count):
+                self.formatBusinessMessage(f"开始第{i + 1}局")
+                self.teamFromStartToFlop()
+                # self.formatBusinessMessage(f"结束第{i + 1}局")
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
+            exitRoom(hwnd_2p, zoom2)
+        else:
+            for i in range(loop_count):
+                self.formatBusinessMessage(f"开始第{i + 1}局")
+                self.singleFromStartToFlop()
+                # self.formatBusinessMessage(f"结束第{i + 1}局")
+            # 退出房间
+            exitRoom(hwnd_1p, zoom1)
+
     # 功能：刷技能 -------------------------------------------------------------------
     def startCardSkill(self, level, loop_count):
         pass
 
     # 功能：使用物品 ------------------------------------------------------------------
-    def startOperateStuff(self, hwnd, stuff_path, panel, operation, use_times, zoom=1):
+    def startOperateStuff(self, hwnd, stuff_path, panel, operation, use_times, second_psw='', zoom=1):
         """对文件夹中所有物品执行相同操作
         """
         function_name = USE_STUFF_PANEL_IO_DICT[panel][0]
@@ -798,11 +852,11 @@ class BusinessBus(QThread):
         if path.isdir(stuff_path):
             for stuff_pic in listdir(stuff_path):
                 stuff_pic_abstract_path = stuff_path + "\\" + stuff_pic
-                if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](hwnd, stuff_pic_abstract_path, use_times, zoom):
+                if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](hwnd, stuff_pic_abstract_path, use_times, second_psw, zoom=zoom):
                     self.formatBusinessMessage(f"未解锁二级密码，无法{operation}物品", "WARN")
                     break
         else:
-            if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](hwnd, stuff_path, use_times, zoom):
+            if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](hwnd, stuff_path, use_times, second_psw, zoom=zoom):
                 self.formatBusinessMessage(f"未解锁二级密码，无法{operation}物品", "WARN")
 
         # 关闭界面
@@ -815,6 +869,7 @@ class BusinessBus(QThread):
         if loop_count <= 0:
             return
         createLoopSkillRoom(hwnd, zone, level, zoom)
+        delay(500)
         self.executeLoopSkill(exit_delay)
         for i in range(2, loop_count + 1):
             reEnterLoopSkillRoom(hwnd, zone, level, zoom)
@@ -866,10 +921,14 @@ class BusinessBus(QThread):
         # 先从“开始”功能获取流程全局变量
         start_param = self.func_flow[0]
         enable_2p = start_param["enable_2p"]
+        player1_name_pic_path = start_param["1p_name_pic_path"]
         player2_name_pic_path = start_param["2p_name_pic_path"]
         deck_path = start_param["deck_path"]
         plan_path = start_param["plan_path"]
         self.setGlobalFlowInfo({
+            "1p_2nd_psw": start_param["1p_2nd_psw"],
+            "2p_2nd_psw": start_param["2p_2nd_psw"],
+            "1p_name_pic_path": player1_name_pic_path,
             "2p_name_pic_path": player2_name_pic_path,
             "deck_path": deck_path,
             "plan_path": plan_path
@@ -931,6 +990,7 @@ class BusinessBus(QThread):
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
                 zoom = start_param[f"{func_param['player'] + 1}p_zoom"]
+                second_psw = start_param[f"{func_param['player'] + 1}p_2nd_psw"]
                 print("日常领取的句柄与缩放：", hwnd, zoom)
                 # 去除干扰项
                 del func_param["func_name"]
@@ -940,6 +1000,9 @@ class BusinessBus(QThread):
                     self.formatBusinessMessage(f"开始[{key}]...")
                     try:
                         if isinstance(value, list) and value[0]:
+                            # 特殊方法中，添加入参
+                            if key == "赠送鲜花":
+                                value[1]["second_psw"] = second_psw
                             result_str = DAILY_AWARD_FUNC_DICT[key](hwnd=hwnd, zoom=zoom, **value[1])
                             self.formatBusinessMessage(result_str)
                         elif isinstance(value, bool) and value:
@@ -1201,10 +1264,38 @@ class BusinessBus(QThread):
                     func_final_status = "wrong"
                     self.signal_send_business_error.emit(business_error_str)
                     self.formatBusinessMessage(business_error_str, "ERROR")
+            elif func_param["func_name"] == "公会副本":
+                # 获取放卡方案信息
+                plan_path = func_param["plan_path"]
+                self.place_plan_procs.setFilePath(plan_path)
+                plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
+                # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+                player1_info_dict = self.convertToExecute(
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
+                player2_info_dict = None
+                if func_param["player2"] != 0:
+                    player2_info_dict = self.convertToExecute(
+                        start_param, plan_info, func_param["flop_pos"], func_param["player2"])
+                self.setPlayerInfo(player1_info_dict, player2_info_dict)
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"]
+                })
+                try:
+                    self.startUnionDungeon(
+                        func_param["level_name"],
+                        func_param["loop_count"])
+                except BusinessError as business_error:
+                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
+                    func_final_status = "wrong"
+                    self.signal_send_business_error.emit(business_error_str)
+                    self.formatBusinessMessage(business_error_str, "ERROR")
             elif func_param["func_name"] == "使用物品":
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
                 zoom = start_param[f"{func_param['player'] + 1}p_zoom"]
+                second_psw = start_param[f"{func_param['player'] + 1}p_2nd_psw"]
                 # 对于每个物品执行操作
                 for stuff_info in func_param["stuff_list"]:
                     stuff_name = stuff_info["pic_path"].rsplit('\\', 1)[1]
@@ -1216,7 +1307,8 @@ class BusinessBus(QThread):
                             stuff_info["panel"],
                             stuff_info["operation"],
                             stuff_info["opt_times"],
-                            zoom
+                            second_psw,
+                            zoom=zoom
                         )
                     except BusinessError as business_error:
                         business_error_str = f"{stuff_info['operation']}物品[{stuff_name}]时出错！\n\n{business_error.error_info}"

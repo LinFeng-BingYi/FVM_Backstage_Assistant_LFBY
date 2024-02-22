@@ -83,8 +83,11 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
             "max_check_time": int(self.lineEdit_max_check_time.text()),
             "1p_hwnd": int(hwnd_1p) if not get_for_json and hwnd_1p != '' else 0,
             "1p_zoom": float(self.lineEdit_1p_zoom.text()),
+            "1p_2nd_psw": self.lineEdit_1p_2nd_psw.text(),
+            "1p_name_pic_path": self.lineEdit_2p_name_pic.text(),
             "2p_hwnd": int(hwnd_2p) if not get_for_json and hwnd_2p != '' else 0,
             "2p_zoom": float(self.lineEdit_2p_zoom.text()),
+            "2p_2nd_psw": self.lineEdit_2p_2nd_psw.text(),
             "2p_name_pic_path": self.lineEdit_2p_name_pic.text(),
             "deck_path": self.lineEdit_deck_file.text(),
             "plan_path": self.lineEdit_plan_file.text()
@@ -96,8 +99,14 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
         self.lineEdit_max_check_time.setText(str(param_dict["max_check_time"]))
         self.lineEdit_1p_hwnd.setText(str(param_dict["1p_hwnd"]))
         self.lineEdit_1p_zoom.setText(str(param_dict["1p_zoom"]))
+        if "1p_2nd_psw" in param_dict:
+            self.lineEdit_1p_2nd_psw.setText(param_dict["1p_2nd_psw"])
+        if "1p_name_pic_path" in param_dict:
+            self.lineEdit_1p_name_pic.setText(param_dict["1p_name_pic_path"])
         self.lineEdit_2p_hwnd.setText(str(param_dict["2p_hwnd"]))
         self.lineEdit_2p_zoom.setText(str(param_dict["2p_zoom"]))
+        if "2p_2nd_psw" in param_dict:
+            self.lineEdit_2p_2nd_psw.setText(param_dict["2p_2nd_psw"])
         self.lineEdit_2p_name_pic.setText(param_dict["2p_name_pic_path"])
         self.lineEdit_deck_file.setText(param_dict["deck_path"])
         self.lineEdit_plan_file.setText(param_dict["plan_path"])
@@ -126,8 +135,12 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
             return False, "未找到预设卡片组ini文件！"
         if not os.path.exists(self.lineEdit_plan_file.text()):
             return False, "未找到放卡方案ini文件！"
-        if self.checkBox_enable_2p.isChecked() and not os.path.exists(self.lineEdit_2p_name_pic.text()):
-            return False, "未找到2P昵称截图！"
+        if self.checkBox_enable_2p.isChecked() and (
+            not os.path.exists(self.lineEdit_2p_name_pic.text()) or (
+                self.lineEdit_1p_name_pic.text() != '' and not os.path.exists(self.lineEdit_1p_name_pic.text())
+            )
+        ):
+            return False, "未找到1P或2P昵称截图！"
         if not match("^[0-9]+$", self.lineEdit_max_check_time.text()):
             return False, "请输入正确的提醒时间，单位为分钟(min)！"
         return True

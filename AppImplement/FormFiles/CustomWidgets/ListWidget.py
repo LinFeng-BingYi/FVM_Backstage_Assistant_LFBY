@@ -17,6 +17,7 @@ from AppImplement.FlowFunction.MagicTowerListItem import MagicTowerListWidget
 from AppImplement.FlowFunction.CrossServiceListItem import CrossServiceListWidget
 from AppImplement.FlowFunction.WantedListItem import WantedListWidget
 from AppImplement.FlowFunction.WarriorChallengeListItem import WarriorChallengeListWidget
+from AppImplement.FlowFunction.UnionDungeonListItem import UnionDungeonListWidget
 from AppImplement.FlowFunction.AutoLoginListItem import AutoLoginListWidget
 from AppImplement.FlowFunction.UseStuffListItem import UseStuffListWidget
 from AppImplement.FlowFunction.LoopSkillListItem import LoopSkillListWidget
@@ -37,6 +38,7 @@ SUPPORT_FUNC = {
     "跨服远征": CrossServiceListWidget,
     "悬赏三连": WantedListWidget,
     "勇士挑战": WarriorChallengeListWidget,
+    "公会副本": UnionDungeonListWidget,
     "使用物品": UseStuffListWidget,
     "刷熟练度": LoopSkillListWidget
 }
