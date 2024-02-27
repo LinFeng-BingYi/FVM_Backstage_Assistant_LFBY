@@ -538,6 +538,12 @@ MAGIC_TOWER_LOADING_PATH = ROOT_PATH + r"\resources\images\界面图标\各种�
 WARRIOR_CHALLENGE_TURN_LEFT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\勇士向左翻页.bmp"
 # 勇士向右翻页
 WARRIOR_CHALLENGE_TURN_RIGHT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\勇士向右翻页.bmp"
+# 美食大赛任务完成提示
+FOOD_CONTEST_QUEST_FINISH_TIP_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\美食大赛任务完成提示.bmp"
+# 界面关闭按钮合集
+ANY_DIALOG_CLS_BTN_DICT = {
+    "常见关闭按钮": COMMON_TIP_DIALOG_CLOSE_PATH
+}
 
 # 自动登录 -------------------------------------------------------------------------
 AUTO_LOGIN_USERNAME_BOX = ROOT_PATH + r"\resources\images\界面图标\自动登录相关\用户名输入框.bmp"

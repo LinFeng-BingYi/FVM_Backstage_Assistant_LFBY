@@ -13,6 +13,7 @@ import cv2
 import numpy
 import math
 from time import time, sleep
+from datetime import datetime
 from os import path, mkdir
 
 
@@ -95,7 +96,7 @@ def save_captured_pic(pic_path, hwnd=0, cap_range=None):
     cv2.imwrite(pic_path, img)
 
 
-def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.98, record_fail=False):
+def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.98, record_fail=False, record_name=''):
     """在指定窗口中，指定范围内，寻找模板图像，相似度大于等于threshold则表示找到了. 失败返回 False
 
     Args:
@@ -109,6 +110,8 @@ def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: 
             判断图像是否找到的阈值
         record_fail: bool
             识图失败时是否保存失败图像
+        record_name: str
+            识图失败时保存图像的名称
 
     Returns: tuple[float, float, float, float, float, float] | False
         窗口中与模板图像相似度最高的位置信息。包含6个元素：
@@ -134,8 +137,10 @@ def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: 
         if record_fail:
             if not path.exists('temp'):
                 mkdir('temp')
+            now_time = datetime.now().strftime("%Y-%m-%d")
             find_range = [f'{pos_num}' for pos_num in find_range] if find_range is not None else ['0', '0', '0', '0']
-            cv2.imwrite(f"./temp/fail_pic_{'-'.join(find_range)}_{1 - min_val:.3f}.bmp", target_pic)
+            file_name = f"./temp/{now_time}_{record_name}_{'-'.join(find_range)}_{1 - min_val:.3f}.bmp"
+            cv2.imencode(".bmp", target_pic)[1].tofile(file_name)
         return False
 
     # 若指定了找图范围，则匹配位置的真实左上角需要加回找图范围的左上角的偏移值

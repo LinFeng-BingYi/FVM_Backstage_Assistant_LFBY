@@ -86,7 +86,7 @@ class BusinessBus(QThread):
         Args:
             global_flow_info: dict
                 {
-                    "2p_name_pic_path": player2_name_pic_path,      // 2P昵称路径
+                    "current_2p_name_pic": player2_name_pic_path,      // 2P昵称路径
                     "deck_path": deck_path,                         // 卡片组ini文件
                     "plan_path": plan_path                          // 放卡方案ini文件
                 }
@@ -311,10 +311,10 @@ class BusinessBus(QThread):
             if "skip_choose_level" not in self.level_info or not self.level_info["skip_choose_level"]:
                 # 邀请队友
                 self.formatBusinessMessage("邀请2P")
-                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
                     # 若没找到2P
                     exitRoom(hwnd_1p, zoom1)
-                    raise BusinessError("没找到2P或2P进入房间失败！")
+                    raise BusinessError("未找到2P或2P进入房间失败！")
                 # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -449,10 +449,10 @@ class BusinessBus(QThread):
         if self.player2_info is not None:
             # 邀请队友
             self.formatBusinessMessage("邀请2P")
-            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
                 # 若没找到2P
                 exitRoom(hwnd_1p, zoom1)
-                raise BusinessError("没找到2P或2P进入房间失败！")
+                raise BusinessError("未找到2P或2P进入房间失败！")
             # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -546,10 +546,10 @@ class BusinessBus(QThread):
             if self.player2_info is not None:
                 # 邀请队友
                 self.formatBusinessMessage("邀请2P")
-                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
                     # 若没找到2P
                     exitRoom(hwnd_1p, zoom1)
-                    raise BusinessError("没找到2P或2P进入房间失败！")
+                    raise BusinessError("未找到2P或2P进入房间失败！")
                 # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
                 # 从点击 准备/开始 到完成翻牌
@@ -684,10 +684,10 @@ class BusinessBus(QThread):
                     flag_2p_opened = True
                 # 邀请队友
                 self.formatBusinessMessage("邀请2P")
-                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
                     # 若没找到2P
                     exitRoom(hwnd_1p, zoom1)
-                    raise BusinessError("没找到2P或2P进入房间失败！")
+                    raise BusinessError("未找到2P或2P进入房间失败！")
                 # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
                 # 从点击 准备/开始 到完成翻牌
@@ -735,10 +735,10 @@ class BusinessBus(QThread):
         if self.player2_info is not None:
             # 邀请队友
             self.formatBusinessMessage("邀请2P")
-            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
                 # 若没找到2P
                 exitRoom(hwnd_1p, zoom1)
-                raise BusinessError("没找到2P或2P进入房间失败！")
+                raise BusinessError("未找到2P或2P进入房间失败！")
             # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -811,10 +811,10 @@ class BusinessBus(QThread):
         if self.player2_info is not None:
             # 邀请队友
             self.formatBusinessMessage("邀请2P")
-            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["2p_name_pic_path"], zoom1, zoom2):
+            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
                 # 若没找到2P
                 exitRoom(hwnd_1p, zoom1)
-                raise BusinessError("没找到2P或2P进入房间失败！")
+                raise BusinessError("未找到2P或2P进入房间失败！")
             # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -832,10 +832,6 @@ class BusinessBus(QThread):
                 # self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
             exitRoom(hwnd_1p, zoom1)
-
-    # 功能：刷技能 -------------------------------------------------------------------
-    def startCardSkill(self, level, loop_count):
-        pass
 
     # 功能：使用物品 ------------------------------------------------------------------
     def startOperateStuff(self, hwnd, stuff_path, panel, operation, use_times, second_psw='', zoom=1):
@@ -917,19 +913,30 @@ class BusinessBus(QThread):
             self.formatBusinessMessage(business_error_str, "ERROR")
 
     def executeBusinessFlow(self):
+        def handleFuncException(func_name, exc_error, player_hwnd_info_list, **var):
+            if exc_error.error_info.find("未找到世界地图") != -1:
+                for hwnd_info in player_hwnd_info_list:
+                    closeExecExceptionDlg(hwnd_info[0], zoom=hwnd_info[1])
+                self.formatBusinessMessage(exc_error.error_info, "ERROR")
+                return True
+            else:
+                business_error_str = f"执行[{func_name}]功能时出错！\n\n{business_error.error_info}"
+                self.signal_send_business_error.emit(business_error_str)
+                self.formatBusinessMessage(business_error_str, "ERROR")
+                var["func_final_status"] = "wrong"
+                var["func_no"] += 1
+                return False
+
         self.formatBusinessMessage("开始依次执行流程列表中可用功能")
         # 先从“开始”功能获取流程全局变量
         start_param = self.func_flow[0]
         enable_2p = start_param["enable_2p"]
-        player1_name_pic_path = start_param["1p_name_pic_path"]
-        player2_name_pic_path = start_param["2p_name_pic_path"]
         deck_path = start_param["deck_path"]
         plan_path = start_param["plan_path"]
         self.setGlobalFlowInfo({
             "1p_2nd_psw": start_param["1p_2nd_psw"],
             "2p_2nd_psw": start_param["2p_2nd_psw"],
-            "1p_name_pic_path": player1_name_pic_path,
-            "2p_name_pic_path": player2_name_pic_path,
+            "current_2p_name_pic": start_param["2p_name_pic_path"],
             "deck_path": deck_path,
             "plan_path": plan_path
         })
@@ -941,6 +948,10 @@ class BusinessBus(QThread):
 
         # 再执行每个功能
         func_no = 1  # 功能在流程中的序号
+
+        # 发生异常时重新尝试的次数
+        exception_handle_time = 3
+
         # 若第二个是[自动登录]，则执行
         if self.func_flow[1]["func_name"] == "自动登录":
             func_param = self.func_flow[1]
@@ -979,13 +990,19 @@ class BusinessBus(QThread):
             # 完成”自动登录“功能
             self.signal_send_func_status.emit(func_no, "completed")
             # 下一个功能从数组下标2开始执行
-            func_no = 2
+            func_no += 1
 
-        for func_param in self.func_flow[func_no:]:
-            self.formatBusinessMessage(f"开始功能[{func_param['func_name']}]")
+        # for func_param in self.func_flow[func_no:]:
+        while func_no < len(self.func_flow):
+            func_param = self.func_flow[func_no]
+            if exception_handle_time < 3:
+                self.formatBusinessMessage(f"重新尝试功能[{func_param['func_name']}]")
+            else:
+                self.formatBusinessMessage(f"开始功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, "executing")
             # 当前功能执行结果，默认为“完成”，当捕捉到异常后改为“错误”
             func_final_status = "completed"
+
             if func_param["func_name"] == "日常领取":
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
@@ -1018,23 +1035,31 @@ class BusinessBus(QThread):
                 # 加回该键值对，便于之后的输出
                 func_param["func_name"] = "日常领取"
             elif func_param["func_name"] == "刷指定关卡":
+                # 先判断单人还是组队模式
+                if func_param["player2"] != 0:
+                    single_mode = False
+                else:
+                    single_mode = True
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"], single_mode=single_mode)
                 player2_info_dict = None
-                if func_param["player2"] != 0:
+                if not single_mode:
                     player2_info_dict = self.convertToExecute(
                         start_param, plan_info, func_param["flop_pos"], func_param["player2"])
+                    self.global_flow_info["current_2p_name_pic"] = start_param[
+                        f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": func_param["has_stage2"],
                     "shall_continue": func_param["shall_continue"],
                     "max_check_time": start_param["max_check_time"],
-                    "skip_choose_level": func_param["skip_choose_level"]
+                    "skip_choose_level": func_param["skip_choose_level"],
+                    "loop_count": func_param["loop_count"]
                 })
                 try:
                     # 启动 循环刷指定关卡 的功能
@@ -1043,11 +1068,23 @@ class BusinessBus(QThread):
                         func_param["level_name"],
                         func_param["loop_count"])
                 except BusinessError as business_error:
-                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                    func_final_status = "wrong"
-                    self.signal_send_business_error.emit(business_error_str)
-                    self.formatBusinessMessage(business_error_str, "ERROR")
+                    player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                    if not single_mode:
+                        player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                    if exception_handle_time > 0 and handleFuncException(
+                        func_param["func_name"], business_error, player_hwnd_info,
+                        func_final_status=func_final_status, func_no=func_no
+                    ):
+                        # 若需要重新尝试，则直接进入下一次循环
+                        exception_handle_time -= 1
+                        func_param["loop_count"] = self.level_info["loop_count"]
+                        continue
             elif func_param["func_name"] == "公会任务":
+                # 先判断单人还是组队模式
+                if func_param["player2"] != 0:
+                    single_mode = False
+                else:
+                    single_mode = True
                 plan_path = func_param["plan_path"]
                 # 使用该文件路径初始化放卡方案处理器
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1062,25 +1099,36 @@ class BusinessBus(QThread):
                 else:
                     # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                     player1_info_dict = self.convertToExecute(
-                        start_param, plan_info, "1;2", func_param["player1"])
+                        start_param, plan_info, "1;2", func_param["player1"], single_mode=single_mode)
                     player2_info_dict = None
-                    if func_param["player2"] != 0:
+                    if not single_mode:
                         player2_info_dict = self.convertToExecute(
                             start_param, plan_info, "1;2", func_param["player2"])
+                        self.global_flow_info["current_2p_name_pic"] = start_param[
+                            f'{func_param["player2"]}p_name_pic_path']
                     self.setPlayerInfo(player1_info_dict, player2_info_dict)
                     self.setLevelInfo({
                         "has_stage2": False,
                         "shall_continue": False,
-                        "max_check_time": start_param["max_check_time"]
+                        "max_check_time": start_param["max_check_time"],
+                        "loop_count": None
                     })
                     try:
                         self.startUnionQuest(plan_path)
                     except BusinessError as business_error:
-                        business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                        func_final_status = "wrong"
-                        self.signal_send_business_error.emit(business_error_str)
-                        self.formatBusinessMessage(business_error_str, "ERROR")
+                        player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                        if not single_mode:
+                            player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                        if exception_handle_time > 0 and handleFuncException(
+                                func_param["func_name"], business_error, player_hwnd_info,
+                                func_final_status=func_final_status, func_no=func_no
+                        ):
+                            # 若需要重新尝试，则直接进入下一次循环
+                            exception_handle_time -= 1
+                            continue
             elif func_param["func_name"] == "情侣任务":
+                # [情侣任务]只能组队模式
+                single_mode = False
                 if not enable_2p:
                     business_message_str = f"单人模式不支持[{func_param['func_name']}]功能！"
                     self.formatBusinessMessage(business_message_str, "WARN")
@@ -1105,36 +1153,52 @@ class BusinessBus(QThread):
                         start_param, plan_info, "1;2", func_param["player1"])
                     player2_info_dict = self.convertToExecute(
                         start_param, plan_info, "1;2", func_param["player2"])
+                    self.global_flow_info["current_2p_name_pic"] = start_param[
+                        f'{func_param["player2"]}p_name_pic_path']
                     self.setPlayerInfo(player1_info_dict, player2_info_dict)
                     self.setLevelInfo({
                         "has_stage2": False,
                         "shall_continue": False,
-                        "max_check_time": start_param["max_check_time"]
+                        "max_check_time": start_param["max_check_time"],
+                        "loop_count": None
                     })
                     try:
                         self.startLoversQuest(plan_path)
                     except BusinessError as business_error:
-                        business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                        func_final_status = "wrong"
-                        self.signal_send_business_error.emit(business_error_str)
-                        self.formatBusinessMessage(business_error_str, "ERROR")
+                        player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"]),
+                                            (self.player2_info["hwnd"], self.player2_info["zoom"])]
+                        if exception_handle_time > 0 and handleFuncException(
+                                func_param["func_name"], business_error, player_hwnd_info,
+                                func_final_status=func_final_status, func_no=func_no
+                        ):
+                            # 若需要重新尝试，则直接进入下一次循环
+                            exception_handle_time -= 1
+                            continue
             elif func_param["func_name"] == "火山遗迹":
+                # 先判断单人还是组队模式
+                if func_param["player2"] != 0:
+                    single_mode = False
+                else:
+                    single_mode = True
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"], single_mode=single_mode)
                 player2_info_dict = None
-                if func_param["player2"] != 0:
+                if not single_mode:
                     player2_info_dict = self.convertToExecute(
                         start_param, plan_info, func_param["flop_pos"], func_param["player2"])
+                    self.global_flow_info["current_2p_name_pic"] = start_param[
+                        f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
                     "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"]
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"]
                 })
                 try:
                     # 启动 循环刷指定关卡 的功能
@@ -1142,27 +1206,42 @@ class BusinessBus(QThread):
                         func_param["level_name"],
                         func_param["loop_count"])
                 except BusinessError as business_error:
-                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                    func_final_status = "wrong"
-                    self.signal_send_business_error.emit(business_error_str)
-                    self.formatBusinessMessage(business_error_str, "ERROR")
+                    player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                    if not single_mode:
+                        player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                    if exception_handle_time > 0 and handleFuncException(
+                            func_param["func_name"], business_error, player_hwnd_info,
+                            func_final_status=func_final_status, func_no=func_no
+                    ):
+                        # 若需要重新尝试，则直接进入下一次循环
+                        exception_handle_time -= 1
+                        func_param["loop_count"] = self.level_info["loop_count"]
+                        continue
             elif func_param["func_name"] == "魔塔蛋糕":
+                # 先判断单人还是组队模式
+                if func_param["player2"] != 0:
+                    single_mode = False
+                else:
+                    single_mode = True
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"], single_mode=single_mode)
                 player2_info_dict = None
-                if func_param["player2"] != 0:
+                if not single_mode:
                     player2_info_dict = self.convertToExecute(
                         start_param, plan_info, func_param["flop_pos"], func_param["player2"])
+                    self.global_flow_info["current_2p_name_pic"] = start_param[
+                        f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
                     "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"]
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"]
                 })
                 try:
                     # 启动 循环刷指定关卡 的功能
@@ -1170,27 +1249,42 @@ class BusinessBus(QThread):
                         func_param["level_num"],
                         func_param["loop_count"])
                 except BusinessError as business_error:
-                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                    func_final_status = "wrong"
-                    self.signal_send_business_error.emit(business_error_str)
-                    self.formatBusinessMessage(business_error_str, "ERROR")
+                    player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                    if not single_mode:
+                        player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                    if exception_handle_time > 0 and handleFuncException(
+                            func_param["func_name"], business_error, player_hwnd_info,
+                            func_final_status=func_final_status, func_no=func_no
+                    ):
+                        # 若需要重新尝试，则直接进入下一次循环
+                        exception_handle_time -= 1
+                        func_param["loop_count"] = self.level_info["loop_count"]
+                        continue
             elif func_param["func_name"] == "跨服远征":
+                # 先判断单人还是组队模式
+                if func_param["player2"] != 0:
+                    single_mode = False
+                else:
+                    single_mode = True
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"], single_mode=single_mode)
                 player2_info_dict = None
-                if func_param["player2"] != 0:
+                if not single_mode:
                     player2_info_dict = self.convertToExecute(
                         start_param, plan_info, func_param["flop_pos"], func_param["player2"])
+                    self.global_flow_info["current_2p_name_pic"] = start_param[
+                        f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
                     "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"]
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"]
                 })
                 try:
                     # 启动 循环刷指定关卡 的功能
@@ -1200,11 +1294,23 @@ class BusinessBus(QThread):
                         func_param["level_num"],
                         func_param["loop_count"])
                 except BusinessError as business_error:
-                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                    func_final_status = "wrong"
-                    self.signal_send_business_error.emit(business_error_str)
-                    self.formatBusinessMessage(business_error_str, "ERROR")
+                    player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                    if not single_mode:
+                        player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                    if exception_handle_time > 0 and handleFuncException(
+                            func_param["func_name"], business_error, player_hwnd_info,
+                            func_final_status=func_final_status, func_no=func_no
+                    ):
+                        # 若需要重新尝试，则直接进入下一次循环
+                        exception_handle_time -= 1
+                        func_param["loop_count"] = self.level_info["loop_count"]
+                        continue
             elif func_param["func_name"] == "悬赏三连":
+                # 先判断单人还是组队模式
+                if func_param["player2"] != 0:
+                    single_mode = False
+                else:
+                    single_mode = True
                 plan_path = func_param["plan_path"]
                 # 使用该文件路径初始化放卡方案处理器
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1218,41 +1324,58 @@ class BusinessBus(QThread):
                 else:
                     # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                     player1_info_dict = self.convertToExecute(
-                        start_param, plan_info, "1;2", func_param["player1"])
+                        start_param, plan_info, "1;2", func_param["player1"], single_mode=single_mode)
                     player2_info_dict = None
-                    if enable_2p and plan_info["player_num"] == 2:
+                    if not single_mode:
                         player2_info_dict = self.convertToExecute(
                             start_param, plan_info, "1;2", func_param["player2"])
+                        self.global_flow_info["current_2p_name_pic"] = start_param[
+                            f'{func_param["player2"]}p_name_pic_path']
                     self.setPlayerInfo(player1_info_dict, player2_info_dict)
                     self.setLevelInfo({
                         "has_stage2": True,
                         "shall_continue": True,
-                        "max_check_time": start_param["max_check_time"]
+                        "max_check_time": start_param["max_check_time"],
+                        "loop_count": None
                     })
                     try:
                         self.startWanted(func_param["active_level_dict"])
                     except BusinessError as business_error:
-                        business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                        func_final_status = "wrong"
-                        self.signal_send_business_error.emit(business_error_str)
-                        self.formatBusinessMessage(business_error_str, "ERROR")
+                        player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                        if not single_mode:
+                            player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                        if exception_handle_time > 0 and handleFuncException(
+                                func_param["func_name"], business_error, player_hwnd_info,
+                                func_final_status=func_final_status, func_no=func_no
+                        ):
+                            # 若需要重新尝试，则直接进入下一次循环
+                            exception_handle_time -= 1
+                            continue
             elif func_param["func_name"] == "勇士挑战":
+                # 先判断单人还是组队模式
+                if func_param["player2"] != 0:
+                    single_mode = False
+                else:
+                    single_mode = True
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"], single_mode=single_mode)
                 player2_info_dict = None
-                if func_param["player2"] != 0:
+                if not single_mode:
                     player2_info_dict = self.convertToExecute(
                         start_param, plan_info, func_param["flop_pos"], func_param["player2"])
+                    self.global_flow_info["current_2p_name_pic"] = start_param[
+                        f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
                     "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"]
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"]
                 })
                 try:
                     # 启动 循环刷指定关卡 的功能
@@ -1260,37 +1383,59 @@ class BusinessBus(QThread):
                         func_param["boss_pic"],
                         func_param["loop_count"])
                 except BusinessError as business_error:
-                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                    func_final_status = "wrong"
-                    self.signal_send_business_error.emit(business_error_str)
-                    self.formatBusinessMessage(business_error_str, "ERROR")
+                    player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                    if not single_mode:
+                        player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                    if exception_handle_time > 0 and handleFuncException(
+                            func_param["func_name"], business_error, player_hwnd_info,
+                            func_final_status=func_final_status, func_no=func_no
+                    ):
+                        # 若需要重新尝试，则直接进入下一次循环
+                        exception_handle_time -= 1
+                        func_param["loop_count"] = self.level_info["loop_count"]
+                        continue
             elif func_param["func_name"] == "公会副本":
+                # 先判断单人还是组队模式
+                if func_param["player2"] != 0:
+                    single_mode = False
+                else:
+                    single_mode = True
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, func_param["flop_pos"], func_param["player1"])
+                    start_param, plan_info, func_param["flop_pos"], func_param["player1"], single_mode=single_mode)
                 player2_info_dict = None
-                if func_param["player2"] != 0:
+                if not single_mode:
                     player2_info_dict = self.convertToExecute(
                         start_param, plan_info, func_param["flop_pos"], func_param["player2"])
+                    self.global_flow_info["current_2p_name_pic"] = start_param[
+                        f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
                     "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"]
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"]
                 })
                 try:
                     self.startUnionDungeon(
                         func_param["level_name"],
                         func_param["loop_count"])
                 except BusinessError as business_error:
-                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                    func_final_status = "wrong"
-                    self.signal_send_business_error.emit(business_error_str)
-                    self.formatBusinessMessage(business_error_str, "ERROR")
+                    player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                    if not single_mode:
+                        player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                    if exception_handle_time > 0 and handleFuncException(
+                            func_param["func_name"], business_error, player_hwnd_info,
+                            func_final_status=func_final_status, func_no=func_no
+                    ):
+                        # 若需要重新尝试，则直接进入下一次循环
+                        exception_handle_time -= 1
+                        func_param["loop_count"] = self.level_info["loop_count"]
+                        continue
             elif func_param["func_name"] == "使用物品":
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
@@ -1311,11 +1456,17 @@ class BusinessBus(QThread):
                             zoom=zoom
                         )
                     except BusinessError as business_error:
-                        business_error_str = f"{stuff_info['operation']}物品[{stuff_name}]时出错！\n\n{business_error.error_info}"
-                        func_final_status = "wrong"
-                        self.signal_send_business_error.emit(business_error_str)
-                        self.formatBusinessMessage(business_error_str, "ERROR")
+                        player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                        if exception_handle_time > 0 and handleFuncException(
+                                func_param["func_name"], business_error, player_hwnd_info,
+                                func_final_status=func_final_status, func_no=func_no
+                        ):
+                            # 若需要重新尝试，则直接进入下一次循环
+                            exception_handle_time -= 1
+                            continue
             elif func_param["func_name"] == "刷熟练度":
+                # [刷熟练度]只能单人模式
+                single_mode = True
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
                 zoom = start_param[f"{func_param['player'] + 1}p_zoom"]
@@ -1325,7 +1476,7 @@ class BusinessBus(QThread):
                 plan_info = self.place_plan_procs.readPlan(func_param["plan_name"])
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = self.convertToExecute(
-                    start_param, plan_info, '1', '1')
+                    start_param, plan_info, '1', 1)
                 # 选2P时，convertToExecute()只能从放卡方案中获取2P相关信息，单人模式下，发生冲突
                 player1_info_dict["hwnd"] = hwnd
                 player1_info_dict["zoom"] = zoom
@@ -1334,7 +1485,8 @@ class BusinessBus(QThread):
                 self.setLevelInfo({
                     "has_stage2": False,
                     "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"]
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"]
                 })
                 try:
                     # 启动 循环刷熟练度 的功能
@@ -1347,10 +1499,17 @@ class BusinessBus(QThread):
                         zoom
                     )
                 except BusinessError as business_error:
-                    business_error_str = f"执行[{func_param['func_name']}]功能时出错！\n\n{business_error.error_info}"
-                    func_final_status = "wrong"
-                    self.signal_send_business_error.emit(business_error_str)
-                    self.formatBusinessMessage(business_error_str, "ERROR")
+                    player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                    if not single_mode:
+                        player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                    if exception_handle_time > 0 and handleFuncException(
+                            func_param["func_name"], business_error, player_hwnd_info,
+                            func_final_status=func_final_status, func_no=func_no
+                    ):
+                        # 若需要重新尝试，则直接进入下一次循环
+                        exception_handle_time -= 1
+                        func_param["loop_count"] = self.level_info["loop_count"]
+                        continue
             else:
                 self.formatBusinessMessage(f"功能[{func_param['func_name']}]不存在！或该功能处于错误的位置！", "ERROR")
                 func_final_status = "wrong"
@@ -1358,36 +1517,44 @@ class BusinessBus(QThread):
                 func_no += 1
                 continue
 
+            if exception_handle_time == 0:
+                self.formatBusinessMessage(f"执行功能[{func_param['func_name']}]时发生异常，且重新尝试了3次仍无法解决！")
             self.formatBusinessMessage(f"结束功能[{func_param['func_name']}]")
             self.signal_send_func_status.emit(func_no, func_final_status)
             func_no += 1
+            # 重置
+            exception_handle_time = 3
             self.place_plan_procs.setFilePath(plan_path)
         self.formatBusinessMessage("流程执行完成")
         self.signal_flow_finished.emit(True)
 
-    def convertToExecute(self, start_param, plan_info, flop_pos, player):
+    def convertToExecute(self, start_param, plan_info, flop_pos, player, single_mode=False):
+        player_no_in_file = player
+        if single_mode and player == 2:
+            # 当为单人模式，且房主选择的是2P时，解析放卡方案中的"1P"信息
+            player_no_in_file = 1
         # 获取该账号使用的 卡片组名称
-        deck_info = self.player_deck_procs.readDeck(plan_info[f"{player}P所用卡片组"])
+        deck_info = self.player_deck_procs.readDeck(plan_info[f"{player_no_in_file}P所用卡片组"])
         if isinstance(deck_info, tuple):
-            deck_name = plan_info[f"{player}P所用卡片组"]
-            raise BusinessError(f"放卡方案[{plan_info['plan_name']}]中{player}P所用卡片组“{deck_name}”在账号卡片组ini文件中不存在")
+            deck_name = plan_info[f"{player_no_in_file}P所用卡片组"]
+            raise BusinessError(f"放卡方案[{plan_info['plan_name']}]中{player_no_in_file}P所用卡片组“{deck_name}”在账号卡片组ini文件中不存在")
         # 用来存放可执行dict格式中，cards_plan的内容
         cards_plan = []
         # 从卡1到卡n依次存放（这要求放卡方案配置文件里必须保证递增的顺序）
         card_no = 1
-        print("转义前放卡计划\n", plan_info[f"{player}p_card_plan"])
-        for card_info in plan_info[f"{player}p_card_plan"]:
+        print("转义前放卡计划\n", plan_info[f"{player_no_in_file}p_card_plan"])
+        for card_info in plan_info[f"{player_no_in_file}p_card_plan"]:
             # 获取该卡名称，以便在deck_info中得到对应的slot值
-            card_name = card_info[f"{player}P卡{card_no}"]
+            card_name = card_info[f"{player_no_in_file}P卡{card_no}"]
             card_slot = deck_info["deck_slot_info"][card_name]
             # 卡片CD以放卡方案配置文件中的为准
-            card_cd = card_info[f"{player}P卡{card_no}CD"]
+            card_cd = card_info[f"{player_no_in_file}P卡{card_no}CD"]
             if card_cd == "CD":
                 card_cd = deck_info["deck_cd_info"][card_name]
             # 组装dict
             card_plan = {
-                "card_pos_series": card_info[f"{player}P卡{card_no}放置位置"].replace(",CD", f',{deck_info["deck_cd_info"][card_name]}'),
-                "card_replenish_series": card_info[f"{player}P卡{card_no}补卡位置"].replace(",CD", f',{deck_info["deck_cd_info"][card_name]}'),
+                "card_pos_series": card_info[f"{player_no_in_file}P卡{card_no}放置位置"].replace(",CD", f',{deck_info["deck_cd_info"][card_name]}'),
+                "card_replenish_series": card_info[f"{player_no_in_file}P卡{card_no}补卡位置"].replace(",CD", f',{deck_info["deck_cd_info"][card_name]}'),
                 "card_slot": int(card_slot),
                 "card_cd": int(card_cd)}
             # 加入cards_plan
@@ -1396,7 +1563,7 @@ class BusinessBus(QThread):
         return {
             "hwnd": start_param[f"{player}p_hwnd"],
             "zoom": start_param[f"{player}p_zoom"],
-            "player_pos": plan_info[f"{player}P放置位置"],
+            "player_pos": plan_info[f"{player_no_in_file}P放置位置"],
             "cards_plan": cards_plan,
             "deck_no": int(deck_info["卡片组编号"]),
             "flop_pos": flop_pos
@@ -1509,7 +1676,7 @@ if __name__ == "__main__":
     business_bus.setPlayerInfo(player1_info, player2_info)
     business_bus.setLevelInfo(level_info)
     business_bus.setGlobalFlowInfo({
-            "2p_name_pic_path": r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\组队房间2P截图示例.bmp",
+            "current_2p_name_pic": r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\resources\images\用户图片\组队房间2P截图示例.bmp",
             "deck_path": r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\config\卡片放置方案\账号预设卡片组.ini",
             "plan_path": r"D:\PycharmProjects\FVM_Backstage_Assistant_LFBY\config\卡片放置方案\升级版组队常用方案_V1.00.ini"
         })

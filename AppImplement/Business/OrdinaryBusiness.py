@@ -13,7 +13,8 @@ from AppImplement.GlobalValue.StaticValue import *
 from AppImplement.Business.CustomException import BusinessError
 from AppImplement.Business.Foundation import (
     switchWorldZone, singleLayerChooseLevel, createPwdRoom, openBottomMenu, openTopMenu, acceptInvitationOrNot,
-    chooseSingleOrMultiZone, chooseCrossServiceLevel, chooseMagicTowerLevel, check2ndPsw, checkEnterRoom
+    chooseSingleOrMultiZone, chooseCrossServiceLevel, chooseMagicTowerLevel, check2ndPsw, checkEnterRoom,
+    checkFoodContestQuestFinish, exitRoom
 )
 
 from math import floor
@@ -26,7 +27,7 @@ def executeVipSignin(hwnd, zoom=1):
         # 若没找到，则点击切换上方活动按钮
         mouseClick(hwnd, 780 * zoom, 30 * zoom)
         delay(500)
-        if not find_pic(hwnd, VIP_SIGNIN_PATH, [640, 18, 706, 54], record_fail=True):
+        if not find_pic(hwnd, VIP_SIGNIN_PATH, [640, 18, 706, 54], record_fail=True, record_name="未找到VIP签到"):
             raise BusinessError("未能找到VIP签到图标！")
     # 点击图标
     mouseClick(hwnd, 674 * zoom, 30 * zoom)
@@ -53,7 +54,7 @@ def executeDailySignin(hwnd, zoom=1):
         # 若没找到，则点击切换上方活动按钮
         mouseClick(hwnd, 780 * zoom, 30 * zoom)
         delay(500)
-        if not find_pic(hwnd, DAILY_SIGNIN_PATH, [580, 18, 640, 54], record_fail=True):
+        if not find_pic(hwnd, DAILY_SIGNIN_PATH, [580, 18, 640, 54], record_fail=True, record_name="未找到每日签到"):
             raise BusinessError("未能找到每日签到图标！")
     # 点击图标
     mouseClick(hwnd, 612 * zoom, 30 * zoom)
@@ -84,7 +85,7 @@ def executeFreeWish(hwnd, zoom=1):
         # 若没找到，则点击切换上方活动按钮
         mouseClick(hwnd, 780 * zoom, 30 * zoom)
         delay(500)
-        if not find_pic(hwnd, FVM_ACTIVITY_PATH, [512, 18, 579, 54], record_fail=True):
+        if not find_pic(hwnd, FVM_ACTIVITY_PATH, [512, 18, 579, 54], record_fail=True, record_name="未找到美食活动"):
             raise BusinessError("未能找到美食活动图标！")
     # 点击图标
     mouseClick(hwnd, 545 * zoom, 30 * zoom)
@@ -110,7 +111,7 @@ def executePharaohTreasure(hwnd, flop_pos: int, zoom=1):
         # 若没找到，则点击切换上方活动按钮
         mouseClick(hwnd, 780 * zoom, 30 * zoom)
         delay(500)
-        pharaoh_pos = find_pic(hwnd, PHARAOH_TREASURE_PATH, [247, 17, 778, 112], record_fail=True)
+        pharaoh_pos = find_pic(hwnd, PHARAOH_TREASURE_PATH, [247, 17, 778, 112], record_fail=True, record_name="未找到法老宝藏")
         if not pharaoh_pos:
             raise BusinessError("未能找到法老宝藏图标！")
     # 点击图标
@@ -142,7 +143,7 @@ def executeTarotTreasure(hwnd, zoom=1):
         # 若没找到，则点击切换上方活动按钮
         mouseClick(hwnd, 780 * zoom, 30 * zoom)
         delay(500)
-        tarot_pos = find_pic(hwnd, TAROT_TREASURE_PATH, [247, 17, 778, 112], record_fail=True)
+        tarot_pos = find_pic(hwnd, TAROT_TREASURE_PATH, [247, 17, 778, 112], record_fail=True, record_name="未找到塔罗寻宝")
         if not tarot_pos:
             raise BusinessError("未能找到塔罗寻宝图标！")
     # 点击图标
@@ -236,9 +237,9 @@ def executeUnionGarden(hwnd, fertilize_date: str, plant_type=0, zoom=1):
     """
     result_str = "完成[公会花园]。已浇水，但未施肥"
     need_fertilize = determineDateRangeEvent(fertilize_date)
-    # 先查看公会任务中施肥任务的状态，若不是“进行中”，则无需施肥
-    openBottomMenu(hwnd, "跳转", "公会任务", zoom)
     if need_fertilize:
+        # 先查看公会任务中施肥任务的状态，若不是“进行中”，则无需施肥
+        openBottomMenu(hwnd, "跳转", "公会任务", zoom)
         # 展开公会任务
         unfoldUnionQuest(hwnd, zoom)
         # 识别施肥3次的任务是否已完成，注意根据有无发布过会长任务而变化识图范围
@@ -248,9 +249,9 @@ def executeUnionGarden(hwnd, fertilize_date: str, plant_type=0, zoom=1):
         else:
             if not find_pic(hwnd, TODO_BOTTOM_QUEST_PATH, [355, 190 + 30 * 9, 400, 220 + 30 * 9]):
                 need_fertilize = False
-    # 关闭公会任务
-    mouseClick(hwnd, 855 * zoom, 55 * zoom)
-    delay(500)
+        # 关闭公会任务
+        mouseClick(hwnd, 855 * zoom, 55 * zoom)
+        delay(500)
     # 点击底部“公会”
     mouseClick(hwnd, 777 * zoom, 585 * zoom)
     if not find_pic_loop(hwnd, OPEN_UNION_PATH, [218, 95, 292, 111], max_time=120):
@@ -294,7 +295,8 @@ def executeUnionGarden(hwnd, fertilize_date: str, plant_type=0, zoom=1):
                 hwnd, [690, 550, 690, 550], 0x7E6A4A)):
             # 点击浇水
             mouseClick(hwnd, 784 * zoom, 360 * zoom)
-            delay(500)
+            # delay(500)
+            checkFoodContestQuestFinish(hwnd)
             # 寻找是否提示”超过成长上限“
             if not find_pic(hwnd, UNION_GARDEN_MAX_PATH, [350, 180, 450, 400]):
                 # 等待完成浇水任务的报幕结束
@@ -304,7 +306,9 @@ def executeUnionGarden(hwnd, fertilize_date: str, plant_type=0, zoom=1):
                     result_str = "完成[公会花园]。已浇水，且施肥3次"
                     for i in range(fertilize_time):
                         mouseClick(hwnd, 784 * zoom, 420 * zoom)
-                        delay(500)
+                        # delay(500)
+                        # 判断是否触发美食大赛任务完成
+                        checkFoodContestQuestFinish(hwnd)
                         # 每施一次肥，寻找是否提示”超过成长上限“
                         if not find_pic(hwnd, UNION_GARDEN_MAX_PATH, [350, 180, 450, 400]):
                             # 成功则 需要施肥次数 - 1
@@ -378,7 +382,8 @@ def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
         delay(100)
         # 点击领取奖励
         mouseClick(hwnd, 640 * zoom, 530 * zoom)
-        delay(500)
+        # delay(500)
+        checkFoodContestQuestFinish(hwnd)
         # 继续找其他已完成的任务
         complete_quest_pos = find_pic(hwnd, COMPLETE_BOTTOM_QUEST_PATH, [340, 120, 410, 540])
     if release_quest and find_color(hwnd, [75, 36, 174, 75], 0x78E4F4):
@@ -415,9 +420,11 @@ def executeOpenFoodContest(hwnd, close_dialog=True, zoom=1):
     mouseClick(hwnd, contest_pos[0] * zoom, contest_pos[1] * zoom)
     if not find_pic_loop(hwnd, OPEN_FOOD_CONTEST_PATH, [390, 40, 600, 150], max_time=120):
         raise BusinessError("超过2min还未打开美食大赛界面！")
-    delay(1000)
+    # delay(1000)
+    checkFoodContestQuestFinish(hwnd)
     if close_dialog:
         mouseClick(hwnd, 890 * zoom, 50 * zoom)
+        delay(500)
     return "完成[打开美食大赛]"
 
 
@@ -442,7 +449,8 @@ def executeReceiveTeamMagicTower(hwnd, box_checked: bool, force_execute: bool, z
     delay(500)
     # 点击“领取”
     mouseClick(hwnd, 907 * zoom, 470 * zoom)
-    delay(1000)
+    # delay(1000)
+    checkFoodContestQuestFinish(hwnd)
     # 退出界面
     mouseClick(hwnd, 930 * zoom, 30 * zoom)
     delay(1000)
@@ -491,7 +499,8 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
     delay(500)
     # 点击”送出“
     mouseClick(hwnd, 500 * zoom, 400 * zoom)
-    delay(1000)
+    # delay(1000)
+    checkFoodContestQuestFinish(hwnd)
     if not check2ndPsw(hwnd, second_psw, zoom):
         result_str = "[赠送鲜花]失败！未解锁二级密码"
     elif use_gift_coupon:
@@ -501,7 +510,8 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
         for i in range(use_times):
             # 点击”送出“
             mouseClick(hwnd, 500 * zoom, 400 * zoom)
-            delay(500)
+            # delay(500)
+            checkFoodContestQuestFinish(hwnd)
         result_str = f"完成[赠送鲜花]。并使用了{use_times}次礼券赠送"
     # 关闭鲜花界面
     mouseClick(hwnd, 715 * zoom, 150 * zoom)
@@ -520,7 +530,8 @@ def executeReceiveDestinyTree(hwnd, box_checked: bool, force_execute: bool, zoom
     openBottomMenu(hwnd, "跳转", "缘分树", zoom)
     # 点击”领取“
     mouseClick(hwnd, 375 * zoom, 505 * zoom)
-    delay(500)
+    # delay(500)
+    checkFoodContestQuestFinish(hwnd)
     # 关闭界面
     mouseClick(hwnd, 930 * zoom, 30 * zoom)
     delay(1000)
@@ -622,7 +633,7 @@ def openWantedDialog(hwnd, zoom=1):
         # 若没找到，则点击切换上方活动按钮
         mouseClick(hwnd, 780 * zoom, 30 * zoom)
         delay(500)
-        wanted_pos = find_pic(hwnd, WANTED_PATH, [247, 17, 778, 112], record_fail=True)
+        wanted_pos = find_pic(hwnd, WANTED_PATH, [247, 17, 778, 112], record_fail=True, record_name="未找到悬赏活动")
         if not wanted_pos:
             raise BusinessError("未能找到悬赏活动图标！")
     # 点击悬赏活动图标
@@ -1014,6 +1025,35 @@ def closeJustLoginDialog(hwnd, zoom=1):
     if find_pic(hwnd, OPEN_HOLIDAY_DISCOUNT_PATH):
         mouseClick(hwnd, 770 * zoom, 130 * zoom)
         delay(500)
+
+
+def closeExecExceptionDlg(hwnd, zoom=1):
+    # 查找并关闭3次“常见关闭按钮”
+    for i in range(3):
+        closeCommonTipDialog(hwnd, zoom=zoom)
+    # 判断是否在房间内
+    if find_pic(hwnd, ENTER_ROOM_PATH, [375, 20, 430, 50]):
+        exitRoom(hwnd, zoom)
+        if find_pic(hwnd, ENTER_ROOM_PATH, [375, 20, 430, 50]):
+            # 取消准备状态
+            mouseClick(hwnd, 872 * zoom, 480 * zoom)
+            delay(500)
+            exitRoom(hwnd, zoom)
+    # 判断并关闭
+    DLG_CLS_BTN_POS = {
+        "法老宝藏": (790, 97),
+        "塔罗寻宝": (830, 80),
+        "美食大赛": (890, 50),
+        "假期特惠": (770, 130)
+    }
+    for key, value in DLG_CLS_BTN_POS.items():
+        if find_pic(hwnd, FIND_AND_OPEN_TOP_MENU_DICT[key][1], FIND_AND_OPEN_TOP_MENU_DICT[key][2]):
+            mouseClick(hwnd, value[0] * zoom, value[1] * zoom)
+            delay(500)
+    # 查找并关闭3次“常见关闭按钮”
+    for i in range(3):
+        closeCommonTipDialog(hwnd, zoom=zoom)
+
 
 
 # 流程列表功能界面参数加工相关 ---------------------------------------------------------------

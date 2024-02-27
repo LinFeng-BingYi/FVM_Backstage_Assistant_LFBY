@@ -216,6 +216,6 @@ class Ui_UnionDungeonParam(object):
         self.label_loop_count.setText(QCoreApplication.translate("UnionDungeonParam", u"\u5faa\u73af\u6b21\u6570\uff1a", None))
         self.lineEdit_loop_count.setText(QCoreApplication.translate("UnionDungeonParam", u"3", None))
         self.label_flop_pos.setText(QCoreApplication.translate("UnionDungeonParam", u"\u7ffb\u724c\u4f4d\u7f6e\uff1a", None))
-        self.lineEdit_flop_pos.setText(QCoreApplication.translate("UnionDungeonParam", u"1;2", None))
+        self.lineEdit_flop_pos.setText(QCoreApplication.translate("UnionDungeonParam", u"1", None))
     # retranslateUi
 

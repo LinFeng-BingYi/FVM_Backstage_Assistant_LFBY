@@ -16,8 +16,8 @@ from math import floor
 def switchWorldZone(hwnd: int, zone_name, zoom=1):
     """在世界地图中切换地区，地区名必须与世界地图中显示的保持一致
     """
-    if not find_pic(hwnd, WORLD_MAP_PATH, [788, 3, 945, 90], record_fail=True):
-        raise BusinessError("没找到世界地图！")
+    if not find_pic(hwnd, WORLD_MAP_PATH, [788, 3, 945, 90], record_fail=True, record_name="未找到世界地图"):
+        raise BusinessError("未找到世界地图！")
     if zone_name not in WORLD_MAP_ZONE_POS:
         raise KeyError
     need_switch_server = {
@@ -121,6 +121,12 @@ def checkEnterRoom(hwnd):
     if not find_pic_loop(hwnd, ENTER_ROOM_PATH, [375, 20, 430, 50], max_time=120):
         raise BusinessError(f"超过2min还未进入房间！")
     delay(500)
+
+
+def checkFoodContestQuestFinish(hwnd):
+    if find_pic_loop(hwnd, FOOD_CONTEST_QUEST_FINISH_TIP_PATH, [380, 320, 580, 420], max_time=1, internal=0):
+        print("检测到触发美食大赛任务完成")
+        delay(5000)
 
 
 def chooseMagicTowerLevel(hwnd, level_num: int, zoom=1):
