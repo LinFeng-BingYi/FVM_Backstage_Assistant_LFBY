@@ -804,6 +804,8 @@ class BusinessBus(QThread):
         # 点击“进入地图”
         mouseClick(hwnd_1p, level_x_pos * zoom1, 415 * zoom1)
         delay(1000)
+        # 由于公会副本每次点击“进入地图”后会自动跳转至美味岛，导致被换线。此处主动换线至美味8区
+        switchLine(hwnd_1p, 8, zoom1)
         # 创建房间
         createPwdRoom(hwnd_1p, zoom=zoom1)
         # 应用卡组

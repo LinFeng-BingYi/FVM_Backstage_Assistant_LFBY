@@ -13,6 +13,22 @@ from math import floor
 
 
 # 选择 对应地图 对应关卡 ---------------------------------------------------------------------------
+def switchLine(hwnd, line_no, zoom=1):
+    """世界地图下方换线功能
+
+    Args:
+        line_no: int
+            从1开始计数
+    """
+    # 点击”换线“
+    mouseClick(hwnd, 820 * zoom, 85 * zoom)
+    delay(500)
+    # 点击分区
+    # 一区纵坐标82，每个区间隔25
+    mouseClick(hwnd, 782 * zoom, (82 + 25 * (line_no - 1)) * zoom)
+    delay(2000)
+
+
 def switchWorldZone(hwnd: int, zone_name, zoom=1):
     """在世界地图中切换地区，地区名必须与世界地图中显示的保持一致
     """
@@ -39,13 +55,7 @@ def switchWorldZone(hwnd: int, zone_name, zoom=1):
         raise BusinessError(f"超过2min还未进入区域[{zone_name}]！")
     delay(800)
     if zone_name in need_switch_server:
-        # 点击”换线“
-        mouseClick(hwnd, 820 * zoom, 85 * zoom)
-        delay(500)
-        # 点击分区
-        # 一区纵坐标82，每个区间隔25
-        mouseClick(hwnd, 782 * zoom, (82 + 25 * (need_switch_server[zone_name] - 1)) * zoom)
-        delay(2000)
+        switchLine(hwnd, need_switch_server[zone_name], zoom=zoom)
 
 
 def singleLayerChooseLevel(hwnd, zone_name, level_name, zoom=1):
