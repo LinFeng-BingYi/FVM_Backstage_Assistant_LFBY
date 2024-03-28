@@ -86,6 +86,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>若设置时间小于启动时间，则会在表示第二天的该时间开始执行</string>
+        </property>
         <property name="text">
          <string>时间点</string>
         </property>
@@ -101,6 +104,9 @@
           <width>0</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>若设置时间小于启动时间，则会在表示第二天的该时间开始执行</string>
         </property>
         <property name="dateTime">
          <datetime>
@@ -152,6 +158,12 @@
         </property>
         <property name="decimals">
          <number>1</number>
+        </property>
+        <property name="maximum">
+         <double>1440.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>60.000000000000000</double>
         </property>
         <property name="value">
          <double>60.000000000000000</double>

@@ -208,17 +208,11 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_common">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QCheckBox" name="checkBox_monthly_card">
+        <property name="text">
+         <string>月卡福利</string>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+       </widget>
       </item>
      </layout>
     </widget>

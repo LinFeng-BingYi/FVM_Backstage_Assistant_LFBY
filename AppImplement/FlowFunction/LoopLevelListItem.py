@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+from PySide6.QtCore import QTime
 from PySide6.QtWidgets import QFileDialog, QMessageBox
 from AppImplement.FlowFunction.BaseListItem import BaseListWidget, BaseParamWidget
 from AppImplement.FormFiles.LoopLevelParam import Ui_LoopLevelParam
@@ -94,7 +94,11 @@ class LoopLevelParamWidget(Ui_LoopLevelParam, BaseParamWidget):
             "shall_continue": self.checkBox_continue.isChecked(),
             "plan_path": self.lineEdit_plan_path.text(),
             "plan_name": self.comboBox_1p_plan.currentText(),
-            "skip_choose_level": self.checkBox_skip_choose_level.isChecked()
+            "skip_choose_level": self.checkBox_skip_choose_level.isChecked(),
+            "timing_start": self.groupBox_timing_start.isChecked(),
+            "start_way": "time" if self.radioButton_start_time.isChecked() else "delay",
+            "start_time": self.timeEdit_start_time.text(),
+            "start_delay": self.doubleSpinBox_start_delay.value()
         }
 
     def setAllParam(self, param_dict):
@@ -117,6 +121,14 @@ class LoopLevelParamWidget(Ui_LoopLevelParam, BaseParamWidget):
             return False, "放卡方案ini文件不存在"
         if "skip_choose_level" in param_dict:
             self.checkBox_skip_choose_level.setChecked(param_dict["skip_choose_level"])
+        if "timing_start" in param_dict:
+            self.groupBox_timing_start.setChecked(param_dict["timing_start"])
+            if param_dict["start_way"] == "delay":
+                self.radioButton_start_delay.setChecked(True)
+            start_time_lst = param_dict["start_time"].split(":")
+            start_time = QTime(int(start_time_lst[0]), int(start_time_lst[1]), int(start_time_lst[2]))
+            self.timeEdit_start_time.setTime(start_time)
+            self.doubleSpinBox_start_delay.setValue(float(param_dict["start_delay"]))
         return True
 
     def checkInputValidity(self):

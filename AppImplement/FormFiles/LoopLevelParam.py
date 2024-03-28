@@ -15,18 +15,18 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-    QGroupBox, QHBoxLayout, QLabel, QLineEdit,
-    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox,
+    QGridLayout, QGroupBox, QHBoxLayout, QLabel,
+    QLineEdit, QPushButton, QRadioButton, QSizePolicy,
+    QTimeEdit, QVBoxLayout, QWidget)
 
 class Ui_LoopLevelParam(object):
     def setupUi(self, LoopLevelParam):
         if not LoopLevelParam.objectName():
             LoopLevelParam.setObjectName(u"LoopLevelParam")
-        LoopLevelParam.resize(496, 340)
+        LoopLevelParam.resize(530, 341)
         self.verticalLayout_top = QVBoxLayout(LoopLevelParam)
-        self.verticalLayout_top.setSpacing(5)
+        self.verticalLayout_top.setSpacing(2)
         self.verticalLayout_top.setObjectName(u"verticalLayout_top")
         self.verticalLayout_top.setContentsMargins(3, 10, 3, 3)
         self.groupBox_select_players = QGroupBox(LoopLevelParam)
@@ -213,14 +213,55 @@ class Ui_LoopLevelParam(object):
 
         self.verticalLayout_top.addWidget(self.groupBox_level_setting)
 
-        self.verticalSpacer = QSpacerItem(0, 60, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.groupBox_timing_start = QGroupBox(LoopLevelParam)
+        self.groupBox_timing_start.setObjectName(u"groupBox_timing_start")
+        self.groupBox_timing_start.setCheckable(True)
+        self.groupBox_timing_start.setChecked(False)
+        self.horizontalLayout_start_way = QHBoxLayout(self.groupBox_timing_start)
+        self.horizontalLayout_start_way.setSpacing(5)
+        self.horizontalLayout_start_way.setObjectName(u"horizontalLayout_start_way")
+        self.horizontalLayout_start_way.setContentsMargins(-1, 0, -1, 5)
+        self.radioButton_start_time = QRadioButton(self.groupBox_timing_start)
+        self.radioButton_start_time.setObjectName(u"radioButton_start_time")
+        self.radioButton_start_time.setMinimumSize(QSize(65, 0))
+        self.radioButton_start_time.setMaximumSize(QSize(65, 16777215))
+        self.radioButton_start_time.setChecked(True)
 
-        self.verticalLayout_top.addItem(self.verticalSpacer)
+        self.horizontalLayout_start_way.addWidget(self.radioButton_start_time)
 
-        self.verticalLayout_top.setStretch(0, 2)
-        self.verticalLayout_top.setStretch(1, 2)
-        self.verticalLayout_top.setStretch(2, 3)
-        self.verticalLayout_top.setStretch(3, 3)
+        self.timeEdit_start_time = QTimeEdit(self.groupBox_timing_start)
+        self.timeEdit_start_time.setObjectName(u"timeEdit_start_time")
+        self.timeEdit_start_time.setMinimumSize(QSize(0, 30))
+        self.timeEdit_start_time.setDateTime(QDateTime(QDate(2000, 1, 1), QTime(15, 30, 0)))
+        self.timeEdit_start_time.setTimeSpec(Qt.LocalTime)
+
+        self.horizontalLayout_start_way.addWidget(self.timeEdit_start_time)
+
+        self.radioButton_start_delay = QRadioButton(self.groupBox_timing_start)
+        self.radioButton_start_delay.setObjectName(u"radioButton_start_delay")
+        self.radioButton_start_delay.setMinimumSize(QSize(65, 0))
+        self.radioButton_start_delay.setMaximumSize(QSize(65, 16777215))
+
+        self.horizontalLayout_start_way.addWidget(self.radioButton_start_delay)
+
+        self.doubleSpinBox_start_delay = QDoubleSpinBox(self.groupBox_timing_start)
+        self.doubleSpinBox_start_delay.setObjectName(u"doubleSpinBox_start_delay")
+        self.doubleSpinBox_start_delay.setMinimumSize(QSize(0, 30))
+        self.doubleSpinBox_start_delay.setDecimals(1)
+        self.doubleSpinBox_start_delay.setMaximum(1440.000000000000000)
+        self.doubleSpinBox_start_delay.setSingleStep(60.000000000000000)
+        self.doubleSpinBox_start_delay.setValue(60.000000000000000)
+
+        self.horizontalLayout_start_way.addWidget(self.doubleSpinBox_start_delay)
+
+
+        self.verticalLayout_top.addWidget(self.groupBox_timing_start)
+
+        self.verticalLayout_top.setStretch(0, 3)
+        self.verticalLayout_top.setStretch(1, 3)
+        self.verticalLayout_top.setStretch(2, 5)
+        self.verticalLayout_top.setStretch(3, 4)
+        self.verticalLayout_top.setStretch(4, 3)
 
         self.retranslateUi(LoopLevelParam)
 
@@ -255,5 +296,16 @@ class Ui_LoopLevelParam(object):
         self.checkBox_has_stage2.setText(QCoreApplication.translate("LoopLevelParam", u"\u6709\u4e8c\u9636\u6bb5", None))
         self.checkBox_continue.setText(QCoreApplication.translate("LoopLevelParam", u"\u7ee7\u7eed\u6311\u6218", None))
         self.checkBox_skip_choose_level.setText(QCoreApplication.translate("LoopLevelParam", u"\u8df3\u8fc7\u9009\u5173", None))
+        self.groupBox_timing_start.setTitle(QCoreApplication.translate("LoopLevelParam", u"\u5b9a\u65f6\u542f\u52a8", None))
+#if QT_CONFIG(tooltip)
+        self.radioButton_start_time.setToolTip(QCoreApplication.translate("LoopLevelParam", u"\u65f6\u95f4\u70b9\u542f\u52a8\u65b9\u5f0f\u4e0d\u652f\u6301\u8de8\u5348\u591c0\u70b9", None))
+#endif // QT_CONFIG(tooltip)
+        self.radioButton_start_time.setText(QCoreApplication.translate("LoopLevelParam", u"\u65f6\u95f4\u70b9", None))
+#if QT_CONFIG(tooltip)
+        self.timeEdit_start_time.setToolTip(QCoreApplication.translate("LoopLevelParam", u"\u65f6\u95f4\u70b9\u542f\u52a8\u65b9\u5f0f\u4e0d\u652f\u6301\u8de8\u5348\u591c0\u70b9", None))
+#endif // QT_CONFIG(tooltip)
+        self.timeEdit_start_time.setDisplayFormat(QCoreApplication.translate("LoopLevelParam", u"HH:mm:ss", None))
+        self.radioButton_start_delay.setText(QCoreApplication.translate("LoopLevelParam", u"\u5012\u8ba1\u65f6", None))
+        self.doubleSpinBox_start_delay.setSuffix(QCoreApplication.translate("LoopLevelParam", u"min", None))
     # retranslateUi
 

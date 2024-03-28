@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from PySide6.QtWidgets import QFileDialog
 from PySide6.QtCore import QThread, QTime
 
 from AppImplement.FlowFunction.BaseListItem import BaseListWidget, BaseParamWidget
@@ -11,7 +10,7 @@ from Common.Backstage.Others import waitClick, mousePosHwnd
 import os
 from re import match
 
-from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH, ZOOM
+from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
 
 
 class AutoLoginListWidget(BaseListWidget):
@@ -82,9 +81,6 @@ class AutoLoginParamWidget(Ui_AutoLoginParam, BaseParamWidget):
             return False, "未获取正确的1P窗口句柄！"
         if not match("^[0-9]+$", self.lineEdit_2p_hwnd.text()):
             return False, "未获取正确的2P窗口句柄！"
-        if (self.radioButton_start_delay.isChecked() and
-                not match("^[0-9]+(\\.)?[0-9]*分钟$", self.doubleSpinBox_start_delay.text())):
-            return False, "请输入正确的启动倒计时，单位为分钟(min)！"
         return True
 
 

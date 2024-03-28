@@ -368,6 +368,20 @@ def executeReceiveCampsiteKey(hwnd, zoom=1):
     return "完成[营地钥匙]"
 
 
+def executeMonthlyCardWelfare(hwnd, zoom=1):
+    if not openTopMenu(hwnd, "月卡福利", zoom=zoom):
+        raise BusinessError("未能找到月卡福利图标！")
+    if find_color(hwnd, [665, 495, 760, 535], 0x0078DD):
+        mouseClick(hwnd, 715 * zoom, 515 * zoom)
+        delay(500)
+        result_str = "完成[月卡福利]。成功领取礼包"
+    else:
+        result_str = "完成[月卡福利]。没有领取礼包"
+    mouseClick(hwnd, 830 * zoom, 60 * zoom)
+    delay(300)
+    return result_str
+
+
 def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
     """领取公会任务，若有权限，可以选择发布会长任务
     """
@@ -1090,18 +1104,23 @@ def determineDateRangeEvent(execute_date_range: str):
     return False
 
 
-def waitUntilSpecificTime(specific_time_str):
+def waitUntilSpecificTime(specific_time_str, over_night=True):
     """循环等待直到超过目标时间
 
     Args:
         specific_time_str: str
             目标时间。格式：HH:mm:ss
+        over_night: bool
+            是否支持跨午夜0点。当目标时间小于当前时间时，若支持，则一直等到下一天该时间，否则返回False
     """
     specific_time_lst = specific_time_str.split(":")
     specific_time = QTime(int(specific_time_lst[0]), int(specific_time_lst[1]), int(specific_time_lst[2]))
     if QTime.currentTime() < specific_time:
         specific_datetime = QDateTime(QDate.currentDate(), specific_time)
     else:
+        if not over_night:
+            return False
         specific_datetime = QDateTime(QDate.currentDate().addDays(1), specific_time)
     while QDateTime.currentDateTime() < specific_datetime:
         delay(1)
+    return True

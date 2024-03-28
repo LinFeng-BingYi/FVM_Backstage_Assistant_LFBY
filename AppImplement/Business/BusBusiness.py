@@ -24,6 +24,7 @@ DAILY_AWARD_FUNC_DICT = {
     "底部任务": executeReceiveBottomQuest,
     "公会花园": executeUnionGarden,
     "营地钥匙": executeReceiveCampsiteKey,
+    "月卡福利": executeMonthlyCardWelfare,
     "公会任务": executeReceiveUnionQuest,
     "打开美食大赛": executeOpenFoodContest,
     "打开背包": executeOpenBackpack,
@@ -294,21 +295,20 @@ class BusinessBus(QThread):
 
     # 功能：循环刷指定关卡 ---------------------------------------------------------------
     def loopSpecificLevel(self, zone, level, loop_count):
+        hwnd_1p = self.player1_info["hwnd"]
+        zoom1 = self.player1_info["zoom"]
+        if self.player2_info is not None:
+            hwnd_2p = self.player2_info["hwnd"]
+            zoom2 = self.player2_info["zoom"]
         if "skip_choose_level" not in self.level_info or not self.level_info["skip_choose_level"]:
             # 切换地图，同时1P创建房间
             self.formatBusinessMessage("正在切换到关卡")
-            hwnd_1p = self.player1_info["hwnd"]
-            zoom1 = self.player1_info["zoom"]
             createAnyRoom(hwnd_1p, zone, level, zoom=zoom1)
-            if self.player2_info is not None:
-                hwnd_2p = self.player2_info["hwnd"]
-                zoom2 = self.player2_info["zoom"]
-                createAnyRoom(hwnd_2p, zone, level, False, zoom=zoom2)
             # 应用卡片组
             # self.formatBusinessMessage("应用1P卡片组")
             roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
-        if self.player2_info is not None:
-            if "skip_choose_level" not in self.level_info or not self.level_info["skip_choose_level"]:
+            if self.player2_info is not None:
+                createAnyRoom(hwnd_2p, zone, level, False, zoom=zoom2)
                 # 邀请队友
                 self.formatBusinessMessage("邀请2P")
                 if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
@@ -317,6 +317,7 @@ class BusinessBus(QThread):
                     raise BusinessError("未找到2P或2P进入房间失败！")
                 # self.formatBusinessMessage("应用2P卡片组")
                 roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
+        if self.player2_info is not None:
             # 从点击 准备/开始 到完成翻牌
             for i in range(loop_count):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
@@ -467,8 +468,6 @@ class BusinessBus(QThread):
                 # print("查找结果", business_error_str.find("超过"))
                 if business_error_str.find("超过") != -1:
                     business_error_str = business_error_str + "\n可能是剩余次数不足！"
-                    exitRoom(hwnd_1p, zoom1)
-                    exitRoom(hwnd_2p, zoom2)
                     self.formatBusinessMessage(business_error_str, "WARN")
                 else:
                     raise business_error
@@ -485,7 +484,6 @@ class BusinessBus(QThread):
                 business_error_str = business_error.error_info
                 if business_error_str.find("超过") != -1:
                     business_error_str = business_error_str + "\n可能是剩余次数不足！"
-                    exitRoom(hwnd_1p, zoom1)
                     self.formatBusinessMessage(business_error_str, "WARN")
                 else:
                     raise business_error
@@ -751,8 +749,6 @@ class BusinessBus(QThread):
                 business_error_str = business_error.error_info
                 if business_error_str.find("超过") != -1:
                     business_error_str = business_error_str + "\n可能是剩余次数不足！"
-                    exitRoom(hwnd_1p, zoom1)
-                    exitRoom(hwnd_2p, zoom2)
                     self.formatBusinessMessage(business_error_str, "WARN")
                 else:
                     raise business_error
@@ -769,7 +765,6 @@ class BusinessBus(QThread):
                 business_error_str = business_error.error_info
                 if business_error_str.find("超过") != -1:
                     business_error_str = business_error_str + "\n可能是剩余次数不足！"
-                    exitRoom(hwnd_1p, zoom1)
                     self.formatBusinessMessage(business_error_str, "WARN")
                 else:
                     raise business_error
@@ -786,7 +781,6 @@ class BusinessBus(QThread):
         hwnd_1p = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
         switchWorldZone(hwnd_1p, "美味岛", zoom1)
-        openBottomMenu(hwnd_1p, "跳转", "公会副本", zoom1)
         if self.player2_info is not None:
             hwnd_2p = self.player2_info["hwnd"]
             zoom2 = self.player2_info["zoom"]
@@ -801,11 +795,12 @@ class BusinessBus(QThread):
         else:
             closeCommonTipDialog(hwnd_1p, zoom1)
             raise BusinessError(f"未知的关卡名称{level_name}")
+        openBottomMenu(hwnd_1p, "跳转", "公会副本", zoom1)
         # 点击“进入地图”
         mouseClick(hwnd_1p, level_x_pos * zoom1, 415 * zoom1)
         delay(1000)
         # 由于公会副本每次点击“进入地图”后会自动跳转至美味岛，导致被换线。此处主动换线至美味8区
-        switchLine(hwnd_1p, 8, zoom1)
+        # switchLine(hwnd_1p, 8, zoom1)
         # 创建房间
         createPwdRoom(hwnd_1p, zoom=zoom1)
         # 应用卡组
@@ -815,8 +810,23 @@ class BusinessBus(QThread):
             self.formatBusinessMessage("邀请2P")
             if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
                 # 若没找到2P
-                exitRoom(hwnd_1p, zoom1)
-                raise BusinessError("未找到2P或2P进入房间失败！")
+                self.formatBusinessMessage("邀请2P失败！正在尝试重新邀请。。。")
+                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
+                    # 公会副本的特殊处理，重新创建房间邀请可能会成功
+                    self.formatBusinessMessage("邀请2P失败！正在尝试重新创建房间，并再次邀请。。。")
+                    exitRoom(hwnd_1p, zoom1)
+                    openBottomMenu(hwnd_1p, "跳转", "公会副本", zoom1)
+                    # 点击“进入地图”
+                    mouseClick(hwnd_1p, level_x_pos * zoom1, 415 * zoom1)
+                    delay(1000)
+                    # 创建房间
+                    createPwdRoom(hwnd_1p, zoom=zoom1)
+                    # 应用卡组
+                    roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
+                    # raise BusinessError("未找到2P或2P进入房间失败！")
+                    if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
+                        exitRoom(hwnd_1p, zoom1)
+                        raise BusinessError("已尝试3次邀请2P，均失败！")
             # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -1016,19 +1026,21 @@ class BusinessBus(QThread):
                 del func_param["player"]
                 # 对于每个任务，调用对应的方法
                 for key, value in func_param.items():
-                    self.formatBusinessMessage(f"开始[{key}]...")
                     try:
                         if isinstance(value, list) and value[0]:
+                            self.formatBusinessMessage(f"开始[{key}]...")
                             # 特殊方法中，添加入参
                             if key == "赠送鲜花":
                                 value[1]["second_psw"] = second_psw
                             result_str = DAILY_AWARD_FUNC_DICT[key](hwnd=hwnd, zoom=zoom, **value[1])
                             self.formatBusinessMessage(result_str)
                         elif isinstance(value, bool) and value:
+                            self.formatBusinessMessage(f"开始[{key}]...")
                             result_str = DAILY_AWARD_FUNC_DICT[key](hwnd=hwnd, zoom=zoom)
                             self.formatBusinessMessage(result_str)
                         else:
-                            self.formatBusinessMessage(f"跳过[{key}]")
+                            # self.formatBusinessMessage(f"跳过[{key}]")
+                            pass
                     except BusinessError as business_error:
                         business_error_str = f"执行[{key}]功能时出错！\n\n{business_error.error_info}"
                         func_final_status = "wrong"
@@ -1064,6 +1076,13 @@ class BusinessBus(QThread):
                     "loop_count": func_param["loop_count"]
                 })
                 try:
+                    # 定时启动
+                    if func_param["timing_start"]:
+                        if func_param["start_way"] == "time":
+                            if not waitUntilSpecificTime(func_param["start_time"]):
+                                raise BusinessError(f"设置的启动时间{func_param['start_time']}小于当前时间，跳过该功能")
+                        else:
+                            delay(func_param["start_delay"] * 60000)
                     # 启动 循环刷指定关卡 的功能
                     self.loopSpecificLevel(
                         func_param["zone_name"],

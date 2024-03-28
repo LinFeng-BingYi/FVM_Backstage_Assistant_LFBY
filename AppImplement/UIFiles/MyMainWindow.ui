@@ -709,6 +709,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <height>30</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
          <property name="text">
           <string>开始流程</string>
          </property>

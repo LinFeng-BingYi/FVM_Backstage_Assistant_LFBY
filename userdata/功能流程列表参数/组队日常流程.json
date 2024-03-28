@@ -36,6 +36,7 @@
             "底部任务": true,
             "塔罗寻宝": true,
             "营地钥匙": true,
+            "月卡福利": false,
             "法老宝藏": [
                 true,
                 {
@@ -45,7 +46,7 @@
             "公会花园": [
                 true,
                 {
-                    "fertilize_date": "2024/02/22-2024/03/13",
+                    "fertilize_date": "2024/03/21-2024/04/10",
                     "plant_type": 1
                 }
             ],
@@ -72,7 +73,7 @@
                 }
             ],
             "赠送鲜花": [
-                false,
+                true,
                 {
                     "receiver_name_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\好友界面小号昵称.bmp",
                     "use_gift_coupon": true,
@@ -89,6 +90,7 @@
             "底部任务": true,
             "塔罗寻宝": true,
             "营地钥匙": true,
+            "月卡福利": false,
             "法老宝藏": [
                 true,
                 {
@@ -98,7 +100,7 @@
             "公会花园": [
                 true,
                 {
-                    "fertilize_date": "2024/02/22-2024/03/13",
+                    "fertilize_date": "2024/03/21-2024/04/10",
                     "plant_type": 0
                 }
             ],
@@ -170,6 +172,10 @@
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\组队常用方案_二转海星.ini",
             "plan_name": "咖喱岛日",
             "skip_choose_level": false,
+            "timing_start": false,
+            "start_way": "time",
+            "start_time": "15:30:00",
+            "start_delay": 60.0,
             "func_name": "刷指定关卡"
         },
         {

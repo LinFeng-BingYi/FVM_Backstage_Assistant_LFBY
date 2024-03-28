@@ -104,9 +104,10 @@ class Ui_DailyAwardParam(object):
 
         self.horizontalLayout_common.addWidget(self.checkBox_campsite_key)
 
-        self.horizontalSpacer_common = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.checkBox_monthly_card = QCheckBox(self.groupBox_common)
+        self.checkBox_monthly_card.setObjectName(u"checkBox_monthly_card")
 
-        self.horizontalLayout_common.addItem(self.horizontalSpacer_common)
+        self.horizontalLayout_common.addWidget(self.checkBox_monthly_card)
 
 
         self.verticalLayout_top.addWidget(self.groupBox_common)
@@ -333,6 +334,7 @@ class Ui_DailyAwardParam(object):
 #endif // QT_CONFIG(tooltip)
         self.checkBox_tarot_treasure.setText(QCoreApplication.translate("DailyAwardParam", u"\u5854\u7f57\u5bfb\u5b9d", None))
         self.checkBox_campsite_key.setText(QCoreApplication.translate("DailyAwardParam", u"\u8425\u5730\u94a5\u5319", None))
+        self.checkBox_monthly_card.setText(QCoreApplication.translate("DailyAwardParam", u"\u6708\u5361\u798f\u5229", None))
         self.groupBox_cycle.setTitle(QCoreApplication.translate("DailyAwardParam", u"\u5468\u671f\u7c7b\u522b", None))
         self.comboBox_use_coupon_times.setItemText(0, QCoreApplication.translate("DailyAwardParam", u"1", None))
         self.comboBox_use_coupon_times.setItemText(1, QCoreApplication.translate("DailyAwardParam", u"2", None))

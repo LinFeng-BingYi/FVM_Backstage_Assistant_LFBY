@@ -56,6 +56,7 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
             "底部任务": self.checkBox_bottom_quest.isChecked(),
             "塔罗寻宝": self.checkBox_tarot_treasure.isChecked(),
             "营地钥匙": self.checkBox_campsite_key.isChecked(),
+            "月卡福利": self.checkBox_monthly_card.isChecked(),
             "法老宝藏": [self.checkBox_pharaoh_treasure.isChecked(), {
                 "flop_pos": int(self.comboBox_pharaoh_flop_pos.currentText())
             }],
@@ -93,6 +94,8 @@ class DailyAwardParamWidget(Ui_DailyAwardParam, BaseParamWidget):
         self.checkBox_bottom_quest.setChecked(param_dict["底部任务"])
         self.checkBox_tarot_treasure.setChecked(param_dict["塔罗寻宝"])
         self.checkBox_campsite_key.setChecked(param_dict["营地钥匙"])
+        if "月卡福利" in param_dict:
+            self.checkBox_monthly_card.setChecked(param_dict["月卡福利"])
         self.checkBox_pharaoh_treasure.setChecked(param_dict["法老宝藏"][0])
         self.comboBox_pharaoh_flop_pos.setCurrentText(str(param_dict["法老宝藏"][1]["flop_pos"]))
         self.checkBox_union_garden.setChecked(param_dict["公会花园"][0])

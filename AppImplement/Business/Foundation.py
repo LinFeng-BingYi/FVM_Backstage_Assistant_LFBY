@@ -128,8 +128,8 @@ def check2ndPsw(hwnd, psw='', zoom=1):
 
 
 def checkEnterRoom(hwnd):
-    if not find_pic_loop(hwnd, ENTER_ROOM_PATH, [375, 20, 430, 50], max_time=120):
-        raise BusinessError(f"超过2min还未进入房间！")
+    if not find_pic_loop(hwnd, ENTER_ROOM_PATH, [375, 20, 430, 50], max_time=10):
+        raise BusinessError(f"超过10s还未进入房间！")
     delay(500)
 
 
@@ -265,7 +265,7 @@ def teamInvite(hwnd_1p, hwnd_2p, player2_name_path, zoom1=1, zoom2=1):
     delay(1000)
 
     player2_result = find_pic(hwnd_1p, player2_name_path, [418, 133, 638, 448])
-    print(player2_result)
+    # print(player2_result)
     if player2_result:
         # 2P先拒绝其他邀请
         acceptInvitationOrNot(hwnd_2p, False, zoom2)
@@ -281,6 +281,8 @@ def teamInvite(hwnd_1p, hwnd_2p, player2_name_path, zoom1=1, zoom2=1):
         except BusinessError:
             return False
         return True
+    # 1P退出邀请界面
+    mouseClick(hwnd_1p, 590 * zoom1, 490 * zoom1)
     return False
 
 
@@ -661,3 +663,5 @@ def openTopMenu(hwnd, menu_name: str, sub_menu_name='', zoom=1):
             for jump_times in range(30):
                 mouseClick(hwnd, 640 * zoom, 480 * zoom)
                 delay(50)
+
+    return True

@@ -317,6 +317,7 @@ class Ui_MyMainWindow(object):
         self.pushButton_start_flow = QPushButton(self.widget_flow_control)
         self.pushButton_start_flow.setObjectName(u"pushButton_start_flow")
         self.pushButton_start_flow.setMinimumSize(QSize(84, 30))
+        self.pushButton_start_flow.setFocusPolicy(Qt.ClickFocus)
 
         self.horizontalLayout_flow_control.addWidget(self.pushButton_start_flow)
 
