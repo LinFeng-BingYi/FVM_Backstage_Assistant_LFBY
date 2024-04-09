@@ -93,7 +93,9 @@ def save_captured_pic(pic_path, hwnd=0, cap_range=None):
         opencv的图像数据，存储于内存中
     """
     img = capture_pic(hwnd, cap_range)
-    cv2.imwrite(pic_path, img)
+    # cv2.imwrite(pic_path, img)
+    ext = pic_path.rsplit('.', 1)[1]
+    cv2.imencode(f".{ext}", img)[1].tofile(pic_path)
 
 
 def find_pic(hwnd: int, template_path: str, find_range: list = None, threshold: float = 0.98, record_fail=False, record_name=''):

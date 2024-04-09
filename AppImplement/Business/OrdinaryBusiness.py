@@ -12,7 +12,7 @@ from Common.Backstage import *
 from AppImplement.GlobalValue.StaticValue import *
 from AppImplement.Business.CustomException import BusinessError
 from AppImplement.Business.Foundation import (
-    switchWorldZone, singleLayerChooseLevel, createPwdRoom, openBottomMenu, openTopMenu, acceptInvitationOrNot,
+    switchWorldZone, singleLayerChooseLevel, createPwdRoom, openBottomMenu, openTopMenu,
     chooseSingleOrMultiZone, chooseCrossServiceLevel, chooseMagicTowerLevel, check2ndPsw, checkEnterRoom,
     checkFoodContestQuestFinish, exitRoom
 )
@@ -515,18 +515,24 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
     mouseClick(hwnd, 500 * zoom, 400 * zoom)
     # delay(1000)
     checkFoodContestQuestFinish(hwnd)
-    if not check2ndPsw(hwnd, second_psw, zoom):
+    check_2nd_psw_result = check2ndPsw(hwnd, second_psw, zoom)
+    if check_2nd_psw_result is not None and not check_2nd_psw_result:
         result_str = "[赠送鲜花]失败！未解锁二级密码"
-    elif use_gift_coupon:
-        # 选择礼券鲜花
-        mouseClick(hwnd, 500 * zoom, 308 * zoom)
-        delay(500)
-        for i in range(use_times):
+    else:
+        if check_2nd_psw_result is not None:
             # 点击”送出“
             mouseClick(hwnd, 500 * zoom, 400 * zoom)
-            # delay(500)
             checkFoodContestQuestFinish(hwnd)
-        result_str = f"完成[赠送鲜花]。并使用了{use_times}次礼券赠送"
+        if use_gift_coupon:
+            # 选择礼券鲜花
+            mouseClick(hwnd, 500 * zoom, 308 * zoom)
+            delay(500)
+            for i in range(use_times):
+                # 点击”送出“
+                mouseClick(hwnd, 500 * zoom, 400 * zoom)
+                # delay(500)
+                checkFoodContestQuestFinish(hwnd)
+            result_str = f"完成[赠送鲜花]。并使用了{use_times}次礼券赠送"
     # 关闭鲜花界面
     mouseClick(hwnd, 715 * zoom, 150 * zoom)
     delay(500)
@@ -537,10 +543,10 @@ def executeGiveFlowers(hwnd, receiver_name_path: str, use_gift_coupon: bool = Fa
 
 
 def executeReceiveDestinyTree(hwnd, box_checked: bool, force_execute: bool, zoom=1):
-    if not determineMondayEvent(box_checked, force_execute):
-        return "跳过[领取缘分树奖励]"
     """领取缘分树奖励
     """
+    if not determineMondayEvent(box_checked, force_execute):
+        return "跳过[领取缘分树奖励]"
     openBottomMenu(hwnd, "跳转", "缘分树", zoom)
     # 点击”领取“
     mouseClick(hwnd, 375 * zoom, 505 * zoom)
@@ -561,6 +567,29 @@ def checkCloseActivity(hwnd):
 
 
 # 会长任务相关 -----------------------------------------------------------------------
+def match_one_pic_of_dir(hwnd, abs_dir_path, find_range, threshold=0.999):
+    """在窗口中匹配指定目录下的任一图片
+
+    Args:
+        hwnd: int
+        abs_dir_path: str
+            指定目标目录的绝对路径，路径分隔符用反斜杠，注意结尾不加
+        find_range: list[int]
+            窗口中识图范围
+        threshold: float
+
+    Returns:
+        返回匹配到的第一张图片文件名，不包含扩展名和路径; 未找到时返回None
+        example:
+            假设目录 "D:\abc" 下有截图文件 "123.bmp" , 当匹配到该文件时，返回字符串 "123"
+    """
+    for pic in listdir(abs_dir_path):
+        pic_abs_path = abs_dir_path + "\\" + pic
+        if find_pic(hwnd, pic_abs_path, find_range, threshold):
+            return pic.rsplit('.', 1)[0]
+    return None
+
+
 def findUnionPresidentQuest(hwnd, zoom=1):
     """在已打开公会任务面板的前提下，开始遍历查找公会任务，将任务查找结果存入列表
 
@@ -590,12 +619,15 @@ def findUnionPresidentQuest(hwnd, zoom=1):
         # 否则，查找任务结果，默认值为”没找到“
         quest_find_result = "没找到"
         quest_pic_dir_path = ROOT_PATH + r"\resources\images\任务图片\公会任务\任务" + f"{i + 1}"
-        for quest_pic in listdir(quest_pic_dir_path):
-            quest_pic_abstract_path = quest_pic_dir_path + "\\" + quest_pic
-            if find_pic(hwnd, quest_pic_abstract_path, [432, 90, 855, 367], 0.999):
-                # 若找到了，则将 任务结果 改为 纯文件名
-                quest_find_result = quest_pic.rsplit('.', 1)[0]
-                break
+        # for quest_pic in listdir(quest_pic_dir_path):
+        #     quest_pic_abstract_path = quest_pic_dir_path + "\\" + quest_pic
+        #     if find_pic(hwnd, quest_pic_abstract_path, [432, 90, 855, 367], 0.999):
+        #         # 若找到了，则将 任务结果 改为 纯文件名
+        #         quest_find_result = quest_pic.rsplit('.', 1)[0]
+        #         break
+        match_pic = match_one_pic_of_dir(hwnd, quest_pic_dir_path, [432, 90, 855, 367])
+        if match_pic is not None:
+            quest_find_result = match_pic
         quest_result_list.append(quest_find_result)
     print(quest_result_list)
     return quest_result_list
@@ -801,223 +833,6 @@ def closeLoopSkillRoom(hwnd, zone, level, zoom=1):
         delay(300)
     else:
         pass
-
-
-# 使用物品相关 -----------------------------------------------------------------------
-# 背包 -----------------------------------
-def backpackUseFirstPage(hwnd, stuff_pic, use_times, second_psw='', zoom=1):
-    # 关闭背包图格区域的遮挡界面
-    cover_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, [435, 90, 950, 485])
-    if cover_dialog_close_btn:
-        mouseClick(hwnd, cover_dialog_close_btn[0] * zoom, cover_dialog_close_btn[1] * zoom)
-        delay(500)
-    # 重置滑动条位置
-    mouseClick(hwnd, 920 * zoom, 115 * zoom)
-    delay(500)
-    flag_need_execute = True        # 识图标志
-    for bar_y_pixel in range(110, 410):
-        if find_color(hwnd, [916, bar_y_pixel, 916, bar_y_pixel], 0x724705):
-            mouseClick(hwnd, 916 * zoom, (bar_y_pixel + 10) * zoom)
-            delay(100)
-            flag_need_execute = True
-        if flag_need_execute:
-            # 查找物品
-            acceptInvitationOrNot(hwnd, False, zoom)
-            stuff_pos = find_pic(hwnd, stuff_pic)
-            while stuff_pos and use_times != 0:
-                # 点击物品
-                mouseClick(hwnd, stuff_pos[0] * zoom, stuff_pos[1] * zoom)
-                delay(200)
-                # 点击使用
-                mouseClick(hwnd, (stuff_pos[0] + 32) * zoom, (stuff_pos[1] + 12) * zoom)
-                delay(500)
-                # 关闭二级密码框
-                if not check2ndPsw(hwnd, second_psw, zoom):
-                    return False
-                pop_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, [435, 90, 950, 485])
-                # 关闭弹出的对话框
-                if pop_dialog_close_btn:
-                    mouseClick(hwnd, pop_dialog_close_btn[0] * zoom, pop_dialog_close_btn[1] * zoom)
-                    delay(200)
-                use_times -= 1
-                acceptInvitationOrNot(hwnd, False, zoom)
-                stuff_pos = find_pic(hwnd, stuff_pic)
-            flag_need_execute = False
-            # 当使用次数归零，直接结束
-            if use_times == 0:
-                break
-    return True
-
-
-def backpackUseThirdPage(hwnd, stuff_pic, use_times, second_psw='', zoom=1):
-    # 关闭背包图格区域的遮挡界面
-    cover_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, [435, 90, 950, 485])
-    if cover_dialog_close_btn:
-        mouseClick(hwnd, cover_dialog_close_btn[0] * zoom, cover_dialog_close_btn[1] * zoom)
-        delay(500)
-    # 重置滑动条位置
-    mouseClick(hwnd, 920 * zoom, 115 * zoom)
-    delay(500)
-    flag_need_execute = True  # 识图标志
-    for bar_y_pixel in range(110, 410):
-        if find_color(hwnd, [916, bar_y_pixel, 916, bar_y_pixel], 0x724705):
-            mouseClick(hwnd, 916 * zoom, (bar_y_pixel + 10) * zoom)
-            delay(100)
-            flag_need_execute = True
-        if flag_need_execute:
-            # 查找物品
-            acceptInvitationOrNot(hwnd, False, zoom)
-            stuff_pos = find_pic(hwnd, stuff_pic)
-            # 技能书类别物品提前结束的标志
-            flag_skip = False
-            while stuff_pos and use_times != 0 and not flag_skip:
-                # 点击物品
-                mouseClick(hwnd, stuff_pos[0] * zoom, stuff_pos[1] * zoom)
-                delay(200)
-                # 点击使用
-                mouseClick(hwnd, (stuff_pos[0] + 32) * zoom, (stuff_pos[1] + 12) * zoom)
-                delay(500)
-                if find_pic(hwnd, BACKPACK_PROP_USE_SKILL_BOOK_DIALOG_PATH, [750, 255, 865, 285]):
-                    # 双击数量输入框
-                    leftDoubleClick(hwnd, 790 * zoom, 300 * zoom)
-                    delay(200)
-                    # 输入使用数量
-                    this_batch_times = use_times if 0 <= use_times < 50 else 50
-                    if 0 <= this_batch_times < 50:
-                        flag_skip = True
-                    use_times = use_times - this_batch_times if use_times > 0 else -1
-                    keyInputStr(hwnd, str(this_batch_times))
-                    # 点击“确定”
-                    mouseClick(hwnd, 630 * zoom, 335 * zoom)
-                    delay(300 * (this_batch_times + 1))
-                else:
-                    use_times -= 1
-                # 关闭二级密码框
-                if not check2ndPsw(hwnd, second_psw, zoom):
-                    return False
-                acceptInvitationOrNot(hwnd, False, zoom)
-                stuff_pos = find_pic(hwnd, stuff_pic)
-            flag_need_execute = False
-            # 当使用次数归零，直接结束
-            if use_times == 0:
-                break
-    return True
-
-
-def backpackDelete(hwnd, stuff_pic, use_times, second_psw='', zoom=1):
-    # 关闭背包图格区域的遮挡界面
-    cover_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, [435, 90, 950, 485])
-    if cover_dialog_close_btn:
-        mouseClick(hwnd, cover_dialog_close_btn[0] * zoom, cover_dialog_close_btn[1] * zoom)
-        delay(500)
-    # 重置滑动条位置
-    mouseClick(hwnd, 920 * zoom, 115 * zoom)
-    delay(500)
-    flag_need_execute = True  # 识图标志
-    for bar_y_pixel in range(110, 410):
-        if find_color(hwnd, [916, bar_y_pixel, 916, bar_y_pixel], 0x724705):
-            mouseClick(hwnd, 916 * zoom, (bar_y_pixel + 10) * zoom)
-            delay(100)
-            flag_need_execute = True
-        if flag_need_execute:
-            # 查找物品
-            acceptInvitationOrNot(hwnd, False, zoom)
-            stuff_pos = find_pic(hwnd, stuff_pic)
-            while stuff_pos:
-                # 点击“删除”
-                mouseClick(hwnd, 850 * zoom, 473 * zoom)
-                delay(200)
-                # 点击物品
-                mouseClick(hwnd, stuff_pos[0] * zoom, stuff_pos[1] * zoom)
-                delay(200)
-                # 点击“确定”
-                mouseClick(hwnd, 430 * zoom, 350 * zoom)
-                delay(200)
-                # 点击“删除”
-                mouseClick(hwnd, 850 * zoom, 473 * zoom)
-                delay(200)
-                # 关闭二级密码框
-                if not check2ndPsw(hwnd, second_psw, zoom):
-                    return False
-                # 继续查找物品
-                acceptInvitationOrNot(hwnd, False, zoom)
-                stuff_pos = find_pic(hwnd, stuff_pic)
-            flag_need_execute = False
-    return True
-
-
-# 假期特惠
-def holidayDiscountConvert(hwnd, stuff_pic, use_times, second_psw='', zoom=1):
-    # 跳转到第一页
-    for jump_times in range(30):
-        mouseClick(hwnd, 525 * zoom, 480 * zoom)
-        delay(50)
-    # 每右转一次识图一次
-    flag_not_found = True      # 只要找到过一次，便不再继续向右翻页
-    while flag_not_found:
-        # 查找物品
-        acceptInvitationOrNot(hwnd, False, zoom)
-        stuff_pos = find_pic(hwnd, stuff_pic, [360, 200, 700, 460])
-        while stuff_pos and use_times != 0:
-            stuff_y_pos = int(stuff_pos[1])
-            flag_not_found = False
-            # 若没有兑换次数，则提前结束
-            if not find_color(hwnd, [715, stuff_y_pos - 15, 810, stuff_y_pos + 15], 0x2D90F3):
-                break
-            # 点击“领取”
-            mouseClick(hwnd, 760 * zoom, stuff_y_pos * zoom)
-            delay(1100)
-            # 关闭二级密码框
-            if not check2ndPsw(hwnd, second_psw, zoom):
-                return False
-            use_times -= 1
-            acceptInvitationOrNot(hwnd, False, zoom)
-            stuff_pos = find_pic(hwnd, stuff_pic)
-        # 当使用次数归零，直接结束
-        if use_times == 0:
-            break
-        # 向右一页
-        mouseClick(hwnd, 640 * zoom, 480 * zoom)
-        delay(3000)
-    return True
-
-
-# [使用物品]功能中，支持的界面和操作
-USE_STUFF_SUB_FUNCTION_DICT = {
-    "背包装备": {
-        "使用": backpackUseFirstPage,
-        "删除": backpackDelete
-    },
-    "背包道具": {
-        "使用": backpackUseThirdPage,
-        "删除": backpackDelete
-    },
-    "假期特惠": {
-        "节日兑换": holidayDiscountConvert,
-        "限时兑换": holidayDiscountConvert,
-        "长期兑换": holidayDiscountConvert,
-        "其他兑换": holidayDiscountConvert
-    }
-}
-
-# [使用物品]功能中，支持的界面对应的打开和关闭函数
-USE_STUFF_PANEL_IO_DICT = {
-    "背包装备": [
-        openBottomMenu,
-        ("背包", "装备"),
-        [(917, 60)]
-    ],
-    "背包道具": [
-        openBottomMenu,
-        ("背包", "道具"),
-        [(917, 60)]
-    ],
-    "假期特惠": [
-        openTopMenu,
-        ("假期特惠", ""),
-        [(770, 130)]
-    ]
-}
 
 
 # 其他相关 -------------------------------------------------------------------------

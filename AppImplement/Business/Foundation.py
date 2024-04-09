@@ -103,6 +103,17 @@ def chooseSingleOrMultiZone(hwnd, zone_name, level_name, zoom=1):
 
 
 def check2ndPsw(hwnd, psw='', zoom=1):
+    """处理二级密码框
+
+    Args:
+        hwnd: int
+        psw: str
+            账号的二级密码。默认为空，表示不解释二级密码
+        zoom: float
+
+    Returns:
+        未出现密码框时，返回None; 成功解锁时，返回True; 不解锁或解锁失败时，返回False
+    """
     if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
         if psw == '':
             # 为空时不解锁，直接关闭弹窗并返回False
@@ -118,13 +129,15 @@ def check2ndPsw(hwnd, psw='', zoom=1):
             # 点击“完成”
             mouseClick(hwnd, 440 * zoom, 390 * zoom)
             delay(300)
-            # 若密码错误，则关闭弹窗并返回False
+            # 若密码错误，则关闭弹窗并返回False; 成功解锁，返回True
             if find_pic(hwnd, SECONDARY_PASSWORD_PATH, [360, 170, 510, 220]):
                 mouseClick(hwnd, 570 * zoom, 200 * zoom)
                 delay(500)
                 return False
-    # 未出现二级密码框、或成功解锁，则返回True
-    return True
+            else:
+                return True
+    # 未出现二级密码框，则返回None
+    return None
 
 
 def checkEnterRoom(hwnd):

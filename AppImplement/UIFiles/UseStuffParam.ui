@@ -69,6 +69,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="checkBox_count_chest_stuff">
+        <property name="text">
+         <string>统计宝箱物品</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_select_player">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

@@ -13,6 +13,7 @@ from AppImplement.RWConfigFile.RWPlacingPlan import PlacingPlanProcessor
 from AppImplement.Business.Foundation import *
 from AppImplement.Business.OrdinaryBusiness import *
 from AppImplement.Business.NonGameBusiness import *
+from AppImplement.Business.UseStuffBusiness import *
 
 # [日常领取]子功能名称与函数名映射关系dict
 DAILY_AWARD_FUNC_DICT = {
@@ -846,7 +847,7 @@ class BusinessBus(QThread):
             exitRoom(hwnd_1p, zoom1)
 
     # 功能：使用物品 ------------------------------------------------------------------
-    def startOperateStuff(self, hwnd, stuff_path, panel, operation, use_times, second_psw='', zoom=1):
+    def startOperateStuff(self, hwnd, stuff_path, panel, operation, use_times, count_chest_stuff, second_psw='', zoom=1):
         """对文件夹中所有物品执行相同操作
         """
         function_name = USE_STUFF_PANEL_IO_DICT[panel][0]
@@ -860,11 +861,17 @@ class BusinessBus(QThread):
         if path.isdir(stuff_path):
             for stuff_pic in listdir(stuff_path):
                 stuff_pic_abstract_path = stuff_path + "\\" + stuff_pic
-                if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](hwnd, stuff_pic_abstract_path, use_times, second_psw, zoom=zoom):
+                if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](
+                        hwnd, stuff_pic_abstract_path, use_times,
+                        second_psw=second_psw, zoom=zoom, count_chest_stuff=count_chest_stuff
+                ):
                     self.formatBusinessMessage(f"未解锁二级密码，无法{operation}物品", "WARN")
                     break
         else:
-            if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](hwnd, stuff_path, use_times, second_psw, zoom=zoom):
+            if not USE_STUFF_SUB_FUNCTION_DICT[panel][operation](
+                    hwnd, stuff_path, use_times,
+                    second_psw=second_psw, zoom=zoom, count_chest_stuff=count_chest_stuff
+            ):
                 self.formatBusinessMessage(f"未解锁二级密码，无法{operation}物品", "WARN")
 
         # 关闭界面
@@ -925,7 +932,7 @@ class BusinessBus(QThread):
             self.formatBusinessMessage(business_error_str, "ERROR")
 
     def executeBusinessFlow(self):
-        def handleFuncException(func_name, exc_error, player_hwnd_info_list, **var):
+        def handleFuncException(func_name, exc_error, player_hwnd_info_list):
             if exc_error.error_info.find("未找到世界地图") != -1:
                 for hwnd_info in player_hwnd_info_list:
                     closeExecExceptionDlg(hwnd_info[0], zoom=hwnd_info[1])
@@ -935,8 +942,6 @@ class BusinessBus(QThread):
                 business_error_str = f"执行[{func_name}]功能时出错！\n\n{business_error.error_info}"
                 self.signal_send_business_error.emit(business_error_str)
                 self.formatBusinessMessage(business_error_str, "ERROR")
-                var["func_final_status"] = "wrong"
-                var["func_no"] += 1
                 return False
 
         self.formatBusinessMessage("开始依次执行流程列表中可用功能")
@@ -1093,13 +1098,14 @@ class BusinessBus(QThread):
                     if not single_mode:
                         player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                     if exception_handle_time > 0 and handleFuncException(
-                        func_param["func_name"], business_error, player_hwnd_info,
-                        func_final_status=func_final_status, func_no=func_no
+                        func_param["func_name"], business_error, player_hwnd_info
                     ):
                         # 若需要重新尝试，则直接进入下一次循环
                         exception_handle_time -= 1
                         func_param["loop_count"] = self.level_info["loop_count"]
                         continue
+                    else:
+                        func_final_status = "wrong"
             elif func_param["func_name"] == "公会任务":
                 # 先判断单人还是组队模式
                 if func_param["player2"] != 0:
@@ -1141,12 +1147,13 @@ class BusinessBus(QThread):
                         if not single_mode:
                             player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                         if exception_handle_time > 0 and handleFuncException(
-                                func_param["func_name"], business_error, player_hwnd_info,
-                                func_final_status=func_final_status, func_no=func_no
+                                func_param["func_name"], business_error, player_hwnd_info
                         ):
                             # 若需要重新尝试，则直接进入下一次循环
                             exception_handle_time -= 1
                             continue
+                        else:
+                            func_final_status = "wrong"
             elif func_param["func_name"] == "情侣任务":
                 # [情侣任务]只能组队模式
                 single_mode = False
@@ -1189,12 +1196,13 @@ class BusinessBus(QThread):
                         player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"]),
                                             (self.player2_info["hwnd"], self.player2_info["zoom"])]
                         if exception_handle_time > 0 and handleFuncException(
-                                func_param["func_name"], business_error, player_hwnd_info,
-                                func_final_status=func_final_status, func_no=func_no
+                                func_param["func_name"], business_error, player_hwnd_info
                         ):
                             # 若需要重新尝试，则直接进入下一次循环
                             exception_handle_time -= 1
                             continue
+                        else:
+                            func_final_status = "wrong"
             elif func_param["func_name"] == "火山遗迹":
                 # 先判断单人还是组队模式
                 if func_param["player2"] != 0:
@@ -1231,13 +1239,14 @@ class BusinessBus(QThread):
                     if not single_mode:
                         player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                     if exception_handle_time > 0 and handleFuncException(
-                            func_param["func_name"], business_error, player_hwnd_info,
-                            func_final_status=func_final_status, func_no=func_no
+                            func_param["func_name"], business_error, player_hwnd_info
                     ):
                         # 若需要重新尝试，则直接进入下一次循环
                         exception_handle_time -= 1
                         func_param["loop_count"] = self.level_info["loop_count"]
                         continue
+                    else:
+                        func_final_status = "wrong"
             elif func_param["func_name"] == "魔塔蛋糕":
                 # 先判断单人还是组队模式
                 if func_param["player2"] != 0:
@@ -1274,13 +1283,14 @@ class BusinessBus(QThread):
                     if not single_mode:
                         player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                     if exception_handle_time > 0 and handleFuncException(
-                            func_param["func_name"], business_error, player_hwnd_info,
-                            func_final_status=func_final_status, func_no=func_no
+                            func_param["func_name"], business_error, player_hwnd_info
                     ):
                         # 若需要重新尝试，则直接进入下一次循环
                         exception_handle_time -= 1
                         func_param["loop_count"] = self.level_info["loop_count"]
                         continue
+                    else:
+                        func_final_status = "wrong"
             elif func_param["func_name"] == "跨服远征":
                 # 先判断单人还是组队模式
                 if func_param["player2"] != 0:
@@ -1319,13 +1329,14 @@ class BusinessBus(QThread):
                     if not single_mode:
                         player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                     if exception_handle_time > 0 and handleFuncException(
-                            func_param["func_name"], business_error, player_hwnd_info,
-                            func_final_status=func_final_status, func_no=func_no
+                            func_param["func_name"], business_error, player_hwnd_info
                     ):
                         # 若需要重新尝试，则直接进入下一次循环
                         exception_handle_time -= 1
                         func_param["loop_count"] = self.level_info["loop_count"]
                         continue
+                    else:
+                        func_final_status = "wrong"
             elif func_param["func_name"] == "悬赏三连":
                 # 先判断单人还是组队模式
                 if func_param["player2"] != 0:
@@ -1366,12 +1377,13 @@ class BusinessBus(QThread):
                         if not single_mode:
                             player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                         if exception_handle_time > 0 and handleFuncException(
-                                func_param["func_name"], business_error, player_hwnd_info,
-                                func_final_status=func_final_status, func_no=func_no
+                                func_param["func_name"], business_error, player_hwnd_info
                         ):
                             # 若需要重新尝试，则直接进入下一次循环
                             exception_handle_time -= 1
                             continue
+                        else:
+                            func_final_status = "wrong"
             elif func_param["func_name"] == "勇士挑战":
                 # 先判断单人还是组队模式
                 if func_param["player2"] != 0:
@@ -1408,13 +1420,14 @@ class BusinessBus(QThread):
                     if not single_mode:
                         player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                     if exception_handle_time > 0 and handleFuncException(
-                            func_param["func_name"], business_error, player_hwnd_info,
-                            func_final_status=func_final_status, func_no=func_no
+                            func_param["func_name"], business_error, player_hwnd_info
                     ):
                         # 若需要重新尝试，则直接进入下一次循环
                         exception_handle_time -= 1
                         func_param["loop_count"] = self.level_info["loop_count"]
                         continue
+                    else:
+                        func_final_status = "wrong"
             elif func_param["func_name"] == "公会副本":
                 # 先判断单人还是组队模式
                 if func_param["player2"] != 0:
@@ -1450,13 +1463,14 @@ class BusinessBus(QThread):
                     if not single_mode:
                         player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                     if exception_handle_time > 0 and handleFuncException(
-                            func_param["func_name"], business_error, player_hwnd_info,
-                            func_final_status=func_final_status, func_no=func_no
+                            func_param["func_name"], business_error, player_hwnd_info
                     ):
                         # 若需要重新尝试，则直接进入下一次循环
                         exception_handle_time -= 1
                         func_param["loop_count"] = self.level_info["loop_count"]
                         continue
+                    else:
+                        func_final_status = "wrong"
             elif func_param["func_name"] == "使用物品":
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
@@ -1473,18 +1487,20 @@ class BusinessBus(QThread):
                             stuff_info["panel"],
                             stuff_info["operation"],
                             stuff_info["opt_times"],
+                            func_param["count_chest_stuff"],
                             second_psw,
                             zoom=zoom
                         )
                     except BusinessError as business_error:
                         player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
                         if exception_handle_time > 0 and handleFuncException(
-                                func_param["func_name"], business_error, player_hwnd_info,
-                                func_final_status=func_final_status, func_no=func_no
+                                func_param["func_name"], business_error, player_hwnd_info
                         ):
                             # 若需要重新尝试，则直接进入下一次循环
                             exception_handle_time -= 1
                             continue
+                        else:
+                            func_final_status = "wrong"
             elif func_param["func_name"] == "刷熟练度":
                 # [刷熟练度]只能单人模式
                 single_mode = True
@@ -1524,13 +1540,14 @@ class BusinessBus(QThread):
                     if not single_mode:
                         player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                     if exception_handle_time > 0 and handleFuncException(
-                            func_param["func_name"], business_error, player_hwnd_info,
-                            func_final_status=func_final_status, func_no=func_no
+                            func_param["func_name"], business_error, player_hwnd_info
                     ):
                         # 若需要重新尝试，则直接进入下一次循环
                         exception_handle_time -= 1
                         func_param["loop_count"] = self.level_info["loop_count"]
                         continue
+                    else:
+                        func_final_status = "wrong"
             else:
                 self.formatBusinessMessage(f"功能[{func_param['func_name']}]不存在！或该功能处于错误的位置！", "ERROR")
                 func_final_status = "wrong"

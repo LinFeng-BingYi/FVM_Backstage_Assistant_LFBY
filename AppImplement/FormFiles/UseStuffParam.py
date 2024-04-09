@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
-    QHeaderView, QLabel, QPushButton, QSizePolicy,
-    QSpacerItem, QTableWidget, QTableWidgetItem, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
+    QHBoxLayout, QHeaderView, QLabel, QPushButton,
+    QSizePolicy, QSpacerItem, QTableWidget, QTableWidgetItem,
+    QVBoxLayout, QWidget)
 
 class Ui_UseStuffParam(object):
     def setupUi(self, UseStuffParam):
@@ -47,6 +47,11 @@ class Ui_UseStuffParam(object):
         self.comboBox_select_player.setMinimumSize(QSize(60, 30))
 
         self.horizontalLayout_select_player.addWidget(self.comboBox_select_player)
+
+        self.checkBox_count_chest_stuff = QCheckBox(self.widget_select_player)
+        self.checkBox_count_chest_stuff.setObjectName(u"checkBox_count_chest_stuff")
+
+        self.horizontalLayout_select_player.addWidget(self.checkBox_count_chest_stuff)
 
         self.horizontalSpacer_select_player = QSpacerItem(398, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -128,6 +133,7 @@ class Ui_UseStuffParam(object):
         self.comboBox_select_player.setItemText(0, QCoreApplication.translate("UseStuffParam", u"1P", None))
         self.comboBox_select_player.setItemText(1, QCoreApplication.translate("UseStuffParam", u"2P", None))
 
+        self.checkBox_count_chest_stuff.setText(QCoreApplication.translate("UseStuffParam", u"\u7edf\u8ba1\u5b9d\u7bb1\u7269\u54c1", None))
         ___qtablewidgetitem = self.tableWidget_stuff_list.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("UseStuffParam", u"\u622a\u56fe\u8def\u5f84", None));
 #if QT_CONFIG(tooltip)

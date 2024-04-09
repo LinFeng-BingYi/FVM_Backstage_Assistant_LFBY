@@ -10,7 +10,7 @@ import os
 from re import match
 
 from AppImplement.GlobalValue.ConfigFilePath import ROOT_PATH
-from AppImplement.Business.OrdinaryBusiness import USE_STUFF_SUB_FUNCTION_DICT
+from AppImplement.Business.UseStuffBusiness import USE_STUFF_SUB_FUNCTION_DICT
 
 
 class UseStuffListWidget(BaseListWidget):
@@ -120,6 +120,7 @@ class UseStuffParamWidget(Ui_UseStuffParam, BaseParamWidget):
             })
         return {
             "player": self.comboBox_select_player.currentIndex(),
+            "count_chest_stuff": self.checkBox_count_chest_stuff.isChecked(),
             "stuff_list": stuff_list
         }
 
@@ -127,6 +128,8 @@ class UseStuffParamWidget(Ui_UseStuffParam, BaseParamWidget):
         flag_set_success = True
         error_msg_list = []
         self.comboBox_select_player.setCurrentIndex(param_dict["player"])
+        if "count_chest_stuff" in param_dict:
+            self.checkBox_count_chest_stuff.setChecked(param_dict["count_chest_stuff"])
         row_no = 0
         for stuff_info in param_dict["stuff_list"]:
             self.insertTableRow()

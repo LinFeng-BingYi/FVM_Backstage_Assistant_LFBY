@@ -225,7 +225,7 @@ OPEN_TXYD_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\
 OPEN_ZONE_PATH_DICT = {
     "美味岛": (OPEN_MWD_ZONE_PATH, [230, 150, 320, 220]),
     "火山岛": (OPEN_HSD_ZONE_PATH, [70, 250, 140, 350]),
-    "浮空岛": (OPEN_FKD_ZONE_PATH, [100, 260, 200, 370]),
+    "浮空岛": (OPEN_FKD_ZONE_PATH, [570, 230, 615, 280]),
     "火山遗迹": (OPEN_HSYJ_ZONE_PATH, [120, 250, 250, 320]),
     "海底漩涡": (OPEN_HDXW_ZONE_PATH, [360, 100, 440, 160]),
     "竞技岛": (OPEN_JJD_ZONE_PATH, [80, 180, 180, 280]),
@@ -454,6 +454,8 @@ UNION_GARDEN_MAX_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界�
 UNION_GARDEN_PLANT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\公会花园待种植.bmp"
 # 进入公会副本
 OPEN_UNION_DUNGEON_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入公会副本.bmp"
+# 进入暗晶商店
+OPEN_DARK_CRYSTAL_SHOP_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入暗晶商店.bmp"
 # 进入公会任务
 OPEN_UNION_QUEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\底部菜单\进入公会任务.bmp"
 # 进入情侣任务
@@ -527,7 +529,7 @@ LAB_LEVEL = ["我的关卡-草稿箱-第一个", "我的关卡-已发布关卡-�
 # 其他 ---------------------------------------------------------------------------
 # 换线，用来判断活动界面是否关闭成功
 SWITCH_LINE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\换线.bmp"
-# 换线，用来判断是否从自动登录进入游戏
+# 聊天框当前，用来判断是否从自动登录进入游戏
 CHAT_BOX_CURRENT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\聊天框当前.bmp"
 # 常见提示框关闭按钮
 COMMON_TIP_DIALOG_CLOSE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\常见提示框关闭按钮.bmp"
@@ -547,6 +549,10 @@ FOOD_CONTEST_QUEST_FINISH_TIP_PATH = ROOT_PATH + r"\resources\images\界面图�
 ANY_DIALOG_CLS_BTN_DICT = {
     "常见关闭按钮": COMMON_TIP_DIALOG_CLOSE_PATH
 }
+# 背包装备页使用后礼包物品
+BACKPACK_1ST_PAGE_USE_STUFF_PIC1_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\背包装备页使用后礼包物品.bmp"
+# 背包装备页使用后随机宝箱物品
+BACKPACK_1ST_PAGE_USE_STUFF_PIC2_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\背包装备页使用后随机宝箱物品.bmp"
 
 # 自动登录 -------------------------------------------------------------------------
 AUTO_LOGIN_USERNAME_BOX = ROOT_PATH + r"\resources\images\界面图标\自动登录相关\用户名输入框.bmp"
