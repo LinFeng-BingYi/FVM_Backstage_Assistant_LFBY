@@ -91,6 +91,8 @@ class MagicTowerParamWidget(Ui_MagicTowerParam, BaseParamWidget):
             return False, "未找到放卡方案ini文件！"
         if not match("^(-?[2-5])|[0-9]+$", self.lineEdit_level_num.text()):
             return False, "请填写正确的魔塔层数！当为负数时，表示魔塔第三页从上往下对应的关卡。例如-5表示威望屋"
+        if self.comboBox_select_2p.currentIndex() == 2 and self.lineEdit_level_num.text()[0] == "-":
+            return False, "组队模式下，不能选择魔塔第三页的关卡！"
         if not match("^[0-9]+$", self.lineEdit_loop_count.text()):
             return False, "请填写正确的循环次数！"
         if not match("^([1-6])(;[1-6])*$", self.lineEdit_flop_pos.text()):

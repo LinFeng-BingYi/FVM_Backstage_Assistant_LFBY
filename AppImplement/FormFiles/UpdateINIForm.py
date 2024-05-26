@@ -385,5 +385,5 @@ if __name__ == "__main__":
         deck_path,
         "小号_综合挂机")
     widget.show()
-    app.exec()
+    app.exec_()
 

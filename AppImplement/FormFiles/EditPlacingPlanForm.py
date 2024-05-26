@@ -335,7 +335,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         )
         temp_messageBox.button(QMessageBox.StandardButton.Ok).setText("确定")
         temp_messageBox.button(QMessageBox.StandardButton.Cancel).setText("取消")
-        if temp_messageBox.exec() == QMessageBox.StandardButton.Cancel:
+        if temp_messageBox.exec_() == QMessageBox.StandardButton.Cancel:
             return
         plan_dict = self.organizePlacePlan(self.comboBox_choose_section.currentText())
         self.place_plan_procs.writePlan(plan_dict)
@@ -344,7 +344,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         
     def newPlacePlan(self):
         new_place_plan_dialog = NewPlacePlanDialog()
-        if new_place_plan_dialog.exec() == QDialog.DialogCode.Accepted:
+        if new_place_plan_dialog.exec_() == QDialog.DialogCode.Accepted:
             new_plan_name = new_place_plan_dialog.plan_name
             # print("获取到的方案名称: ", new_plan_name)
             if new_plan_name in self.place_plan_procs.getAllSection():
@@ -367,7 +367,7 @@ class WidgetEditPlacingPlan(QWidget, Ui_EditPlacingPlan):
         )
         temp_messageBox.button(QMessageBox.StandardButton.Ok).setText("确定")
         temp_messageBox.button(QMessageBox.StandardButton.Cancel).setText("取消")
-        if temp_messageBox.exec() != QMessageBox.StandardButton.Ok:
+        if temp_messageBox.exec_() != QMessageBox.StandardButton.Ok:
             return
         delete_plan_name = self.comboBox_choose_section.currentText()
         self.place_plan_procs.deletePlan(delete_plan_name)

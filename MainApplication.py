@@ -15,7 +15,7 @@ if __name__ == '__main__':
         app.setWindowIcon(app_icon)
         myMainWindow = MainMyMainWindow()
         myMainWindow.show()
-        app.exec()
+        app.exec_()
     else:
         # 获取管理员权限
         # 打包时将 __file__ 替换为 ""

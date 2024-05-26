@@ -223,7 +223,7 @@ def holidayDiscountConvert(hwnd, stuff_pic, use_times, second_psw='', zoom=1, **
                 break
             # 点击“领取”
             mouseClick(hwnd, 760 * zoom, stuff_y_pos * zoom)
-            delay(1100)
+            delay(1050)
             # 关闭二级密码框
             check_2nd_psw_result = check2ndPsw(hwnd, second_psw, zoom)
             if check_2nd_psw_result is not None:
@@ -266,7 +266,7 @@ def unionDungeonCrystalConvert(hwnd, stuff_pic, use_times, second_psw='', zoom=1
         while use_times != 0:
             # 点击“兑换”
             mouseClick(hwnd, exchange_x_pos * zoom, stuff_y_pos * zoom)
-            delay(500)
+            delay(1000)
             # 关闭二级密码框
             check_2nd_psw_result = check2ndPsw(hwnd, second_psw, zoom)
             if check_2nd_psw_result is not None:
@@ -275,6 +275,7 @@ def unionDungeonCrystalConvert(hwnd, stuff_pic, use_times, second_psw='', zoom=1
                 else:
                     use_times += 1
             use_times -= 1
+    return True
 
 
 # [使用物品]功能中，支持的界面和操作

@@ -80,6 +80,9 @@ class FuncFlowListWidget(QListWidget):
         # 创建 解禁 动作
         action_lift_ban = QAction("解禁", self)
         action_lift_ban.triggered.connect(lambda: self.liftBanItem(list_item))
+        # 创建 分隔符
+        action_separator_1 = QAction("", self)
+        action_separator_1.setSeparator(True)
         # 创建 重置所有功能状态 动作
         action_reset_all_status = QAction("重置所有功能状态", self)
         action_reset_all_status.triggered.connect(self.resetAllFuncStatus)
@@ -91,9 +94,10 @@ class FuncFlowListWidget(QListWidget):
         list_widget_menu.addAction(action_delete)
         list_widget_menu.addAction(action_ban)
         list_widget_menu.addAction(action_lift_ban)
+        list_widget_menu.addAction(action_separator_1)
         list_widget_menu.addAction(action_reset_all_status)
         list_widget_menu.addAction(action_clear_all_func)
-        list_widget_menu.exec(self.mapToGlobal(pos))
+        list_widget_menu.exec_(self.mapToGlobal(pos))
 
     def showSelectedFuncWidget(self, list_item):
         # 先将所有控件设置为不可见
@@ -183,7 +187,7 @@ class FuncFlowListWidget(QListWidget):
             )
             tip_message_box.setButtonText(QMessageBox.StandardButton.Ok, "确定")
             tip_message_box.setButtonText(QMessageBox.StandardButton.Cancel, "取消")
-            result = tip_message_box.exec()
+            result = tip_message_box.exec_()
             if result == QMessageBox.StandardButton.Cancel:
                 return False
         return True
@@ -213,7 +217,7 @@ class FuncFlowListWidget(QListWidget):
                     QMessageBox.StandardButton.Ok
                 )
                 tip_message_box.setButtonText(QMessageBox.StandardButton.Ok, "确定")
-                tip_message_box.exec()
+                tip_message_box.exec_()
                 return False
         return True
 
@@ -275,7 +279,7 @@ class PlayerDeckListWidget(QListWidget):
         list_widget_menu = QMenu(self)
         list_widget_menu.addAction(action_add)
         list_widget_menu.addAction(action_delete)
-        list_widget_menu.exec(self.mapToGlobal(pos))
+        list_widget_menu.exec_(self.mapToGlobal(pos))
 
     def addListItem(self, card_info: list = None, card_pic_path: str = None):
         # print(card_info)

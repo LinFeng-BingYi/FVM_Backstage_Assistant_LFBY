@@ -777,6 +777,39 @@ class BusinessBus(QThread):
 
     # 功能：公会副本 ------------------------------------------------------------------
     def startUnionDungeon(self, level_name, loop_count):
+        def retryInvite2P():
+            # 若没找到2P
+            # self.formatBusinessMessage("邀请2P失败！正在尝试重新邀请。。。")
+            if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
+                # 公会副本的特殊处理，重新创建房间邀请可能会成功
+                # self.formatBusinessMessage("邀请2P失败！正在尝试重新创建房间，并再次邀请。。。")
+                exitRoom(hwnd_1p, zoom1)
+                openBottomMenu(hwnd_1p, "跳转", "公会副本", zoom1)
+                # 点击“进入地图”
+                mouseClick(hwnd_1p, level_x_pos * zoom1, 415 * zoom1)
+                delay(1000)
+                # 创建房间
+                createPwdRoom(hwnd_1p, zoom=zoom1)
+                # 应用卡组
+                roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
+                # raise BusinessError("未找到2P或2P进入房间失败！")
+                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
+                    # self.formatBusinessMessage("邀请2P失败！正在尝试重新进入地图，并再次邀请。。。")
+                    exitRoom(hwnd_1p, zoom1)
+                    switchWorldZone(hwnd_1p, "美味岛", zoom=zoom1)
+                    switchWorldZone(hwnd_2p, "美味岛", zoom=zoom2)
+                    openBottomMenu(hwnd_1p, "跳转", "公会副本", zoom1)
+                    # 点击“进入地图”
+                    mouseClick(hwnd_1p, level_x_pos * zoom1, 415 * zoom1)
+                    delay(1000)
+                    # 创建房间
+                    createPwdRoom(hwnd_1p, zoom=zoom1)
+                    # 应用卡组
+                    roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
+                    if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
+                        # exitRoom(hwnd_1p, zoom1)
+                        return False
+            return True
         # 切换地图
         self.formatBusinessMessage("正在切换到关卡")
         hwnd_1p = self.player1_info["hwnd"]
@@ -810,24 +843,13 @@ class BusinessBus(QThread):
             # 邀请队友
             self.formatBusinessMessage("邀请2P")
             if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
-                # 若没找到2P
-                self.formatBusinessMessage("邀请2P失败！正在尝试重新邀请。。。")
-                if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
-                    # 公会副本的特殊处理，重新创建房间邀请可能会成功
-                    self.formatBusinessMessage("邀请2P失败！正在尝试重新创建房间，并再次邀请。。。")
-                    exitRoom(hwnd_1p, zoom1)
-                    openBottomMenu(hwnd_1p, "跳转", "公会副本", zoom1)
-                    # 点击“进入地图”
-                    mouseClick(hwnd_1p, level_x_pos * zoom1, 415 * zoom1)
-                    delay(1000)
-                    # 创建房间
-                    createPwdRoom(hwnd_1p, zoom=zoom1)
-                    # 应用卡组
-                    roomChooseDeck(hwnd_1p, self.player1_info["deck_no"], zoom1)
-                    # raise BusinessError("未找到2P或2P进入房间失败！")
-                    if not teamInvite(hwnd_1p, hwnd_2p, self.global_flow_info["current_2p_name_pic"], zoom1, zoom2):
-                        exitRoom(hwnd_1p, zoom1)
-                        raise BusinessError("已尝试3次邀请2P，均失败！")
+                max_try_time = 3
+                flag_invite_success = False
+                while max_try_time > 0 and not flag_invite_success:
+                    flag_invite_success = retryInvite2P()
+                    max_try_time -= 1
+                if max_try_time == 0 and not flag_invite_success:
+                    raise BusinessError("已尝试3轮，每轮3次重新邀请2P，均失败！")
             # self.formatBusinessMessage("应用2P卡片组")
             roomChooseDeck(hwnd_2p, self.player2_info["deck_no"], zoom2)
             # 从点击 准备/开始 到完成翻牌
@@ -947,6 +969,7 @@ class BusinessBus(QThread):
         self.formatBusinessMessage("开始依次执行流程列表中可用功能")
         # 先从“开始”功能获取流程全局变量
         start_param = self.func_flow[0]
+        self.formatBusinessMessage(f"流程列表以及参数：{self.func_flow}")
         enable_2p = start_param["enable_2p"]
         deck_path = start_param["deck_path"]
         plan_path = start_param["plan_path"]

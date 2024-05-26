@@ -1,5 +1,5 @@
 {
-    "流程描述": "两个账号双开，先后签到，再刷三岛或其他关卡，再执行日常：公会任务、情侣任务、遗迹、组队魔塔、单人魔塔、跨服。可以选择刷25次指定关卡后，使用或删除一次背包物品，再继续刷剩下的20次有奖励关卡，避免背包空间不足影响拾取物品。刷指定关卡前还可以使用2张双倍双爆卡",
+    "流程描述": "两个账号双开，先后签到，再刷三岛或其他关卡，再执行日常：公会任务、情侣任务、遗迹、跨服、组队魔塔、单人魔塔、公会副本。可以选择刷25次指定关卡后，使用或删除一次背包物品，再继续刷剩下的20次有奖励关卡，避免背包空间不足影响拾取物品。刷指定关卡前还可以使用2张双倍双爆卡",
     "流程参数": [
         {
             "enable_2p": true,
@@ -18,7 +18,7 @@
         },
         {
             "start_way": "time",
-            "start_time": "00:01:00",
+            "start_time": "00:04:00",
             "start_delay": 60.0,
             "1p_top_hwnd": 0,
             "1p_server_no": "4",
@@ -46,7 +46,7 @@
             "公会花园": [
                 true,
                 {
-                    "fertilize_date": "2024/03/21-2024/04/10",
+                    "fertilize_date": "2024/05/16-2024/06/06",
                     "plant_type": 1
                 }
             ],
@@ -100,7 +100,7 @@
             "公会花园": [
                 true,
                 {
-                    "fertilize_date": "2024/03/21-2024/04/10",
+                    "fertilize_date": "2024/05/16-2024/06/05",
                     "plant_type": 0
                 }
             ],
@@ -138,6 +138,7 @@
         },
         {
             "player": 0,
+            "count_chest_stuff": false,
             "stuff_list": [
                 {
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\全部使用",
@@ -150,6 +151,7 @@
         },
         {
             "player": 1,
+            "count_chest_stuff": false,
             "stuff_list": [
                 {
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包装备\\全部使用",
@@ -180,6 +182,7 @@
         },
         {
             "player": 0,
+            "count_chest_stuff": false,
             "stuff_list": [
                 {
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",
@@ -198,6 +201,7 @@
         },
         {
             "player": 1,
+            "count_chest_stuff": false,
             "stuff_list": [
                 {
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",
@@ -290,6 +294,7 @@
         },
         {
             "player": 0,
+            "count_chest_stuff": false,
             "stuff_list": [
                 {
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",
@@ -302,12 +307,25 @@
                     "panel": "背包装备",
                     "operation": "使用",
                     "opt_times": -1
+                },
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\公会副本\\暗晶兑换\\月光之石兑换暗晶.bmp",
+                    "panel": "公会副本",
+                    "operation": "暗晶兑换",
+                    "opt_times": 3
+                },
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\公会副本\\暗晶兑换\\堕落之石兑换暗晶.bmp",
+                    "panel": "公会副本",
+                    "operation": "暗晶兑换",
+                    "opt_times": 3
                 }
             ],
             "func_name": "使用物品"
         },
         {
             "player": 1,
+            "count_chest_stuff": false,
             "stuff_list": [
                 {
                     "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\背包道具\\全部删除",
@@ -320,6 +338,18 @@
                     "panel": "背包装备",
                     "operation": "使用",
                     "opt_times": -1
+                },
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\公会副本\\暗晶兑换\\月光之石兑换暗晶.bmp",
+                    "panel": "公会副本",
+                    "operation": "暗晶兑换",
+                    "opt_times": 3
+                },
+                {
+                    "pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\交互物品截图\\公会副本\\暗晶兑换\\堕落之石兑换暗晶.bmp",
+                    "panel": "公会副本",
+                    "operation": "暗晶兑换",
+                    "opt_times": 3
                 }
             ],
             "func_name": "使用物品"
