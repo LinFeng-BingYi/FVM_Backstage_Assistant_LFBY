@@ -10,6 +10,7 @@ from AppImplement.FlowFunction.StartListItem import StartListWidget
 from AppImplement.FlowFunction.EndListItem import EndListWidget
 from AppImplement.FlowFunction.LoopLevelListItem import LoopLevelListWidget
 from AppImplement.FlowFunction.DailyAwardListItem import DailyAwardListWidget
+from AppImplement.FlowFunction.DailyEndListItem import DailyEndListWidget
 from AppImplement.FlowFunction.UnionQuestListItem import UnionQuestListWidget
 from AppImplement.FlowFunction.LoversQuestListItem import LoversQuestListWidget
 from AppImplement.FlowFunction.VolcanicRelicListItem import VolcanicRelicListWidget
@@ -30,6 +31,7 @@ SUPPORT_FUNC = {
     "结束": EndListWidget,
     "自动登录": AutoLoginListWidget,
     "日常领取": DailyAwardListWidget,
+    "日常收尾": DailyEndListWidget,
     "刷指定关卡": LoopLevelListWidget,
     "公会任务": UnionQuestListWidget,
     "情侣任务": LoversQuestListWidget,
@@ -118,13 +120,17 @@ class FuncFlowListWidget(QListWidget):
         # 创建列表项控件
         list_item_widget = SUPPORT_FUNC[func_name](func_name)
         # 创建列表项
-        listWidgetItem = QListWidgetItem(self)
+        listWidgetItem = QListWidgetItem()
         listWidgetItem.setSizeHint(list_item_widget.sizeHint())
         if func_name == "开始":
             # 如果是“开始”功能，则设置该item不可拖拽
             listWidgetItem.setFlags(listWidgetItem.flags() & ~Qt.ItemFlag.ItemIsDragEnabled)
         # 添加列表项并关联控件
-        self.addItem(listWidgetItem)
+        print("当前row: ", self.currentRow())
+        if self.currentRow() != -1:
+            self.insertItem(self.currentRow() + 1, listWidgetItem)
+        else:
+            self.addItem(listWidgetItem)
         self.setItemWidget(listWidgetItem, list_item_widget)
 
         # 先将其他控件设置为不可见

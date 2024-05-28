@@ -33,6 +33,15 @@ DAILY_AWARD_FUNC_DICT = {
     "赠送鲜花": executeGiveFlowers,
     "领取缘分树奖励": executeReceiveDestinyTree
 }
+# [日常收尾]子功能名称与函数名映射关系dict
+DAILY_END_FUNC_DICT = {
+    "底部任务": executeReceiveBottomQuest,
+    "公会任务": executeReceiveUnionQuest,
+    "情侣任务": executeReceiveLoversQuest,
+    "悬赏活动": executeReceiveWanted,
+    "大富翁": executeReceiveMonopoly,
+    "背包兑换": executeOpenFoodContest
+}
 
 # [自动登录]登录方式与函数名映射关系dict
 AUTO_LOGIN_WAY_FUNC_DICT = {
@@ -969,7 +978,7 @@ class BusinessBus(QThread):
         self.formatBusinessMessage("开始依次执行流程列表中可用功能")
         # 先从“开始”功能获取流程全局变量
         start_param = self.func_flow[0]
-        self.formatBusinessMessage(f"流程列表以及参数：{self.func_flow}")
+        # self.formatBusinessMessage(f"流程列表以及参数：{self.func_flow}")
         enable_2p = start_param["enable_2p"]
         deck_path = start_param["deck_path"]
         plan_path = start_param["plan_path"]
@@ -993,7 +1002,7 @@ class BusinessBus(QThread):
         exception_handle_time = 3
 
         # 若第二个是[自动登录]，则执行
-        if self.func_flow[1]["func_name"] == "自动登录":
+        if len(self.func_flow) >= 2 and self.func_flow[1]["func_name"] == "自动登录":
             func_param = self.func_flow[1]
             # 获取顶层句柄
             top_hwnd_1p = func_param["1p_top_hwnd"]
@@ -1076,6 +1085,35 @@ class BusinessBus(QThread):
                         self.formatBusinessMessage(business_error_str, "ERROR")
                 # 加回该键值对，便于之后的输出
                 func_param["func_name"] = "日常领取"
+            elif func_param["func_name"] == "日常收尾":
+                # 获取操作目标 窗口句柄 和 缩放比例
+                hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
+                zoom = start_param[f"{func_param['player'] + 1}p_zoom"]
+                second_psw = start_param[f"{func_param['player'] + 1}p_2nd_psw"]
+                # 去除干扰项
+                del func_param["func_name"]
+                del func_param["player"]
+                # 对于每个任务，调用对应的方法
+                for key, value in func_param.items():
+                    try:
+                        if isinstance(value, list) and value[0]:
+                            self.formatBusinessMessage(f"开始[{key}]...")
+                            result_str = DAILY_END_FUNC_DICT[key](hwnd=hwnd, zoom=zoom, **value[1])
+                            self.formatBusinessMessage(result_str)
+                        elif isinstance(value, bool) and value:
+                            self.formatBusinessMessage(f"开始[{key}]...")
+                            result_str = DAILY_END_FUNC_DICT[key](hwnd=hwnd, zoom=zoom)
+                            self.formatBusinessMessage(result_str)
+                        else:
+                            # self.formatBusinessMessage(f"跳过[{key}]")
+                            pass
+                    except BusinessError as business_error:
+                        business_error_str = f"执行[{key}]功能时出错！\n\n{business_error.error_info}"
+                        func_final_status = "wrong"
+                        self.signal_send_business_error.emit(business_error_str)
+                        self.formatBusinessMessage(business_error_str, "ERROR")
+                # 加回该键值对，便于之后的输出
+                func_param["func_name"] = "日常收尾"
             elif func_param["func_name"] == "刷指定关卡":
                 # 先判断单人还是组队模式
                 if func_param["player2"] != 0:

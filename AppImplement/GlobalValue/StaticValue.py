@@ -240,12 +240,16 @@ OPEN_ZONE_PATH_DICT = {
 WANTED_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏活动图标.bmp"
 # 进入悬赏活动
 OPEN_WANTED_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\进入悬赏活动.bmp"
+# 关闭悬赏活动
+CLOSE_WANTED_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\关闭悬赏活动.bmp"
 # 悬赏美味挑战按钮
 WANTED_MWD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏美味挑战按钮.bmp"
 # 悬赏火山挑战按钮
 WANTED_HSD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏火山挑战按钮.bmp"
 # 悬赏浮空挑战按钮
 WANTED_FKD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏浮空挑战按钮.bmp"
+# 悬赏领取奖励
+WANTED_COMPLETE_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏领取奖励.bmp"
 # 创建三岛悬赏房间对应按钮
 GOTO_BUTTON_PIC_DICT = {
     "美味岛": WANTED_MWD_GOTO_BUTTON_PATH,

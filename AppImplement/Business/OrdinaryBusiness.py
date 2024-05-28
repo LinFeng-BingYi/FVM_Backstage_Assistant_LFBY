@@ -21,7 +21,7 @@ from math import floor
 from os import listdir
 
 
-# 一键签到相关 -----------------------------------------------------------------------
+# 日常领取、日常收尾相关 -----------------------------------------------------------------------
 def executeVipSignin(hwnd, zoom=1):
     if not find_pic(hwnd, VIP_SIGNIN_PATH, [640, 18, 706, 54]):
         # 若没找到，则点击切换上方活动按钮
@@ -170,11 +170,11 @@ def executeTarotTreasure(hwnd, zoom=1):
 def executeReceiveBottomQuest(hwnd, zoom=1):
     openBottomMenu(hwnd, "任务", zoom=zoom)
     # 收起前三种任务
-    for i in range(3):
-        print(f"收起第{i}种任务")
-        if not find_pic(hwnd, FOLD_BOTTOM_QUEST_PATH, [100, 130 + i * 30, 125, 165 + i * 30]):
-            mouseClick(hwnd, (110 + i * 30) * zoom, (146 + i * 30) * zoom)
-            delay(100)
+    # for i in range(3):
+    #     print(f"收起第{i}种任务")
+    #     if not find_pic(hwnd, FOLD_BOTTOM_QUEST_PATH, [100, 130 + i * 30, 125, 165 + i * 30]):
+    #         mouseClick(hwnd, (110 + i * 30) * zoom, (146 + i * 30) * zoom)
+    #         delay(100)
     # 先重置滑动条
     mouseClick(hwnd, 414 * zoom, 150 * zoom)
     delay(500)
@@ -421,6 +421,33 @@ def executeReceiveUnionQuest(hwnd, release_quest: bool = False, zoom=1):
     return result_str
 
 
+def executeReceiveLoversQuest(hwnd, zoom=1):
+    """领取情侣任务
+    """
+    result_str = "完成[情侣任务]"
+    openBottomMenu(hwnd, "跳转", "情侣任务", zoom)
+    # 领取已完成的任务
+    for i in [0, 1, 2]:
+        if find_color(hwnd, [175 + 250 * i, 410, 280 + 250 * i, 440], 0x2B95FF):
+            mouseClick(hwnd, (230 + 250 * i) * zoom, 425 * zoom)
+            delay(500)
+            # 若点击“领取”没有反应，则重新打开一次情侣任务界面
+            if find_color(hwnd, [175 + 250 * i, 410, 280 + 250 * i, 440], 0x2B95FF):
+                mouseClick(hwnd, 850 * zoom, 60 * zoom)
+                delay(500)
+                openBottomMenu(hwnd, "跳转", "情侣任务", zoom)
+                mouseClick(hwnd, (230 + 250 * i) * zoom, 425 * zoom)
+                delay(500)
+    # 领取甜蜜奖励
+    for i in range(3):
+        mouseClick(hwnd, 800 * zoom, 525 * zoom)
+        delay(500)
+    # 关闭界面
+    mouseClick(hwnd, 850 * zoom, 60 * zoom)
+    delay(1000)
+    return result_str
+
+
 def executeOpenFoodContest(hwnd, close_dialog=True, zoom=1):
     contest_pos = find_pic(hwnd, FOOD_CONTEST_PATH, [247, 17, 778, 112])
     if not contest_pos:
@@ -561,6 +588,12 @@ def executeReceiveDestinyTree(hwnd, box_checked: bool, force_execute: bool, zoom
     return "完成[领取缘分树奖励]"
 
 
+def executeReceiveMonopoly(hwnd, use_dice=False, zoom=1):
+    result_str = "跳过[大富翁]。目前还未实现该功能的领取"
+    # openTopMenu(hwnd, "大富翁", "", zoom)
+    return result_str
+
+
 def checkCloseActivity(hwnd):
     delay(500)
     return find_pic(hwnd, SWITCH_LINE_PATH, [791, 70, 840, 98])
@@ -697,6 +730,30 @@ def createWantedRoom(hwnd, three_island_zone, zoom=1):
     delay(500)
     # 创建房间
     createPwdRoom(hwnd, "0000", zoom)
+
+
+def executeReceiveWanted(hwnd, zoom=1):
+    """领取悬赏活动
+    """
+    result_str = "完成[悬赏活动]"
+    openTopMenu(hwnd, "悬赏活动", "", zoom)
+    close_btn_pos = find_pic(hwnd, CLOSE_WANTED_PATH)
+    # 领取悬赏奖励
+    complete_btn_pos = find_pic(hwnd, WANTED_COMPLETE_PATH)
+    old_pos = []
+    while complete_btn_pos:
+        if len(old_pos) == 2 and abs(complete_btn_pos[0] - old_pos[0]) < 5 and abs(complete_btn_pos[1] - old_pos[1]) < 5:
+            mouseClick(hwnd, close_btn_pos[0] * zoom, close_btn_pos[1] * zoom)
+            delay(500)
+            openTopMenu(hwnd, "悬赏活动", "", zoom)
+        mouseClick(hwnd, complete_btn_pos[0] * zoom, complete_btn_pos[1] * zoom)
+        delay(500)
+        old_pos = complete_btn_pos[0:2]
+        complete_btn_pos = find_pic(hwnd, WANTED_COMPLETE_PATH)
+    # 关闭界面
+    mouseClick(hwnd, close_btn_pos[0] * zoom, close_btn_pos[1] * zoom)
+    delay(500)
+    return result_str
 
 
 # 汇总关卡创建 -----------------------------------------------------------------------
