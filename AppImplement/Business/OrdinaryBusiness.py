@@ -14,7 +14,7 @@ from AppImplement.Business.CustomException import BusinessError
 from AppImplement.Business.Foundation import (
     switchWorldZone, singleLayerChooseLevel, createPwdRoom, openBottomMenu, openTopMenu,
     chooseSingleOrMultiZone, chooseCrossServiceLevel, chooseMagicTowerLevel, check2ndPsw, checkEnterRoom,
-    checkFoodContestQuestFinish, exitRoom
+    checkFoodContestQuestFinish, exitRoom, openMagicTowerDialog
 )
 
 from math import floor
@@ -589,9 +589,90 @@ def executeReceiveDestinyTree(hwnd, box_checked: bool, force_execute: bool, zoom
 
 
 def executeReceiveMonopoly(hwnd, use_dice=False, zoom=1):
-    result_str = "跳过[大富翁]。目前还未实现该功能的领取"
-    # openTopMenu(hwnd, "大富翁", "", zoom)
+    result_str = "完成[大富翁]。未使用骰子"
+    if not openTopMenu(hwnd, "大富翁", "", zoom):
+        result_str = "跳过[大富翁]"
+        return result_str
+    # 领取骰子
+    for page in range(3):
+        for btn in range(6):
+            mouseClick(hwnd, 765 * zoom, (165 + btn * 50) * zoom)
+            delay(500)
+        mouseClick(hwnd, 875 * zoom, 456 * zoom)
+        delay(500)
+    # 使用骰子
+    if use_dice:
+        if not find_color(hwnd, [375, 200, 375, 200], 0x61FF73):
+            mouseClick(hwnd, 375 * zoom, 200 * zoom)
+            delay(500)
+        while not find_pic(hwnd, MONOPOLY_ZERO_DICE_PATH, [380, 240, 566, 348]):
+            mouseClick(hwnd, 380 * zoom, 160 * zoom)
+            # 摇中点数6走路耗时8.7s, 传送耗时0.8s, 战利品飘字4s
+            delay(3500)
+        result_str = "完成[大富翁]。且使用骰子"
+    # 关闭界面
+    mouseClick(hwnd, 930 * zoom, 20 * zoom)
+    delay(300)
     return result_str
+
+
+def executeReceiveFoodContest(hwnd, zoom=1):
+    executeOpenFoodContest(hwnd, close_dialog=False, zoom=zoom)
+    # 重置滑块位置
+    mouseClick(hwnd, 537 * zoom, 360 * zoom)
+    delay(500)
+    # 查找已完成的任务
+    complete_quest_pos = find_pic(hwnd, COMPLETE_FOOD_CONTEST_PATH, [450, 355, 530, 575])
+    while complete_quest_pos:
+        # 领取奖励
+        mouseClick(hwnd, complete_quest_pos[0] * zoom, complete_quest_pos[1] * zoom)
+        delay(100)
+        # 继续找其他已完成的任务
+        complete_quest_pos = find_pic_loop(hwnd, COMPLETE_FOOD_CONTEST_PATH, [450, 355, 530, 575], max_time=3)
+    # 通过在滑动条的横坐标414这一列，遍历每个像素点，从上往下查找滑动条的底部，然后点击这个位置，实现全面覆盖所有任务
+    for bar_y_pixel in range(390, 565):
+        if find_color(hwnd, [536, bar_y_pixel, 536, bar_y_pixel], 0x1A3D85, 0.95):
+            mouseClick(hwnd, 536 * zoom, (bar_y_pixel + 7) * zoom)
+            delay(100)
+            # 查找已完成的任务
+            complete_quest_pos = find_pic(hwnd, COMPLETE_FOOD_CONTEST_PATH, [450, 355, 530, 575])
+            while complete_quest_pos:
+                # 领取奖励
+                mouseClick(hwnd, complete_quest_pos[0] * zoom, complete_quest_pos[1] * zoom)
+                delay(100)
+                # 继续找其他已完成的任务
+                complete_quest_pos = find_pic_loop(hwnd, COMPLETE_FOOD_CONTEST_PATH, [450, 355, 530, 575], max_time=3)
+    # 关闭界面
+    mouseClick(hwnd, 890 * zoom, 50 * zoom)
+    delay(500)
+
+
+def executeReceiveTXYDQuest(hwnd, zoom=1):
+    switchWorldZone(hwnd, "探险营地", zoom)
+    # 点击探险任务
+    mouseClick(hwnd, 515 * zoom, 215 * zoom)
+    if not find_pic_loop(hwnd, OPEN_EXPLORE_QUEST_PATH, [400, 50, 530, 80], max_time=120):
+        raise BusinessError("超过2min还未打开探险任务界面！")
+    # 重置滑块位置
+    mouseClick(hwnd, 455 * zoom, 155 * zoom)
+    delay(300)
+    mouseClick(hwnd, 815 * zoom, 160 * zoom)
+    delay(300)
+    # 领取左侧任务
+    while find_pic(hwnd, COMPLETE_EXPLORE_QUEST_1_PATH, [360, 150, 450, 200]):
+        mouseClick(hwnd, 400 * zoom, 175 * zoom)
+        delay(500)
+    # 领取右侧任务
+    for i in range(12):
+        btn_quest2_pos = find_pic(hwnd, COMPLETE_EXPLORE_QUEST_2_PATH, [700, 150, 800, 440])
+        if btn_quest2_pos:
+            mouseClick(hwnd, btn_quest2_pos[0] * zoom, btn_quest2_pos[1] * zoom)
+            delay(500)
+        else:
+            break
+    # 关闭界面
+    mouseClick(hwnd, 870 * zoom, 55 * zoom)
+    delay(500)
 
 
 def checkCloseActivity(hwnd):
@@ -767,7 +848,14 @@ TOP_MENU_LEVEL_OPEN_FUNC = {
 }
 
 
-def createAnyRoom(hwnd, zone, level, enter_room=True, zoom=1):
+def createMagicTowerRoom(hwnd, level_num: int, tab_num, enter_room=True, zoom=1):
+    openMagicTowerDialog(hwnd, tab_num, enter_room, zoom=zoom)
+    if enter_room:
+        # 选择魔塔关卡，并进入房间
+        chooseMagicTowerLevel(hwnd, level_num, zoom)
+
+
+def createAnyRoom(hwnd, zone, level, enter_room=True, team_mode=False, zoom=1):
     """从跳转地图区域到进入房间。可以通过设置enter_room=False使得仅跳转，而不进入房间"""
     if zone == "顶部关卡":
         # 顶部关卡支持 悬赏活动、欢乐假期、实验室
@@ -778,6 +866,13 @@ def createAnyRoom(hwnd, zone, level, enter_room=True, zoom=1):
         if enter_room:
             create_room_func, func_args = TOP_MENU_LEVEL_OPEN_FUNC[level]
             create_room_func(hwnd=hwnd, zoom=zoom, **func_args)
+    elif zone == "魔塔蛋糕":
+        tab_num = 0
+        if team_mode:
+            tab_num = 1
+        if int(level) < 0:
+            tab_num = 2
+        createMagicTowerRoom(hwnd, int(level), tab_num, enter_room, zoom)
     elif zone in CROSS_SERVER_LEVEL_TYPE_NO:
         switchWorldZone(hwnd, "跨服远征", zoom)
         if enter_room:
@@ -815,9 +910,9 @@ def createLoopSkillRoom(hwnd, zone, level, zoom=1):
             delay(500)
             return False
     elif zone == "跨服远征":
-        createAnyRoom(hwnd, level, "8星", True, zoom)
+        createAnyRoom(hwnd, level, "8星", True, zoom=zoom)
     elif zone == "实验室":
-        createAnyRoom(hwnd, "顶部关卡", "实验室", True, zoom)
+        createAnyRoom(hwnd, "顶部关卡", "实验室", True, zoom=zoom)
         delay(2000)
         # 点击“我的关卡”
         mouseClick(hwnd, 660 * zoom, 550 * zoom)

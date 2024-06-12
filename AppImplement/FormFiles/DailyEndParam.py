@@ -89,19 +89,9 @@ class Ui_DailyEndParam(object):
 
         self.horizontalLayout_common.addWidget(self.checkBox_wanted)
 
-        self.checkBox_monopoly = QCheckBox(self.groupBox_common)
-        self.checkBox_monopoly.setObjectName(u"checkBox_monopoly")
-        self.checkBox_monopoly.setMinimumSize(QSize(70, 30))
-        self.checkBox_monopoly.setChecked(True)
+        self.horizontalSpacer_common = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_common.addWidget(self.checkBox_monopoly)
-
-        self.checkBox_monopoly_use_dice = QCheckBox(self.groupBox_common)
-        self.checkBox_monopoly_use_dice.setObjectName(u"checkBox_monopoly_use_dice")
-        self.checkBox_monopoly_use_dice.setMinimumSize(QSize(70, 30))
-        self.checkBox_monopoly_use_dice.setChecked(True)
-
-        self.horizontalLayout_common.addWidget(self.checkBox_monopoly_use_dice)
+        self.horizontalLayout_common.addItem(self.horizontalSpacer_common)
 
 
         self.verticalLayout.addWidget(self.groupBox_common)
@@ -113,31 +103,43 @@ class Ui_DailyEndParam(object):
         self.gridLayout_cycle.setObjectName(u"gridLayout_cycle")
         self.gridLayout_cycle.setHorizontalSpacing(4)
         self.gridLayout_cycle.setContentsMargins(-1, 0, -1, 0)
-        self.label_backpack_item_pic = QLabel(self.groupBox_other)
-        self.label_backpack_item_pic.setObjectName(u"label_backpack_item_pic")
-        self.label_backpack_item_pic.setMinimumSize(QSize(60, 30))
-        self.label_backpack_item_pic.setFrameShape(QFrame.NoFrame)
-
-        self.gridLayout_cycle.addWidget(self.label_backpack_item_pic, 0, 1, 1, 1)
-
         self.pushButton_backpack_item_pic = QPushButton(self.groupBox_other)
         self.pushButton_backpack_item_pic.setObjectName(u"pushButton_backpack_item_pic")
         self.pushButton_backpack_item_pic.setMinimumSize(QSize(60, 30))
 
-        self.gridLayout_cycle.addWidget(self.pushButton_backpack_item_pic, 0, 3, 1, 1)
+        self.gridLayout_cycle.addWidget(self.pushButton_backpack_item_pic, 1, 3, 1, 1)
 
         self.lineEdit_backpack_item_pic = QLineEdit(self.groupBox_other)
         self.lineEdit_backpack_item_pic.setObjectName(u"lineEdit_backpack_item_pic")
         self.lineEdit_backpack_item_pic.setMinimumSize(QSize(60, 30))
 
-        self.gridLayout_cycle.addWidget(self.lineEdit_backpack_item_pic, 0, 2, 1, 1)
+        self.gridLayout_cycle.addWidget(self.lineEdit_backpack_item_pic, 1, 2, 1, 1)
+
+        self.label_backpack_item_pic = QLabel(self.groupBox_other)
+        self.label_backpack_item_pic.setObjectName(u"label_backpack_item_pic")
+        self.label_backpack_item_pic.setMinimumSize(QSize(60, 30))
+        self.label_backpack_item_pic.setFrameShape(QFrame.NoFrame)
+
+        self.gridLayout_cycle.addWidget(self.label_backpack_item_pic, 1, 1, 1, 1)
 
         self.checkBox_backpack_exchange = QCheckBox(self.groupBox_other)
         self.checkBox_backpack_exchange.setObjectName(u"checkBox_backpack_exchange")
         self.checkBox_backpack_exchange.setMinimumSize(QSize(70, 30))
-        self.checkBox_backpack_exchange.setChecked(True)
 
-        self.gridLayout_cycle.addWidget(self.checkBox_backpack_exchange, 0, 0, 1, 1)
+        self.gridLayout_cycle.addWidget(self.checkBox_backpack_exchange, 1, 0, 1, 1)
+
+        self.checkBox_monopoly = QCheckBox(self.groupBox_other)
+        self.checkBox_monopoly.setObjectName(u"checkBox_monopoly")
+        self.checkBox_monopoly.setMinimumSize(QSize(70, 30))
+        self.checkBox_monopoly.setChecked(True)
+
+        self.gridLayout_cycle.addWidget(self.checkBox_monopoly, 0, 0, 1, 1)
+
+        self.checkBox_monopoly_use_dice = QCheckBox(self.groupBox_other)
+        self.checkBox_monopoly_use_dice.setObjectName(u"checkBox_monopoly_use_dice")
+        self.checkBox_monopoly_use_dice.setMinimumSize(QSize(70, 30))
+
+        self.gridLayout_cycle.addWidget(self.checkBox_monopoly_use_dice, 0, 1, 1, 1)
 
         self.gridLayout_cycle.setRowStretch(0, 1)
         self.gridLayout_cycle.setColumnStretch(0, 1)
@@ -167,17 +169,17 @@ class Ui_DailyEndParam(object):
         self.checkBox_union_quest.setText(QCoreApplication.translate("DailyEndParam", u"\u516c\u4f1a\u4efb\u52a1", None))
         self.checkBox_lover_quest.setText(QCoreApplication.translate("DailyEndParam", u"\u60c5\u4fa3\u4efb\u52a1", None))
         self.checkBox_wanted.setText(QCoreApplication.translate("DailyEndParam", u"\u60ac\u8d4f\u6d3b\u52a8", None))
-        self.checkBox_monopoly.setText(QCoreApplication.translate("DailyEndParam", u"\u5927\u5bcc\u7fc1", None))
-        self.checkBox_monopoly_use_dice.setText(QCoreApplication.translate("DailyEndParam", u"\u5927\u5bcc\u7fc1\u4f7f\u7528\u9ab0\u5b50", None))
         self.groupBox_other.setTitle(QCoreApplication.translate("DailyEndParam", u"\u5176\u4ed6\u7c7b\u522b", None))
-        self.label_backpack_item_pic.setText(QCoreApplication.translate("DailyEndParam", u"\u6761\u76ee\u622a\u56fe\uff1a", None))
         self.pushButton_backpack_item_pic.setText(QCoreApplication.translate("DailyEndParam", u"\u6d4f\u89c8", None))
 #if QT_CONFIG(tooltip)
         self.lineEdit_backpack_item_pic.setToolTip(QCoreApplication.translate("DailyEndParam", u"\u9009\u62e9\u8d60\u9001\u5bf9\u8c61\u6635\u79f0\u622a\u56fe\u3002\u8be5\u622a\u56fe\u4e0e\u623f\u95f4\u5185\u7ec4\u961f\u9080\u8bf7\u622a\u56fe\u901a\u7528", None))
 #endif // QT_CONFIG(tooltip)
+        self.label_backpack_item_pic.setText(QCoreApplication.translate("DailyEndParam", u"\u6761\u76ee\u622a\u56fe\uff1a", None))
 #if QT_CONFIG(tooltip)
         self.checkBox_backpack_exchange.setToolTip(QCoreApplication.translate("DailyEndParam", u"\u6ca1\u6709\u514d\u8d39\u6b21\u6570\u65f6\u4e0d\u4f1a\u7ffb\u724c", None))
 #endif // QT_CONFIG(tooltip)
         self.checkBox_backpack_exchange.setText(QCoreApplication.translate("DailyEndParam", u"\u529f\u80fd\u5f85\u5b9a", None))
+        self.checkBox_monopoly.setText(QCoreApplication.translate("DailyEndParam", u"\u5927\u5bcc\u7fc1", None))
+        self.checkBox_monopoly_use_dice.setText(QCoreApplication.translate("DailyEndParam", u"\u4f7f\u7528\u9ab0\u5b50", None))
     # retranslateUi
 

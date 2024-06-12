@@ -9,6 +9,7 @@ from PySide6.QtCore import Qt, Signal
 from AppImplement.FlowFunction.StartListItem import StartListWidget
 from AppImplement.FlowFunction.EndListItem import EndListWidget
 from AppImplement.FlowFunction.LoopLevelListItem import LoopLevelListWidget
+from AppImplement.FlowFunction.SerialLevelListItem import SerialLevelListWidget
 from AppImplement.FlowFunction.DailyAwardListItem import DailyAwardListWidget
 from AppImplement.FlowFunction.DailyEndListItem import DailyEndListWidget
 from AppImplement.FlowFunction.UnionQuestListItem import UnionQuestListWidget
@@ -33,6 +34,7 @@ SUPPORT_FUNC = {
     "日常领取": DailyAwardListWidget,
     "日常收尾": DailyEndListWidget,
     "刷指定关卡": LoopLevelListWidget,
+    "刷序列关卡": SerialLevelListWidget,
     "公会任务": UnionQuestListWidget,
     "情侣任务": LoversQuestListWidget,
     "火山遗迹": VolcanicRelicListWidget,
@@ -126,7 +128,6 @@ class FuncFlowListWidget(QListWidget):
             # 如果是“开始”功能，则设置该item不可拖拽
             listWidgetItem.setFlags(listWidgetItem.flags() & ~Qt.ItemFlag.ItemIsDragEnabled)
         # 添加列表项并关联控件
-        print("当前row: ", self.currentRow())
         if self.currentRow() != -1:
             self.insertItem(self.currentRow() + 1, listWidgetItem)
         else:
@@ -137,7 +138,7 @@ class FuncFlowListWidget(QListWidget):
         for item_widget in self.item_widget_list:
             item_widget.getFuncWidget().setVisible(False)
         # 将列表项控件加入属性
-        self.item_widget_list.append(list_item_widget)
+        self.item_widget_list.insert(self.currentRow() + 1, list_item_widget)
         # 将焦点放在新创建的item上
         self.setCurrentItem(listWidgetItem)
         # 将需要加入tab页的 列表项控件关联的参数widget 返回

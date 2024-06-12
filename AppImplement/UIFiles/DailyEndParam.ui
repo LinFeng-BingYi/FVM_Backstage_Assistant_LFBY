@@ -167,36 +167,17 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_monopoly">
-        <property name="minimumSize">
+       <spacer name="horizontalSpacer_common">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
          <size>
-          <width>70</width>
-          <height>30</height>
+          <width>40</width>
+          <height>20</height>
          </size>
         </property>
-        <property name="text">
-         <string>大富翁</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkBox_monopoly_use_dice">
-        <property name="minimumSize">
-         <size>
-          <width>70</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>大富翁使用骰子</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -212,7 +193,7 @@
      <property name="title">
       <string>其他类别</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_cycle" rowstretch="1" columnstretch="1,1,3,1">
+     <layout class="QGridLayout" name="gridLayout_cycle" rowstretch="1,0" columnstretch="1,1,3,1">
       <property name="topMargin">
        <number>0</number>
       </property>
@@ -222,7 +203,33 @@
       <property name="horizontalSpacing">
        <number>4</number>
       </property>
-      <item row="0" column="1">
+      <item row="1" column="3">
+       <widget class="QPushButton" name="pushButton_backpack_item_pic">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>浏览</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLineEdit" name="lineEdit_backpack_item_pic">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>选择赠送对象昵称截图。该截图与房间内组队邀请截图通用</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
        <widget class="QLabel" name="label_backpack_item_pic">
         <property name="minimumSize">
          <size>
@@ -238,33 +245,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="pushButton_backpack_item_pic">
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>浏览</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLineEdit" name="lineEdit_backpack_item_pic">
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>选择赠送对象昵称截图。该截图与房间内组队邀请截图通用</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QCheckBox" name="checkBox_backpack_exchange">
         <property name="minimumSize">
          <size>
@@ -278,8 +259,34 @@
         <property name="text">
          <string>功能待定</string>
         </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="checkBox_monopoly">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>大富翁</string>
+        </property>
         <property name="checked">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="checkBox_monopoly_use_dice">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>使用骰子</string>
         </property>
        </widget>
       </item>

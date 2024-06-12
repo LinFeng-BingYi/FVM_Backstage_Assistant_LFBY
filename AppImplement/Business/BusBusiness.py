@@ -33,6 +33,7 @@ DAILY_AWARD_FUNC_DICT = {
     "赠送鲜花": executeGiveFlowers,
     "领取缘分树奖励": executeReceiveDestinyTree
 }
+
 # [日常收尾]子功能名称与函数名映射关系dict
 DAILY_END_FUNC_DICT = {
     "底部任务": executeReceiveBottomQuest,
@@ -48,6 +49,12 @@ AUTO_LOGIN_WAY_FUNC_DICT = {
     "微端": autoLoginMicroTerminal,
     "360游戏大厅-4399服": autoLogin360GameHall4399,
     "360游戏大厅-空间3366服": autoLogin360GameHall3366
+}
+
+# [刷序列关]任务面板与函数名映射关系dict
+SERIAL_LEVEL_QUEST_PANEL_FUNC_DICT = {
+    "美食大赛": executeReceiveFoodContest,
+    "探险营地": executeReceiveTXYDQuest
 }
 
 
@@ -181,9 +188,24 @@ class BusinessBus(QThread):
         if self.level_info["has_stage2"]:
             self.formatBusinessMessage("开始检测进度")
             # 等待检测到"继续挑战"
-            if not loopCheckContinue(hwnd_1p, self.level_info["max_check_time"]):
+            continue_result = loopCheckContinue(hwnd_1p, self.level_info["max_check_time"])
+            if not continue_result:
                 # 超过容忍时间 还未检测到“继续挑战”
                 raise BusinessError(f"超过{self.level_info['max_check_time']}分钟还未检测到“继续挑战”！！！")
+            elif continue_result == 2:
+                fail_tip_close_pos = find_pic(
+                    hwnd_1p, FAIL_GAME_TIP_CLOSE_PATH, [250, 430, 750, 550],
+                    record_fail=True, record_name="通关失败但未找到小贴士关闭按钮"
+                )
+                if fail_tip_close_pos:
+                    mouseClick(hwnd_1p, fail_tip_close_pos[0] * zoom1, fail_tip_close_pos[1] * zoom1)
+                    mouseClick(hwnd_2p, fail_tip_close_pos[0] * zoom2, fail_tip_close_pos[1] * zoom2)
+                self.formatBusinessMessage("通关失败", "WARN")
+                self.endAllPlacingWorker()
+                loopCheckFlipChest(hwnd_1p)
+                executeFlop(hwnd_1p, self.player1_info["flop_pos"], zoom1)
+                executeFlop(hwnd_2p, self.player1_info["flop_pos"], zoom2)
+                return
             # 成功检测到“继续挑战”
             if self.level_info["shall_continue"]:
                 # 1P、2P先后点击“继续挑战”
@@ -213,7 +235,7 @@ class BusinessBus(QThread):
             raise BusinessError(f"超过{self.level_info['max_check_time']}分钟还未检测到“结算翻牌”！！！")
         # 关闭所有放卡线程
         self.endAllPlacingWorker()
-        delay(8200)
+        loopCheckFlipChest(hwnd_1p)
 
         # 成功检测到结算翻牌
         executeFlop(hwnd_1p, self.player1_info["flop_pos"], zoom1)
@@ -241,9 +263,22 @@ class BusinessBus(QThread):
         if self.level_info["has_stage2"]:
             self.formatBusinessMessage("开始检测进度")
             # 等待检测到"继续挑战"
-            if not loopCheckContinue(hwnd_1p, self.level_info["max_check_time"]):
+            continue_result = loopCheckContinue(hwnd_1p, self.level_info["max_check_time"])
+            if not continue_result:
                 # 超过容忍时间 还未检测到“继续挑战”
                 raise BusinessError(f"超过{self.level_info['max_check_time']}分钟还未检测到“继续挑战”！！！")
+            elif continue_result == 2:
+                fail_tip_close_pos = find_pic(
+                    hwnd_1p, FAIL_GAME_TIP_CLOSE_PATH, [250, 430, 750, 550],
+                    record_fail=True, record_name="通关失败但未找到小贴士关闭按钮"
+                )
+                if fail_tip_close_pos:
+                    mouseClick(hwnd_1p, fail_tip_close_pos[0] * zoom1, fail_tip_close_pos[1] * zoom1)
+                self.formatBusinessMessage("通关失败", "WARN")
+                self.endAllPlacingWorker()
+                loopCheckFlipChest(hwnd_1p)
+                executeFlop(hwnd_1p, self.player1_info["flop_pos"], zoom1)
+                return
             # 成功检测到“继续挑战”
             if self.level_info["shall_continue"]:
                 # 1P点击“继续挑战”
@@ -267,7 +302,7 @@ class BusinessBus(QThread):
             raise BusinessError(f"超过{self.level_info['max_check_time']}分钟还未检测到“结算翻牌”！！！")
         # 关闭所有放卡线程
         self.endAllPlacingWorker()
-        delay(8200)
+        loopCheckFlipChest(hwnd_1p)
 
         # 成功检测到结算翻牌
         executeFlop(hwnd_1p, self.player1_info["flop_pos"], zoom1)
@@ -344,6 +379,73 @@ class BusinessBus(QThread):
             # 退出房间
             exitRoom(hwnd_1p, zoom1)
 
+    # 功能：刷序列关卡 -----------------------------------------------------------------
+    def startSerialLevel(self, series_path, plan_path_team, plan_path_1p, plan_path_2p, quest_panel):
+        """执行关卡序列文件中每行的通关策略，每通关一次打开任务面板领取奖励
+
+        Args:
+            series_path: str
+                关卡序列文件绝对路径。
+                关卡序列文件每行格式：<通关账号>*<地图区域>*<关卡名称>*<通关策略>*<放卡方案>
+                <通关账号>: 组队/单人1P/单人2P
+            plan_path_team: str
+                组队模式时，组队放卡方案ini文件绝对路径
+            plan_path_1p: str
+                单人1P模式时，该账号放卡方案ini文件绝对路径
+            plan_path_2p: str
+                单人2P模式时，该账号放卡方案ini文件绝对路径
+            quest_panel: str["无", "美食大赛", "探险营地"]
+                每次通关后，领取任务奖励的任务面板
+        """
+        sep = "*"
+        if series_path == "":
+            SERIAL_LEVEL_QUEST_PANEL_FUNC_DICT[quest_panel](
+                self.player1_info["hwnd"],
+                self.player1_info["zoom"]
+            )
+            if self.player2_info is not None:
+                SERIAL_LEVEL_QUEST_PANEL_FUNC_DICT[quest_panel](
+                    self.player2_info["hwnd"],
+                    self.player2_info["zoom"]
+                )
+            return
+        series_file = open(series_path, 'r', encoding='utf8')
+        series_level_list = []
+        for file_line in series_file.read().splitlines():
+            player_num, level_strategy = file_line.split(sep, 1)
+            if player_num not in ["组队", "单人1P", "单人1p", "单人2P", "单人2p"]:
+                raise BusinessError(f"关卡序列文件中存在无法识别的<通关账号>: {player_num}\n请确保该元素的值填写为“组队/单人1P/单人2P”")
+            series_level_list.append((player_num, level_strategy))
+        series_file.close()
+
+        temp_player1_info = self.player1_info
+        temp_player2_info = self.player2_info
+
+        for series_tuple in series_level_list:
+            if series_tuple[0] == "组队":
+                plan_path = plan_path_team
+                self.setPlayerInfo(temp_player1_info, temp_player2_info)
+            elif series_tuple[0] in ["单人1P", "单人1p"]:
+                plan_path = plan_path_1p
+                self.setPlayerInfo(temp_player1_info, None)
+            elif series_tuple[0] in ["单人2P", "单人2p"]:
+                plan_path = plan_path_2p
+                self.setPlayerInfo(temp_player2_info, None)
+            # 执行通关策略
+            self.formatBusinessMessage(series_tuple[1])
+            self.executeUnionQuest(series_tuple[1], plan_path, sep=sep)
+            # 每次通关后打开面板领取奖励
+            if quest_panel != "无":
+                SERIAL_LEVEL_QUEST_PANEL_FUNC_DICT[quest_panel](
+                    self.player1_info["hwnd"],
+                    self.player1_info["zoom"]
+                )
+                if self.player2_info is not None:
+                    SERIAL_LEVEL_QUEST_PANEL_FUNC_DICT[quest_panel](
+                        self.player2_info["hwnd"],
+                        self.player2_info["zoom"]
+                    )
+
     # 功能：一键签到 ------------------------------------------------------------------
     def signinAndActivity(self, activity_list: list):
         pass
@@ -375,8 +477,8 @@ class BusinessBus(QThread):
             # 执行
             self.executeUnionQuest(quest_result, plan_path)
 
-    def executeUnionQuest(self, quest_result, plan_path):
-        parse_result = quest_result.split('-')
+    def executeUnionQuest(self, quest_result, plan_path, sep='-'):
+        parse_result = quest_result.split(sep)
         if len(parse_result) > 3:
             zone, level, strategy, plan_name = parse_result
         else:
@@ -396,7 +498,7 @@ class BusinessBus(QThread):
             # 默认作为”无二阶段“处理
             self.level_info["has_stage2"] = False
 
-        # 获取放卡方案信息：所用方案名称 与 关卡名称 相同
+        # 获取放卡方案信息
         union_placing_plan_procs = PlacingPlanProcessor(plan_path)
         plan_info = union_placing_plan_procs.readPlan(plan_name)
         if isinstance(plan_info, tuple):
@@ -407,12 +509,12 @@ class BusinessBus(QThread):
         # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
         player1_info_dict = self.convertToExecute(
             {"1p_hwnd": self.player1_info["hwnd"], "1p_zoom": self.player1_info["zoom"]},
-            plan_info, "1;2", 1)
+            plan_info, self.player1_info["flop_pos"], 1)
         player2_info_dict = None
         if self.player2_info is not None and plan_info["player_num"] == 2:
             player2_info_dict = self.convertToExecute(
                 {"2p_hwnd": self.player2_info["hwnd"], "2p_zoom": self.player2_info["zoom"]},
-                plan_info, "1;2", 2)
+                plan_info, self.player2_info["flop_pos"], 2)
         self.setPlayerInfo(player1_info_dict, player2_info_dict)
 
         self.loopSpecificLevel(zone, level, 1)
@@ -516,28 +618,19 @@ class BusinessBus(QThread):
         self.formatBusinessMessage("正在切换到关卡")
         hwnd_1p = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
-        switchWorldZone(hwnd_1p, "美味岛", zoom1)
 
         tab_num = 0
         if self.player2_info is not None:
             hwnd_2p = self.player2_info["hwnd"]
             zoom2 = self.player2_info["zoom"]
-            switchWorldZone(hwnd_2p, "美味岛", zoom2)
-
+            openMagicTowerDialog(hwnd_2p, tab_num, open_dialog=False, zoom=zoom2)
             tab_num = 1
         if level_num < 0:
             tab_num = 2
             # 魔塔第三页是单人模式
             self.player2_info = None
-        switchWorldZone(hwnd_1p, "魔塔蛋糕", zoom1)
-        delay(500)
-        # 等待魔塔加载完毕
-        while find_pic(hwnd_1p, MAGIC_TOWER_LOADING_PATH, [5, 80, 220, 160]):
-            delay(300)
+        openMagicTowerDialog(hwnd_1p, tab_num, zoom=zoom1)
 
-        # 选择tab页
-        mouseClick(hwnd_1p, (45 + 73 * tab_num) * zoom1, 70 * zoom1)
-        delay(500)
         for loop_time in range(loop_count):
             self.formatBusinessMessage(f"开始第{loop_time + 1}局")
             # 选择魔塔关卡，并进入房间
@@ -1160,6 +1253,57 @@ class BusinessBus(QThread):
                         player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
                     if exception_handle_time > 0 and handleFuncException(
                         func_param["func_name"], business_error, player_hwnd_info
+                    ):
+                        # 若需要重新尝试，则直接进入下一次循环
+                        exception_handle_time -= 1
+                        func_param["loop_count"] = self.level_info["loop_count"]
+                        continue
+                    else:
+                        func_final_status = "wrong"
+            elif func_param["func_name"] == "刷序列关卡":
+                # 先判断单人还是组队模式
+                if func_param["player2"] != 0:
+                    single_mode = False
+                else:
+                    single_mode = True
+
+                # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
+                player1_info_dict = {
+                    "hwnd": start_param[f"{func_param['player1']}p_hwnd"],
+                    "zoom": start_param[f"{func_param['player1']}p_zoom"],
+                    "flop_pos": func_param["flop_pos"]
+                }
+                player2_info_dict = None
+                if not single_mode:
+                    player2_info_dict = {
+                        "hwnd": start_param[f"{func_param['player2']}p_hwnd"],
+                        "zoom": start_param[f"{func_param['player2']}p_zoom"],
+                        "flop_pos": func_param["flop_pos"]
+                    }
+                    self.global_flow_info["current_2p_name_pic"] = start_param[
+                        f'{func_param["player2"]}p_name_pic_path']
+                self.setPlayerInfo(player1_info_dict, player2_info_dict)
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": None
+                })
+                try:
+                    # 启动 刷序列关卡 的功能
+                    self.startSerialLevel(
+                        func_param["series_path"],
+                        func_param["plan_path_team"],
+                        func_param["plan_path_1p"],
+                        func_param["plan_path_2p"],
+                        func_param["quest_panel"]
+                    )
+                except BusinessError as business_error:
+                    player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
+                    if not single_mode:
+                        player_hwnd_info.append((self.player2_info["hwnd"], self.player2_info["zoom"]))
+                    if exception_handle_time > 0 and handleFuncException(
+                            func_param["func_name"], business_error, player_hwnd_info
                     ):
                         # 若需要重新尝试，则直接进入下一次循环
                         exception_handle_time -= 1

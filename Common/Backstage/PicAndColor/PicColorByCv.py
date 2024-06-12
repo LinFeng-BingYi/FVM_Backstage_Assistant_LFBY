@@ -314,7 +314,7 @@ def find_color(hwnd: int, find_range: list, color: hex, threshold: float = 1):
                     win32gui.ReleaseDC(hwnd, hwndDC)
                     return x, y
             if computeBGRColorSimilar(color, pixel) <= 1 - threshold:
-                # print("当前坐标:", x, y, "\t颜色:", hex(pixel))
+                # print("当前坐标:", x, y, "\t颜色:", hex(pixel), "\t相似度:", computeBGRColorSimilar(color, pixel))
                 # 释放
                 win32gui.ReleaseDC(hwnd, hwndDC)
                 return x, y
@@ -388,7 +388,8 @@ def computeBGRColorSimilar(color1, color2):
     R = R_1 - R_2
     G = G_1 - G_2
     B = B_1 - B_2
-    result = math.sqrt((((512 + r_mean) * R * R) >> 8) + 4 * G * G + (((767 - r_mean) * B * B) >> 8))
+    # result = math.sqrt((((512 + r_mean) * R * R) >> 8) + 4 * G * G + (((767 - r_mean) * B * B) >> 8))
+    result = math.sqrt((R * R + G * G + B * B) / (255 * 255 * 3))
     # print("相似度", result)
     return result
 

@@ -55,10 +55,10 @@ class DailyEndParamWidget(Ui_DailyEndParam, BaseParamWidget):
             "悬赏活动": self.checkBox_wanted.isChecked(),
             "大富翁": [self.checkBox_monopoly.isChecked(), {
                 "use_dice": self.checkBox_monopoly_use_dice.isChecked()
-            }],
-            "背包兑换": [self.checkBox_backpack_exchange.isChecked(), {
-                "item_pic_path": self.lineEdit_backpack_item_pic.text()
             }]
+            # "背包兑换": [self.checkBox_backpack_exchange.isChecked(), {
+            #     "item_pic_path": self.lineEdit_backpack_item_pic.text()
+            # }]
         }
 
     def setAllParam(self, param_dict):
@@ -71,16 +71,16 @@ class DailyEndParamWidget(Ui_DailyEndParam, BaseParamWidget):
         self.checkBox_wanted.setChecked(param_dict["悬赏活动"])
         self.checkBox_monopoly.setChecked(param_dict["大富翁"][0])
         self.checkBox_monopoly_use_dice.setChecked(param_dict["大富翁"][1]["use_dice"])
-        self.checkBox_backpack_exchange.setChecked(param_dict["背包兑换"][0])
-        self.lineEdit_backpack_item_pic.setText(param_dict["背包兑换"][1]["item_pic_path"])
-        if self.checkBox_backpack_exchange.isChecked() and not os.path.exists(self.lineEdit_backpack_item_pic.text()):
-            flag_set_success = False
-            error_msg_list.append('[背包兑换]功能中条目截图文件夹不存在')
+        # self.checkBox_backpack_exchange.setChecked(param_dict["背包兑换"][0])
+        # self.lineEdit_backpack_item_pic.setText(param_dict["背包兑换"][1]["item_pic_path"])
+        # if self.checkBox_backpack_exchange.isChecked() and not os.path.exists(self.lineEdit_backpack_item_pic.text()):
+        #     flag_set_success = False
+        #     error_msg_list.append('[背包兑换]功能中条目截图文件夹不存在')
         if not flag_set_success:
             return False, "\n".join(error_msg_list)
         return True
 
     def checkInputValidity(self):
-        if self.checkBox_backpack_exchange.isChecked() and not os.path.exists(self.lineEdit_backpack_item_pic.text()):
-            return False, "未找到背包兑换条目截图文件夹！"
+        # if self.checkBox_backpack_exchange.isChecked() and not os.path.exists(self.lineEdit_backpack_item_pic.text()):
+        #     return False, "未找到背包兑换条目截图文件夹！"
         return True

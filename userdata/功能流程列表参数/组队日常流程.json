@@ -353,6 +353,34 @@
                 }
             ],
             "func_name": "使用物品"
+        },
+        {
+            "player": 0,
+            "底部任务": true,
+            "公会任务": true,
+            "情侣任务": true,
+            "悬赏活动": false,
+            "大富翁": [
+                true,
+                {
+                    "use_dice": true
+                }
+            ],
+            "func_name": "日常收尾"
+        },
+        {
+            "player": 1,
+            "底部任务": true,
+            "公会任务": true,
+            "情侣任务": true,
+            "悬赏活动": false,
+            "大富翁": [
+                true,
+                {
+                    "use_dice": true
+                }
+            ],
+            "func_name": "日常收尾"
         }
     ]
 }

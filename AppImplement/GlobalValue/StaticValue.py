@@ -169,6 +169,18 @@ LCTX_LEVEL_POS = {
     "艾莎星冰乐": (616, 325)
 }
 
+# 漫游奇境关卡坐标
+MYQJ_LEVEL_POS = {
+    "兔子洞日": (247, 328),
+    "兔子洞夜": (168, 254),
+    "蘑菇小径日": (223, 175),
+    "蘑菇小径夜": (307, 140),
+    "午茶庭院": (440, 128),
+    "玫瑰花园日": (615, 160),
+    "玫瑰花园夜": (685, 190),
+    "悬浮梦境": (420, 260)
+}
+
 # 单层级地图
 SINGLE_HIERARCHY_ZONE = {
     "美味岛": MWD_LEVEL_POS,
@@ -183,7 +195,8 @@ SINGLE_HIERARCHY_ZONE = {
 # 多层级地图
 MULTI_HIERARCHY_ZONE = {
     "雪山探险": XSTX_LEVEL_POS,
-    "雷城探险": LCTX_LEVEL_POS
+    "雷城探险": LCTX_LEVEL_POS,
+    "漫游奇境": MYQJ_LEVEL_POS
 }
 
 # 跨服远征关卡类型
@@ -264,6 +277,12 @@ CREATE_ROOM_PSW_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关
 ENTER_ROOM_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\进入房间.bmp"
 # 进入关卡
 START_GAME_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\进入关卡.bmp"
+# 战斗结算
+END_GAME_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\战斗结算.bmp"
+# 翻宝箱
+FLIP_CHEST_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\翻宝箱.bmp"
+# 通关失败小贴士关闭按钮
+FAIL_GAME_TIP_CLOSE_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\通关失败小贴士关闭按钮.bmp"
 # 退出关卡提示
 EXIT_GAME_TIP_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\退出关卡提示.bmp"
 # 背包空间不足
@@ -293,6 +312,8 @@ OPEN_FVM_ACTIVITY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界�
 FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\美食大赛.bmp"
 # 进入美食大赛
 OPEN_FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入美食大赛.bmp"
+# 美食大赛完成
+COMPLETE_FOOD_CONTEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\美食大赛完成.bmp"
 # 法老宝藏
 PHARAOH_TREASURE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\法老宝藏.bmp"
 # 进入法老宝藏
@@ -317,6 +338,12 @@ OPEN_MONTHLY_CARD_WELFARE_PATH = ROOT_PATH + r"\resources\images\界面图标\�
 JOYFUL_HOLIDAY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\欢乐假期.bmp"
 # 进入欢乐假期
 OPEN_JOYFUL_HOLIDAY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入欢乐假期.bmp"
+# 大富翁
+MONOPOLY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\大富翁.bmp"
+# 进入大富翁
+OPEN_MONOPOLY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入大富翁.bmp"
+# 大富翁无骰子
+MONOPOLY_ZERO_DICE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\大富翁无骰子.bmp"
 # 实验室
 LABORATORY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\实验室.bmp"
 # 进入实验室
@@ -384,6 +411,11 @@ FIND_AND_OPEN_TOP_MENU_DICT = {
         JOYFUL_HOLIDAY_PATH,
         OPEN_JOYFUL_HOLIDAY_PATH,
         [210, 90, 320, 130]
+    ),
+    "大富翁": (
+        MONOPOLY_PATH,
+        OPEN_MONOPOLY_PATH,
+        [785, 40, 880, 75]
     ),
     "实验室": (
         LABORATORY_PATH,
@@ -557,6 +589,12 @@ ANY_DIALOG_CLS_BTN_DICT = {
 BACKPACK_1ST_PAGE_USE_STUFF_PIC1_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\背包装备页使用后礼包物品.bmp"
 # 背包装备页使用后随机宝箱物品
 BACKPACK_1ST_PAGE_USE_STUFF_PIC2_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\背包装备页使用后随机宝箱物品.bmp"
+# 进入探险任务
+OPEN_EXPLORE_QUEST_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\进入探险任务.bmp"
+# 探险任务完成1
+COMPLETE_EXPLORE_QUEST_1_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\探险任务完成1.bmp"
+# 探险任务完成2
+COMPLETE_EXPLORE_QUEST_2_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\探险任务完成2.bmp"
 
 # 自动登录 -------------------------------------------------------------------------
 AUTO_LOGIN_USERNAME_BOX = ROOT_PATH + r"\resources\images\界面图标\自动登录相关\用户名输入框.bmp"

@@ -152,6 +152,18 @@ def checkFoodContestQuestFinish(hwnd):
         delay(5000)
 
 
+def openMagicTowerDialog(hwnd, tab_num, open_dialog=True, zoom=1):
+    switchWorldZone(hwnd, "美味岛", zoom=zoom)
+    if open_dialog:
+        switchWorldZone(hwnd, "魔塔蛋糕", zoom)
+        # 等待魔塔加载完毕
+        while find_pic(hwnd, MAGIC_TOWER_LOADING_PATH, [5, 80, 220, 160]):
+            delay(300)
+        # 选择tab页
+        mouseClick(hwnd, (45 + 73 * tab_num) * zoom, 70 * zoom)
+        delay(500)
+
+
 def chooseMagicTowerLevel(hwnd, level_num: int, zoom=1):
     """在已打开魔塔界面的情况下，根据魔塔层数 level_num 选择对应的魔塔关卡，并创建进入房间"""
     if level_num >= 0:
@@ -356,7 +368,15 @@ def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom1=1, zoom2=1):
 
 
 def loopCheckContinue(hwnd, max_time=15):
-    return find_color_loop(hwnd, [60, 20, 80, 40], 0x3D4A4C, max_time=max_time * 60)
+    start_time = time()
+    while True:
+        if find_color(hwnd, [60, 20, 80, 40], 0x3D4A4C):
+            return 1
+        if find_pic(hwnd, END_GAME_PATH, [420, 45, 530, 80]):
+            return 2
+        sleep(1)
+        if (time() - start_time) >= max_time * 60:
+            return 0
 
 
 def loopCheckEndGame(hwnd, max_time=15):
@@ -374,7 +394,7 @@ def loopCheckEndGame(hwnd, max_time=15):
         成功检测到则返回True，超出最大容忍时间max_time仍未检测到直接返回False
     """
     # 查询是否出现结算得分界面
-    if find_color_loop(hwnd, [60, 20, 80, 40], 0x6E2F0F, max_time=max_time * 60):
+    if find_pic_loop(hwnd, END_GAME_PATH, [420, 45, 550, 120], max_time=max_time * 60, internal=2):
         # # 开始结算得分 到 开始翻牌页面 有8s左右的间隔
         # delay(8200)
         return True
@@ -382,7 +402,30 @@ def loopCheckEndGame(hwnd, max_time=15):
         return False
 
 
+def loopCheckFlipChest(hwnd, max_time=0.5):
+    """循环检测翻宝箱界面
+
+    Args:
+        hwnd: int
+            窗口句柄
+        max_time: int
+            最大容忍时间，超过该时间直接返回False，单位为分钟(min)
+
+    Returns: bool
+        成功检测到则返回True，超出最大容忍时间max_time仍未检测到直接返回False
+    """
+    # 查询是否出现翻宝箱界面
+    if find_pic_loop(hwnd, FLIP_CHEST_PATH, [430, 40, 520, 70], max_time=max_time * 60):
+        return True
+    else:
+        return False
+
+
 def executeFlop(hwnd, flop_pos: str, zoom=1):
+    if find_color(hwnd, [650, 500, 650, 500], 0xC57A32):
+        mouseClick(hwnd, 708 * zoom, 498 * zoom)
+        delay(200)
+        return False
     card_pos = [(550, 267), (707, 267), (856, 267), (550, 469), (707, 469), (856, 469)]
 
     select_card = flop_pos.split(';')
@@ -398,6 +441,7 @@ def executeFlop(hwnd, flop_pos: str, zoom=1):
     delay(200)
     mouseClick(hwnd, 708 * zoom, 498 * zoom)
     delay(200)
+    return True
 
 
 def exitGame(hwnd, zoom=1):
