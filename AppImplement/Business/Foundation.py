@@ -56,6 +56,13 @@ def switchWorldZone(hwnd: int, zone_name, zoom=1):
     delay(800)
     if zone_name in need_switch_server:
         switchLine(hwnd, need_switch_server[zone_name], zoom=zoom)
+    elif zone_name == "跨服远征":
+        # 打开跨服分区列表
+        mouseClick(hwnd, 765 * zoom, 30 * zoom)
+        delay(500)
+        # 点击“跨服三区”
+        mouseClick(hwnd, 765 * zoom, 110 * zoom)
+        delay(500)
 
 
 def singleLayerChooseLevel(hwnd, zone_name, level_name, zoom=1):

@@ -185,6 +185,16 @@ class FuncFlowListWidget(QListWidget):
     def checkFuncOrderValidity(self):
         if self.item_widget_list[0].getFuncName() != "开始":
             return False
+        elif self.item_widget_list[0].getStatus() != "hanging":
+            tip_message_box = QMessageBox(
+                QMessageBox.Icon.NoIcon,
+                "提示",
+                "[开始]功能状态异常！请先右键点击功能列表，选择“重置所有功能状态”",
+                QMessageBox.StandardButton.Ok
+            )
+            tip_message_box.setButtonText(QMessageBox.StandardButton.Ok, "确定")
+            result = tip_message_box.exec_()
+            return False
         if self.item_widget_list[-1:][0].getFuncName() != "结束":
             tip_message_box = QMessageBox(
                 QMessageBox.Icon.NoIcon,
