@@ -89,6 +89,7 @@ def backpackUseFirstPage(hwnd, stuff_pic, use_times, second_psw='', zoom=1, **kw
                         count_statistic_dict[this_pic_name] += 1
                         update_pic_abs_name = temp_dir + "\\" + this_pic_name + f"-{count_statistic_dict[this_pic_name]}.bmp"
                         rename(temp_dir + "\\" + f"{match_pic_name}.bmp", update_pic_abs_name)
+                    delay(300)
                 pop_dialog_close_btn = find_pic(hwnd, COMMON_TIP_DIALOG_CLOSE_PATH, [435, 90, 950, 485])
                 # 关闭弹出的对话框
                 if pop_dialog_close_btn:

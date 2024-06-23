@@ -369,15 +369,24 @@ class BusinessBus(QThread):
                 self.teamFromStartToFlop()
                 # self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
-            exitRoom(hwnd_1p, zoom1)
-            exitRoom(hwnd_2p, zoom2)
+            if zone != "魔塔蛋糕":
+                exitRoom(hwnd_1p, zoom1)
+                exitRoom(hwnd_2p, zoom2)
+            else:
+                mouseClick(hwnd_1p, 925 * zoom1, 32 * zoom1)
+                mouseClick(hwnd_2p, 925 * zoom1, 32 * zoom2)
+                delay(500)
         else:
             for i in range(loop_count):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
                 self.singleFromStartToFlop()
                 # self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
-            exitRoom(hwnd_1p, zoom1)
+            if zone != "魔塔蛋糕":
+                exitRoom(hwnd_1p, zoom1)
+            else:
+                mouseClick(hwnd_1p, 925 * zoom1, 32 * zoom1)
+                delay(500)
 
     # 功能：刷序列关卡 -----------------------------------------------------------------
     def startSerialLevel(self, series_path, plan_path_team, plan_path_1p, plan_path_2p, quest_panel):
