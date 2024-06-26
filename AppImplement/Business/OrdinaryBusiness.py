@@ -704,12 +704,14 @@ def match_one_pic_of_dir(hwnd, abs_dir_path, find_range, threshold=0.999):
     return None
 
 
-def findUnionPresidentQuest(hwnd, zoom=1):
+def findUnionPresidentQuest(hwnd, quest_no_list, zoom=1):
     """在已打开公会任务面板的前提下，开始遍历查找公会任务，将任务查找结果存入列表
 
     Args:
         hwnd: int
             ...
+        quest_no_list: str
+            待执行的任务编号列表，会长任务和日常任务中前7个任务从1开始算起，用英文分号分隔。如: 1;2;3;7
         zoom: float
             ...
 
@@ -722,17 +724,18 @@ def findUnionPresidentQuest(hwnd, zoom=1):
     unfoldUnionQuest(hwnd, zoom)
     quest_result_list = []
     # 逐个检查
-    for i in [0, 1, 2]:
-        # 点击对应任务
-        mouseClick(hwnd, 160 * zoom, (205 + 30 * i) * zoom)
+    for i in [int(no) for no in quest_no_list.split(';')]:
+        # 点击对应任务，由于“日常任务”表头占一行，编号大于3时需要加1
+        click_pos_no = i - 1 if i <= 3 else i
+        mouseClick(hwnd, 160 * zoom, (205 + 30 * click_pos_no) * zoom)
         delay(800)
         # 若该任务状态不是“进行中”，则跳过
-        if not find_pic(hwnd, TODO_BOTTOM_QUEST_PATH, [355, 190 + 30 * i, 400, 220 + 30 * i]):
+        if not find_pic(hwnd, TODO_BOTTOM_QUEST_PATH, [355, 190 + 30 * click_pos_no, 400, 220 + 30 * click_pos_no]):
             quest_result_list.append("已完成")
             continue
         # 否则，查找任务结果，默认值为”没找到“
         quest_find_result = "没找到"
-        quest_pic_dir_path = ROOT_PATH + r"\resources\images\任务图片\公会任务\任务" + f"{i + 1}"
+        quest_pic_dir_path = ROOT_PATH + r"\resources\images\任务图片\公会任务\任务" + f"{i}"
         # for quest_pic in listdir(quest_pic_dir_path):
         #     quest_pic_abstract_path = quest_pic_dir_path + "\\" + quest_pic
         #     if find_pic(hwnd, quest_pic_abstract_path, [432, 90, 855, 367], 0.999):
@@ -1020,6 +1023,11 @@ def closeExecExceptionDlg(hwnd, zoom=1):
             mouseClick(hwnd, 872 * zoom, 480 * zoom)
             delay(500)
             exitRoom(hwnd, zoom)
+    # 判断是否打开创建房间界面但关闭按钮被顶部菜单遮挡
+    if find_pic(hwnd, CREATE_ROOM_PANEL_PATH, [120, 370, 240, 400]):
+        # 点击切换上方活动按钮
+        mouseClick(hwnd, 785 * zoom, 30 * zoom)
+        delay(500)
     # 判断并关闭
     DLG_CLS_BTN_POS = {
         "法老宝藏": (790, 97),

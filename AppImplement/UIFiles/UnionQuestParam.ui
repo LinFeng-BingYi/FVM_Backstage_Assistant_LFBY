@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_top" stretch="7,2,2,0">
+  <layout class="QVBoxLayout" name="verticalLayout_top" stretch="7,2,2,0,0,0">
    <property name="spacing">
     <number>5</number>
    </property>
@@ -44,7 +44,7 @@
       <item>
        <widget class="QLabel" name="label_dsc">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;公会任务截图文件的名称格式：地图区域-关卡名称-通关策略-放卡方案&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#00aa00;&quot;&gt;&amp;lt;地图区域&amp;gt;表示“世界地图”上显示的区域名称；&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#00aa00;&quot;&gt;&amp;lt;关卡名称&amp;gt;表示各地图区域中显示的关卡名称，必须严格对应界面上所显示的名称。名称重复的关卡加上“日/夜”、“水/陆”单个字，不要括号；&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#00aa00;&quot;&gt;&amp;lt;通关策略&amp;gt;填写“无二阶段”、“继续挑战”、“领取奖励”、“跳过”之中的一个；&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#00aa00;&quot;&gt;&amp;lt;放卡方案&amp;gt;填写ini文件中该任务所用的放卡方案名称，若不填写，则默认使用与&amp;lt;关卡名称&amp;gt;相同的方案&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;公会任务截图文件的名称格式：略【详见首页使用教程在线文档】&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -146,7 +146,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_file_path">
      <property name="title">
-      <string>选择方案</string>
+      <string>其他任务方案</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_file_path">
       <property name="spacing">
@@ -199,6 +199,164 @@
          <string>浏览</string>
         </property>
        </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_roam_quest">
+     <property name="title">
+      <string>漫游任务方案</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1,1,2">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_roam_file_path">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>漫游方案路径：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_roam_file_path">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_roam_file_path">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>浏览</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_roam_type">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>漫游类型：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_roam_type">
+        <property name="minimumSize">
+         <size>
+          <width>83</width>
+          <height>30</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_select_quest">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>52</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>选择任务</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_select_quest">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_quest_no">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>任务编号：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_quest_no">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>1;2;3</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_select_quest">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>252</width>
+          <height>14</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

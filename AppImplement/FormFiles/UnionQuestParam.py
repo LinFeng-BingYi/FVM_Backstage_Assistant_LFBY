@@ -109,6 +109,79 @@ class Ui_UnionQuestParam(object):
 
         self.verticalLayout_top.addWidget(self.groupBox_file_path)
 
+        self.groupBox_roam_quest = QGroupBox(UnionQuestParam)
+        self.groupBox_roam_quest.setObjectName(u"groupBox_roam_quest")
+        self.horizontalLayout = QHBoxLayout(self.groupBox_roam_quest)
+        self.horizontalLayout.setSpacing(5)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(-1, 0, -1, 5)
+        self.label_roam_file_path = QLabel(self.groupBox_roam_quest)
+        self.label_roam_file_path.setObjectName(u"label_roam_file_path")
+        self.label_roam_file_path.setMinimumSize(QSize(80, 0))
+        self.label_roam_file_path.setMaximumSize(QSize(80, 16777215))
+
+        self.horizontalLayout.addWidget(self.label_roam_file_path)
+
+        self.lineEdit_roam_file_path = QLineEdit(self.groupBox_roam_quest)
+        self.lineEdit_roam_file_path.setObjectName(u"lineEdit_roam_file_path")
+        self.lineEdit_roam_file_path.setMinimumSize(QSize(0, 30))
+
+        self.horizontalLayout.addWidget(self.lineEdit_roam_file_path)
+
+        self.pushButton_roam_file_path = QPushButton(self.groupBox_roam_quest)
+        self.pushButton_roam_file_path.setObjectName(u"pushButton_roam_file_path")
+        self.pushButton_roam_file_path.setMinimumSize(QSize(80, 30))
+
+        self.horizontalLayout.addWidget(self.pushButton_roam_file_path)
+
+        self.label_roam_type = QLabel(self.groupBox_roam_quest)
+        self.label_roam_type.setObjectName(u"label_roam_type")
+        self.label_roam_type.setMinimumSize(QSize(80, 0))
+        self.label_roam_type.setMaximumSize(QSize(80, 16777215))
+
+        self.horizontalLayout.addWidget(self.label_roam_type)
+
+        self.comboBox_roam_type = QComboBox(self.groupBox_roam_quest)
+        self.comboBox_roam_type.setObjectName(u"comboBox_roam_type")
+        self.comboBox_roam_type.setMinimumSize(QSize(83, 30))
+
+        self.horizontalLayout.addWidget(self.comboBox_roam_type)
+
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
+        self.horizontalLayout.setStretch(2, 1)
+        self.horizontalLayout.setStretch(3, 1)
+        self.horizontalLayout.setStretch(4, 2)
+
+        self.verticalLayout_top.addWidget(self.groupBox_roam_quest)
+
+        self.groupBox_select_quest = QGroupBox(UnionQuestParam)
+        self.groupBox_select_quest.setObjectName(u"groupBox_select_quest")
+        self.groupBox_select_quest.setMinimumSize(QSize(0, 52))
+        self.horizontalLayout_select_quest = QHBoxLayout(self.groupBox_select_quest)
+        self.horizontalLayout_select_quest.setSpacing(5)
+        self.horizontalLayout_select_quest.setObjectName(u"horizontalLayout_select_quest")
+        self.horizontalLayout_select_quest.setContentsMargins(-1, 0, -1, 5)
+        self.label_quest_no = QLabel(self.groupBox_select_quest)
+        self.label_quest_no.setObjectName(u"label_quest_no")
+        self.label_quest_no.setMinimumSize(QSize(80, 0))
+        self.label_quest_no.setMaximumSize(QSize(80, 16777215))
+
+        self.horizontalLayout_select_quest.addWidget(self.label_quest_no)
+
+        self.lineEdit_quest_no = QLineEdit(self.groupBox_select_quest)
+        self.lineEdit_quest_no.setObjectName(u"lineEdit_quest_no")
+        self.lineEdit_quest_no.setMinimumSize(QSize(0, 30))
+
+        self.horizontalLayout_select_quest.addWidget(self.lineEdit_quest_no)
+
+        self.horizontalSpacer_select_quest = QSpacerItem(252, 14, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_select_quest.addItem(self.horizontalSpacer_select_quest)
+
+
+        self.verticalLayout_top.addWidget(self.groupBox_select_quest)
+
         self.verticalSpacer = QSpacerItem(20, 100, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_top.addItem(self.verticalSpacer)
@@ -124,8 +197,7 @@ class Ui_UnionQuestParam(object):
 
     def retranslateUi(self, UnionQuestParam):
         UnionQuestParam.setWindowTitle(QCoreApplication.translate("UnionQuestParam", u"Form", None))
-        self.label_dsc.setText(QCoreApplication.translate("UnionQuestParam", u"<html><head/><body><p><span style=\" font-size:11pt;\">\u516c\u4f1a\u4efb\u52a1\u622a\u56fe\u6587\u4ef6\u7684\u540d\u79f0\u683c\u5f0f\uff1a\u5730\u56fe\u533a\u57df-\u5173\u5361\u540d\u79f0-\u901a\u5173\u7b56\u7565-\u653e\u5361\u65b9\u6848</span></p><p><span style=\" color:#00aa00;\">&lt;\u5730\u56fe\u533a\u57df&gt;\u8868\u793a\u201c\u4e16\u754c\u5730\u56fe\u201d\u4e0a\u663e\u793a\u7684\u533a\u57df\u540d\u79f0\uff1b</span></p><p><span style=\" color:#00aa00;\">&lt;\u5173\u5361\u540d\u79f0&gt;\u8868\u793a\u5404\u5730\u56fe\u533a\u57df\u4e2d\u663e\u793a\u7684\u5173\u5361\u540d\u79f0\uff0c\u5fc5\u987b\u4e25\u683c\u5bf9\u5e94\u754c\u9762\u4e0a\u6240\u663e\u793a\u7684\u540d\u79f0\u3002\u540d\u79f0\u91cd\u590d\u7684\u5173\u5361\u52a0\u4e0a\u201c\u65e5/\u591c\u201d\u3001\u201c\u6c34/\u9646\u201d\u5355\u4e2a\u5b57\uff0c\u4e0d\u8981\u62ec\u53f7\uff1b</span></p><p><span style=\" color:#00aa00;\">&lt;\u901a\u5173\u7b56\u7565&gt;\u586b\u5199\u201c\u65e0\u4e8c\u9636\u6bb5\u201d\u3001\u201c\u7ee7\u7eed\u6311\u6218\u201d\u3001"
-                        "\u201c\u9886\u53d6\u5956\u52b1\u201d\u3001\u201c\u8df3\u8fc7\u201d\u4e4b\u4e2d\u7684\u4e00\u4e2a\uff1b</span></p><p><span style=\" color:#00aa00;\">&lt;\u653e\u5361\u65b9\u6848&gt;\u586b\u5199ini\u6587\u4ef6\u4e2d\u8be5\u4efb\u52a1\u6240\u7528\u7684\u653e\u5361\u65b9\u6848\u540d\u79f0\uff0c\u82e5\u4e0d\u586b\u5199\uff0c\u5219\u9ed8\u8ba4\u4f7f\u7528\u4e0e&lt;\u5173\u5361\u540d\u79f0&gt;\u76f8\u540c\u7684\u65b9\u6848</span></p></body></html>", None))
+        self.label_dsc.setText(QCoreApplication.translate("UnionQuestParam", u"<html><head/><body><p><span style=\" font-size:11pt;\">\u516c\u4f1a\u4efb\u52a1\u622a\u56fe\u6587\u4ef6\u7684\u540d\u79f0\u683c\u5f0f\uff1a\u7565\u3010\u8be6\u89c1\u9996\u9875\u4f7f\u7528\u6559\u7a0b\u5728\u7ebf\u6587\u6863\u3011</span></p></body></html>", None))
         self.groupBox_select_players.setTitle(QCoreApplication.translate("UnionQuestParam", u"\u9009\u62e9\u8d26\u53f7", None))
         self.label_select_1p.setText(QCoreApplication.translate("UnionQuestParam", u"\u623f\u4e3b\uff1a", None))
         self.comboBox_select_1p.setItemText(0, QCoreApplication.translate("UnionQuestParam", u"1P", None))
@@ -136,8 +208,15 @@ class Ui_UnionQuestParam(object):
         self.comboBox_select_2p.setItemText(1, QCoreApplication.translate("UnionQuestParam", u"1P", None))
         self.comboBox_select_2p.setItemText(2, QCoreApplication.translate("UnionQuestParam", u"2P", None))
 
-        self.groupBox_file_path.setTitle(QCoreApplication.translate("UnionQuestParam", u"\u9009\u62e9\u65b9\u6848", None))
+        self.groupBox_file_path.setTitle(QCoreApplication.translate("UnionQuestParam", u"\u5176\u4ed6\u4efb\u52a1\u65b9\u6848", None))
         self.label_file_path.setText(QCoreApplication.translate("UnionQuestParam", u"\u653e\u5361\u65b9\u6848\u8def\u5f84\uff1a", None))
         self.pushButton_file_path.setText(QCoreApplication.translate("UnionQuestParam", u"\u6d4f\u89c8", None))
+        self.groupBox_roam_quest.setTitle(QCoreApplication.translate("UnionQuestParam", u"\u6f2b\u6e38\u4efb\u52a1\u65b9\u6848", None))
+        self.label_roam_file_path.setText(QCoreApplication.translate("UnionQuestParam", u"\u6f2b\u6e38\u65b9\u6848\u8def\u5f84\uff1a", None))
+        self.pushButton_roam_file_path.setText(QCoreApplication.translate("UnionQuestParam", u"\u6d4f\u89c8", None))
+        self.label_roam_type.setText(QCoreApplication.translate("UnionQuestParam", u"\u6f2b\u6e38\u7c7b\u578b\uff1a", None))
+        self.groupBox_select_quest.setTitle(QCoreApplication.translate("UnionQuestParam", u"\u9009\u62e9\u4efb\u52a1", None))
+        self.label_quest_no.setText(QCoreApplication.translate("UnionQuestParam", u"\u4efb\u52a1\u7f16\u53f7\uff1a", None))
+        self.lineEdit_quest_no.setText(QCoreApplication.translate("UnionQuestParam", u"1;2;3", None))
     # retranslateUi
 

@@ -192,7 +192,8 @@ def chooseMagicTowerLevel(hwnd, level_num: int, zoom=1):
         delay(500)
     # 点击”开始挑战“
     mouseClick(hwnd, 588 * zoom, 560 * zoom)
-    checkEnterRoom(hwnd)
+    delay(500)
+    # checkEnterRoom(hwnd)
 
 
 def chooseCrossServiceLevel(hwnd, level_type: str, level_num: str, zoom=1):

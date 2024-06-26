@@ -271,6 +271,8 @@ GOTO_BUTTON_PIC_DICT = {
 }
 
 # 通关相关 -------------------------------------------------------------------------
+# 创房界面
+CREATE_ROOM_PANEL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\创房界面.bmp"
 # 创房勾选密码
 CREATE_ROOM_PSW_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\创房勾选密码.bmp"
 # 进入房间
@@ -289,6 +291,8 @@ EXIT_GAME_TIP_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\�
 BACKPACK_FULL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\背包空间不足.bmp"
 # 邀请接受弹窗
 INVITATION_ACCEPT_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\邀请接受弹窗.bmp"
+# 魔塔第一页次数耗尽
+MAGIC_TOWER_TAB1_NO_RESIDUAL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\魔塔第一页次数耗尽.bmp"
 # 魔塔第三页次数耗尽
 MAGIC_TOWER_TAB3_NO_RESIDUAL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\魔塔第三页次数耗尽.bmp"
 

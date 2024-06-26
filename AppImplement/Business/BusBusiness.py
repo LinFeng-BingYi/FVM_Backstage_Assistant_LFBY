@@ -340,6 +340,13 @@ class BusinessBus(QThread):
 
     # 功能：循环刷指定关卡 ---------------------------------------------------------------
     def loopSpecificLevel(self, zone, level, loop_count):
+        # 针对有次数限制的关卡，执行对应的方法【引发问题：选择此类关卡时不能跳过选关，负面影响可忽略】
+        if zone == "魔塔蛋糕":
+            self.startMagicTower(level, loop_count)
+            return
+        elif zone == "火山遗迹":
+            self.startVolcanicRelic(level, loop_count)
+            return
         hwnd_1p = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
         if self.player2_info is not None:
@@ -369,24 +376,15 @@ class BusinessBus(QThread):
                 self.teamFromStartToFlop()
                 # self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
-            if zone != "魔塔蛋糕":
-                exitRoom(hwnd_1p, zoom1)
-                exitRoom(hwnd_2p, zoom2)
-            else:
-                mouseClick(hwnd_1p, 925 * zoom1, 32 * zoom1)
-                mouseClick(hwnd_2p, 925 * zoom1, 32 * zoom2)
-                delay(500)
+            exitRoom(hwnd_1p, zoom1)
+            exitRoom(hwnd_2p, zoom2)
         else:
             for i in range(loop_count):
                 self.formatBusinessMessage(f"开始第{i + 1}局")
                 self.singleFromStartToFlop()
                 # self.formatBusinessMessage(f"结束第{i + 1}局")
             # 退出房间
-            if zone != "魔塔蛋糕":
-                exitRoom(hwnd_1p, zoom1)
-            else:
-                mouseClick(hwnd_1p, 925 * zoom1, 32 * zoom1)
-                delay(500)
+            exitRoom(hwnd_1p, zoom1)
 
     # 功能：刷序列关卡 -----------------------------------------------------------------
     def startSerialLevel(self, series_path, plan_path_team, plan_path_1p, plan_path_2p, quest_panel):
@@ -460,12 +458,30 @@ class BusinessBus(QThread):
         pass
 
     # 功能：公会任务 ------------------------------------------------------------------
-    def startUnionQuest(self, plan_path):
+    def startUnionQuest(self, quest_no_list, plan_path, roam_plan_path, roam_type):
+        """先打开公会任务面板，再遍历所选公会任务，获取任务截图名称列表，再关闭公会任务界面。最后根据任务截图名称列表通关。
+
+        Args:
+            quest_no_list: str
+                ...
+            plan_path: str
+                ...
+            roam_plan_path: str
+                ...
+            roam_type: str
+                三岛漫游的主题名称。
+                文本应为: 平民鼠的逆袭/神殿集会/施工现场/Exciting/罐头炸弹/拆迁大队/百鬼夜行/车来了/峡道空袭/鼠以群聚
+
+        Returns:
+            ...
+            example:
+            ...
+        """
         hwnd1 = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
         openBottomMenu(hwnd1, "跳转", "公会任务", zoom1)
         # 获取会长任务结果列表
-        quest_result_list = findUnionPresidentQuest(hwnd1, zoom1)
+        quest_result_list = findUnionPresidentQuest(hwnd1, quest_no_list, zoom=zoom1)
         # 关闭公会任务界面
         mouseClick(hwnd1, 855 * zoom1, 55 * zoom1)
         delay(500)
@@ -482,9 +498,19 @@ class BusinessBus(QThread):
             if quest_result.rsplit('-', 1)[1] == "跳过":
                 self.formatBusinessMessage(f"跳过公会任务{quest_no}")
                 continue
+            if quest_result.find("漫游") != -1:
+                # 特殊处理三岛漫游任务，将<放卡方案>元素设置为: [(美味)(火山)(浮空)]漫游_漫游类型
+                parse_result = quest_result.split('-')
+                if len(parse_result) > 3:
+                    quest_result = '-'.join(parse_result[:3]) + parse_result[3] + '_' + roam_type
+                else:
+                    quest_result = quest_result + '-' + parse_result[1] + '_' + roam_type
+                curr_plan_path = roam_plan_path
+            else:
+                curr_plan_path = plan_path
             self.formatBusinessMessage(f"公会任务{quest_no}: {quest_result}")
             # 执行
-            self.executeUnionQuest(quest_result, plan_path)
+            self.executeUnionQuest(quest_result, curr_plan_path)
 
     def executeUnionQuest(self, quest_result, plan_path, sep='-'):
         parse_result = quest_result.split(sep)
@@ -645,9 +671,15 @@ class BusinessBus(QThread):
             # 选择魔塔关卡，并进入房间
             chooseMagicTowerLevel(hwnd_1p, level_num, zoom1)
             # 若提示次数不足
-            if find_pic(hwnd_1p, MAGIC_TOWER_TAB3_NO_RESIDUAL_PATH, [300, 210, 650, 400]):
+            if find_pic(hwnd_1p, MAGIC_TOWER_TAB1_NO_RESIDUAL_PATH, [330, 180, 580, 310]):
+                mouseClick(hwnd_1p, 520 * zoom1, 380 * zoom1)
+                delay(500)
+                self.formatBusinessMessage("检测到魔塔第一页次数不足！", "WARN")
+                break
+            elif find_pic(hwnd_1p, MAGIC_TOWER_TAB3_NO_RESIDUAL_PATH, [300, 210, 650, 400]):
                 mouseClick(hwnd_1p, 585 * zoom1, 250 * zoom1)
                 delay(500)
+                self.formatBusinessMessage("检测到魔塔第三页次数不足！", "WARN")
                 break
 
             # 应用卡片组
@@ -939,7 +971,7 @@ class BusinessBus(QThread):
             level_x_pos = 575
         else:
             closeCommonTipDialog(hwnd_1p, zoom1)
-            raise BusinessError(f"未知的关卡名称{level_name}")
+            raise BusinessError(f"未知的公会副本关卡名称{level_name}")
         openBottomMenu(hwnd_1p, "跳转", "公会副本", zoom1)
         # 点击“进入地图”
         mouseClick(hwnd_1p, level_x_pos * zoom1, 415 * zoom1)
@@ -1066,7 +1098,7 @@ class BusinessBus(QThread):
 
     def executeBusinessFlow(self):
         def handleFuncException(func_name, exc_error, player_hwnd_info_list):
-            if exc_error.error_info.find("未找到世界地图") != -1:
+            if exc_error.error_info.find("未找到世界地图") != -1 or exc_error.error_info.find("超过2min还未进入区域") != -1:
                 for hwnd_info in player_hwnd_info_list:
                     closeExecExceptionDlg(hwnd_info[0], zoom=hwnd_info[1])
                 self.formatBusinessMessage(exc_error.error_info, "ERROR")
@@ -1355,7 +1387,12 @@ class BusinessBus(QThread):
                         "loop_count": None
                     })
                     try:
-                        self.startUnionQuest(plan_path)
+                        self.startUnionQuest(
+                            func_param["quest_no_list"],
+                            plan_path,
+                            func_param["roam_plan_path"],
+                            func_param["roam_type"]
+                        )
                     except BusinessError as business_error:
                         player_hwnd_info = [(self.player1_info["hwnd"], self.player1_info["zoom"])]
                         if not single_mode:
