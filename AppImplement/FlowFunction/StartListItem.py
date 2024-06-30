@@ -46,6 +46,8 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
         self.pushButton_2p_hwnd.clicked.connect(lambda: self.setPlayerHwnd(self.lineEdit_2p_hwnd))
         self.pushButton_1p_name_pic.clicked.connect(lambda: self.chooseFile(self.lineEdit_1p_name_pic))
         self.pushButton_2p_name_pic.clicked.connect(lambda: self.chooseFile(self.lineEdit_2p_name_pic))
+        self.pushButton_1p_cross_room_pic.clicked.connect(lambda: self.chooseFile(self.lineEdit_1p_cross_room_pic))
+        self.pushButton_2p_cross_room_pic.clicked.connect(lambda: self.chooseFile(self.lineEdit_2p_cross_room_pic))
         self.pushButton_deck_file.clicked.connect(lambda: self.chooseIniFile(self.lineEdit_deck_file))
         self.pushButton_plan_file.clicked.connect(lambda: self.chooseIniFile(self.lineEdit_plan_file))
 
@@ -86,10 +88,12 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
             "1p_zoom": float(self.lineEdit_1p_zoom.text()),
             "1p_2nd_psw": self.lineEdit_1p_2nd_psw.text(),
             "1p_name_pic_path": self.lineEdit_1p_name_pic.text(),
+            "1p_cross_room_pic": self.lineEdit_1p_cross_room_pic.text(),
             "2p_hwnd": int(hwnd_2p) if not get_for_json and hwnd_2p != '' else 0,
             "2p_zoom": float(self.lineEdit_2p_zoom.text()),
             "2p_2nd_psw": self.lineEdit_2p_2nd_psw.text(),
             "2p_name_pic_path": self.lineEdit_2p_name_pic.text(),
+            "2p_cross_room_pic": self.lineEdit_2p_cross_room_pic.text(),
             "deck_path": self.lineEdit_deck_file.text(),
             "plan_path": self.lineEdit_plan_file.text()
         }
@@ -102,12 +106,16 @@ class StartParamWidget(Ui_StartParam, BaseParamWidget):
         self.lineEdit_1p_zoom.setText(str(param_dict["1p_zoom"]))
         if "1p_2nd_psw" in param_dict:
             self.lineEdit_1p_2nd_psw.setText(param_dict["1p_2nd_psw"])
+        if "1p_cross_room_pic" in param_dict:
+            self.lineEdit_1p_cross_room_pic.setText(param_dict["1p_cross_room_pic"])
         if "1p_name_pic_path" in param_dict:
             self.lineEdit_1p_name_pic.setText(param_dict["1p_name_pic_path"])
         self.lineEdit_2p_hwnd.setText(str(param_dict["2p_hwnd"]))
         self.lineEdit_2p_zoom.setText(str(param_dict["2p_zoom"]))
         if "2p_2nd_psw" in param_dict:
             self.lineEdit_2p_2nd_psw.setText(param_dict["2p_2nd_psw"])
+        if "2p_cross_room_pic" in param_dict:
+            self.lineEdit_2p_cross_room_pic.setText(param_dict["2p_cross_room_pic"])
         self.lineEdit_2p_name_pic.setText(param_dict["2p_name_pic_path"])
         self.lineEdit_deck_file.setText(param_dict["deck_path"])
         self.lineEdit_plan_file.setText(param_dict["plan_path"])

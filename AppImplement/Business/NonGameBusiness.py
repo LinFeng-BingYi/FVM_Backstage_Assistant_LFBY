@@ -11,6 +11,29 @@ from AppImplement.GlobalValue.StaticValue import *
 from AppImplement.Business.CustomException import BusinessError
 
 
+def autoLoginPreCheck(hwnd_top, login_way):
+    if login_way == "微端":
+        enter_server_btn = find_pic(hwnd_top, AUTO_LOGIN_ENTER_SERVER_BTN, record_fail=True, record_name="自动登录初始界面")
+        if not enter_server_btn:
+            raise BusinessError("使用自动登录时，请抓取窗口顶层句柄！并且初始界面必须为选择服务器的界面！")
+    elif login_way == "360游戏大厅-4399服":
+        hwnd_click = findChildHwnd(hwnd_top, 'Chrome_WidgetWin')
+        print(hwnd_click)
+        if hwnd_click == 0:
+            raise BusinessError("该版本的360游戏大厅句柄结构与软件不适配！\n\n请联系作者处理")
+        enter_server_btn = find_pic(hwnd_top, AUTO_LOGIN_ENTER_SERVER_BTN, record_fail=True, record_name="自动登录初始界面")
+        if not enter_server_btn:
+            raise BusinessError("使用自动登录时，请抓取窗口顶层句柄！并且初始界面必须为选择服务器的界面！")
+    elif login_way == "360游戏大厅-空间3366服":
+        hwnd_click = findChildHwnd(hwnd_top, 'Chrome_WidgetWin_0')
+        print(hwnd_click)
+        if hwnd_click == 0:
+            raise BusinessError("该版本的360游戏大厅句柄结构与软件不适配！\n\n请联系作者处理")
+        enter_server_btn = find_pic(hwnd_top, AUTO_LOGIN_3366_LAST_SERVER, record_fail=True, record_name="自动登录初始界面")
+        if not enter_server_btn:
+            raise BusinessError("使用自动登录时，请抓取窗口顶层句柄！并且初始界面必须为选择服务器的界面！")
+
+
 def autoLoginMicroTerminal(hwnd_top, server_no: str, zoom=1):
     y_offset = 25
 
@@ -89,3 +112,11 @@ def autoLogin360GameHall3366(hwnd_top, server_no: str, zoom=1):
     hwnd_game = findChildHwnd(hwnd_wrapper, 'NativeWindowClass')
     print(hwnd_game)
     return hwnd_game
+
+
+# [自动登录]登录方式与函数名映射关系dict
+AUTO_LOGIN_WAY_FUNC_DICT = {
+    "微端": autoLoginMicroTerminal,
+    "360游戏大厅-4399服": autoLogin360GameHall4399,
+    "360游戏大厅-空间3366服": autoLogin360GameHall3366
+}

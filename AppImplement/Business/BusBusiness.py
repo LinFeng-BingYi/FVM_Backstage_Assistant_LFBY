@@ -44,13 +44,6 @@ DAILY_END_FUNC_DICT = {
     "背包兑换": executeOpenFoodContest
 }
 
-# [自动登录]登录方式与函数名映射关系dict
-AUTO_LOGIN_WAY_FUNC_DICT = {
-    "微端": autoLoginMicroTerminal,
-    "360游戏大厅-4399服": autoLogin360GameHall4399,
-    "360游戏大厅-空间3366服": autoLogin360GameHall3366
-}
-
 # [刷序列关]任务面板与函数名映射关系dict
 SERIAL_LEVEL_QUEST_PANEL_FUNC_DICT = {
     "美食大赛": executeReceiveFoodContest,
@@ -60,7 +53,7 @@ SERIAL_LEVEL_QUEST_PANEL_FUNC_DICT = {
 
 class BusinessBus(QThread):
     # 向主窗口发送待打印日志
-    signal_send_business_message = Signal(str)
+    signal_send_business_message = Signal(str, str)
     # 向主窗口报告异常
     signal_send_business_error = Signal(str)
     # 向主窗口发送功能执行情况（功能在流程中的序号，功能的状态）
@@ -104,9 +97,12 @@ class BusinessBus(QThread):
         Args:
             global_flow_info: dict
                 {
-                    "current_2p_name_pic": player2_name_pic_path,      // 2P昵称路径
-                    "deck_path": deck_path,                         // 卡片组ini文件
-                    "plan_path": plan_path                          // 放卡方案ini文件
+                    "1p_2nd_psw": player1_2nd_psw,                          // 1P二级密码
+                    "2p_2nd_psw": player2_2nd_psw,                          // 2P二级密码
+                    "current_2p_name_pic": player2_name_pic_path,           // 2P昵称路径
+                    "current_1p_cross_room_pic": player1_cross_room_pic,    // 1P跨服房间列表昵称截图路径
+                    "deck_path": deck_path,                                 // 卡片组ini文件
+                    "plan_path": plan_path                                  // 放卡方案ini文件
                 }
         """
         self.global_flow_info = global_flow_info
@@ -342,10 +338,13 @@ class BusinessBus(QThread):
     def loopSpecificLevel(self, zone, level, loop_count):
         # 针对有次数限制的关卡，执行对应的方法【引发问题：选择此类关卡时不能跳过选关，负面影响可忽略】
         if zone == "魔塔蛋糕":
-            self.startMagicTower(level, loop_count)
+            self.startMagicTower(int(level), loop_count)
             return
         elif zone == "火山遗迹":
             self.startVolcanicRelic(level, loop_count)
+            return
+        elif zone in CROSS_SERVER_LEVEL_TYPE_NO:
+            self.startCrossService(self.global_flow_info["current_1p_cross_room_pic"], zone, level, loop_count)
             return
         hwnd_1p = self.player1_info["hwnd"]
         zoom1 = self.player1_info["zoom"]
@@ -638,7 +637,7 @@ class BusinessBus(QThread):
             exitRoom(hwnd_1p, zoom1)
 
     # 功能：魔塔蛋糕 ------------------------------------------------------------------
-    def startMagicTower(self, level_num, loop_count):
+    def startMagicTower(self, level_num: int, loop_count):
         """从主界面开始，先跳转至“美味岛”，再进入魔塔
            并根据当前启用账号数选择单人或双人魔塔，再根据level_num选择关卡
            最后完成关卡退出魔塔界面
@@ -1120,6 +1119,7 @@ class BusinessBus(QThread):
             "1p_2nd_psw": start_param["1p_2nd_psw"],
             "2p_2nd_psw": start_param["2p_2nd_psw"],
             "current_2p_name_pic": start_param["2p_name_pic_path"],
+            "current_1p_cross_room_pic": start_param["1p_cross_room_pic"],
             "deck_path": deck_path,
             "plan_path": plan_path
         })
@@ -1142,6 +1142,10 @@ class BusinessBus(QThread):
             top_hwnd_1p = func_param["1p_top_hwnd"]
             # 获取区服
             server_no_1p = func_param["1p_server_no"]
+
+            autoLoginPreCheck(func_param["1p_top_hwnd"], func_param["1p_login_way"])
+            if enable_2p and func_param["2p_top_hwnd"] != 0:
+                autoLoginPreCheck(func_param["2p_top_hwnd"], func_param["2p_login_way"])
 
             # 启动延时（单位min）
             if func_param["start_way"] == "time":
@@ -1323,6 +1327,8 @@ class BusinessBus(QThread):
                     }
                     self.global_flow_info["current_2p_name_pic"] = start_param[
                         f'{func_param["player2"]}p_name_pic_path']
+                    self.global_flow_info["current_1p_cross_room_pic"] = start_param[
+                        f'{func_param["player1"]}p_cross_room_pic']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
@@ -1561,6 +1567,10 @@ class BusinessBus(QThread):
                         start_param, plan_info, func_param["flop_pos"], func_param["player2"])
                     self.global_flow_info["current_2p_name_pic"] = start_param[
                         f'{func_param["player2"]}p_name_pic_path']
+                    self.global_flow_info["current_1p_cross_room_pic"] = start_param[
+                        f'{func_param["player1"]}p_cross_room_pic']
+                    if not path.exists(self.global_flow_info["current_1p_cross_room_pic"]):
+                        self.global_flow_info["current_1p_cross_room_pic"] = func_param["player1_room_name_path"]
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
                 self.setLevelInfo({
                     "has_stage2": False,
@@ -1571,7 +1581,7 @@ class BusinessBus(QThread):
                 try:
                     # 启动 循环刷指定关卡 的功能
                     self.startCrossService(
-                        func_param["player1_room_name_path"],
+                        self.global_flow_info["current_1p_cross_room_pic"],
                         func_param["level_type"],
                         func_param["level_num"],
                         func_param["loop_count"])
@@ -1864,13 +1874,13 @@ class BusinessBus(QThread):
         Args:
             message_str: str
                 消息内容
-            message_type: str["INFO", "WARN", "ERROR"]
-                消息类型。分为 信息[INFO]、警告[WARN]、错误[ERROR]
+            message_type: str["DEBUG", "INFO", "WARN", "ERROR"]
+                消息类型。分为 调式[DEBUG]、信息[INFO]、警告[WARN]、错误[ERROR]
         """
-        print_str = "{} [{}]: {}\n".format(
+        print_str = "{} [{}]: {}".format(
             QDateTime.currentDateTime().toString("yyyy/MM/dd hh:mm:ss"),
             message_type, message_str)
-        self.signal_send_business_message.emit(print_str)
+        self.signal_send_business_message.emit(print_str, message_type)
 
     def terminate(self) -> None:
         self.endAllPlacingWorker()

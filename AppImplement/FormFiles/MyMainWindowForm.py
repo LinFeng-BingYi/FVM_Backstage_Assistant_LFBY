@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QFileDialog
-from PySide6.QtGui import QTextCursor
+from PySide6.QtGui import QTextCursor, QTextCharFormat, QBrush, QColor
 from PySide6.QtCore import Signal
 
 from AppImplement.FormFiles.MyMainWindow import Ui_MyMainWindow
@@ -98,7 +98,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.thread_business_bus.signal_flow_finished.connect(self.respondBusinessBusFinish)
 
         # 清除日志
-        self.pushButton_clear_log.clicked.connect(self.plainTextEdit_log.clear)
+        self.pushButton_clear_log.clicked.connect(self.textEdit_log.clear)
         # 保存日志
         self.pushButton_save_log.clicked.connect(self.saveLog)
 
@@ -156,34 +156,51 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         self.listWidget_flow.flowFinished()
         # 若主界面下方勾选“结束时保存日志”，且流程是正常结束，则保存log
         if self.checkBox_save_log_when_stop.isChecked() and non_exception_stop:
-            if self.plainTextEdit_log.toPlainText() == "":
+            if self.textEdit_log.toPlainText() == "":
                 self.tip_message_box.setWindowTitle("错误")
                 self.tip_message_box.setText("日志输出区中没有信息！！！")
                 self.tip_message_box.show()
                 return
-            first_line_str = self.plainTextEdit_log.document().findBlockByLineNumber(0).text()
+            first_line_str = self.textEdit_log.document().findBlockByLineNumber(0).text()
             time_str = first_line_str[0:19]
             # print(time_str)
             pure_time_str = time_str.replace('/', '').replace(' ', '').replace(':', '')
             flow_file_path = ROOT_PATH + f"\\logs\\{pure_time_str}.log"
             f = open(flow_file_path, 'w', encoding='utf-8')
-            f.write(self.plainTextEdit_log.toPlainText())
+            f.write(self.textEdit_log.toPlainText())
             f.close()
 
-    def printLog(self, message_str):
-        self.plainTextEdit_log.setPlainText(
-            self.plainTextEdit_log.toPlainText() + message_str
-        )
+    def printLog(self, message_str, message_type):
+        # self.textEdit_log.setPlainText(
+        #     self.textEdit_log.toPlainText() + message_str
+        # )
+        LOG_TXT_COLOR = {
+            "DEBUG": "gray",
+            "INFO": "black",
+            "WARN": "orange",
+            "ERROR": "red"
+        }
+        self.textEdit_log.append(message_str)
+
+        text_format = self.textEdit_log.currentCharFormat()
+        text_format.setForeground(QBrush(QColor(LOG_TXT_COLOR[message_type])))
+
+        cursor = self.textEdit_log.textCursor()
+        cursor.setPosition(cursor.position() - len(message_str))
+        cursor.select(QTextCursor.SelectionType.BlockUnderCursor)
+        cursor.mergeCharFormat(text_format)
+        cursor.clearSelection()
+        cursor.movePosition(QTextCursor.MoveOperation.End)
         # 设置光标到文本末尾，方便查看最新消息
-        self.plainTextEdit_log.moveCursor(QTextCursor.MoveOperation.End)
+        # self.textEdit_log.moveCursor(QTextCursor.MoveOperation.End)
 
     def saveLog(self):
-        if self.plainTextEdit_log.toPlainText() == "":
+        if self.textEdit_log.toPlainText() == "":
             self.tip_message_box.setWindowTitle("错误")
             self.tip_message_box.setText("日志输出区中没有信息！！！")
             self.tip_message_box.show()
             return
-        first_line_str = self.plainTextEdit_log.document().findBlockByLineNumber(0).text()
+        first_line_str = self.textEdit_log.document().findBlockByLineNumber(0).text()
         time_str = first_line_str[0:19]
         # print(time_str)
         pure_time_str = time_str.replace('/', '').replace(' ', '').replace(':', '')
@@ -197,7 +214,7 @@ class MainMyMainWindow(QMainWindow, Ui_MyMainWindow):
         if flow_file_path == '':
             return
         f = open(flow_file_path, 'w', encoding='utf-8')
-        f.write(self.plainTextEdit_log.toPlainText())
+        f.write(self.textEdit_log.toPlainText())
         f.close()
 
     def popupError(self, error_str):

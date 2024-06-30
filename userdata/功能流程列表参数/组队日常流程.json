@@ -8,10 +8,12 @@
             "1p_zoom": 1.5,
             "1p_2nd_psw": "",
             "1p_name_pic_path": "",
+            "1p_cross_room_pic": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\跨服房间列表1P截图示例.bmp",
             "2p_hwnd": 0,
             "2p_zoom": 1.5,
             "2p_2nd_psw": "",
             "2p_name_pic_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\用户图片\\好友界面小号昵称.bmp",
+            "2p_cross_room_pic": "",
             "deck_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\账号预设卡片组.ini",
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\组队常用方案_二转海星.ini",
             "func_name": "开始"
@@ -46,7 +48,7 @@
             "公会花园": [
                 true,
                 {
-                    "fertilize_date": "2024/05/16-2024/06/06",
+                    "fertilize_date": "2024/06/13-2024/07/03",
                     "plant_type": 1
                 }
             ],
@@ -100,7 +102,7 @@
             "公会花园": [
                 true,
                 {
-                    "fertilize_date": "2024/05/16-2024/06/05",
+                    "fertilize_date": "2024/06/13-2024/07/03",
                     "plant_type": 0
                 }
             ],
@@ -222,6 +224,9 @@
             "player1": 1,
             "player2": 2,
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\公会任务_组队方案_二转海星.ini",
+            "roam_plan_path": "",
+            "roam_type": "",
+            "quest_no_list": "1;2;3",
             "func_name": "公会任务"
         },
         {
@@ -266,11 +271,22 @@
             "player1": 1,
             "player2": 0,
             "level_num": 139,
-            "loop_count": 5,
+            "loop_count": 6,
             "flop_pos": "1;2;3;4;5;6",
             "plan_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\单人魔塔139_二转海星草扇.ini",
             "plan_name": "魔塔139",
             "func_name": "魔塔蛋糕"
+        },
+        {
+            "player1": 1,
+            "player2": 0,
+            "series_path": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\序列关卡文件\\魔塔第三页关卡序列.txt",
+            "plan_path_team": "",
+            "plan_path_1p": "D:\\PycharmProjects\\FVM_Backstage_Assistant_LFBY\\userdata\\卡片放置方案\\单人常用方案_二转海星.ini",
+            "plan_path_2p": "",
+            "flop_pos": "1;2",
+            "quest_panel": "无",
+            "func_name": "刷序列关卡"
         },
         {
             "player1": 1,

@@ -18,10 +18,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QFrame,
     QHBoxLayout, QLabel, QLineEdit, QListWidgetItem,
-    QMainWindow, QMenu, QMenuBar, QPlainTextEdit,
-    QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
-    QTabWidget, QTextEdit, QToolBar, QVBoxLayout,
-    QWidget)
+    QMainWindow, QMenu, QMenuBar, QProgressBar,
+    QPushButton, QSizePolicy, QSpacerItem, QTabWidget,
+    QTextEdit, QToolBar, QVBoxLayout, QWidget)
 
 from AppImplement.FormFiles.CustomWidgets.ListWidget import FuncFlowListWidget
 
@@ -226,14 +225,13 @@ class Ui_MyMainWindow(object):
 
         self.verticalLayout_log.addWidget(self.label_log)
 
-        self.plainTextEdit_log = QPlainTextEdit(self.widget_log)
-        self.plainTextEdit_log.setObjectName(u"plainTextEdit_log")
+        self.textEdit_log = QTextEdit(self.widget_log)
+        self.textEdit_log.setObjectName(u"textEdit_log")
         font2 = QFont()
         font2.setPointSize(7)
-        self.plainTextEdit_log.setFont(font2)
-        self.plainTextEdit_log.setReadOnly(True)
+        self.textEdit_log.setFont(font2)
 
-        self.verticalLayout_log.addWidget(self.plainTextEdit_log)
+        self.verticalLayout_log.addWidget(self.textEdit_log)
 
         self.widget_log_action = QWidget(self.widget_log)
         self.widget_log_action.setObjectName(u"widget_log_action")
@@ -399,25 +397,22 @@ class Ui_MyMainWindow(object):
         self.textEdit_changelog.setHtml(QCoreApplication.translate("MyMainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'\u9ed1\u4f53'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'\u4eff\u5b8b';\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt;\">\u89c6\u9891\u5730\u5740\uff1a</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent"
-                        ":0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt; color:#828282;\">B\u7ad9\u3001\u6296\u97f3\uff1a\u6797\u98ce\u51b0\u7ffc</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt; color:#828282;\">B\u7ad9\u3001\u6296\u97f3\uff1a\u6797"
+                        "\u98ce\u51b0\u7ffc</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Microsoft YaHei UI'; font-size:14pt;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt;\">\u4f7f\u7528\u6559\u7a0b\u5728\u7ebf\u6587\u6863\uff1a</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt; color:#828282;\">https://docs.qq.com/doc/DSHd5a2hxZG5xRkJs</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-ind"
-                        "ent:0; text-indent:0px; font-family:'Microsoft YaHei UI'; font-size:14pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt;\">\u9700\u6c42\u4e0eBUG\u53cd\u9988\u5728\u7ebf\u6587\u6863\uff1a</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Microsoft YaHei UI'; font-size:14pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; marg"
+                        "in-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt;\">\u9700\u6c42\u4e0eBUG\u53cd\u9988\u5728\u7ebf\u6587\u6863\uff1a</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt; color:#828282;\">https://docs.qq.com/sheet/DSFJJTFBkUmh1TWti</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Microsoft YaHei UI'; font-size:14pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">\u4e0b\u8f7d\u5730\u5740\uff1a</span></p"
-                        ">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt; color:#828282;\">\u84dd\u594f\u4e91\uff1ahttps://wwz.lanzouq.com/b058zutpi \u5bc6\u7801:4yya</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">\u4e0b\u8f7d\u5730\u5740\uff1a</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+                        "font-size:14pt; color:#828282;\">\u84dd\u594f\u4e91\uff1ahttps://wwz.lanzouq.com/b058zutpi \u5bc6\u7801:4yya</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt; color:#828282;\">\u767e\u5ea6\u7f51\u76d8\uff1ahttps://pan.baidu.com/s/1T3NCLivxFrfKbR2HfJmLkg?pwd=iy6d \u63d0\u53d6\u7801: iy6d</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt; color:#828282;\">QQ\u7fa4\u6587\u4ef6\uff1a518615331</span></p></body></html>", None))
         self.tabWidget_config_business.setTabText(self.tabWidget_config_business.indexOf(self.tab_home), QCoreApplication.translate("MyMainWindow", u"\u9996\u9875", None))
@@ -437,7 +432,6 @@ class Ui_MyMainWindow(object):
         self.pushButton_browser_business_config_file.setText(QCoreApplication.translate("MyMainWindow", u"\u6d4f\u89c8", None))
         self.tabWidget_config_business.setTabText(self.tabWidget_config_business.indexOf(self.tab_config_business), QCoreApplication.translate("MyMainWindow", u"\u529f\u80fd\u53c2\u6570\u914d\u7f6e", None))
         self.label_log.setText(QCoreApplication.translate("MyMainWindow", u"<html><head/><body><p><span style=\" font-size:11pt; font-weight:700;\">\u65e5\u5fd7\u8f93\u51fa\u533a</span></p></body></html>", None))
-        self.plainTextEdit_log.setPlainText("")
         self.pushButton_save_log.setText(QCoreApplication.translate("MyMainWindow", u"\u4fdd\u5b58\u65e5\u5fd7", None))
         self.pushButton_clear_log.setText(QCoreApplication.translate("MyMainWindow", u"\u6e05\u7a7a\u65e5\u5fd7", None))
 #if QT_CONFIG(tooltip)
