@@ -153,6 +153,14 @@ def checkEnterRoom(hwnd):
     delay(500)
 
 
+def checkLoginTimeout(hwnd):
+    if find_pic(hwnd, LOGIN_TIMEOUT_PATH, [350, 250, 600, 350]):
+        return True
+    elif find_pic(hwnd, LOGIN_TIMEOUT2_PATH, [350, 250, 600, 350]):
+        return True
+    return False
+
+
 def checkFoodContestQuestFinish(hwnd):
     if find_pic_loop(hwnd, FOOD_CONTEST_QUEST_FINISH_TIP_PATH, [380, 320, 580, 420], max_time=1, internal=0):
         print("检测到触发美食大赛任务完成")
@@ -363,12 +371,16 @@ def loopCheckStartGame(hwnd_1p, hwnd_2p=0, zoom1=1, zoom2=1):
             delay(100)
             if find_pic(hwnd_1p, BACKPACK_FULL_PATH, [345, 205, 615, 395]):
                 mouseClick(hwnd_1p, 430 * zoom1, 350 * zoom1)
+            elif find_pic(hwnd_1p, WITHOUT_SPECIFIC_CARD_PATH, [345, 205, 615, 395]):
+                mouseClick(hwnd_1p, 430 * zoom1, 350 * zoom1)
         elif (time_sum % 1000) == 0:
             if hwnd_2p > 0:
                 mouseClick(hwnd_2p, 879 * zoom2, 481 * zoom2)
                 delay(100)
                 if find_pic(hwnd_2p, BACKPACK_FULL_PATH, [345, 205, 615, 395]):
-                    mouseClick(hwnd_2p, 430 * zoom1, 350 * zoom1)
+                    mouseClick(hwnd_2p, 430 * zoom2, 350 * zoom2)
+                elif find_pic(hwnd_2p, WITHOUT_SPECIFIC_CARD_PATH, [345, 205, 615, 395]):
+                    mouseClick(hwnd_2p, 430 * zoom2, 350 * zoom2)
         # 判断结束
         time_sum += 500
         if time_sum >= 120000:
@@ -463,8 +475,9 @@ def exitGame(hwnd, zoom=1):
 
 
 def exitRoom(hwnd, zoom=1):
-    mouseClick(hwnd, 920 * zoom, 560 * zoom)
-    delay(1000)
+    if find_pic(hwnd, ENTER_ROOM_PATH, [375, 20, 430, 50]):
+        mouseClick(hwnd, 920 * zoom, 560 * zoom)
+        delay(1000)
 
 
 # 游戏内放卡相关 --------------------------------------------------------------------------------

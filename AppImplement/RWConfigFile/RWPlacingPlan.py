@@ -11,6 +11,7 @@ from Common.FileProcess.INIProcess import INIProcessor
 EXCLUDE_SECTION = ['文件说明']
 COMMON_1P_KEY = ["描述", "1P放置位置", "1P所用卡片组"]
 COMMON_2P_KEY = ["描述", "1P放置位置", "2P放置位置", "1P所用卡片组", "2P所用卡片组"]
+OPTIONAL_KEY = ["定时退出关卡"]
 CARD_KEY = ["{}P卡{}", "{}P卡{}放置位置", "{}P卡{}补卡位置", "{}P卡{}CD"]
 
 
@@ -73,6 +74,7 @@ class PlacingPlanProcessor:
                     "2P放置位置": "2,1",
                     "1P所用卡片组": "大号_综合挂机",
                     "2P所用卡片组": "小号_综合挂机",
+                    "定时退出关卡": 5000,                       //可选项，单位毫秒
                     "1p_card_plan": list[dict[str, str]],
                     "2p_card_plan": list[dict[str, str]]
                 }
@@ -89,11 +91,17 @@ class PlacingPlanProcessor:
         if plan_dict['player_num'] == 1:
             for key in COMMON_1P_KEY:
                 plan_dict[key] = self.ini_procs.getSpecificValue(plan_name, key)
+            for key in OPTIONAL_KEY:
+                if self.ini_procs.hasKey(plan_name, key):
+                    plan_dict[key] = self.ini_procs.getSpecificValue(plan_name, key)
             plan_dict['1p_card_plan'] = self.readPlayerCardPlan(plan_name, 1)
         # 组队配置
         else:
             for key in COMMON_2P_KEY:
                 plan_dict[key] = self.ini_procs.getSpecificValue(plan_name, key)
+            for key in OPTIONAL_KEY:
+                if self.ini_procs.hasKey(plan_name, key):
+                    plan_dict[key] = self.ini_procs.getSpecificValue(plan_name, key)
             plan_dict['1p_card_plan'] = self.readPlayerCardPlan(plan_name, 1)
             plan_dict['2p_card_plan'] = self.readPlayerCardPlan(plan_name, 2)
         # print(plan_dict)
@@ -166,11 +174,17 @@ class PlacingPlanProcessor:
         if plan_dict['player_num'] == 1:
             for key in COMMON_1P_KEY:
                 self.ini_procs.setSpecificValue(plan_name, key, plan_dict[key])
+            for key in OPTIONAL_KEY:
+                if key in plan_dict:
+                    self.ini_procs.setSpecificValue(plan_name, key, plan_dict[key])
             self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'])
         # 组队配置
         else:
             for key in COMMON_2P_KEY:
                 self.ini_procs.setSpecificValue(plan_name, key, plan_dict[key])
+            for key in OPTIONAL_KEY:
+                if key in plan_dict:
+                    self.ini_procs.setSpecificValue(plan_name, key, plan_dict[key])
             self.writePlayerCardPlan(plan_name, plan_dict['1p_card_plan'])
             self.writePlayerCardPlan(plan_name, plan_dict['2p_card_plan'])
 

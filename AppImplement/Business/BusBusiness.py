@@ -143,7 +143,10 @@ class BusinessBus(QThread):
                 {
                     "has_stage2": bool[True, False],
                     "shall_continue": bool[True, False],
-                    "max_check_time": int
+                    "max_check_time": int,                  //对局多少分钟后判定为通关异常
+                    "skip_choose_level": bool,              //跳过选择关卡，不存在该字段表示不跳过
+                    "loop_count": int,                      //关卡循环次数
+                    "exit_delay": int                       //定时退出关卡，单位毫秒，-1表示不主动退出
                 }
         """
         self.level_info = level_info
@@ -170,6 +173,8 @@ class BusinessBus(QThread):
         if not loopCheckStartGame(hwnd_1p, hwnd_2p, zoom1, zoom2):
             raise BusinessError("超过2min未检测到进入关卡！")
         self.formatBusinessMessage("检测到进入关卡")
+        if self.level_info["loop_count"] > 0:
+            self.level_info["loop_count"] -= 1
         # 放置1P
         delay(100)
         placeCard(hwnd_1p, self.player1_info["player_pos"], zoom1)
@@ -178,6 +183,16 @@ class BusinessBus(QThread):
         # 启动放卡线程
         self.startPlacingCard(self.player1_info["cards_plan"], 1)
         self.startPlacingCard(self.player2_info["cards_plan"], 2)
+
+        exit_delay = self.level_info["exit_delay"]
+        if self.level_info["loop_count"] <= 0 and exit_delay >= 0:
+            # 一定时间后关闭放卡线程并退出关卡
+            delay(exit_delay)
+            self.endAllPlacingWorker()
+            delay(300)
+            exitGame(hwnd_1p, zoom1)
+            exitGame(hwnd_2p, zoom2)
+            return False
 
         delay(45000)
         # 检测进度
@@ -237,6 +252,7 @@ class BusinessBus(QThread):
         executeFlop(hwnd_1p, self.player1_info["flop_pos"], zoom1)
         executeFlop(hwnd_2p, self.player1_info["flop_pos"], zoom2)
         self.formatBusinessMessage(f"翻取了第{self.player1_info['flop_pos']}张牌")
+        return True
 
     def singleFromStartToFlop(self):
         hwnd_1p = self.player1_info["hwnd"]
@@ -248,11 +264,22 @@ class BusinessBus(QThread):
         if not loopCheckStartGame(hwnd_1p, zoom1=zoom1):
             raise BusinessError("超过2min未检测到进入关卡！")
         self.formatBusinessMessage("检测到进入关卡")
+        if self.level_info["loop_count"] is not None:
+            self.level_info["loop_count"] -= 1
         # 放置1P
         delay(100)
         placeCard(hwnd_1p, self.player1_info["player_pos"], zoom1)
         # 启动放卡线程
         self.startPlacingCard(self.player1_info["cards_plan"], 1)
+
+        exit_delay = self.level_info["exit_delay"]
+        if self.level_info["loop_count"] <= 0 and exit_delay >= 0:
+            # 一定时间后关闭放卡线程并退出关卡
+            delay(exit_delay)
+            self.endAllPlacingWorker()
+            delay(300)
+            exitGame(hwnd_1p, zoom1)
+            return False
 
         delay(45000)
         # 检测进度
@@ -303,6 +330,7 @@ class BusinessBus(QThread):
         # 成功检测到结算翻牌
         executeFlop(hwnd_1p, self.player1_info["flop_pos"], zoom1)
         self.formatBusinessMessage(f"翻取了第{self.player1_info['flop_pos']}张牌")
+        return True
 
     # 最关键的 启用放卡 或 结束放卡 ---------------------------------------------------------
     def startPlacingCard(self, cards_plan, player=1):
@@ -1258,6 +1286,14 @@ class BusinessBus(QThread):
                     single_mode = False
                 else:
                     single_mode = True
+                self.setLevelInfo({
+                    "has_stage2": func_param["has_stage2"],
+                    "shall_continue": func_param["shall_continue"],
+                    "max_check_time": start_param["max_check_time"],
+                    "skip_choose_level": func_param["skip_choose_level"],
+                    "loop_count": func_param["loop_count"],
+                    "exit_delay": -1
+                })
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1272,13 +1308,6 @@ class BusinessBus(QThread):
                     self.global_flow_info["current_2p_name_pic"] = start_param[
                         f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                self.setLevelInfo({
-                    "has_stage2": func_param["has_stage2"],
-                    "shall_continue": func_param["shall_continue"],
-                    "max_check_time": start_param["max_check_time"],
-                    "skip_choose_level": func_param["skip_choose_level"],
-                    "loop_count": func_param["loop_count"]
-                })
                 try:
                     # 定时启动
                     if func_param["timing_start"]:
@@ -1312,6 +1341,13 @@ class BusinessBus(QThread):
                 else:
                     single_mode = True
 
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": -1,
+                    "exit_delay": -1
+                })
                 # 将 从文件读取的放卡配置的dict格式 转化成可以使用该类的函数执行的dict格式
                 player1_info_dict = {
                     "hwnd": start_param[f"{func_param['player1']}p_hwnd"],
@@ -1330,12 +1366,6 @@ class BusinessBus(QThread):
                     self.global_flow_info["current_1p_cross_room_pic"] = start_param[
                         f'{func_param["player1"]}p_cross_room_pic']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                self.setLevelInfo({
-                    "has_stage2": False,
-                    "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"],
-                    "loop_count": None
-                })
                 try:
                     # 启动 刷序列关卡 的功能
                     self.startSerialLevel(
@@ -1364,6 +1394,13 @@ class BusinessBus(QThread):
                     single_mode = False
                 else:
                     single_mode = True
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": -1,
+                    "exit_delay": -1
+                })
                 plan_path = func_param["plan_path"]
                 # 使用该文件路径初始化放卡方案处理器
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1386,12 +1423,6 @@ class BusinessBus(QThread):
                         self.global_flow_info["current_2p_name_pic"] = start_param[
                             f'{func_param["player2"]}p_name_pic_path']
                     self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                    self.setLevelInfo({
-                        "has_stage2": False,
-                        "shall_continue": False,
-                        "max_check_time": start_param["max_check_time"],
-                        "loop_count": None
-                    })
                     try:
                         self.startUnionQuest(
                             func_param["quest_no_list"],
@@ -1421,6 +1452,13 @@ class BusinessBus(QThread):
                     self.signal_send_func_status.emit(func_no, func_final_status)
                     func_no += 1
                     continue
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": -1,
+                    "exit_delay": -1
+                })
                 plan_path = func_param["plan_path"]
                 # 使用该文件路径初始化放卡方案处理器
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1441,12 +1479,6 @@ class BusinessBus(QThread):
                     self.global_flow_info["current_2p_name_pic"] = start_param[
                         f'{func_param["player2"]}p_name_pic_path']
                     self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                    self.setLevelInfo({
-                        "has_stage2": False,
-                        "shall_continue": False,
-                        "max_check_time": start_param["max_check_time"],
-                        "loop_count": None
-                    })
                     try:
                         self.startLoversQuest(plan_path)
                     except BusinessError as business_error:
@@ -1466,6 +1498,13 @@ class BusinessBus(QThread):
                     single_mode = False
                 else:
                     single_mode = True
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"],
+                    "exit_delay": -1
+                })
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1480,12 +1519,6 @@ class BusinessBus(QThread):
                     self.global_flow_info["current_2p_name_pic"] = start_param[
                         f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                self.setLevelInfo({
-                    "has_stage2": False,
-                    "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"],
-                    "loop_count": func_param["loop_count"]
-                })
                 try:
                     # 启动 循环刷指定关卡 的功能
                     self.startVolcanicRelic(
@@ -1510,6 +1543,13 @@ class BusinessBus(QThread):
                     single_mode = False
                 else:
                     single_mode = True
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"],
+                    "exit_delay": -1
+                })
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1524,12 +1564,6 @@ class BusinessBus(QThread):
                     self.global_flow_info["current_2p_name_pic"] = start_param[
                         f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                self.setLevelInfo({
-                    "has_stage2": False,
-                    "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"],
-                    "loop_count": func_param["loop_count"]
-                })
                 try:
                     # 启动 循环刷指定关卡 的功能
                     self.startMagicTower(
@@ -1554,6 +1588,13 @@ class BusinessBus(QThread):
                     single_mode = False
                 else:
                     single_mode = True
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"],
+                    "exit_delay": -1
+                })
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1572,12 +1613,6 @@ class BusinessBus(QThread):
                     if not path.exists(self.global_flow_info["current_1p_cross_room_pic"]):
                         self.global_flow_info["current_1p_cross_room_pic"] = func_param["player1_room_name_path"]
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                self.setLevelInfo({
-                    "has_stage2": False,
-                    "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"],
-                    "loop_count": func_param["loop_count"]
-                })
                 try:
                     # 启动 循环刷指定关卡 的功能
                     self.startCrossService(
@@ -1604,6 +1639,13 @@ class BusinessBus(QThread):
                     single_mode = False
                 else:
                     single_mode = True
+                self.setLevelInfo({
+                    "has_stage2": True,
+                    "shall_continue": True,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": -1,
+                    "exit_delay": -1
+                })
                 plan_path = func_param["plan_path"]
                 # 使用该文件路径初始化放卡方案处理器
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1625,12 +1667,6 @@ class BusinessBus(QThread):
                         self.global_flow_info["current_2p_name_pic"] = start_param[
                             f'{func_param["player2"]}p_name_pic_path']
                     self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                    self.setLevelInfo({
-                        "has_stage2": True,
-                        "shall_continue": True,
-                        "max_check_time": start_param["max_check_time"],
-                        "loop_count": None
-                    })
                     try:
                         self.startWanted(func_param["active_level_dict"])
                     except BusinessError as business_error:
@@ -1651,6 +1687,13 @@ class BusinessBus(QThread):
                     single_mode = False
                 else:
                     single_mode = True
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"],
+                    "exit_delay": -1
+                })
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1665,12 +1708,6 @@ class BusinessBus(QThread):
                     self.global_flow_info["current_2p_name_pic"] = start_param[
                         f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                self.setLevelInfo({
-                    "has_stage2": False,
-                    "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"],
-                    "loop_count": func_param["loop_count"]
-                })
                 try:
                     # 启动 循环刷指定关卡 的功能
                     self.startWarriorChallenge(
@@ -1695,6 +1732,13 @@ class BusinessBus(QThread):
                     single_mode = False
                 else:
                     single_mode = True
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"],
+                    "exit_delay": -1
+                })
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1709,12 +1753,6 @@ class BusinessBus(QThread):
                     self.global_flow_info["current_2p_name_pic"] = start_param[
                         f'{func_param["player2"]}p_name_pic_path']
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                self.setLevelInfo({
-                    "has_stage2": False,
-                    "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"],
-                    "loop_count": func_param["loop_count"]
-                })
                 try:
                     self.startUnionDungeon(
                         func_param["level_name"],
@@ -1768,6 +1806,13 @@ class BusinessBus(QThread):
                 # 获取操作目标 窗口句柄 和 缩放比例
                 hwnd = start_param[f"{func_param['player'] + 1}p_hwnd"]
                 zoom = start_param[f"{func_param['player'] + 1}p_zoom"]
+                self.setLevelInfo({
+                    "has_stage2": False,
+                    "shall_continue": False,
+                    "max_check_time": start_param["max_check_time"],
+                    "loop_count": func_param["loop_count"],
+                    "exit_delay": -1
+                })
                 # 获取放卡方案信息
                 plan_path = func_param["plan_path"]
                 self.place_plan_procs.setFilePath(plan_path)
@@ -1780,12 +1825,6 @@ class BusinessBus(QThread):
                 player1_info_dict["zoom"] = zoom
                 player2_info_dict = None
                 self.setPlayerInfo(player1_info_dict, player2_info_dict)
-                self.setLevelInfo({
-                    "has_stage2": False,
-                    "shall_continue": False,
-                    "max_check_time": start_param["max_check_time"],
-                    "loop_count": func_param["loop_count"]
-                })
                 try:
                     # 启动 循环刷熟练度 的功能
                     self.startLoopSkill(
@@ -1859,6 +1898,10 @@ class BusinessBus(QThread):
             # 加入cards_plan
             cards_plan.append(card_plan)
             card_no += 1
+        if "定时退出关卡" in plan_info:
+            self.level_info["exit_delay"] = int(plan_info["定时退出关卡"])
+        else:
+            self.level_info["exit_delay"] = -1
         return {
             "hwnd": start_param[f"{player}p_hwnd"],
             "zoom": start_param[f"{player}p_zoom"],

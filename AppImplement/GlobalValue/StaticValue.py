@@ -24,7 +24,8 @@ WORLD_MAP_ZONE_POS = {
     "魔塔蛋糕": (318, 452),
     "勇士挑战": (493, 402),
     "跨服远征": (425, 332),
-    "探险营地": (578, 338)
+    "探险营地": (578, 338),
+    "星际穿越": (180, 460)
 }
 
 # 美味岛关卡坐标
@@ -111,6 +112,20 @@ HDXW_LEVEL_POS = {
     "天妇罗漩涡": (760, 270)
 }
 
+# 星际穿越关卡坐标
+XJCY_LEVEL_POS = {
+    "糖球空间站日": (346, 135),
+    "糖球空间站夜": (470, 160),
+    "苏打水星日": (250, 325),
+    "苏打水星夜": (350, 370),
+    "汉堡王星": (520, 365),
+    "巴旦木星日": (670, 290),
+    "巴旦木星夜": (750, 235),
+    "冷萃星环日": (650, 180),
+    "冷萃星环夜": (560, 150),
+    "多拿滋星云": (210, 190)
+}
+
 # 竞技岛关卡坐标
 JJD_LEVEL_POS = {
     "爆米花草地": (617, 268),
@@ -188,6 +203,7 @@ SINGLE_HIERARCHY_ZONE = {
     "浮空岛": FKD_LEVEL_POS,
     "火山遗迹": HSYJ_LEVEL_POS,
     "海底漩涡": HDXW_LEVEL_POS,
+    "星际穿越": XJCY_LEVEL_POS,
     "竞技岛": JJD_LEVEL_POS,
     "探险营地": TXYD_LEVEL_POS,
 }
@@ -224,6 +240,8 @@ OPEN_FKD_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\�
 OPEN_HSYJ_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入火山遗迹.bmp"
 # 进入海底漩涡
 OPEN_HDXW_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入海底漩涡.bmp"
+# 进入星际穿越
+OPEN_XJCY_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入星际穿越.bmp"
 # 进入竞技岛
 OPEN_JJD_ZONE_PATH = ROOT_PATH + r"\resources\images\界面图标\地图相关\进入竞技岛.bmp"
 # 进入魔塔蛋糕
@@ -241,6 +259,7 @@ OPEN_ZONE_PATH_DICT = {
     "浮空岛": (OPEN_FKD_ZONE_PATH, [570, 230, 615, 280]),
     "火山遗迹": (OPEN_HSYJ_ZONE_PATH, [120, 250, 250, 320]),
     "海底漩涡": (OPEN_HDXW_ZONE_PATH, [360, 100, 440, 160]),
+    "星际穿越": (OPEN_XJCY_ZONE_PATH, [170, 230, 220, 270]),
     "竞技岛": (OPEN_JJD_ZONE_PATH, [80, 180, 180, 280]),
     "魔塔蛋糕": (OPEN_MTDG_ZONE_PATH, [320, 10, 670, 60]),
     "勇士挑战": (OPEN_YSTZ_ZONE_PATH, [380, 20, 570, 100]),
@@ -289,12 +308,18 @@ FAIL_GAME_TIP_CLOSE_PATH = ROOT_PATH + r"\resources\images\界面图标\通关�
 EXIT_GAME_TIP_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\退出关卡提示.bmp"
 # 背包空间不足
 BACKPACK_FULL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\背包空间不足.bmp"
+# 未带指定卡弹窗
+WITHOUT_SPECIFIC_CARD_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\未带指定卡弹窗.bmp"
 # 邀请接受弹窗
 INVITATION_ACCEPT_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\邀请接受弹窗.bmp"
 # 魔塔第一页次数耗尽
 MAGIC_TOWER_TAB1_NO_RESIDUAL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\魔塔第一页次数耗尽.bmp"
 # 魔塔第三页次数耗尽
 MAGIC_TOWER_TAB3_NO_RESIDUAL_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\魔塔第三页次数耗尽.bmp"
+# 登陆超时
+LOGIN_TIMEOUT_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\登陆超时.bmp"
+# 登陆超时2
+LOGIN_TIMEOUT2_PATH = ROOT_PATH + r"\resources\images\界面图标\通关相关\登陆超时2.bmp"
 
 # 主界面各种活动窗口相关 ------------------------------------------------------------------
 # 顶部活动 -------------------------------------------------------------------------
