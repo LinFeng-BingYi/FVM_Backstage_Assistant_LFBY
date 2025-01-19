@@ -32,14 +32,18 @@ class WantedParamWidget(Ui_WantedParam, BaseParamWidget):
         self.three_island_widget_dict = {
             "美味岛": (self.checkBox_enable_mwd, self.comboBox_plan_mwd),
             "火山岛": (self.checkBox_enable_hsd, self.comboBox_plan_hsd),
-            "浮空岛": (self.checkBox_enable_fkd, self.comboBox_plan_fkd)
+            "浮空岛": (self.checkBox_enable_fkd, self.comboBox_plan_fkd),
+            "星际穿越": (self.checkBox_enable_xjcy, self.comboBox_plan_xjcy)
         }
 
         self.initWidget()
         self.bindSignal()
 
     def initWidget(self):
-        pass
+        self.comboBox_plan_mwd.view().setFixedWidth(160)
+        self.comboBox_plan_hsd.view().setFixedWidth(160)
+        self.comboBox_plan_fkd.view().setFixedWidth(160)
+        self.comboBox_plan_xjcy.view().setFixedWidth(160)
 
     def bindSignal(self):
         # self.pushButton_view_plan.clicked.connect()
@@ -66,6 +70,8 @@ class WantedParamWidget(Ui_WantedParam, BaseParamWidget):
         self.comboBox_plan_hsd.addItems(all_plan)
         self.comboBox_plan_fkd.clear()
         self.comboBox_plan_fkd.addItems(all_plan)
+        self.comboBox_plan_xjcy.clear()
+        self.comboBox_plan_xjcy.addItems(all_plan)
 
     def getAllParam(self, get_for_json=False):
         active_level_dict = dict()
@@ -73,7 +79,8 @@ class WantedParamWidget(Ui_WantedParam, BaseParamWidget):
         active_level_dict格式：{
             "美味岛": (bool, "悬赏美味方案名称"),
             "火山岛": (bool, "悬赏火山方案名称"),
-            "浮空岛": (bool, "悬赏浮空方案名称")
+            "浮空岛": (bool, "悬赏浮空方案名称"),
+            "星际穿越": (bool, "悬赏星际方案名称")
         }
         """
         for key, value in self.three_island_widget_dict.items():

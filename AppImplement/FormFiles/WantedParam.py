@@ -23,7 +23,7 @@ class Ui_WantedParam(object):
     def setupUi(self, WantedParam):
         if not WantedParam.objectName():
             WantedParam.setObjectName(u"WantedParam")
-        WantedParam.resize(522, 340)
+        WantedParam.resize(522, 345)
         self.verticalLayout_top = QVBoxLayout(WantedParam)
         self.verticalLayout_top.setSpacing(5)
         self.verticalLayout_top.setObjectName(u"verticalLayout_top")
@@ -95,7 +95,14 @@ class Ui_WantedParam(object):
 
         self.verticalLayout_top.addWidget(self.groupBox_select_plan)
 
-        self.groupBox_mwd = QGroupBox(WantedParam)
+        self.widget_plan_enable = QWidget(WantedParam)
+        self.widget_plan_enable.setObjectName(u"widget_plan_enable")
+        self.widget_plan_enable.setMaximumSize(QSize(530, 16777215))
+        self.gridLayout_plan_enable = QGridLayout(self.widget_plan_enable)
+        self.gridLayout_plan_enable.setSpacing(0)
+        self.gridLayout_plan_enable.setObjectName(u"gridLayout_plan_enable")
+        self.gridLayout_plan_enable.setContentsMargins(0, 0, 0, 0)
+        self.groupBox_mwd = QGroupBox(self.widget_plan_enable)
         self.groupBox_mwd.setObjectName(u"groupBox_mwd")
         self.horizontalLayout_mwd = QHBoxLayout(self.groupBox_mwd)
         self.horizontalLayout_mwd.setSpacing(5)
@@ -103,16 +110,16 @@ class Ui_WantedParam(object):
         self.horizontalLayout_mwd.setContentsMargins(-1, 0, -1, 5)
         self.checkBox_enable_mwd = QCheckBox(self.groupBox_mwd)
         self.checkBox_enable_mwd.setObjectName(u"checkBox_enable_mwd")
-        self.checkBox_enable_mwd.setMinimumSize(QSize(67, 0))
-        self.checkBox_enable_mwd.setMaximumSize(QSize(60, 16777215))
+        self.checkBox_enable_mwd.setMinimumSize(QSize(45, 0))
+        self.checkBox_enable_mwd.setMaximumSize(QSize(45, 16777215))
         self.checkBox_enable_mwd.setChecked(True)
 
         self.horizontalLayout_mwd.addWidget(self.checkBox_enable_mwd)
 
         self.label_plan_mwd = QLabel(self.groupBox_mwd)
         self.label_plan_mwd.setObjectName(u"label_plan_mwd")
-        self.label_plan_mwd.setMinimumSize(QSize(60, 0))
-        self.label_plan_mwd.setMaximumSize(QSize(60, 16777215))
+        self.label_plan_mwd.setMinimumSize(QSize(55, 0))
+        self.label_plan_mwd.setMaximumSize(QSize(55, 16777215))
 
         self.horizontalLayout_mwd.addWidget(self.label_plan_mwd)
 
@@ -124,15 +131,15 @@ class Ui_WantedParam(object):
 
         self.pushButton_plan_mwd = QPushButton(self.groupBox_mwd)
         self.pushButton_plan_mwd.setObjectName(u"pushButton_plan_mwd")
-        self.pushButton_plan_mwd.setMinimumSize(QSize(80, 30))
-        self.pushButton_plan_mwd.setMaximumSize(QSize(80, 30))
+        self.pushButton_plan_mwd.setMinimumSize(QSize(55, 30))
+        self.pushButton_plan_mwd.setMaximumSize(QSize(55, 30))
 
         self.horizontalLayout_mwd.addWidget(self.pushButton_plan_mwd)
 
 
-        self.verticalLayout_top.addWidget(self.groupBox_mwd)
+        self.gridLayout_plan_enable.addWidget(self.groupBox_mwd, 0, 0, 1, 1)
 
-        self.groupBox_hsd = QGroupBox(WantedParam)
+        self.groupBox_hsd = QGroupBox(self.widget_plan_enable)
         self.groupBox_hsd.setObjectName(u"groupBox_hsd")
         self.horizontalLayout_hsd = QHBoxLayout(self.groupBox_hsd)
         self.horizontalLayout_hsd.setSpacing(5)
@@ -140,16 +147,16 @@ class Ui_WantedParam(object):
         self.horizontalLayout_hsd.setContentsMargins(-1, 0, -1, 5)
         self.checkBox_enable_hsd = QCheckBox(self.groupBox_hsd)
         self.checkBox_enable_hsd.setObjectName(u"checkBox_enable_hsd")
-        self.checkBox_enable_hsd.setMinimumSize(QSize(67, 0))
-        self.checkBox_enable_hsd.setMaximumSize(QSize(60, 16777215))
+        self.checkBox_enable_hsd.setMinimumSize(QSize(45, 0))
+        self.checkBox_enable_hsd.setMaximumSize(QSize(45, 16777215))
         self.checkBox_enable_hsd.setChecked(True)
 
         self.horizontalLayout_hsd.addWidget(self.checkBox_enable_hsd)
 
         self.label_plan_hsd = QLabel(self.groupBox_hsd)
         self.label_plan_hsd.setObjectName(u"label_plan_hsd")
-        self.label_plan_hsd.setMinimumSize(QSize(60, 0))
-        self.label_plan_hsd.setMaximumSize(QSize(60, 16777215))
+        self.label_plan_hsd.setMinimumSize(QSize(55, 0))
+        self.label_plan_hsd.setMaximumSize(QSize(55, 16777215))
 
         self.horizontalLayout_hsd.addWidget(self.label_plan_hsd)
 
@@ -161,15 +168,15 @@ class Ui_WantedParam(object):
 
         self.pushButton_plan_hsd = QPushButton(self.groupBox_hsd)
         self.pushButton_plan_hsd.setObjectName(u"pushButton_plan_hsd")
-        self.pushButton_plan_hsd.setMinimumSize(QSize(80, 30))
-        self.pushButton_plan_hsd.setMaximumSize(QSize(80, 30))
+        self.pushButton_plan_hsd.setMinimumSize(QSize(55, 30))
+        self.pushButton_plan_hsd.setMaximumSize(QSize(55, 30))
 
         self.horizontalLayout_hsd.addWidget(self.pushButton_plan_hsd)
 
 
-        self.verticalLayout_top.addWidget(self.groupBox_hsd)
+        self.gridLayout_plan_enable.addWidget(self.groupBox_hsd, 0, 1, 1, 1)
 
-        self.groupBox_fkd = QGroupBox(WantedParam)
+        self.groupBox_fkd = QGroupBox(self.widget_plan_enable)
         self.groupBox_fkd.setObjectName(u"groupBox_fkd")
         self.horizontalLayout_3 = QHBoxLayout(self.groupBox_fkd)
         self.horizontalLayout_3.setSpacing(5)
@@ -177,15 +184,15 @@ class Ui_WantedParam(object):
         self.horizontalLayout_3.setContentsMargins(-1, 0, -1, 5)
         self.checkBox_enable_fkd = QCheckBox(self.groupBox_fkd)
         self.checkBox_enable_fkd.setObjectName(u"checkBox_enable_fkd")
-        self.checkBox_enable_fkd.setMinimumSize(QSize(67, 0))
-        self.checkBox_enable_fkd.setMaximumSize(QSize(60, 16777215))
+        self.checkBox_enable_fkd.setMinimumSize(QSize(45, 0))
+        self.checkBox_enable_fkd.setMaximumSize(QSize(45, 16777215))
 
         self.horizontalLayout_3.addWidget(self.checkBox_enable_fkd)
 
         self.label_plan_fkd = QLabel(self.groupBox_fkd)
         self.label_plan_fkd.setObjectName(u"label_plan_fkd")
-        self.label_plan_fkd.setMinimumSize(QSize(60, 0))
-        self.label_plan_fkd.setMaximumSize(QSize(60, 16777215))
+        self.label_plan_fkd.setMinimumSize(QSize(55, 0))
+        self.label_plan_fkd.setMaximumSize(QSize(55, 16777215))
 
         self.horizontalLayout_3.addWidget(self.label_plan_fkd)
 
@@ -197,13 +204,52 @@ class Ui_WantedParam(object):
 
         self.pushButton_plan_fkd = QPushButton(self.groupBox_fkd)
         self.pushButton_plan_fkd.setObjectName(u"pushButton_plan_fkd")
-        self.pushButton_plan_fkd.setMinimumSize(QSize(80, 30))
-        self.pushButton_plan_fkd.setMaximumSize(QSize(80, 30))
+        self.pushButton_plan_fkd.setMinimumSize(QSize(55, 30))
+        self.pushButton_plan_fkd.setMaximumSize(QSize(55, 30))
 
         self.horizontalLayout_3.addWidget(self.pushButton_plan_fkd)
 
 
-        self.verticalLayout_top.addWidget(self.groupBox_fkd)
+        self.gridLayout_plan_enable.addWidget(self.groupBox_fkd, 1, 0, 1, 1)
+
+        self.groupBox_xjcy = QGroupBox(self.widget_plan_enable)
+        self.groupBox_xjcy.setObjectName(u"groupBox_xjcy")
+        self.horizontalLayout_4 = QHBoxLayout(self.groupBox_xjcy)
+        self.horizontalLayout_4.setSpacing(5)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(-1, 0, -1, 5)
+        self.checkBox_enable_xjcy = QCheckBox(self.groupBox_xjcy)
+        self.checkBox_enable_xjcy.setObjectName(u"checkBox_enable_xjcy")
+        self.checkBox_enable_xjcy.setMinimumSize(QSize(45, 0))
+        self.checkBox_enable_xjcy.setMaximumSize(QSize(45, 16777215))
+
+        self.horizontalLayout_4.addWidget(self.checkBox_enable_xjcy)
+
+        self.label_plan_xjcy = QLabel(self.groupBox_xjcy)
+        self.label_plan_xjcy.setObjectName(u"label_plan_xjcy")
+        self.label_plan_xjcy.setMinimumSize(QSize(55, 0))
+        self.label_plan_xjcy.setMaximumSize(QSize(55, 16777215))
+
+        self.horizontalLayout_4.addWidget(self.label_plan_xjcy)
+
+        self.comboBox_plan_xjcy = QComboBox(self.groupBox_xjcy)
+        self.comboBox_plan_xjcy.setObjectName(u"comboBox_plan_xjcy")
+        self.comboBox_plan_xjcy.setMinimumSize(QSize(0, 30))
+
+        self.horizontalLayout_4.addWidget(self.comboBox_plan_xjcy)
+
+        self.pushButton_plan_xjcy = QPushButton(self.groupBox_xjcy)
+        self.pushButton_plan_xjcy.setObjectName(u"pushButton_plan_xjcy")
+        self.pushButton_plan_xjcy.setMinimumSize(QSize(55, 30))
+        self.pushButton_plan_xjcy.setMaximumSize(QSize(55, 30))
+
+        self.horizontalLayout_4.addWidget(self.pushButton_plan_xjcy)
+
+
+        self.gridLayout_plan_enable.addWidget(self.groupBox_xjcy, 1, 1, 1, 1)
+
+
+        self.verticalLayout_top.addWidget(self.widget_plan_enable)
 
         self.groupBox_level_setting = QGroupBox(WantedParam)
         self.groupBox_level_setting.setObjectName(u"groupBox_level_setting")
@@ -227,6 +273,10 @@ class Ui_WantedParam(object):
 
         self.verticalLayout_top.addWidget(self.groupBox_level_setting)
 
+        self.verticalLayout_top.setStretch(0, 2)
+        self.verticalLayout_top.setStretch(1, 2)
+        self.verticalLayout_top.setStretch(2, 5)
+        self.verticalLayout_top.setStretch(3, 2)
 
         self.retranslateUi(WantedParam)
 
@@ -260,6 +310,10 @@ class Ui_WantedParam(object):
         self.checkBox_enable_fkd.setText(QCoreApplication.translate("WantedParam", u"\u542f\u7528", None))
         self.label_plan_fkd.setText(QCoreApplication.translate("WantedParam", u"\u653e\u5361\u65b9\u6848\uff1a", None))
         self.pushButton_plan_fkd.setText(QCoreApplication.translate("WantedParam", u"\u67e5\u770b\u65b9\u6848", None))
+        self.groupBox_xjcy.setTitle(QCoreApplication.translate("WantedParam", u"\u661f\u9645\u7a7f\u8d8a", None))
+        self.checkBox_enable_xjcy.setText(QCoreApplication.translate("WantedParam", u"\u542f\u7528", None))
+        self.label_plan_xjcy.setText(QCoreApplication.translate("WantedParam", u"\u653e\u5361\u65b9\u6848\uff1a", None))
+        self.pushButton_plan_xjcy.setText(QCoreApplication.translate("WantedParam", u"\u67e5\u770b\u65b9\u6848", None))
         self.groupBox_level_setting.setTitle(QCoreApplication.translate("WantedParam", u"\u901a\u5173\u8bbe\u7f6e", None))
         self.label_flop_pos.setText(QCoreApplication.translate("WantedParam", u"\u7ffb\u724c\u4f4d\u7f6e\uff1a", None))
         self.lineEdit_flop_pos.setText(QCoreApplication.translate("WantedParam", u"1;2", None))

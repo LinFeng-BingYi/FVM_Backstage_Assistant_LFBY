@@ -208,38 +208,60 @@ def backpackDelete(hwnd, stuff_pic, use_times, second_psw='', zoom=1, **kwargs):
 def holidayDiscountConvert(hwnd, stuff_pic, use_times, second_psw='', zoom=1, **kwargs):
     # 跳转到第一页
     for jump_times in range(30):
-        mouseClick(hwnd, 525 * zoom, 480 * zoom)
+        mouseClick(hwnd, 410 * zoom, 540 * zoom)
         delay(50)
     # 每右转一次识图一次
-    flag_not_found = True      # 只要找到过一次，便不再继续向右翻页
-    while flag_not_found:
+    flag_found = False      # 只要找到过一次，便不再继续向右翻页
+    # 兑换成功后的延时，若目标条目位于右侧第二行，则会被飘字挡住，需要等2秒避开飘字
+    convert_delay = 400
+    while not flag_found:
         # 查找物品
         acceptInvitationOrNot(hwnd, False, zoom)
-        stuff_pos = find_pic(hwnd, stuff_pic, [360, 200, 700, 460])
+        stuff_pos = find_pic(hwnd, stuff_pic, [120, 180, 780, 520])
         while stuff_pos and use_times != 0:
+            stuff_x_pos = int(stuff_pos[0])
             stuff_y_pos = int(stuff_pos[1])
-            flag_not_found = False
+            # “兑换”按钮水平位置: 左列440，右列820
+            convert_btn_x_pos = 440 + (stuff_x_pos // 440) * 380
             # 若没有兑换次数，则提前结束
-            if not find_color(hwnd, [715, stuff_y_pos - 15, 810, stuff_y_pos + 15], 0x2D90F3):
+            if not find_color(hwnd, [convert_btn_x_pos - 40, stuff_y_pos - 15, convert_btn_x_pos + 40, stuff_y_pos + 15], 0x31da70):
                 break
-            # 点击“领取”
-            mouseClick(hwnd, 760 * zoom, stuff_y_pos * zoom)
-            delay(1050)
-            # 关闭二级密码框
-            check_2nd_psw_result = check2ndPsw(hwnd, second_psw, zoom)
-            if check_2nd_psw_result is not None:
-                if not check_2nd_psw_result:
-                    return False
-                else:
-                    use_times += 1
+            # 点击“兑换”
+            mouseClick(hwnd, convert_btn_x_pos * zoom, stuff_y_pos * zoom)
+            delay(convert_delay)
+            # 检查批量兑换窗口
+            if not flag_found:
+                if stuff_x_pos > 500 and 265 < stuff_y_pos < 345:
+                    convert_delay = 2000
+                if find_pic(hwnd, HOLIDAY_DISCOUNT_BATCH_CONVERT_PATH):
+                    # 勾选“本次登录关闭批量兑换”
+                    mouseClick(hwnd, 395 * zoom, 250 * zoom)
+                    delay(200)
+                    # 关闭批量兑换对话框
+                    mouseClick(hwnd, 635 * zoom, 215 * zoom)
+                    delay(300)
+                    # 再次点击“兑换”
+                    mouseClick(hwnd, convert_btn_x_pos * zoom, stuff_y_pos * zoom)
+                    delay(500)
+                # 关闭二级密码框
+                check_2nd_psw_result = check2ndPsw(hwnd, second_psw, zoom)
+                if check_2nd_psw_result is not None:
+                    if not check_2nd_psw_result:
+                        return False
+                    else:
+                        # 再次点击“兑换”
+                        mouseClick(hwnd, convert_btn_x_pos * zoom, stuff_y_pos * zoom)
+                delay(convert_delay)
             use_times -= 1
+            # 兑换成功后修改标记
+            flag_found = True
             acceptInvitationOrNot(hwnd, False, zoom)
             stuff_pos = find_pic(hwnd, stuff_pic)
         # 当使用次数归零，直接结束
         if use_times == 0:
             break
         # 向右一页
-        mouseClick(hwnd, 640 * zoom, 480 * zoom)
+        mouseClick(hwnd, 580 * zoom, 540 * zoom)
         delay(3000)
     return True
 
@@ -315,7 +337,7 @@ USE_STUFF_PANEL_IO_DICT = {
     "假期特惠": [
         openTopMenu,
         ("假期特惠", ""),
-        [(770, 130)]
+        [(900, 50)]
     ],
     "公会副本": [
         openBottomMenu,

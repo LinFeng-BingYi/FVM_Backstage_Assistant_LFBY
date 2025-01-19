@@ -802,14 +802,16 @@ class BusinessBus(QThread):
         Args:
             active_level_dict: dict[str, tuple[bool, str]]
                 三岛悬赏关卡信息。tuple包含两个元素，第一个bool类型元素表示是否执行对应关卡；第二个str类型元素表示通关放卡方案名称
+                2025/01/16: 官方更新星际穿越悬赏任务，"悬赏四连"更符合该功能名称，改名还要做适配，代码不好看，算了
                 格式：{
                     "美味岛": (True, "悬赏美味方案名称"),
                     "火山岛": (True, "悬赏火山方案名称"),
-                    "浮空岛": (False, "悬赏浮空方案名称")
+                    "浮空岛": (False, "悬赏浮空方案名称"),
+                    "星际穿越": (False, "悬赏星际方案名称")
                 }
         """
         flag_2p_opened = False      # 2P是否打开过悬赏界面
-        for three_island in ["美味岛", "火山岛", "浮空岛"]:
+        for three_island in ["美味岛", "火山岛", "浮空岛", "星际穿越"]:
             if not active_level_dict[three_island][0]:
                 continue
             self.formatBusinessMessage(f"开始{three_island}悬赏")

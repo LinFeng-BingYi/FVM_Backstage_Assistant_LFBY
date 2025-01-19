@@ -309,7 +309,7 @@ def find_color(hwnd: int, find_range: list, color: hex, threshold: float = 1):
             pixel = win32gui.GetPixel(hwndDC, x, y)
             if threshold == 1:
                 # 完全匹配时直接对比数值
-                # print(pixel, color)
+                # print("当前坐标:", x, y, "\t颜色:", pixel, "\t目标颜色:", color)
                 if pixel == color:
                     win32gui.ReleaseDC(hwnd, hwndDC)
                     return x, y

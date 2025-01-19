@@ -722,8 +722,8 @@ def openTopMenu(hwnd, menu_name: str, sub_menu_name='', zoom=1):
 
     # 处理某些特殊界面
     if menu_name == "假期特惠":
-        # 点击“兑换特惠”
-        mouseClick(hwnd, 300 * zoom, 350 * zoom)
+        # 点击“兑换”
+        mouseClick(hwnd, 50 * zoom, 390 * zoom)
         delay(300)
     elif menu_name == "欢乐假期":
         # 点击“立即挑战”
@@ -738,8 +738,9 @@ def openTopMenu(hwnd, menu_name: str, sub_menu_name='', zoom=1):
 
         # 处理特殊界面
         if menu_name == "假期特惠":
+            # 跳转到最后一页，加载一遍兑换物品列表图片，避免找不到目标兑换条目
             for jump_times in range(30):
-                mouseClick(hwnd, 640 * zoom, 480 * zoom)
+                mouseClick(hwnd, 580 * zoom, 540 * zoom)
                 delay(50)
 
     return True

@@ -25,7 +25,7 @@ WORLD_MAP_ZONE_POS = {
     "勇士挑战": (493, 402),
     "跨服远征": (425, 332),
     "探险营地": (578, 338),
-    "星际穿越": (180, 460)
+    "星际穿越": (760, 140)
 }
 
 # 美味岛关卡坐标
@@ -280,13 +280,16 @@ WANTED_MWD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬�
 WANTED_HSD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏火山挑战按钮.bmp"
 # 悬赏浮空挑战按钮
 WANTED_FKD_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏浮空挑战按钮.bmp"
+# 悬赏星际穿越挑战按钮
+WANTED_XJCY_GOTO_BUTTON_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏星际穿越挑战按钮.bmp"
 # 悬赏领取奖励
 WANTED_COMPLETE_PATH = ROOT_PATH + r"\resources\images\界面图标\悬赏三连\悬赏领取奖励.bmp"
 # 创建三岛悬赏房间对应按钮
 GOTO_BUTTON_PIC_DICT = {
     "美味岛": WANTED_MWD_GOTO_BUTTON_PATH,
     "火山岛": WANTED_HSD_GOTO_BUTTON_PATH,
-    "浮空岛": WANTED_FKD_GOTO_BUTTON_PATH
+    "浮空岛": WANTED_FKD_GOTO_BUTTON_PATH,
+    "星际穿越": WANTED_XJCY_GOTO_BUTTON_PATH
 }
 
 # 通关相关 -------------------------------------------------------------------------
@@ -359,6 +362,8 @@ TAROT_FREE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元�
 HOLIDAY_DISCOUNT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\假期特惠.bmp"
 # 进入假期特惠
 OPEN_HOLIDAY_DISCOUNT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入假期特惠.bmp"
+# 假期特惠批量兑换
+HOLIDAY_DISCOUNT_BATCH_CONVERT_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\假期特惠批量兑换.bmp"
 # 月卡福利
 MONTHLY_CARD_WELFARE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\月卡福利.bmp"
 # 进入月卡福利
@@ -373,6 +378,8 @@ MONOPOLY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\
 OPEN_MONOPOLY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\进入大富翁.bmp"
 # 大富翁无骰子
 MONOPOLY_ZERO_DICE_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\大富翁无骰子.bmp"
+# 大富翁不在活动时间内
+MONOPOLY_WRONG_TIMING_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\大富翁不在活动时间内.bmp"
 # 实验室
 LABORATORY_PATH = ROOT_PATH + r"\resources\images\界面图标\各种界面元素\顶部菜单\实验室.bmp"
 # 进入实验室
@@ -429,7 +436,7 @@ FIND_AND_OPEN_TOP_MENU_DICT = {
     "假期特惠": (
         HOLIDAY_DISCOUNT_PATH,
         OPEN_HOLIDAY_DISCOUNT_PATH,
-        [450, 80, 700, 120]
+        [300, 10, 700, 200]
     ),
     "月卡福利": (
         MONTHLY_CARD_WELFARE_PATH,
@@ -483,10 +490,10 @@ TOP_SUB_MENU_POS = {
         "连抽": (600, 470)
     },
     "假期特惠": {
-        "节日兑换": (400, 170),
-        "限时兑换": (490, 170),
-        "长期兑换": (580, 170),
-        "其他兑换": (670, 170)
+        "节日兑换": (190, 125),
+        "限时兑换": (330, 125),
+        "长期兑换": (460, 125),
+        "其他兑换": (600, 125)
     },
     "积分商城": {
         "神秘商人": (100, 150),

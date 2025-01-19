@@ -605,11 +605,18 @@ def executeReceiveMonopoly(hwnd, use_dice=False, zoom=1):
         if not find_color(hwnd, [375, 200, 375, 200], 0x61FF73):
             mouseClick(hwnd, 375 * zoom, 200 * zoom)
             delay(500)
-        while not find_pic(hwnd, MONOPOLY_ZERO_DICE_PATH, [380, 240, 566, 348]):
+        max_time = 500
+        while max_time > 0:
+            if find_pic(hwnd, MONOPOLY_ZERO_DICE_PATH, [380, 240, 566, 348]) or find_pic(hwnd, MONOPOLY_WRONG_TIMING_PATH, [380, 240, 566, 348]):
+                break
             mouseClick(hwnd, 380 * zoom, 160 * zoom)
             # 摇中点数6走路耗时8.7s, 传送耗时0.8s, 战利品飘字4s
             delay(3500)
-        result_str = "完成[大富翁]。且使用骰子"
+            max_time -= 1
+        if max_time <= 0:
+            result_str = "达到最大尝试次数(500)，提前结束[大富翁]"
+        else:
+            result_str = "完成[大富翁]。且使用骰子"
     # 关闭界面
     mouseClick(hwnd, 930 * zoom, 20 * zoom)
     delay(300)
@@ -1007,7 +1014,7 @@ def closeJustLoginDialog(hwnd, zoom=1):
     closeCommonTipDialog(hwnd, zoom)
     # 假期特惠对话框
     if find_pic(hwnd, OPEN_HOLIDAY_DISCOUNT_PATH):
-        mouseClick(hwnd, 770 * zoom, 130 * zoom)
+        mouseClick(hwnd, 900 * zoom, 50 * zoom)
         delay(500)
 
 
@@ -1033,7 +1040,7 @@ def closeExecExceptionDlg(hwnd, zoom=1):
         "法老宝藏": (790, 97),
         "塔罗寻宝": (830, 80),
         "美食大赛": (890, 50),
-        "假期特惠": (770, 130)
+        "假期特惠": (900, 50)
     }
     for key, value in DLG_CLS_BTN_POS.items():
         if find_pic(hwnd, FIND_AND_OPEN_TOP_MENU_DICT[key][1], FIND_AND_OPEN_TOP_MENU_DICT[key][2]):
@@ -1042,7 +1049,6 @@ def closeExecExceptionDlg(hwnd, zoom=1):
     # 查找并关闭3次“常见关闭按钮”
     for i in range(3):
         closeCommonTipDialog(hwnd, zoom=zoom)
-
 
 
 # 流程列表功能界面参数加工相关 ---------------------------------------------------------------
